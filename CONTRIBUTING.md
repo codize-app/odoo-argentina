@@ -2,6 +2,6 @@
 
 Please follow the official guide from [Odoo Argentina](https://github.com/ingadhoc/odoo-argentina/wiki).
 
-## Project Specific Guidelines
+# Codize Guidelines
 
-This project does not have specific coding guidelines.
+Wiki: [Odoo Argentina](https://github.com/odooar/odoo-argentina/wiki).

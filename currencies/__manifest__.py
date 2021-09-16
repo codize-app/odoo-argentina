@@ -31,5 +31,5 @@
     'installable': True,
     'name': 'Actulizacion de tipos de cambio',
     'test': [],
-    'version': '13.0.1.1.0',
+    'version': '14.0.1.1.0',
 }

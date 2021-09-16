@@ -19,9 +19,9 @@
 ##############################################################################
 {
     'name': 'Account Debt Management',
-    'version': '13.0.1.2.0',
+    'version': '14.0.1.2.0',
     'category': 'Account Reporting',
-    'author': 'Moldeo Interactive,ADHOC SA',
+    'author': 'Moldeo Interactive, ADHOC SA, Exemax, Codize',
     'license': 'AGPL-3',
     'depends': [
         'l10n_ar',

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 {
-    'author': "Moldeo Interactive,ADHOC SA,Odoo Community Association (OCA)",
-    'category': 'Localization/Argentina',
+    'version': '14.0',
+    'author': "Moldeo Interactive, Exemax, Codize, ADHOC SA, Odoo Community Association (OCA)",
+    'category': 'Location/Argentina',
     'depends': [
         'l10n_ar_afipws_fe',
     ],

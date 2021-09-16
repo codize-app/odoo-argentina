@@ -1,14 +1,12 @@
 {
     'name': 'Modulo Base para los Web Services de AFIP',
-    'version': '12.0.1.0.0',
-    'category': 'Localization/Argentina',
+    'version': '14.0.1.0.0',
+    'category': 'Location/Argentina',
     'sequence': 14,
-    'author': 'ADHOC SA, Moldeo Interactive,Odoo Community Association (OCA)',
+    'author': 'ADHOC SA, Moldeo Interactive, Exemax, Codize, Odoo Community Association (OCA)',
     'license': 'AGPL-3',
     'summary': '',
     'depends': [
-        # this dependency is becaouse of CUIT request and some config menus
-        #'l10n_ar_partner',
     ],
     'external_dependencies': {
         'python': ['pyafipws', 'OpenSSL', 'pysimplesoap']

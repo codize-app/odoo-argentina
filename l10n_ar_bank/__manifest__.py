@@ -1,9 +1,9 @@
 {
     "name": "Listado de Bancos Argentinos",
     'version': '14.0.1.0.0',
-    'category': 'Localization/Argentina',
+    'category': 'Location/Argentina',
     'sequence': 14,
-    'author': 'ADHOC SA,Moldeo Interactive,Odoo Community Association (OCA)',
+    'author': 'ADHOC SA, Moldeo Interactive, Exemax, Codize, Odoo Community Association (OCA)',
     'license': 'AGPL-3',
     'summary': '',
     'depends': [

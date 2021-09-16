@@ -1,9 +1,9 @@
 {
     "name": "account_move_tax",
-    'version': '12.0.1.3.0',
+    'version': '14.0.1.3.0',
     'category': 'Localization/Argentina',
     'sequence': 14,
-    'author': 'ADHOC SA, Moldeo Interactive,Odoo Community Association (OCA)',
+    'author': 'ADHOC SA, Moldeo Interactive, Exemax, Codize, Odoo Community Association (OCA)',
     'license': 'AGPL-3',
     'summary': '',
     'depends': [
