@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	   <template id="qr_report_fe_invoice_document" inherit_id="l10n_ar_report_fe.report_fe_invoice_document">
+		<xpath expr="//div[@class='footer']" position="replace">
+	            <div class="footer" style="border: 1px solid black;">
+	              <div class="row" style="margin-bottom: 0px !important; padding-top: 3px; padding-bottom: 3px;">
+        	        <div class="col-4" t-if="o.afip_cae">
+                	    <p/>
+	                    <p><strong> CAE: </strong><span t-field="o.afip_cae"/></p>
+        	            <p><strong> Fecha Vencimiento CAE: </strong><span t-field="o.afip_cae_due"/></p>
+		    	</div> <!-- cierra col-4 -->
+                	<div class="col-2" t-if="o.texto_modificado_qr">
+	                    <p/>
+        	            <strong>Codigo QR: </strong>
+		    	</div> <!-- cierra col-2 -->
+	                <div class="col-6" t-if="o.texto_modificado_qr">
+                	  <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('QR', o.texto_modificado_qr, 180, 180)" style="width:110px;height:110px"/>
+        	          <!--p/ -->
+                	  <!-- img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('I2of5', o.afip_barcode, 600, 100)" style="width:400px;height:50px"/ -->
+                    	  <!-- p class="text-center" t-field="o.afip_barcode"/ -->
+			</div> <!-- cierra col-6 -->
+		     </div> <!-- cierra row -->
+		  </div> <!-- cierra el footer -->
+		</xpath>
+	    </template>
+
+	</data>
+</odoo>

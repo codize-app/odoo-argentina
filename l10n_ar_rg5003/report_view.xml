@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	   <template id="qr_report_fe_invoice_document" inherit_id="l10n_ar_report_fe.report_fe_invoice_document">
+		   <xpath expr="//div[@class='footer']" position="after">
+			   <div t-if="o.partner_id.l10n_ar_afip_responsibility_type_id.code == '6' and o.l10n_latam_document_type_id.l10n_ar_letter == 'A'">
+				   <p>El credito fiscal discriminado en el presente comprobante solo podra ser computado a efectos del Regimen de Sostenimiento e Inclusion Fiscal para Pequenios Contribuyentes de la Ley Nro. 27.168</p>
+		    	</div> 
+		</xpath>
+	    </template>
+
+	</data>
+</odoo>
