@@ -18,7 +18,7 @@
         <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id">
           <!--HEADER-->
           <div class="header"  style="margin-bottom: 0px !important;">
-            <div class="row" style="border: 1px solid black; border-radius: 10px; margin-bottom: 0px !important;">
+            <div class="row m-0" style="border: 1px solid black; margin-bottom: 0px !important;">
                 <!--COMPANY LOGO-->
                 <div class="col-3 text-left">
                     <!--<img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="display: block !important; float: left !important; position: absolute !important; margin-top: 0px !important; margin-bottom: 0px !important; top: 10px !important; left: 10px !important; bottom: auto !important; max-height: 95px;"/>-->
@@ -38,9 +38,9 @@
                 </div><!--END DOCUMENT LETTER-->
                 <!--TIPO,NRO Y FECHA FACTURA-->
                 <div class="col-5 text-left" name="company_address" style="padding-left: 80px !important;">
-                  <h4>
+                  <h6>
 			  <span t-field="o.l10n_latam_document_type_id.name"></span>
-                  </h4>
+                  </h6>
                   <span t-if="o.state == 'posted' or o.state == 'draft'">
                           Fecha: <span t-field="o.invoice_date"/><br/>
                   </span>
@@ -54,7 +54,7 @@
                 </div>
                 <!--END DATOS FACTURA-->
             </div>
-            <div class="row" style="border: 1px solid black; border-radius: 10px; margin-top: 10px !important; margin-bottom: 0px !important;">
+            <div class="row m-0" style="border: 1px solid black; margin-top: 5px !important; margin-bottom: 0px !important;">
                 <div  class="col-8" t-if="o.move_type == 'out_invoice' and (o.state == 'posted') and o.l10n_ar_afip_service_start and o.l10n_ar_afip_service_end">
                     <strong>Período facturado desde:</strong>
                     <span t-if="o.l10n_ar_afip_service_start">
@@ -77,24 +77,23 @@
               </div>
           </div><!--END HEADER-->
           <!--PAGE-->
-          <div class="page" style="margin-top: 0px !important;">
+          <div class="page" style="margin-top: 0px !important;font-size: 13px;">
 
              <!--MY COMPANY-->
-              <div class="row" style="border: 1px solid black; border-radius: 10px; margin-top: 0px !important;">
+              <div class="row m-0" style="border: 1px solid black;">
                   <div class="col-6" style="margin-top: 8px !important;">
-                    <span t-field="o.company_id.name" style="font-size: 18px; font-weight: bold;"/>
+                    <span t-field="o.company_id.name" style="font-size: 16px; font-weight: bold;"/>
                     <div t-field="company.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"/>
                   </div>
                   <div class="col-6">
                     <p><br/></p>
                     <p><strong>CUIT</strong> <span t-field="o.company_id.vat"/> - <span t-field="o.company_id.partner_id.l10n_ar_afip_responsibility_type_id.name"/></p>
-                     <p><strong>Ingresos Brutos:</strong> <span t-if="o.company_id.l10n_ar_gross_income_type == 'no_liquida'">No liquida</span> <span t-if="o.company_id.l10n_ar_gross_income_type != 'no_liquida'" t-field="o.company_id.l10n_ar_gross_income_number"/> <br/> <strong>Inicio de actividades:</strong> <span t-field="o.company_id.l10n_ar_afip_start_date"/></p>
+                    <p><strong>Ingresos Brutos:</strong> <span t-if="o.company_id.l10n_ar_gross_income_type == 'no_liquida'">No liquida</span> <span t-if="o.company_id.l10n_ar_gross_income_type != 'no_liquida'" t-field="o.company_id.l10n_ar_gross_income_number"/> <br/> <strong>Inicio de actividades:</strong> <span t-field="o.company_id.l10n_ar_afip_start_date"/></p>
                   </div>
               </div>
               <!--END MY COMPANY-->
-              <br/>
               <!-- CLIENTE  -->
-              <div class="row" style="border: 1px solid black; border-radius: 10px;">
+              <div class="row m-0" style="border: 1px solid black;margin-top:2px !important;">
                 <div class="col-2">
                   <strong><span>Cliente</span></strong>
                 </div>
@@ -108,7 +107,7 @@
               </div>
               <!-- END CLIENTE  -->
               <!-- ENCABEZADO FACTURA -->
-              <div class="row mt32 mb32">
+              <div class="row m-0" style="border:solid 1px #000;margin-top:2px !important;">
                 <div class="col-2" t-if="o.currency_id">
                   <strong>Moneda: </strong>
                   <p t-field="o.currency_id.name"/>
@@ -134,21 +133,21 @@
               <!-- Is there a discount on at least one line? -->
               <t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/>
               <!-- TABLA ITEMS -->
-              <table class="table table-condensed">
+              <table class="table table-condensed" style="margin-top:2px !important;">
                   <thead>
-                    <tr>
-                      <th>Codigo</th>
-                      <th>Descripción</th>
-                      <th class="hidden">Documento Origen</th>
-                      <th class="text-right">Cantidad</th>
+                    <tr style="background: #ddd;">
+                      <th style="border: solid 1px #000;padding: 8px;">Código</th>
+                      <th style="border: solid 1px #000;padding: 8px;">Producto / Servicio</th>
+                      <th class="hidden" style="border: solid 1px #000;padding: 8px;">Origen</th>
+                      <th class="text-right" style="border: solid 1px #000;padding: 8px;">Cantidad</th>
       <!--<div t-if="o.journal_document_type_id.document_type_id.document.l10n_ar_letter_id.name != 'B'">-->
-                        <th class="text-right">Precio Unitario</th>
+                        <th style="border: solid 1px #000;padding: 8px;" class="text-right">Precio Unit.</th>
       <!--</div>-->
-                      <th t-if="display_discount" class="text-right">Desc.(%)</th>
+                      <th style="border: solid 1px #000;padding: 8px;" t-if="display_discount" class="text-right">Desc.(%)</th>
       <div t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
-                        <th class="text-right">Alicuota IVA</th>
+                        <th style="border: solid 1px #000;padding: 8px;" class="text-right">IVA</th>
       </div>
-                      <th class="text-right">Monto Final</th>
+                      <th style="border: solid 1px #000;padding: 8px;" class="text-right">Subtotal</th>
                     </tr>
                   </thead>
                   <tbody class="invoice_tbody">
