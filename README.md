@@ -53,5 +53,7 @@ For questions, or report bugs please use the following resources:
 
 ---
 Develop by Exemax SAS & Codize
+
 Funtional Contact: info@examax.com.ar
+
 Dev Contact: info@codize.ar
