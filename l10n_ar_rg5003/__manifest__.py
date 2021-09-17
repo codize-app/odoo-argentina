@@ -1,7 +1,7 @@
 {
-    "name": "l10n_ar_rg5300",
-    'version': '12.0.1.3.0',
-    'category': 'Localization/Argentina',
+    "name": "Régimen RG5300",
+    'version': '14.0.1.0.0',
+    'category': 'Localition/Argentina',
     'sequence': 14,
     'license': 'AGPL-3',
     'summary': '',
@@ -14,10 +14,8 @@
     'data': [
         'report_view.xml'
     ],
-    'demo': [
-    ],
-    'images': [
-    ],
+    'demo': [],
+    'images': [],
     'installable': True,
     'auto_install': False,
     'application': False,

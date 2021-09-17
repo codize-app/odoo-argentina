@@ -22,14 +22,13 @@
     'data': [
         'views/currency_view.xml',
     ],
-    'demo': [
-    ],
+    'demo': [],
     'depends': [
         'l10n_ar',
         'l10n_ar_afipws',
     ],
     'installable': True,
-    'name': 'Actulizacion de tipos de cambio',
+    'name': 'Actualización de tipos de cambio',
     'test': [],
     'version': '14.0.1.1.0',
 }

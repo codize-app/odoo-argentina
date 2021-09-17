@@ -1,5 +1,5 @@
 {
-    "name": "account_move_tax",
+    "name": "Account Move Tax",
     'version': '14.0.1.3.0',
     'category': 'Localization/Argentina',
     'sequence': 14,

@@ -1,5 +1,5 @@
 {
-    'name': 'l10n_ar_fe_qr',
+    'name': 'QR en Factura Electrónica Argentina',
     'version': '14.0',
     'category': 'Location/Argentina',
     'author': 'Moldeo Interactive, Exemax, Codize',
@@ -9,9 +9,7 @@
         'afip_view.xml',
         'report_template.xml'
     ],
-    'demo': [
-        ],
-    'css': [],
+    'demo': [],
     'installable': True,
     'auto_install': False,
     'application': True,
