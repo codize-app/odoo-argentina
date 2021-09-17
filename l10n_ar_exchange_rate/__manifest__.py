@@ -22,6 +22,7 @@
     'category': 'Accounting & Finance',
     'data': [
         'views/currency_view.xml',
+        'data/cron_jobs.xml'
     ],
     'demo': [],
     'depends': [

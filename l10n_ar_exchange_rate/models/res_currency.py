@@ -19,11 +19,14 @@ class ResCurrency(models.Model):
     def get_currency_rate(self):
         self.ensure_one()
         res = self.get_pyafipws_currency_rate()
-        raise ValidationError('%s'%(res[0]))
+        if res[0]:
+            raise ValidationError('%s'%(res[0]))
+        else:
+            raise ValidationError('La compañía no tiene un certificado de AFIP en producción, o la moneda solicitada no se encuentra en AFIP.')
 
     @api.model
     def update_pyafipws_currency_rate(self, afip_ws='wsfe', company=False):
-        currencies = self.env['res.currency'].search([('l10n_ar_afip_code','!=',False)])
+        currencies = self.env['res.currency'].search([('l10n_ar_afip_code', '!=', False)])
         for currency in currencies:
             if afip_ws == "wsfex":
                 rate = ws.GetParamCtz(self.l10n_ar_afip_code)
@@ -36,7 +39,7 @@ class ResCurrency(models.Model):
                                 'rate': 1 / res[0],
                                 'currency_id': currency.id
                                 }
-                        rate_id = self.env['res.currency.rate'].search([('currency_id','=',currency.id),('name','=',str(datetime.date.today()))])
+                        rate_id = self.env['res.currency.rate'].search([('currency_id','=',currency.id), ('name', '=', str(datetime.date.today()))])
                         if not rate_id:
                             return_id = self.env['res.currency.rate'].create(vals)
                 except:
