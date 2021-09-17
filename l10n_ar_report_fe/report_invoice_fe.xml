@@ -54,7 +54,7 @@
                 </div>
                 <!--END DATOS FACTURA-->
             </div>
-            <div class="row m-0" style="border: 1px solid black; margin-top: 5px !important; margin-bottom: 0px !important;">
+            <div class="row m-0" style="border: 1px solid black; margin-top: 2px !important; margin-bottom: 0px !important;">
                 <div  class="col-8" t-if="o.move_type == 'out_invoice' and (o.state == 'posted') and o.l10n_ar_afip_service_start and o.l10n_ar_afip_service_end">
                     <strong>Período facturado desde:</strong>
                     <span t-if="o.l10n_ar_afip_service_start">
@@ -87,8 +87,8 @@
                   </div>
                   <div class="col-6">
                     <p><br/></p>
-                    <p><strong>CUIT</strong> <span t-field="o.company_id.vat"/> - <span t-field="o.company_id.partner_id.l10n_ar_afip_responsibility_type_id.name"/></p>
-                    <p><strong>Ingresos Brutos:</strong> <span t-if="o.company_id.l10n_ar_gross_income_type == 'no_liquida'">No liquida</span> <span t-if="o.company_id.l10n_ar_gross_income_type != 'no_liquida'" t-field="o.company_id.l10n_ar_gross_income_number"/> <br/> <strong>Inicio de actividades:</strong> <span t-field="o.company_id.l10n_ar_afip_start_date"/></p>
+                    <p class="m-0"><strong>CUIT</strong> <span t-field="o.company_id.vat"/> - <span t-field="o.company_id.partner_id.l10n_ar_afip_responsibility_type_id.name"/></p>
+                    <p class="m-0"><strong>Ingresos Brutos:</strong> <span t-if="o.company_id.l10n_ar_gross_income_type == 'no_liquida'">No liquida</span> <span t-if="o.company_id.l10n_ar_gross_income_type != 'no_liquida'" t-field="o.company_id.l10n_ar_gross_income_number"/> <br/> <strong>Inicio de actividades:</strong> <span t-field="o.company_id.l10n_ar_afip_start_date"/></p>
                   </div>
               </div>
               <!--END MY COMPANY-->
@@ -110,19 +110,19 @@
               <div class="row m-0" style="border:solid 1px #000;margin-top:2px !important;">
                 <div class="col-2" t-if="o.currency_id">
                   <strong>Moneda: </strong>
-                  <p t-field="o.currency_id.name"/>
+                  <p class="m-0" t-field="o.currency_id.name"/>
                 </div>
                 <div class="col-2" t-if="o.currency_id.id != o.company_id.currency_id.id">
                   <strong>Cotiz: </strong>
-                  <p t-field="o.l10n_ar_currency_rate"/>
+                  <p class="m-0" t-field="o.l10n_ar_currency_rate"/>
                 </div>
                 <div class="col-2" t-if="o.invoice_origin">
                   <strong>Origen: </strong>
-                  <p t-field="o.invoice_origin"/>
+                  <p class="m-0" t-field="o.invoice_origin"/>
                 </div>
                 <div class="col-2" t-if="o.partner_id.ref">
                   <strong>Cod. Cliente:</strong>
-                  <p t-field="o.partner_id.ref"/>
+                  <p class="m-0" t-field="o.partner_id.ref"/>
                 </div>
                 <!-- div name="reference" class="col-2" t-if="o.reference">
                   <strong>Remito:</strong>
@@ -318,6 +318,7 @@
             id="account_fe_invoices"
             model="account.move"
             string="Facturas Electronicas"
+            print_report_name = "((object.name or 'Facturas Electrónicas'))"
             report_type="qweb-pdf"
             name="l10n_ar_report_fe.report_invoice_fe"
             file="l10n_ar_report_fe.report_invoice_fe"
