@@ -92,8 +92,8 @@
                         <field name='afip_auth_code_due'/>
                         <field name='afip_result'/>
                         <field name='afip_message'/>
-                        <field name='afip_xml_request' groups="base.group_no_one"/>
-                        <field name='afip_xml_response' groups="base.group_no_one"/>
+                        <field name='afip_xml_request' groups="base.group_no_one" widget="ace"/>
+                        <field name='afip_xml_response' groups="base.group_no_one" widget="ace"/>
                     </group>
                 </page>
             </notebook>

@@ -93,28 +93,28 @@ class AccountMove(models.Model):
         string='AFIP Barcode',
         #store=True
     )
-    # backport of v13 for qweb report
     l10n_ar_afip_barcode = fields.Char(
         compute='_compute_barcode',
         string='AFIP Barcode',
-        #store=True
     )
     afip_barcode_img = fields.Binary(
         compute='_compute_barcode',
         string='AFIP Barcode Image',
-        #store=True
     )
     afip_message = fields.Text(
         string='AFIP Message',
         copy=False,
+        readonly=True
     )
     afip_xml_request = fields.Text(
         string='AFIP XML Request',
         copy=False,
+        readonly=True
     )
     afip_xml_response = fields.Text(
         string='AFIP XML Response',
         copy=False,
+        readonly=True
     )
     afip_result = fields.Selection([
         ('', 'n/a'),
