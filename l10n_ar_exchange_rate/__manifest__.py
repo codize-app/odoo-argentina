@@ -17,6 +17,7 @@
 #
 ##############################################################################
 {
+    'name': 'Actualización de Tipos de Cambio',
     'license': 'AGPL-3',
     'category': 'Accounting & Finance',
     'data': [
@@ -28,7 +29,6 @@
         'l10n_ar_afipws',
     ],
     'installable': True,
-    'name': 'Actualización de tipos de cambio',
     'test': [],
     'version': '14.0.1.1.0',
 }

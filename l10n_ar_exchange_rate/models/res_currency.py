@@ -23,8 +23,6 @@ class ResCurrency(models.Model):
 
     @api.model
     def update_pyafipws_currency_rate(self, afip_ws='wsfe', company=False):
-        # if not company, we use any that has valid certificates
-
         currencies = self.env['res.currency'].search([('l10n_ar_afip_code','!=',False)])
         for currency in currencies:
             if afip_ws == "wsfex":
