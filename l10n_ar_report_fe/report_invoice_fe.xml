@@ -182,31 +182,22 @@
                       </td>
                       <td class="text-right" t-if="o.l10n_latam_document_type_id.l10n_ar_letter == 'B'">
                           <span t-field="l.price_subtotal_vat" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
-                          <!-- span t-field="l.price_subtotal" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/ -->
                       </td>
                   </tr>
                 </tbody>
               </table><!-- END TABLA ITEMS -->
 
               <!--SUBTOTAL E IMPUESTOS INTEGRADOS-->
-              <div class="row mt32 mb32">
-                  <div class="col-8"/>
-                  <div class="col-4">
+              <div class="row m-0" style="border: 1px solid #000;">
+                  <div class="col-7 m-9" />
+                  <div class="col-5 m-0">
                       <table class="table table-condensed">
-                          <tr class="border-black" t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
+                          <tr t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
                               <td><strong>Subtotal</strong></td>
                               <td class="text-right">
                                   <span t-field="o.amount_untaxed" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
                               </td>
                           </tr>
-                          <!-- t t-foreach="o._get_tax_amount_by_group()" t-as="amount_by_group">
-                              <tr>
-                                  <td><span t-esc="amount_by_group[0] if len(o.tax_line_ids) > 1 else (o.tax_line_ids.tax_id.description or o.tax_line_ids.tax_id.name)"/></td>
-                                  <td class="text-right">
-                                      <span t-esc="amount_by_group[1]" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-                                  </td>
-                              </tr>
-                          </t-->
                           <tr t-if="len(o.move_tax_ids) &gt; 0 and o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
                                 <td colspan="2">
                                     <table class="table table-condensed" style="width: 100%">
@@ -270,11 +261,11 @@
             </div>
           --> <!-- END IMPUESTOS CLASSIC -->
 
-            <p t-if="o.narration">
+            <p t-if="o.narration" class="mt-2">
                 <strong>Comentarios:</strong>
                 <span t-field="o.narration"/>
             </p>
-            <p t-if="o.invoice_payment_term_id">
+            <p t-if="o.invoice_payment_term_id" class="mt-2">
                 <span t-field="o.invoice_payment_term_id.note"/>
             </p>
             <br/>
@@ -313,18 +304,17 @@
     </t>
 </template>
 
-        <!-- QWeb Reports -->
-        <report
-            id="account_fe_invoices"
-            model="account.move"
-            string="Facturas Electronicas"
-            print_report_name = "((object.name or 'Facturas Electrónicas'))"
-            report_type="qweb-pdf"
-            name="l10n_ar_report_fe.report_invoice_fe"
-            file="l10n_ar_report_fe.report_invoice_fe"
-            attachment="(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
-        />
-
+<!-- QWeb Reports -->
+<report
+  id="account_fe_invoices"
+  model="account.move"
+  string="Facturas Electronicas"
+  print_report_name = "((object.name or 'Facturas Electrónicas'))"
+  report_type="qweb-pdf"
+  name="l10n_ar_report_fe.report_invoice_fe"
+  file="l10n_ar_report_fe.report_invoice_fe"
+  attachment="(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+/>
 
 </data>
 </odoo>
