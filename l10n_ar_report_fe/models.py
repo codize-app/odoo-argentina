@@ -9,7 +9,7 @@ import json
 import base64
 
 class AccountMoveLine(models.Model):
-	_inherit = 'account.move.line'
+    _inherit = 'account.move.line'
 
     def _compute_price_subtotal_vat(self):
         for line in self:

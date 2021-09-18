@@ -18,8 +18,9 @@
 ##############################################################################
 {
     'name': 'Actualización de Tipos de Cambio',
+    'author': 'ADHOC SA, Exemax, Codize',
     'license': 'AGPL-3',
-    'category': 'Accounting & Finance',
+    'category': 'Accounting/Localizations',
     'data': [
         'views/currency_view.xml',
         'data/cron_jobs.xml'

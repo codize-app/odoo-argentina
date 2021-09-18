@@ -3,7 +3,7 @@
     "name": "Reporte de la Factura Electrónica Argentina",
     'version': '14.0',
     'author': "Moldeo Interactive, Exemax, Codize, ADHOC SA, Odoo Community Association (OCA)",
-    'category': 'Location/Argentina',
+    'category': 'Accounting/Localizations',
     'depends': [
         'l10n_ar_afipws_fe'
     ],
