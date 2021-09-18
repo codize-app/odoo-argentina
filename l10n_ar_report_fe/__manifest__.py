@@ -11,6 +11,7 @@
     'license': 'AGPL-3',
     'data': [
         'report_invoice_fe.xml',
+        'afip_view.xml'
     ],
     'demo': []
 }
