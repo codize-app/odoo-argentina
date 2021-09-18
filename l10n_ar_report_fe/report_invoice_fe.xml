@@ -261,38 +261,33 @@
             </div>
           --> <!-- END IMPUESTOS CLASSIC -->
 
-            <p t-if="o.narration" class="mt-2">
-                <strong>Comentarios:</strong>
-                <span t-field="o.narration"/>
-            </p>
-            <p t-if="o.invoice_payment_term_id" class="mt-2">
-                <span t-field="o.invoice_payment_term_id.note"/>
-            </p>
-            <br/>
+          <p t-if="o.narration" class="mt-2">
+              <strong>Comentarios:</strong>
+              <span t-field="o.narration"/>
+          </p>
+          <p t-if="o.invoice_payment_term_id" class="mt-2">
+              <span t-field="o.invoice_payment_term_id.note"/>
+          </p>
+          <p class="m-0" style="font-size:13px;" t-if="o.partner_id.l10n_ar_afip_responsibility_type_id.code == '6' and o.l10n_latam_document_type_id.l10n_ar_letter == 'A'">
+				    El credito fiscal discriminado en el presente comprobante solo podrá ser computado a efectos del Régimen de Sostenimiento e Inclusión Fiscal para Pequeños Contribuyentes de la Ley Nro. 27.168
+		    	</p> 
+          <br/>
 
           </div><!--END PAGE-->
           <!-- CAE -->
-            <div class="footer" style="border: 1px solid black;">
-              <div class="row" style="margin-bottom: 0px !important; padding-top: 2px;">
-                <div class="col-4" t-if="o.afip_cae">
-                  <p/>
-                    <p><strong> CAE: </strong><span t-field="o.afip_cae"/></p>
-                    <p><strong> Fecha Vencimiento CAE: </strong><span t-field="o.afip_cae_due"/></p>
-                </div>
-
-                <div class="col-2" t-if="o.afip_barcode">
-                  <p/>
-                    <strong>Codigo de Barras: </strong>
-                  </div>
-                <div class="col-6" t-if="o.afip_barcode">
-                  <p/>
-                    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('I2of5', o.afip_barcode, 600, 100)" style="width:400px;height:50px"/>
-
-                    <p class="text-center" t-field="o.afip_barcode"/>
-                </div>
-              </div>
-            </div>
-            <!-- END CAE -->
+          <div class="footer" style="border: 1px solid black;">
+	          <div class="row m-0">
+        	    <div class="col-6 p-2" t-if="o.texto_modificado_qr">
+                <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('QR', o.texto_modificado_qr, 450, 450)" style="width:110px;height:110px"/>
+              </div><!-- COL-6 -->
+              <div class="col-6 p-2" t-if="o.afip_cae">
+                <p/>
+                <p><strong> CAE: </strong><span t-field="o.afip_cae"/></p>
+                <p><strong> Fecha Vencimiento CAE: </strong><span t-field="o.afip_cae_due"/></p>
+              </div> <!-- COL-6 -->
+            </div> <!-- ROW -->
+          </div> <!-- FOOTER -->
+          <!-- END CAE -->
         </div><!--END ARTICLE-->
 </template>
 
