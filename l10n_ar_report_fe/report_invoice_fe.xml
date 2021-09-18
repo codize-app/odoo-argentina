@@ -153,34 +153,34 @@
                   <tbody class="invoice_tbody">
                     <tr t-foreach="o.invoice_line_ids" t-as="l">
                       <!-- td><span t-field="l.name"/></td -->
-                      <td><span t-field="l.product_id.default_code"/></td>
-                      <td><span t-field="l.product_id.name"/></td>
-                      <td class="hidden"><span t-field="l.move_id.invoice_origin"/></td>
-                      <td class="text-right">
+                      <td style="padding: 5px;"><span t-field="l.product_id.default_code"/></td>
+                      <td style="padding: 5px;"><span t-field="l.product_id.name"/></td>
+                      <td style="padding: 5px;" class="hidden"><span t-field="l.move_id.invoice_origin"/></td>
+                      <td style="padding: 5px;" class="text-right">
 			  <span t-esc="'{0:,.2f}'.format(l.quantity)"/>
                           <span t-field="l.uom_id" groups="product.group_uom"/>
                       </td>
 		   <div t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
-                        <td class="text-right">
+                        <td style="padding: 5px;" class="text-right">
                             <span t-esc="'{0:,.2f}'.format(l.price_unit)"/>
                         </td>
     </div>
     <div t-if="o.l10n_latam_document_type_id.l10n_ar_letter == 'B'">
-                        <td class="text-right">
+                        <td style="padding: 5px;" class="text-right">
                             <span t-esc="'{0:,.2f}'.format(l.price_subtotal_vat / l.quantity)"/>
                             <!-- span t-esc="'{0:,.2f}'.format(l.price_subtotal / l.quantity)"/ -->
                         </td>
     </div>
-                      <td t-if="display_discount" class="text-right">
+                      <td style="padding: 5px;" t-if="display_discount" class="text-right">
                           <span t-field="l.discount"/>
                       </td>
-                      <td class="text-right" t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
+                      <td style="padding: 5px;" class="text-right" t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
                           <span t-esc="', '.join(map(lambda x: (x.description or x.name), l.tax_ids))"/>
                       </td>
-                      <td class="text-right" t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
+                      <td style="padding: 5px;" class="text-right" t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
                           <span t-field="l.price_subtotal" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
                       </td>
-                      <td class="text-right" t-if="o.l10n_latam_document_type_id.l10n_ar_letter == 'B'">
+                      <td style="padding: 5px;" class="text-right" t-if="o.l10n_latam_document_type_id.l10n_ar_letter == 'B'">
                           <span t-field="l.price_subtotal_vat" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
                       </td>
                   </tr>
@@ -191,10 +191,10 @@
               <div class="row m-0" style="border: 1px solid #000;">
                   <div class="col-7 m-9" />
                   <div class="col-5 m-0">
-                      <table class="table table-condensed">
-                          <tr t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
-                              <td><strong>Subtotal</strong></td>
-                              <td class="text-right">
+                      <table class="table table-condensed" style="border: 0 solid transparent;border-style: none;">
+                          <tr style="border: 0 solid transparent;border-style: none;" t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
+                              <td style="border: 0 solid transparent;border-style: none;"><strong>Subtotal</strong></td>
+                              <td style="border: 0 solid transparent;border-style: none;" class="text-right">
                                   <span t-field="o.amount_untaxed" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
                               </td>
                           </tr>
