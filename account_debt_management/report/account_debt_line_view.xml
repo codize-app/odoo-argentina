@@ -51,10 +51,10 @@
                 <!-- no queremos mostrarlo mas, es util? -->
                 <!-- <field name="financial_amount" sum="Total" groups="account_financial_amount.account_use_financial_amounts"/> -->
                 <!-- <field name="financial_balance" invisible="not context.get('show_balance', False)" groups="account_financial_amount.account_use_financial_amounts"/> -->
-                <button type="object" string="Open Document" icon="fa-external-link" help="Open Related Accounting Document" name="action_open_related_document"/>
+                <button type="object" string="Abrir Documento" icon="fa-external-link" help="Open Related Accounting Document" name="action_open_related_document"/>
                 <field name="currency_id" invisible="1"/>
                 <field name="company_currency_id" invisible="1"/>
-                <field name="type"/>
+                <field name="type" string="Tipo" />
             </tree>
          </field>
     </record>
@@ -78,7 +78,7 @@
          <field name="arch" type="xml">
             <form string="Debt Line">
                 <header>
-                    <button type="object" string="Open Document" help="Open Related Accounting Document" name="action_open_related_document"/>
+                    <button type="object" string="Abrir Documento" help="Abrir Documento Relacionado" name="action_open_related_document"/>
                 </header>
                 <sheet>
                     <field name="company_currency_id" invisible="1"/>
@@ -103,7 +103,7 @@
                             <field name="date"/>
                             <field name="date_maturity"/>
                             <field name="company_id" groups="base.group_multi_company"/>
-                 	    <field name="type"/>
+                 	    <field name="type" string="Tipo" />
                         </group>
                     </group>
                     <notebook>
