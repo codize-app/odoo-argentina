@@ -38,11 +38,13 @@ sudo python3 setup.py install
 
 Add path odoo-argentina to addons path in `odoo.conf`. Restart Odoo Server, Update Apps List and install modules `l10n_ar_afipws`, `l10n_ar_afipws_fe` and `l10n_ar_fe_qr`. For reports install `l10n_ar_report_fe`.
 
-## Extras
+## l10n_ar extras
 
 * `l10n_ar_exchange_rate`: Get Exchange Rate from AFIP
 * `l10n_ar_rg5003`: Add support for RG5003 on Invoices
 * `l10n_ar_bank`: Install Argentina Bank's List
+
+## Extras
 
 * `account_debt_managment`: Get Debt of Customer / Supplier
 
