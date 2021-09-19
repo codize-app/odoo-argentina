@@ -44,6 +44,8 @@ Add path odoo-argentina to addons path in `odoo.conf`. Restart Odoo Server, Upda
 * `l10n_ar_rg5003`: Add support for RG5003 on Invoices
 * `l10n_ar_bank`: Install Argentina Bank's List
 
+* `account_debt_managment`: Get Debt of Customer / Supplier
+
 ## Questions & Bugs
 
 For questions, or report bugs please use the following resources:
