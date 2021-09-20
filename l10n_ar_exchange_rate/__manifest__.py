@@ -29,6 +29,7 @@
     'depends': [
         'l10n_ar',
         'l10n_ar_afipws',
+        'l10n_ar_afipws_fe'
     ],
     'installable': True,
     'test': [],

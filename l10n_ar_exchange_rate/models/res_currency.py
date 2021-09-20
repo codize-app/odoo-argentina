@@ -14,11 +14,12 @@ class ResCurrency(models.Model):
             if rec.rate > 0:
                 rec.inverse_rate = 1 / rec.rate
 
-    inverse_rate = fields.Float('Tasa inversa',compute=_compute_inverse_rate)
+    inverse_rate = fields.Float('Tasa inversa', compute=_compute_inverse_rate)
 
     def get_currency_rate(self):
         self.ensure_one()
-        res = self.get_pyafipws_currency_rate()
+        company = self.env['res.company'].search([('id', '=', self.env.company.id)])
+        res = self.get_pyafipws_currency_rate(company=company)
         if res[0]:
             raise ValidationError('%s'%(res[0]))
         else:
