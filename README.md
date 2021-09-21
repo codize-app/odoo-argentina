@@ -47,7 +47,7 @@ Add path odoo-argentina to addons path in `odoo.conf`. Restart Odoo Server, Upda
 ## Extras
 
 * `account_debt_managment`: Get Debt of Customer / Supplier
-
+* `account_check`: Manager for Checks (rejected, deferred, holding) [UNSTABLE - DONT USE]
 ## Questions & Bugs
 
 For questions, or report bugs please use the following resources:
