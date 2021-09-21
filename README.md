@@ -43,6 +43,7 @@ Add path odoo-argentina to addons path in `odoo.conf`. Restart Odoo Server, Upda
 * `l10n_ar_exchange_rate`: Get Exchange Rate from AFIP
 * `l10n_ar_rg5003`: Add support for RG5003 on Invoices
 * `l10n_ar_bank`: Install Argentina Bank's List
+* `l10n_ar_partner`: Add features to contacts (like fantasy name)
 
 ## Extras
 
