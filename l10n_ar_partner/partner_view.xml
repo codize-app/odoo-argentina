@@ -8,9 +8,11 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
-            <field name="name" position="after">
-                <field name="internal_reference"/>
-            </field>
+            <div class="oe_title" position="after">
+		<group>
+                	<field name="internal_reference"/>
+		</group>
+            </div>
         </field>
     </record>
 

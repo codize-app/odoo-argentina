@@ -173,6 +173,9 @@
             </form>
 
             <field name="payment_type_copy" position="replace"/>
+            <field name="payment_method_id" position="after">
+		<field name="payment_type" />
+            </field>
 
             <!-- sacamos confirm y groups en transfers -->
             <button name="action_post" position="attributes">
