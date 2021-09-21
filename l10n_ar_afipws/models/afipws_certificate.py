@@ -8,7 +8,10 @@ try:
     from OpenSSL import crypto
 except ImportError:
     crypto = None
-import base64
+try:
+    from base64 import encodestring
+except ImportError:
+    from base64 import encodebytes as encodestring
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -71,7 +74,8 @@ class AfipwsCertificate(models.Model):
     def _compute_request_file(self):
         for rec in self.filtered('csr'):
             rec.request_filename = 'request.csr'
-            rec.request_file = base64.encodestring(self.csr.encode('utf-8'))
+            #rec.request_file = base64.encodestring(self.csr.encode('utf-8'))
+            rec.request_file = encodestring(self.csr.encode('utf-8'))
 
     def action_to_draft(self):
         if self.alias_id.state != 'confirmed':
