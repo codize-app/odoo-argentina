@@ -52,7 +52,7 @@ class AfipwsConnection(models.Model):
         compute='_compute_afip_urls',
     )
     type = fields.Selection(
-        [('production', 'Production'), ('homologation', 'Homologation')],
+        [('production', 'Producción'), ('homologation', 'Homologación')],
         'Type',
         required=True,
     )

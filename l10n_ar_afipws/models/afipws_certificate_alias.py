@@ -101,7 +101,7 @@ class AfipwsCertificateAlias(models.Model):
         auto_join=True,
     )
     service_type = fields.Selection(
-        [('in_house', 'In House'), ('outsourced', 'Outsourced')],
+        [('in_house', 'En Casa'), ('outsourced', 'Subcontratado')],
         'Service Type',
         default='in_house',
         required=True,
@@ -109,9 +109,9 @@ class AfipwsCertificateAlias(models.Model):
         states={'draft': [('readonly', False)]},
     )
     state = fields.Selection([
-        ('draft', 'Draft'),
-        ('confirmed', 'Confirmed'),
-        ('cancel', 'Cancelled'),
+        ('draft', 'Borrador'),
+        ('confirmed', 'Confirmado'),
+        ('cancel', 'Cancelado'),
     ], 'Status', index=True, readonly=True, default='draft',
         help="* The 'Draft' state is used when a user is creating a new pair "
         "key. Warning: everybody can see the key."
@@ -121,7 +121,7 @@ class AfipwsCertificateAlias(models.Model):
         "You cant use this key again."
     )
     type = fields.Selection(
-        [('production', 'Production'), ('homologation', 'Homologation')],
+        [('production', 'Producción'), ('homologation', 'Homologación')],
         'Type',
         required=True,
         default='production',
