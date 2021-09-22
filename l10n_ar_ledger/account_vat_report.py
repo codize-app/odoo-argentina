@@ -6,7 +6,8 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import Warning
 import time
-
+import logging
+_logger = logging.getLogger(__name__)
 
 class account_vat_ledger(models.Model):
 
@@ -79,7 +80,7 @@ class account_vat_ledger(models.Model):
     presented_ledger_name = fields.Char(
     )
     state = fields.Selection(
-        [('draft', 'Draft'), ('presented', 'Presented'), ('cancel', 'Cancel')],
+        [('draft', 'Borrador'), ('presented', 'Presentado'), ('cancel', 'Cancelado')],
         'State',
         required=True,
         default='draft'
@@ -152,6 +153,8 @@ class account_vat_ledger(models.Model):
                 # TODO, tal vez directamente podemos invertir el orden, como?
                 invoices_domain,
                 order='invoice_date asc, document_number asc, id asc')
+            _logger.info('>>> ACCOUNT')
+            _logger.info(invoices)
         else:
             invoices_domain = [
                 # cancel invoices with internal number are invoices
