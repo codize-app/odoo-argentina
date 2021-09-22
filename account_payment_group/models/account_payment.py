@@ -13,7 +13,7 @@ class AccountPayment(models.Model):
 
     payment_group_id = fields.Many2one(
         'account.payment.group',
-        'Recibo',
+        'Payment Group',
         ondelete='cascade',
         readonly=True,
     )
@@ -32,16 +32,15 @@ class AccountPayment(models.Model):
         string='Payment Type (without transfer)'
     )
     signed_amount = fields.Monetary(
-        string='Monto',
         compute='_compute_signed_amount',
     )
     signed_amount_company_currency = fields.Monetary(
-        string='Monto del Pago en la Moneda de la Empresa',
+        string='Payment Amount on Company Currency',
         compute='_compute_signed_amount',
         currency_field='company_currency_id',
     )
     amount_company_currency = fields.Monetary(
-        string='Monto en la Moneda de la Empresa',
+        string='Amount on Company Currency',
         compute='_compute_amount_company_currency',
         inverse='_inverse_amount_company_currency',
         currency_field='company_currency_id',
@@ -50,13 +49,13 @@ class AccountPayment(models.Model):
         compute='_compute_other_currency',
     )
     force_amount_company_currency = fields.Monetary(
-        string='Monto Forzado en la Moneda de la Empresa',
+        string='Forced Amount on Company Currency',
         currency_field='company_currency_id',
         copy=False,
     )
     exchange_rate = fields.Float(
-        string='Tipo de Cambio',
-        #compute='_compute_exchange_rate',
+        string='Exchange Rate',
+        compute='_compute_exchange_rate',
         # readonly=False,
         # inverse='_inverse_exchange_rate',
         digits=(16, 4),
@@ -93,11 +92,26 @@ class AccountPayment(models.Model):
                rec.company_currency_id != rec.currency_id:
                 rec.other_currency = True
 
+    @api.onchange('payment_group_id')
+    def onchange_payment_group_id(self):
+        # now we change this according when use save & new the context from the payment was erased and we need to use some data.
+        # this change is due this odoo change https://github.com/odoo/odoo/commit/c14b17c4855fd296fd804a45eab02b6d3566bb7a
+        if self.payment_group_id:
+            self.payment_group_company_id = self.payment_group_id.company_id
+            self.payment_date = self.payment_group_id.payment_date
+            self.partner_type = self.payment_group_id.partner_type
+            self.partner_id = self.payment_group_id.partner_id
+            self.payment_type = 'inbound' if self.payment_group_id.partner_type  == 'customer' else 'outbound'
+            self.amount = self.payment_group_id.payment_difference
+
     @api.depends('amount', 'other_currency', 'amount_company_currency')
     def _compute_exchange_rate(self):
-        for rec in self.filtered('other_currency'):
-            rec.exchange_rate = rec.amount and (
-                rec.amount_company_currency / rec.amount) or 0.0
+        for rec in self:
+            if rec.other_currency:
+                rec.exchange_rate = rec.amount and (
+                    rec.amount_company_currency / rec.amount) or 0.0
+            else:
+                rec.exchange_rate = False
 
     # this onchange is necesary because odoo, sometimes, re-compute
     # and overwrites amount_company_currency. That happends due to an issue
@@ -144,8 +158,9 @@ class AccountPayment(models.Model):
     def _compute_payment_type_copy(self):
         for rec in self:
             if rec.payment_type == 'transfer':
-                continue
-            rec.payment_type_copy = rec.payment_type
+                rec.payment_type_copy = False
+            else:
+                rec.payment_type_copy = rec.payment_type
 
     def get_journals_domain(self):
         domain = super(AccountPayment, self).get_journals_domain()
@@ -160,7 +175,7 @@ class AccountPayment(models.Model):
         we disable change of partner_type if we came from a payment_group
         but we still reset the journal
         """
-        if not self._context.get('payment_group'):
+        if not self.payment_group_id:
             return super(AccountPayment, self)._onchange_payment_type()
         self.journal_id = False
 
@@ -169,11 +184,12 @@ class AccountPayment(models.Model):
         # odoo tests don't create payments with payment gorups
         if self.env.registry.in_test_mode():
             return True
+        counterpart_aml_dicts = self._context.get('counterpart_aml_dicts')
+        counterpart_aml_dicts = counterpart_aml_dicts or [{}]
         for rec in self:
             receivable_payable = all([
-                x['move_line'].account_id.internal_type in [
-                    'receivable', 'payable']
-                for x in self._context.get('counterpart_aml_dicts', [])])
+                x.get('move_line') and x.get('move_line').account_id.internal_type in [
+                    'receivable', 'payable'] for x in counterpart_aml_dicts])
             if rec.partner_type and rec.partner_id and receivable_payable and \
                not rec.payment_group_id:
                 raise ValidationError(_(
@@ -194,7 +210,8 @@ class AccountPayment(models.Model):
             'counterpart_aml_dicts', 'new_aml_dicts', 'payment_aml_rec')
          :return: account move line recorset
         """
-        counterpart_aml_data = self._context.get('counterpart_aml_dicts', [])
+        counterpart_aml_dicts = self._context.get('counterpart_aml_dicts')
+        counterpart_aml_data = counterpart_aml_dicts or [{}]
         new_aml_data = self._context.get('new_aml_dicts', [])
         amls = self.env['account.move.line']
         if counterpart_aml_data:
@@ -251,19 +268,17 @@ class AccountPayment(models.Model):
         """ When payments are created from bank reconciliation create the
         Payment group before creating payment to avoid raising error, only
         apply when the all the counterpart account are receivable/payable """
-        # Si viene counterpart_aml entonces estamos viniendo de una
-        # conciliacion desde el wizard
-        new_aml_dicts = self._context.get('new_aml_dicts', [])
-        counterpart_aml_data = self._context.get('counterpart_aml_dicts', [])
-        if counterpart_aml_data or new_aml_dicts:
+        aml_data = self._context.get('counterpart_aml_dicts') or self._context.get('new_aml_dicts') or [{}]
+        if aml_data and not vals.get('partner_id'):
             vals.update(self.infer_partner_info(vals))
 
-        create_from_statement = self._context.get(
-            'create_from_statement', False) and vals.get('partner_type') \
-            and vals.get('partner_id') and all([
-                x['move_line'].account_id.internal_type in [
-                    'receivable', 'payable']
-                for x in counterpart_aml_data])
+        receivable_payable_accounts = [
+            (x.get('move_line') and x.get('move_line').account_id.internal_type in ['receivable', 'payable']) or
+            (x.get('account_id') and self.env['account.account'].browse(x.get('account_id')).internal_type in [
+                'receivable', 'payable'])
+            for x in aml_data]
+        create_from_statement = self._context.get('create_from_statement') and vals.get('partner_type') \
+            and vals.get('partner_id') and all(receivable_payable_accounts)
         create_from_expense = self._context.get('create_from_expense', False)
         create_from_website = self._context.get('create_from_website', False)
         # NOTE: This is required at least from POS when we do not have
@@ -277,7 +292,8 @@ class AccountPayment(models.Model):
                 'company_id': company_id,
                 'partner_type': vals.get('partner_type'),
                 'partner_id': vals.get('partner_id'),
-                'payment_date': vals.get('date', fields.Date.context_today(self)),
+                'payment_date': vals.get(
+                    'payment_date', fields.Date.context_today(self)),
                 'communication': vals.get('communication'),
             })
             vals['payment_group_id'] = payment_group.id
@@ -286,7 +302,7 @@ class AccountPayment(models.Model):
             payment.payment_group_id.post()
         return payment
 
-    @api.depends('invoice_line_ids', 'payment_type', 'partner_type', 'partner_id')
+    @api.depends('invoice_ids', 'payment_type', 'partner_type', 'partner_id')
     def _compute_destination_account_id(self):
         """
         If we are paying a payment gorup with paylines, we use account
@@ -320,47 +336,28 @@ class AccountPayment(models.Model):
             'context': self._context,
         }
 
-    def _get_shared_move_line_vals(
-            self, debit, credit, amount_currency, move_id, invoice_id=False):
-        """
-        Si se esta forzando importe en moneda de cia, usamos este importe
-        para debito/credito
-        """
-        res = super(AccountPayment, self)._get_shared_move_line_vals(
-            debit, credit, amount_currency, move_id, invoice_id=invoice_id)
-        if self.force_amount_company_currency:
-            if res.get('debit', False):
-                res['debit'] = self.force_amount_company_currency
-            if res.get('credit', False):
-                res['credit'] = self.force_amount_company_currency
-        return res
-
-    def _get_move_vals(self, journal=None):
-        """If we have a communication on payment group append it before
-        payment communication
-        """
-        vals = super(AccountPayment, self)._get_move_vals(journal=journal)
-        if self.payment_group_id.communication:
-            vals['ref'] = "%s%s" % (
-                self.payment_group_id.communication,
-                self.communication and ": %s" % self.communication or "")
-        return vals
-
-
     def _prepare_payment_moves(self):
-        res = super(AccountPayment, self)._prepare_payment_moves()
-        #for i,rec in enumerate(self):
-        #    if rec.signed_amount_company_currency != line.credit:
-        for i,rec in enumerate(self):
-            if rec.currency_id.id != rec.company_id.currency_id.id and rec.payment_type == 'inbound':
-                amount_debit = res[i]['line_ids'][0][2]['debit']
-                amount_credit = res[i]['line_ids'][0][2]['credit']
-                if amount_credit > 0 and rec.signed_amount_company_currency != amount_credit:
-                    #raise ValidationError('estamos aca %s %s'%(amount_credit,res[0]['line_ids'][0][2]))
-                    res[i]['line_ids'][0][2]['credit'] = rec.signed_amount_company_currency
-                amount_debit = res[i]['line_ids'][1][2]['debit']
-                amount_credit = res[i]['line_ids'][1][2]['credit']
-                if amount_debit > 0 and rec.signed_amount_company_currency != amount_debit:
-                    #raise ValidationError('estamos aca %s %s'%(amount_credit,res[0]['line_ids'][0][2]))
-                    res[i]['line_ids'][1][2]['debit'] = rec.signed_amount_company_currency
-        return res
+        all_moves_vals = []
+        for rec in self:
+            moves_vals = super(AccountPayment, rec)._prepare_payment_moves()
+            for move_vals in moves_vals:
+                # If we have a communication on payment group append it before payment communication
+                if rec.payment_group_id.communication:
+                    move_vals['ref'] = "%s%s" % (self.payment_group_id.communication, move_vals['ref'] or '')
+
+                # Si se esta forzando importe en moneda de cia, usamos este importe para debito/credito
+                if rec.force_amount_company_currency:
+                    for line in move_vals['line_ids']:
+                        if line[2].get('debit'):
+                            line[2]['debit'] = rec.force_amount_company_currency
+                        if line[2].get('credit'):
+                            line[2]['credit'] = rec.force_amount_company_currency
+                all_moves_vals += [move_vals]
+        return all_moves_vals
+
+    @api.model
+    def default_get(self, default_fields):
+        rec = super().default_get(default_fields)
+        if rec.get('invoice_ids', False):
+            rec.pop('invoice_ids')
+        return rec
