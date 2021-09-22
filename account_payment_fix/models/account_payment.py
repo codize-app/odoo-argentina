@@ -39,6 +39,24 @@ class AccountPayment(models.Model):
         related='company_id.currency_id',
         string='Moneda de la Compañía',
     )
+    force_amount_company_currency = fields.Monetary(
+        string='Monto Forzado en la Moneda de la Empresa',
+        currency_field='company_currency_id',
+        copy=False,
+    )
+    exchange_rate = fields.Float(
+        string='Tipo de Cambio',
+        #compute='_compute_exchange_rate',
+        # readonly=False,
+        # inverse='_inverse_exchange_rate',
+        digits=(16, 4),
+    )
+
+    @api.depends('amount', 'other_currency', 'amount_company_currency')
+    def _compute_exchange_rate(self):
+        for rec in self.filtered('other_currency'):
+            rec.exchange_rate = rec.amount and (
+                rec.amount_company_currency / rec.amount) or 0.0
 
     @api.onchange('amount_company_currency')
     def _inverse_amount_company_currency(self):
