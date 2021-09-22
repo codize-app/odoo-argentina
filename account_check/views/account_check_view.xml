@@ -11,18 +11,18 @@
             <tree create="false" string="Checks">
                 <field name="checkbook_id" invisible="context.get('default_type',False) != 'issue_check'"/>
                 <field name="journal_id" invisible="1"/>
-                <field name="name"/>
-                <field name="issue_date"/>
-                <field name="payment_date"/>
+                <field name="name" string="Nombre"/>
+                <field name="issue_date" string="Fecha de Emisión"/>
+                <field name="payment_date" string="Fecha de Pago"/>
                 <field name="first_partner_id"/>
-                <field name="partner_id"/>
-                <field name="type" invisible="1"/>
-                <field name="bank_id" invisible="context.get('default_type',False) != 'third_check'"/>
-                <field name="amount" sum="Total Amount"/>
-                <field name="company_id" groups="base.group_multi_company"/>
-                <field name="state"/>
-                <field name="owner_name" invisible="context.get('default_type',False) != 'third_check'"/>
-                <field name="currency_id" invisible="1"/>
+                <field name="partner_id" string="Contacto"/>
+                <field name="type" invisible="1" string="Tipo"/>
+                <field name="bank_id" invisible="context.get('default_type',False) != 'third_check'" string="Banco"/>
+                <field name="amount" sum="Total Amount" string="Monto"/>
+                <field name="company_id" groups="base.group_multi_company" string="Compañía"/>
+                <field name="state" string="Estado"/>
+                <field name="owner_name" invisible="context.get('default_type',False) != 'third_check'" string="Nombre del Propietario"/>
+                <field name="currency_id" invisible="1" string="Moneda"/>
             </tree>
         </field>
     </record>
@@ -50,43 +50,43 @@
                 <field name="issue_check_subtype" invisible="1"/>
                 <field name="company_currency_id" invisible="1"/>
             <header>
-                <button context="{'default_action_type': 'bank_deposit'}" name="%(action_account_check_action_wizard)d" type="action" string="Depositar" states="holding" help="It will create a journal entry from Deferred Check Account to bank account and change check state"/>
-                <button context="{'default_action_type': 'reject'}" name="%(action_account_check_action_wizard)d" type="action" string="Retorno de Proveedor/Rechazo" states="handed" help="It will create a draft debit note from supplier and change check state"/>
-                <button context="{'default_action_type': 'claim'}" name="%(action_account_check_action_wizard)d" type="action" string="Reclamar a Cliente" attrs="{'invisible': ['|', ('state', '!=', 'rejected'), ('type', '!=', 'third_check')]}" help="It will create a draft debit note to customer and change check state"/>
-                <button context="{'default_action_type': 'customer_return'}" name="%(action_account_check_action_wizard)d" type="action" string="Devolver a Cliente" attrs="{'invisible': ['|', ('state', '!=', 'holding'), ('type', '!=', 'third_check')]}" help="It will create a draft debit note to customer and change check state"/>
-                <button context="{'default_action_type': 'bank_debit'}" name="%(action_account_check_action_wizard)d" type="action" string="Debitar" states="handed" help="It will create a journal entry from Deferred Check Account to bank account and change check state"/>
-                <button context="{'default_action_type': 'reject'}" name="%(action_account_check_action_wizard)d" type="action" string="Retorno del Proveedor/Rechazo" states="handed" help="It will create a draft debit note from supplier and change check state"/>
-                <button context="{'default_action_type': 'reject'}" name="%(action_account_check_action_wizard)d" type="action" string="Rechazo del Proveedor" states="delivered" help="It will create a debit note from supplier in draft state and change check state"/>
-                <button context="{'default_action_type': 'reject'}" name="%(action_account_check_action_wizard)d" type="action" string="Rechazo Bancario" states="deposited" help="It will create an account entry from bank account to company rejection account and change check state"/>
-                <button context="{'default_action_type': 'reject'}" name="%(action_account_check_action_wizard)d" type="action" string="Rechazo de la Venta" states="selled" help="It will create an account entry from cash account to company rejection account and change check state"/>
+                <button context="{'default_action_type': 'bank_deposit'}" name="%(action_account_check_action_wizard)d" type="action" string="Depositar" states="holding" help="Creará una entrada de diario de la cuenta de cheques diferida a la cuenta bancaria y cambiará el estado del cheque."/>
+                <button context="{'default_action_type': 'reject'}" name="%(action_account_check_action_wizard)d" type="action" string="Retorno de Proveedor/Rechazo" states="handed" help="Creará un borrador de nota de débito del proveedor y cambiará el estado del cheque."/>
+                <button context="{'default_action_type': 'claim'}" name="%(action_account_check_action_wizard)d" type="action" string="Reclamar a Cliente" attrs="{'invisible': ['|', ('state', '!=', 'rejected'), ('type', '!=', 'third_check')]}" help="Creará un borrador de nota de débito para el cliente y cambiará el estado del cheque."/>
+                <button context="{'default_action_type': 'customer_return'}" name="%(action_account_check_action_wizard)d" type="action" string="Devolver a Cliente" attrs="{'invisible': ['|', ('state', '!=', 'holding'), ('type', '!=', 'third_check')]}" help="Creará un borrador de nota de débito para el cliente y cambiará el estado del cheque ."/>
+                <button context="{'default_action_type': 'bank_debit'}" name="%(action_account_check_action_wizard)d" type="action" string="Debitar" states="handed" help="Creará una entrada de diario de la cuenta de cheques diferida a la cuenta bancaria y cambiará el estado del cheque."/>
+                !--button context="{'default_action_type': 'reject'}" name="%(action_account_check_action_wizard)d" type="action" string="Retorno de Proveedor/Rechazo" states="handed" help="It will create a draft debit note from supplier and change check state"/-->
+                <button context="{'default_action_type': 'reject'}" name="%(action_account_check_action_wizard)d" type="action" string="Rechazo del Proveedor" states="delivered" help="Creará una nota de débito del proveedor en estado de borrador y cambiará el estado del cheque."/>
+                <button context="{'default_action_type': 'reject'}" name="%(action_account_check_action_wizard)d" type="action" string="Rechazo Bancario" states="deposited" help="Creará una entrada de cuenta desde la cuenta bancaria a la cuenta de rechazo de la empresa y cambiará el estado del cheque."/>
+                <button context="{'default_action_type': 'reject'}" name="%(action_account_check_action_wizard)d" type="action" string="Rechazo de la Venta" states="selled" help="Creará una entrada de cuenta desde la cuenta de efectivo a la cuenta de rechazo de la empresa y cambiará el estado del cheque."/>
             </header>
             <sheet string="Checks">
                 <h1>
-                    <field name="name"/>
+                    <field name="name" string="Nombre"/>
                 </h1>
                 <group>
                     <group>
-                        <field name="journal_id"/>
+                        <field name="journal_id" string="Diario"/>
                         <field name="checkbook_id" attrs="{'invisible':[('type','!=','issue_check')],'required':[('type','=','issue_check')]}" domain="[('journal_id', '=', journal_id)]"/>
-                        <field name="bank_id"/>
-                        <field name="number"/>
+                        <field name="bank_id" string="Banco"/>
+                        <field name="number" string="Número"/>
                         <label for="amount"/>
                         <div name="amount_div" class="o_row">
-                            <field name="amount"/>
-                            <field name="currency_id" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_currency"/>
+                            <field name="amount" string="Monto"/>
+                            <field name="currency_id" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_currency" string="Moneda"/>
                         </div>
-                        <field name="amount_company_currency"/>
+                        <field name="amount_company_currency" string="Monto en moneda de la compañía"/>
                     </group>
                     <group>
-                        <field name="state"/>
+                        <field name="state" string="Estado"/>
                         <field name="owner_name" attrs="{'invisible':[('type','!=','third_check')],'required':[('type','=','third_check')]}"/>
                         <field name="owner_vat" attrs="{'invisible':[('type','!=','third_check')],'required':[('type','=','third_check')]}"/>
-                        <field name="issue_date"/>
-                        <field name="payment_date"/>
-                        <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                        <field name="issue_date" string="Fecha de Emisión"/>
+                        <field name="payment_date" string="Fecha de Pago"/>
+                        <field name="company_id" groups="base.group_multi_company" widget="selection" string="Compañía"/>
                     </group>
                 </group>
-                <group string="Operations">
+                <group string="Operaciones">
                     <field name="operation_ids" nolabel="1" readonly="1">
                         <tree>
                             <field name="date" string="Fecha"/>
