@@ -4,7 +4,7 @@
 # directory
 ##############################################################################
 from odoo import models, fields, api, _
-from odoo.exceptions import Warning
+from odoo.exceptions import Warning, ValidationError
 import time
 import logging
 _logger = logging.getLogger(__name__)
@@ -225,6 +225,8 @@ class account_vat_ledger(models.Model):
         self.journal_ids = journals
 
     def action_present(self):
+        if not self.invoice_ids:
+            raise ValidationError('¡Está intentando presentar un Libro IVA sin Facturas!')
         self.state = 'presented'
 
     def action_cancel(self):
