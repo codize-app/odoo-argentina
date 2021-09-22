@@ -17,13 +17,11 @@ class AccountMoveLine(models.Model):
         'payment_group_id',
         string="Payment Groups",
         readonly=True,
-        copy=False,
         # auto_join not yet implemented for m2m. TODO enable when implemented
         # https://github.com/odoo/odoo/blob/master/odoo/osv/expression.py#L899
         # auto_join=True,
     )
 
-    @api.depends_context('payment_group_id')
     def _compute_payment_group_matched_amount(self):
         """
         Reciviendo un payment_group_id por contexto, decimos en ese payment
@@ -31,22 +29,20 @@ class AccountMoveLine(models.Model):
         """
         payment_group_id = self._context.get('payment_group_id')
         if not payment_group_id:
-            self.payment_group_matched_amount = 0.0
             return False
         payments = self.env['account.payment.group'].browse(
             payment_group_id).payment_ids
-        payment_move_lines = payments.mapped('move_line_ids')
+        # payment_move_lines = payments.mapped('move_line_ids')
+        payment_move_lines = payments.mapped('invoice_line_ids')
 
         for rec in self:
             matched_amount = 0.0
             reconciles = self.env['account.partial.reconcile'].search([
-                ('credit_move_id.account_id.internal_type', 'in', ['receivable', 'payable']),
                 ('credit_move_id', 'in', payment_move_lines.ids),
                 ('debit_move_id', '=', rec.id)])
             matched_amount += sum(reconciles.mapped('amount'))
 
             reconciles = self.env['account.partial.reconcile'].search([
-                ('credit_move_id.account_id.internal_type', 'in', ['receivable', 'payable']),
                 ('debit_move_id', 'in', payment_move_lines.ids),
                 ('credit_move_id', '=', rec.id)])
             matched_amount -= sum(reconciles.mapped('amount'))

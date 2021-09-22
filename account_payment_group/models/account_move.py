@@ -20,25 +20,23 @@ class AccountMove(models.Model):
         'method is used, only journals with manual method are shown.',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        # use copy false for two reasons:
-        # 1. when making refund it's safer to make pay now empty (specially if automatic refund validation is enable)
-        # 2. on duplicating an invoice it's safer also
-        copy=False,
     )
     payment_group_ids = fields.Many2many(
         'account.payment.group',
         compute='_compute_payment_groups',
         string='Payment Groups',
-        compute_sudo=True,
     )
 
+    #@api.depends('payment_move_line_ids')
     def _compute_payment_groups(self):
         """
         El campo en invoices "payment_id" no lo seteamos con los payment groups
         Por eso tenemos que calcular este campo
         """
         for rec in self:
-            rec.payment_group_ids = rec._get_reconciled_payments().mapped('payment_group_id')
+            # Ver como resolver esto
+            rec.payment_group_ids = rec.payment_move_line_ids.mapped(
+                'payment_id.payment_group_id')
 
     def _get_tax_factor(self):
         self.ensure_one()
@@ -52,10 +50,12 @@ class AccountMove(models.Model):
                 lambda r: not r.reconciled and r.account_id.internal_type in (
                     'payable', 'receivable'))
 
+
     def action_account_invoice_payment_group(self):
         self.ensure_one()
-        if self.state == 'cancel' or self.invoice_payment_state != 'not_paid':
-            raise ValidationError(_('You can only register payment if invoice is not cancelled and unpaid'))
+        if self.state != 'open':
+            raise ValidationError(_(
+                'You can only register payment if invoice is open'))
         return {
             'name': _('Register Payment'),
             'view_type': 'form',
@@ -89,7 +89,7 @@ class AccountMove(models.Model):
         # validate_payment = not self._context.get('validate_payment')
         for rec in self:
             pay_journal = rec.pay_now_journal_id
-            if pay_journal and rec.state == 'posted' and rec.invoice_payment_state == 'not_paid':
+            if pay_journal and rec.state == 'open':
                 # si bien no hace falta mandar el partner_type al paygroup
                 # porque el defaults lo calcula solo en funcion al tipo de
                 # cuenta, es mas claro mandarlo y podria evitar error si
@@ -109,7 +109,7 @@ class AccountMove(models.Model):
                 payment_group = rec.env[
                     'account.payment.group'].with_context(
                         pay_context).create({
-                            'payment_date': rec.invoice_date
+                            'payment_date': rec.date_invoice
                         })
                 # el difference es positivo para facturas (de cliente o
                 # proveedor) pero negativo para NC.
@@ -143,7 +143,7 @@ class AccountMove(models.Model):
                     'amount': abs(payment_group.payment_difference),
                     'journal_id': pay_journal.id,
                     'payment_method_id': payment_method.id,
-                    'payment_date': rec.invoice_date,
+                    'payment_date': rec.date_invoice,
                 })
                 # if validate_payment:
                 payment_group.post()
@@ -167,12 +167,53 @@ class AccountMove(models.Model):
             result['res_id'] = self.payment_group_ids.id
         return result
 
-    @api.onchange('journal_id')
-    def _onchange_journal_reset_pay_now(self):
-        # while not always it should be reseted (only if changing company) it's not so usual to set pay now first
-        # and then change journal
+#    def pay_and_reconcile(self, pay_journal, pay_amount=None, date=None,
+#                          writeoff_acc=None):
+#       res = super(AccountInvoice, self.with_context(
+#            create_from_website=True)).pay_and_reconcile(
+#                pay_journal, pay_amount=pay_amount, date=date,
+#                writeoff_acc=writeoff_acc)
+#        return res
+
+    @api.onchange('company_id')
+    def _onchange_company_id(self):
         self.pay_now_journal_id = False
 
     def button_cancel(self):
-        self.filtered(lambda x: x.state != 'draft' and x.pay_now_journal_id).write({'pay_now_journal_id': False})
-        return super().button_cancel()
+        self.filtered(
+            lambda x: x.state == 'open' and x.pay_now_journal_id).write(
+                {'pay_now_journal_id': False})
+        return super(AccountMove, self).button_cancel()
+
+
+
+
+
+    def action_account_invoice_payment_group(self):
+        self.ensure_one()
+        if self.state != 'posted' or self.payment_state not in ['not_paid','in_payment']:
+            raise ValidationError(_('You can only register payment if invoice is posted and unpaid'))
+        return {
+            'name': _('Register Payment'),
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'account.payment.group',
+            'view_id': False,
+            'target': 'current',
+            'type': 'ir.actions.act_window',
+            'context': {
+                # si bien el partner se puede adivinar desde los apuntes
+                # con el default de payment group, preferimos mandar por aca
+                # ya que puede ser un contacto y no el commercial partner (y
+                # en los apuntes solo hay commercial partner)
+                'default_partner_id': self.partner_id.id,
+                'to_pay_move_line_ids': self.open_move_line_ids.ids,
+                'pop_up': True,
+                # We set this because if became from other view and in the
+                # context has 'create=False' you can't crate payment lines
+                #  (for ej: subscription)
+                'create': True,
+                'default_company_id': self.company_id.id,
+            },
+        }
+

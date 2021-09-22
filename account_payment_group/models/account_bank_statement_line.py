@@ -1,4 +1,4 @@
-from odoo import models
+from odoo import models, api
 
 
 class AccountBankStatementLine(models.Model):
@@ -22,10 +22,9 @@ class AccountBankStatementLine(models.Model):
                     #  maximum one created by the line itself
                     aml_to_cancel |= line
                     payment_to_cancel |= line.payment_id
-        # we set to false to unlink payments afterwards the call to super
-        payment_to_cancel.write({'move_name': False})
         payment_groups = payment_to_cancel.mapped('payment_group_id')
-        res = super().button_cancel_reconciliation()
+        res = super(
+            AccountBankStatementLine, self).button_cancel_reconciliation()
         if payment_groups:
             payment_groups.write({'state': 'draft'})
             payment_groups.unlink()
