@@ -89,18 +89,18 @@
                 <group string="Operations">
                     <field name="operation_ids" nolabel="1" readonly="1">
                         <tree>
-                            <field name="date"/>
-                            <field name="operation"/>
+                            <field name="date" string="Fecha"/>
+                            <field name="operation" string="Operación" />
                             <field name="origin" string="Origen"/>
-                            <field name="partner_id"/>
+                            <field name="partner_id" string="Contacto" />
                         </tree>
                         <form>
                             <group>
-                                <field name="date"/>
-                                <field name="operation"/>
-                                <field name="origin"/>
-                                <field name="partner_id"/>
-                                <field name="notes"/>
+                                <field name="date" string="Fecha"/>
+                                <field name="operation" string="Operación"/>
+                                <field name="origin" string="Origen"/>
+                                <field name="partner_id" string="Contacto"/>
+                                <field name="notes" string="Notas"/>
                             </group>
                         </form>
                     </field>
