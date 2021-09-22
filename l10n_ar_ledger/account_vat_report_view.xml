@@ -7,11 +7,11 @@
             <field name="model">account.vat.ledger</field>
             <field name='arch' type='xml'>
                 <tree string="Libro IVA">
-                    <field name="name"/>
-                    <field name="company_id" groups="base.group_multi_company"/>
-                    <field name="date_from"/>
-                    <field name="date_to"/>
-                    <field name="state"/>
+                    <field name="name" string="Nombre"/>
+                    <field name="company_id" groups="base.group_multi_company" string="Compañía"/>
+                    <field name="date_from" string="Fecha Desde"/>
+                    <field name="date_to" string="Fecha Hasta"/>
+                    <field name="state" string="Estado"/>
                 </tree>
             </field>
         </record>
@@ -23,27 +23,27 @@
 		<form string="Libro IVA">
 		    <field name="type" invisible="1"/>
                     <header>
-                        <button name="action_present" string="Present" states="draft" type="object" class="oe_highlight"/>
-                        <button name="action_cancel" string="Cancel" states="draft,presented" type="object"/>
-                        <button name="action_to_draft" string="To Draft" states="cancel" type="object"/>
+                        <button name="action_present" string="Presentar" states="draft" type="object" class="oe_highlight"/>
+                        <button name="action_cancel" string="Cancelar" states="draft,presented" type="object"/>
+                        <button name="action_to_draft" string="Volver a Borrador" states="cancel" type="object"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,presented"/>
                     </header>
                     <sheet>
                         <group>
     	                   <group>
-        	                <field name="company_id" widget="selection" groups="base.group_multi_company"/>
-                                <field name="date_from"/>
-                                <field name="date_to"/>
+        	                <field name="company_id" widget="selection" groups="base.group_multi_company" string="Compañía" />
+                                <field name="date_from" string="Fecha Desde"/>
+                                <field name="date_to" string="Fecha Hasta"/>
                                 <field name="presented_ledger_name" invisible="1"/>
-                                <field name="presented_ledger" filename="presented_ledger_name"/>
-                            	<field name="reference"/>
+                                <field name="presented_ledger" filename="presented_ledger_name" string="Libro Presentado"/>
+                            	<field name="reference" string="Referencia"/>
                             </group>
     	                </group>
     	                <notebook>
-                            <page string="Journals" name="journal_ids">
+                            <page string="Diarios" name="journal_ids">
                                 <field name="journal_ids" domain="[('type','in',['purchase', 'sale', 'purchase_refund', 'sale_refund']),('company_id', 'child_of', company_id)]"/>
                             </page>
-                            <page string="Invoices" name="invoices">
+                            <page string="Facturas" name="invoices">
                                 <field name="invoice_ids">
                                     <!-- tree default_order="date_invoice">
                                         <field name="state" invisible="1"/>
@@ -58,8 +58,8 @@
                                     </tree -->
                                 </field>
                             </page>
-    	                    <page string="Notes" name="notes">
-    	                        <field name="note"/>
+    	                    <page string="Notas" name="notes">
+    	                        <field name="note" string="Notas"/>
     	                    </page>
     	                </notebook>
                     </sheet>
