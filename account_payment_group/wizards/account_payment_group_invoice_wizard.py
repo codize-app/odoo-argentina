@@ -26,7 +26,7 @@ class AccountPaymentGroupInvoiceWizard(models.TransientModel):
         required=True,
         ondelete='cascade',
     )
-    date_invoice = fields.Date(
+    invoice_date = fields.Date(
         string='Refund Date',
         default=fields.Date.context_today,
         required=True
@@ -77,7 +77,7 @@ class AccountPaymentGroupInvoiceWizard(models.TransientModel):
             taxes = self.product_id.supplier_taxes_id
         else:
             taxes = self.product_id.taxes_id
-        company = self.company_id or self.env.user.company_id
+        company = self.company_id or self.env.company
         taxes = taxes.filtered(lambda r: r.company_id == company)
         self.tax_ids = self.payment_group_id.partner_id.with_context(
             force_company=company.id).property_account_position_id.map_tax(
@@ -157,39 +157,30 @@ class AccountPaymentGroupInvoiceWizard(models.TransientModel):
             invoice_type += 'invoice'
 
         return {
-            'name': self.description,
+            'invoice_payment_ref': self.description,
             'date': self.date,
-            'date_invoice': self.date_invoice,
-            'origin': _('Payment id %s') % payment_group.id,
+            'invoice_date': self.invoice_date,
+            'invoice_origin': _('Payment id %s') % payment_group.id,
             'journal_id': self.journal_id.id,
-            'user_id': payment_group.partner_id.user_id.id,
+            'invoice_user_id': payment_group.partner_id.user_id.id,
             'partner_id': payment_group.partner_id.id,
             'type': invoice_type,
-            # 'invoice_line_ids': [('invoice_type')],
         }
 
     def confirm(self):
         self.ensure_one()
 
-        invoice = self.env['account.invoice'].create(self.get_invoice_vals())
-
-        inv_line_vals = {
+        self = self.with_context(company_id=self.company_id.id, force_company=self.company_id.id)
+        invoice_vals = self.get_invoice_vals()
+        line_vals =  {
             'product_id': self.product_id.id,
             'price_unit': self.amount_untaxed,
-            'invoice_id': invoice.id,
-            'invoice_line_tax_ids': [(6, 0, self.tax_ids.ids)],
+            'tax_ids': [(6, 0, self.tax_ids.ids)],
         }
-        invoice_line = self.env['account.invoice.line'].new(inv_line_vals)
-        invoice_line._onchange_product_id()
-        # restore chosen taxes (changed by _onchange_product_id)
-        invoice_line.invoice_line_tax_ids = self.tax_ids
-        line_values = invoice_line._convert_to_write(invoice_line._cache)
-        line_values['price_unit'] = self.amount_untaxed
         if self.account_analytic_id:
-            line_values['account_analytic_id'] = self.account_analytic_id.id
-        invoice.write({'invoice_line_ids': [(0, 0, line_values)]})
-        invoice.compute_taxes()
-        invoice.action_invoice_open()
+            line_vals['analytic_account_id'] = self.account_analytic_id.id
+        invoice_vals['invoice_line_ids'] = [(0, 0, line_vals)]
+        invoice = self.env['account.move'].create(invoice_vals)
+        invoice.action_post()
 
-        self.payment_group_id.to_pay_move_line_ids += (
-            invoice.open_move_line_ids)
+        self.payment_group_id.to_pay_move_line_ids += (invoice.open_move_line_ids)
