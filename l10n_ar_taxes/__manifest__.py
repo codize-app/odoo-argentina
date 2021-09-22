@@ -13,6 +13,6 @@ Impuestos Extras Argentina
     'author': 'Codize, Exemax',
     'website': 'http://www.codize.ar',
     'depends': ['base', 'product', 'account', 'sale'],
-    'data': ['product_template.xml', 'sale_order.xml'],
+    'data': ['product_template.xml', 'sale_order.xml', 'account_move.xml'],
     'installable': True,
 }

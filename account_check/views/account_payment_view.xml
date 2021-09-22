@@ -1,9 +1,9 @@
 <odoo>
 
-    <record id="view_account_payment2_form_inherited" model="ir.ui.view">
+    <!--record id="view_account_payment2_form_inherited" model="ir.ui.view">
         <field name="name">account.payment.form.inherited</field>
         <field name="model">account.payment</field>
-        <field name="inherit_id" ref="account_payment_group.view_account_payment_form" />
+        <field name="inherit_id" ref="account.view_account_payment_register_form" />
         <field name="arch" type="xml">
             <label for="amount_company_currency" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', ('other_currency', '=', False), ('payment_method_code', '=', 'delivered_third_check')]}</attribute>
@@ -12,7 +12,7 @@
                 <attribute name="attrs">{'invisible': ['|', ('other_currency', '=', False), ('payment_method_code', '=', 'delivered_third_check')]}</attribute>
             </div>
         </field>
-    </record>
+    </record-->
 
     <!-- TODO inherit other form views also (like check printing module) -->
     <record id="view_account_payment_form_inherited" model="ir.ui.view">
@@ -74,6 +74,7 @@
                 <label for="amount" attrs="{'invisible': [('payment_method_code', '!=', 'delivered_third_check')]}"/>
                 <div name="readonly_amount_div" class="o_row" attrs="{'invisible': [('payment_method_code', '!=', 'delivered_third_check')]}">
                     <field name="amount" readonly="True"/>
+                    <field name="other_currency" />
                     <field name="currency_id" readonly="True" groups="base.group_multi_currency" attrs="{'invisible': [('other_currency', '=', False)]}"/>
                 </div>
             </label>
