@@ -8,9 +8,9 @@
 		<notebook>
 			<page string="Cheques">
 				<group>
-					<field name="rejected_check_account_id" />
-					<field name="deferred_check_account_id" />
-					<field name="holding_check_account_id" />
+					<field name="rejected_check_account_id" string="Cuenta de Cheques Rechazados" />
+					<field name="deferred_check_account_id" string="Cuenta de Cheques Diferidos" />
+					<field name="holding_check_account_id" string="Cuenta de Cheques en Tenencia"  />
 				</group>
 			</page>
 		</notebook>

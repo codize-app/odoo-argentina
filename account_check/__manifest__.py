@@ -22,7 +22,7 @@
     'version': '14.0.1.0.0',
     'category': 'Accounting',
     'summary': 'Accounting, Payment, Check, Third, Issue',
-    'author': 'ADHOC SA',
+    'author': 'ADHOC SA, Codize, Exemax',
     'license': 'AGPL-3',
     'images': [
     ],
@@ -47,10 +47,7 @@
         'security/ir.model.access.csv',
         'security/account_check_security.xml',
     ],
-    'demo': [
-    ],
-    'test': [
-    ],
+    'demo': [],
     'installable': True,
     'auto_install': False,
     'application': True,

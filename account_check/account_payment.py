@@ -114,15 +114,6 @@ class AccountPayment(models.Model):
     checkbook_numerate_on_printing = fields.Boolean(
         related='checkbook_id.numerate_on_printing',
     )
-    # TODO borrar, esto estaria depreciado
-    # checkbook_block_manual_number = fields.Boolean(
-    #     related='checkbook_id.block_manual_number',
-    #     readonly=True,
-    # )
-    # check_number_readonly = fields.Integer(
-    #     related='check_number',
-    #     readonly=True,
-    # )
 
     @api.depends('payment_method_code')
     def _compute_check_type(self):
