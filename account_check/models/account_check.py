@@ -113,12 +113,12 @@ class AccountCheckOperation(models.Model):
     @api.model
     def _reference_models(self):
         return [
-            ('account.payment', 'Payment'),
-            ('account.check', 'Check'),
-            ('account.invoice', 'Invoice'),
-            ('account.move', 'Journal Entry'),
-            ('account.move.line', 'Journal Item'),
-            ('account.bank.statement.line', 'Statement Line'),
+            ('account.payment', 'Pago'),
+            ('account.check', 'Cheque'),
+            ('account.invoice', 'Factura'),
+            ('account.move', 'Asiento Contable'),
+            ('account.move.line', 'Apunte Contable'),
+            ('account.bank.statement.line', 'Línea de Declaración'),
         ]
 
 
@@ -578,6 +578,8 @@ class AccountCheck(models.Model):
             #).create(payment_values)
             #self.post_payment_check(payment)
             #payment.post()
+            if not self.operation_ids[0].origin:
+                raise ValidationError('La Operación debe tener un Origen')
             journal_id = self.operation_ids[0].origin.journal_id
             if not journal_id:
                 raise ValidationError('No puedo determinar el diario de deposito')
@@ -847,7 +849,7 @@ class AccountCheck(models.Model):
             # this is done on muticompany fix
             # 'company_id': journal.company_id.id,
             'partner_id': partner.id,
-            'type': invoice_type,
+            'move_type': invoice_type,
             'invoice_line_ids': [(0, 0, inv_line_vals)],
         }
         if self.currency_id:
