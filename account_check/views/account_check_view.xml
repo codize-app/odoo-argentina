@@ -91,7 +91,7 @@
                         <tree>
                             <field name="date"/>
                             <field name="operation"/>
-                            <field name="origin_name" string="Origin"/>
+                            <field name="origin" string="Origen"/>
                             <field name="partner_id"/>
                         </tree>
                         <form>
