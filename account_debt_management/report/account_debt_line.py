@@ -160,11 +160,11 @@ class AccountDebtLine(models.Model):
         related='company_id.currency_id',
         string='Moneda de la empresa',
     )
-    payment_group_id = fields.Many2one(
-        'account.payment.group',
-        'Recibo',
-        compute='_compute_move_lines_data',
-    )
+    #payment_group_id = fields.Many2one(
+    #    'account.payment.group',
+    #    'Recibo',
+    #    compute='_compute_move_lines_data',
+    #)
     invoice_id = fields.Many2one(
         'account.move',
         'Factura',
@@ -244,9 +244,9 @@ class AccountDebtLine(models.Model):
             invoice_id = rec.move_line_ids.mapped('move_id')
             rec.invoice_id = len(invoice_id) == 1 and invoice_id
 
-            payment_group = rec.move_line_ids.mapped(
-                'payment_id.payment_group_id')
-            rec.payment_group_id = len(payment_group) == 1 and payment_group
+            #payment_group = rec.move_line_ids.mapped(
+            #    'payment_id.payment_group_id')
+            #rec.payment_group_id = len(payment_group) == 1 and payment_group
 
             statement = rec.move_line_ids.mapped('statement_id')
             rec.statement_id = len(statement) == 1 and statement
@@ -387,11 +387,11 @@ class AccountDebtLine(models.Model):
             return [
                 'account.bank.statement', self.statement_id.id,
                 _('View Bank Statement'), False]
-        if self.payment_group_id:
-            return [
-                'account.payment.group',
-                self.payment_group_id.id,
-                _('View Payment Group'), False]
+        #if self.payment_group_id:
+        #    return [
+        #        'account.payment.group',
+        #        self.payment_group_id.id,
+        #        _('View Payment Group'), False]
         if self.invoice_id:
             view_id = self.move_id.get_formview_id()
             return [

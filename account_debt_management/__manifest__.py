@@ -24,8 +24,7 @@
     'author': 'Moldeo Interactive, ADHOC SA, Exemax, Codize',
     'license': 'AGPL-3',
     'depends': [
-        'l10n_ar',
-        'account_payment_group',
+        'l10n_ar'
     ],
     'data': [
         'security/ir.model.access.csv',
