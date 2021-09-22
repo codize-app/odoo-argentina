@@ -18,8 +18,80 @@ class AccountPayment(models.Model):
     # etc)
     payment_method_description = fields.Char(
         compute='_compute_payment_method_description',
-        string='Payment Method',
+        string='Método de Pago',
     )
+
+    signed_amount_company_currency = fields.Monetary(
+        string='Monto del Pago en la Moneda de la Empresa',
+        compute='_compute_signed_amount',
+        currency_field='company_currency_id',
+    )
+    amount_company_currency = fields.Monetary(
+        string='Monto en la Moneda de la Empresa',
+        compute='_compute_amount_company_currency',
+        inverse='_inverse_amount_company_currency',
+        currency_field='company_currency_id',
+    )
+    other_currency = fields.Boolean(
+        compute='_compute_other_currency',
+    )
+    company_currency_id = fields.Many2one(
+        related='company_id.currency_id',
+        string='Moneda de la Compañía',
+    )
+
+    @api.onchange('amount_company_currency')
+    def _inverse_amount_company_currency(self):
+        for rec in self:
+            if rec.other_currency and rec.amount_company_currency != \
+                    rec.currency_id._convert(
+                        rec.amount, rec.company_id.currency_id,
+                        rec.company_id, rec.payment_date):
+                force_amount_company_currency = rec.amount_company_currency
+            else:
+                force_amount_company_currency = False
+            rec.force_amount_company_currency = force_amount_company_currency
+
+    @api.depends('amount', 'payment_type', 'partner_type', 'amount_company_currency')
+    def _compute_signed_amount(self):
+        for rec in self:
+            sign = 1.0
+            if (
+                    (rec.partner_type == 'supplier' and
+                        rec.payment_type == 'inbound') or
+                    (rec.partner_type == 'customer' and
+                        rec.payment_type == 'outbound')):
+                sign = -1.0
+            rec.signed_amount = rec.amount and rec.amount * sign
+            rec.signed_amount_company_currency = (
+                rec.amount_company_currency and
+                rec.amount_company_currency * sign)
+
+    @api.depends('currency_id')
+    def _compute_other_currency(self):
+        for rec in self:
+            rec.other_currency = False
+            if rec.company_currency_id and rec.currency_id and \
+               rec.company_currency_id != rec.currency_id:
+                rec.other_currency = True
+
+    @api.depends('amount', 'other_currency', 'force_amount_company_currency')
+    def _compute_amount_company_currency(self):
+        """
+        * Si las monedas son iguales devuelve 1
+        * si no, si hay force_amount_company_currency, devuelve ese valor
+        * sino, devuelve el amount convertido a la moneda de la cia
+        """
+        for rec in self:
+            if not rec.other_currency:
+                amount_company_currency = rec.amount
+            elif rec.force_amount_company_currency:
+                amount_company_currency = rec.force_amount_company_currency
+            else:
+                amount_company_currency = rec.currency_id._convert(
+                    rec.amount, rec.company_id.currency_id,
+                    rec.company_id, rec.payment_date)
+            rec.amount_company_currency = amount_company_currency
 
     def _compute_payment_method_description(self):
         for rec in self:

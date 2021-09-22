@@ -28,8 +28,7 @@
     ],
     'depends': [
         'account_payment_fix',
-        'base',
-        'account_payment_group',
+        'base'
     ],
     'data': [
         'data/account_payment_method_data.xml',
