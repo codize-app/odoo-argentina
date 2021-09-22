@@ -90,7 +90,7 @@
                         <group>
                             <field name="partner_id"/>
                             <field name="account_id"/>
-                            <field name="payment_group_id" attrs="{'invisible': [('payment_group_id', '=', False)]}"/>
+                            <!--field name="payment_group_id" attrs="{'invisible': [('payment_group_id', '=', False)]}"/-->
                             <field name="invoice_id" attrs="{'invisible': [('invoice_id', '=', False)]}"/>
                             <field name="statement_id" attrs="{'invisible': [('statement_id', '=', False)]}"/>
                         </group>
