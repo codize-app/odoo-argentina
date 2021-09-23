@@ -1,0 +1,89 @@
+<odoo>
+    <data>
+
+        <template id="ledger_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+		   <t t-call="web.external_layout">
+		    <div class="page">
+	                    <h2>
+	                        Libro IVA
+	                        <span class="pl-1" t-if="o.type == 'sale'">
+					Ventas
+				</span>
+				<span class="pl-1" t-if="o.type == 'purchase'">
+	                                Compras
+	                        </span>
+	                    </h2>
+
+			    <table class="table table-sm o_main_table" style="font-size:12px;">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">Fecha</th>
+	      					<th scope="col">Razón Social</th>
+	      					<th scope="col">CUIT</th>
+						<th scope="col">Responsabilidad AFIP</th>
+	      					<th scope="col">Tipo Comprobante</th>
+						<th scope="col">Nro Comprobante</th>
+						<th scope="col">Neto gravado</th>
+						<th scope="col">Neto exento</th>
+						<th scope="col">IVA 27</th>
+						<th scope="col">IVA 21</th>
+						<th scope="col">IVA 10.5</th>
+						<th scope="col">Otros</th>
+						<th scope="col">Total gravado</th>
+	    				</tr>
+				</thead>
+				<tbody>
+					<!--tr>
+					      <td>555555</td>
+					      <td>555555</td>
+					      <td>555555</td>
+	                                      <td>555555</td>
+	                                      <td>555555</td>
+	                                      <td>555555</td>
+	                                      <td>555555</td>
+	                                      <td>555555</td>
+	                                      <td>555555</td>
+	                                      <td>555555</td>
+	                                      <td>555555</td>
+	                                      <td>555555</td>
+	                                      <td>555555</td>
+	                                      <td>555555</td>
+					</tr-->
+				</tbody>
+			    </table>
+                    </div>
+                  </t>
+                </t>
+            </t>
+        </template>
+
+        <record id="paperformat_landscape" model="report.paperformat">
+            <field name="name">Apaisado A4</field>
+            <field name="default" eval="False"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">8</field>
+            <field name="margin_right">8</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">40</field>
+            <field name="dpi">95</field>
+        </record>
+
+        <report
+            id="l10n_ar_action_report_ledger"
+            model="account.vat.ledger"
+            string="Libro IVA"
+            report_type="qweb-pdf"
+            paperformat="l10n_ar_ledger.paperformat_landscape"
+            name="l10n_ar_ledger.ledger_report"
+            file="l10n_ar_ledger.ledger_report"
+        />
+
+    </data>
+</odoo>
