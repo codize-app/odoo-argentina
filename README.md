@@ -4,6 +4,8 @@ Argentine Location for Odoo 14 Community. Original based on Location by Moldeo I
 ## Installation
 ### Install l10n_ar base
 
+First, install Odoo Community module l10n_ar
+
 Clone this repository with branch 14.0
 
 ```
