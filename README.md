@@ -40,14 +40,17 @@ Add path odoo-argentina to addons path in `odoo.conf`. Restart Odoo Server, Upda
 
 ## l10n_ar extras
 
+* `l10n_ar_ledger`: VAT Ledger
 * `l10n_ar_exchange_rate`: Get Exchange Rate from AFIP
 * `l10n_ar_bank`: Install Argentina Bank's List
 * `l10n_ar_partner`: Add features to contacts (like fantasy name)
+* `l10n_ar_taxes`: Add other taxes (like Internal Taxes)
 
 ## Extras
 
 * `account_debt_managment`: Get Debt of Customer / Supplier
-* `account_check`: Manager for Checks (rejected, deferred, holding) [UNSTABLE - DONT USE]
+* `account_check`: Manager for Checks (rejected, deferred, holding)
+
 ## Questions & Bugs
 
 For questions, or report bugs please use the following resources:
