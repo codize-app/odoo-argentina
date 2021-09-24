@@ -12,7 +12,7 @@ class PurchaseOrderLine(models.Model):
             return
         vals = {}
         if self.product_id.product_tmpl_id.has_internal_taxes:
-            vals['internal_taxes'] = self.product_id.product_tmpl_id.internal_ta                                                                                                                                                                                               xes
+            vals['internal_taxes'] = self.product_id.product_tmpl_id.internal_taxes
             self.update(vals)
         else:
             return
