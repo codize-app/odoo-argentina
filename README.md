@@ -21,6 +21,42 @@ sudo apt-get install python-m2crypto
 
 Remember install OCA Dependencies (inside `oca_dependencies.txt` file)
 
+### Prepare Server
+
+#### Ubuntu 20.04
+Enter the file:
+
+```
+sudo nano /etc/ssl/openssl.cnf
+```
+
+Add this to the beginning of the file:
+
+```
+openssl_conf = default_conf
+```
+
+Add this to the end of the file:
+
+```
+[ default_conf ]
+ssl_conf = ssl_sect
+[ssl_sect]
+system_default = system_default_sect
+[system_default_sect]
+MinProtocol = TLSv1.2
+CipherString = DEFAULT:@SECLEVEL=1
+```
+
+#### Debian 10 / Debian 11
+Enter the file:
+
+```
+sudo nano /etc/ssl/openssl.cnf
+```
+
+Search the following line: `CipherString = DEFAULT@SECLEVEL=2` and replace by `CipherString = DEFAULT@SECLEVEL=1`
+
 ### Install Electronic Invoice
 
 Install PyAfipWS:
@@ -36,6 +72,24 @@ If errors:
 
 ```
 sudo python3 setup.py install
+```
+
+Go to installation directory of PyAFIPWS:
+
+```
+cd /usr/local/lib/python3/dist-packages/pyafipws
+```
+
+Create a folder with the name cache:
+
+```
+sudo mkdir cache
+```
+
+Change permission of folder:
+
+```
+sudo chmod -R 777 cache
 ```
 
 Add path odoo-argentina to addons path in `odoo.conf`. Restart Odoo Server, Update Apps List and install modules `l10n_ar_afipws` and `l10n_ar_afipws_fe`. For reports install `l10n_ar_report_fe`.
