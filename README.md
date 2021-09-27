@@ -19,8 +19,6 @@ sudo pip3 install -r requirements.txt
 sudo apt-get install python-m2crypto
 ```
 
-Remember install OCA Dependencies (inside `oca_dependencies.txt` file)
-
 ### Prepare Server
 
 #### Ubuntu 20.04

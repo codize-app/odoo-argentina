@@ -14,7 +14,6 @@
         'l10n_ar',
         'account_move_tax',
         'account_debit_note',
-        'report_xlsx'
     ],
     'external_dependencies': {
     },
