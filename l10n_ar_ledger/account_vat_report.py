@@ -144,7 +144,7 @@ class account_vat_ledger(models.Model):
                 # cancel invoices with internal number are invoices
                 ('state', '!=', 'draft'),
                 ('document_number', '!=', False),
-                # ('internal_number', '!=', False),
+                #('internal_number', '!=', False),
                 ('journal_id', 'in', self.journal_ids.ids),
                 ('date', '>=', self.date_from),
                 ('date', '<=', self.date_to),
@@ -153,8 +153,6 @@ class account_vat_ledger(models.Model):
                 # TODO, tal vez directamente podemos invertir el orden, como?
                 invoices_domain,
                 order='invoice_date asc, document_number asc, id asc')
-            _logger.info('>>> ACCOUNT')
-            _logger.info(invoices)
         else:
             invoices_domain = [
                 # cancel invoices with internal number are invoices
