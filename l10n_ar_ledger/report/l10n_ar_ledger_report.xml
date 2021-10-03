@@ -41,7 +41,7 @@
                                               	<td><span t-if="invoice.partner_id.l10n_latam_identification_type_id.name == 'CUIT'" t-field="invoice.partner_id.vat" /></td>
                                               	<td><span t-field="invoice.partner_id.l10n_ar_afip_responsibility_type_id" /></td>
                                               	<td><span t-field="invoice.l10n_latam_document_type_id.name" /></td>
-                                              	<td>0</td>
+                                              	<td><span t-if="invoice.document_number" t-field="invoice.document_number" /></td>
                                               	<td>0</td>
                                               	<td>0</td>
                                               	<td>0</td>
