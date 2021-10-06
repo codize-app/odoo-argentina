@@ -4,7 +4,6 @@
 ##############################################################################
 from odoo import models, fields, api
 
-
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
@@ -40,8 +39,8 @@ class AccountMove(models.Model):
         intentamos concilarlo
         """
         res = super(AccountInvoice, self).action_move_create()
-        for rec in self.filtered(lambda x: x.rejected_check_id):
-            check = rec.rejected_check_id
-            if check.state == 'rejected' and check.type == 'issue_check':
-                rec.rejected_check_id.handed_reconcile(rec.move_id)
+        #for rec in self.filtered(lambda x: x.rejected_check_id):
+        #    check = rec.rejected_check_id
+        #    if check.state == 'rejected' and check.type == 'issue_check':
+        #        rec.rejected_check_id.handed_reconcile(rec.move_id)
         return res

@@ -15,5 +15,16 @@
         </field>
     </record>
 
+    <record id="view_product_product_form" model="ir.ui.view">
+        <field name="name">Internal Taxes</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <field name="taxes_id" position="before">
+                <field name="internal_taxes" attrs="{'invisible': [('internal_taxes', '=', 0)]}" widget="monetary" options="{'currency_field': 'currency_id'}" />
+            </field>
+        </field>
+    </record>
+
   </data>
 </odoo>
