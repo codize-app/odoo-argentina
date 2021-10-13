@@ -11,5 +11,5 @@ import base64
 class AccountMoveLine(models.Model):
     _inherit = 'stock.picking'
 
-    afip_cai = fields.Char('CAI')
+    afip_cai = fields.Char('CAI', size=18)
     afip_cai_due = fields.Date('Fecha de Vencimiento CAI')
