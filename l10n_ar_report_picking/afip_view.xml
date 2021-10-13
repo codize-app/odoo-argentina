@@ -4,17 +4,17 @@
 	<record model="ir.ui.view" id="ar_stock_picking_view_form">
 		<field name="name">ar.stock.picking.view.form</field>
 		<field name="model">stock.picking</field>
-		<field name="inherit_id" ref="	stock.view_picking_form"></field>
+		<field name="inherit_id" ref="stock.view_picking_form"></field>
 		<field name="arch" type="xml">
 			<data>
-            <notebook>
-                <page string="Remito">
+            			<notebook>
+                			<page string="Remito">
 					<group>
 						<field name="afip_cai" />
 						<field name="afip_cai_due" />
 					</group>
-				</page>
-			</notebook>
+					</page>
+				</notebook>
 			</data>
 		</field>
 	</record>
