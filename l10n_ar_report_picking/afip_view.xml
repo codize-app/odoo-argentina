@@ -8,7 +8,7 @@
 		<field name="arch" type="xml">
 			<data>
             			<notebook>
-                			<page string="Remito">
+                			<page string="Remito" attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}">
 					<group>
 					   <group>
 						<field name="afip_picking_journal" domain="[('is_afip_picking_journal', '=', True)]" />
