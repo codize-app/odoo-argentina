@@ -38,6 +38,9 @@ class ResPartner(models.Model):
 
         if iva == 'N' or iva == 'NI':
             l10n_ar_type = 'Consumidor Final'
+
+            if ws_sr_padron_a5.monotributo != 'N':
+                l10n_ar_type = 'Responsable Monotributo'
         elif iva == 'AC' or iva == 'S':
             l10n_ar_type = 'IVA Responsable Inscripto'
         elif iva == 'XN' or iva == 'AN' or iva == 'NA':
