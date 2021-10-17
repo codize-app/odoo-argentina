@@ -4,19 +4,33 @@
 	<record model="ir.ui.view" id="ar_stock_picking_view_form">
 		<field name="name">ar.stock.picking.view.form</field>
 		<field name="model">stock.picking</field>
-		<field name="inherit_id" ref="	stock.view_picking_form"></field>
+		<field name="inherit_id" ref="stock.view_picking_form"></field>
 		<field name="arch" type="xml">
 			<data>
-            <notebook>
-                <page string="Remito">
+            			<notebook>
+                			<page string="Remito" attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}">
 					<group>
+					   <group>
+						<field name="afip_picking_journal" domain="[('is_afip_picking_journal', '=', True)]" />
 						<field name="afip_cai" />
 						<field name="afip_cai_due" />
+					   </group>
 					</group>
-				</page>
-			</notebook>
+					</page>
+				</notebook>
 			</data>
 		</field>
 	</record>
+
+        <record model="ir.ui.view" id="l10n_ar_account_journal">
+                <field name="name">l10n.ar.account.journal.form</field>
+                <field name="model">account.journal</field>
+                <field name="inherit_id" ref="account.view_account_journal_form"></field>
+                <field name="arch" type="xml">
+                        <field name="afip_ws" position="after">
+				<field name="is_afip_picking_journal" />
+			</field>
+                </field>
+        </record>
 
 </odoo>

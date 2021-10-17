@@ -32,25 +32,23 @@
                 <!--DOCUMENT LETTER-->
                 <div class="col-2 text-center">
                   <div class="card" style="margin:0px;">
+			<div class="card-header" style="font-size: 48px;padding:0px;">R</div>
+                    	<div class="card-body" style="height: 20px;padding:0px;">cod. 91</div>
                   </div>
                 </div><!--END DOCUMENT LETTER-->
-                <!--TIPO,NRO Y FECHA FACTURA-->
+                <!--TIPO,NRO Y FECHA REMITO-->
                 <div class="col-5 text-left" name="company_address" style="padding-left: 80px !important;">
-                  <h6>
-			  <!--span t-field="o.l10n_latam_document_type_id.name"></span-->
-                  </h6>
-                  <!--span t-if="o.state == 'posted' or o.state == 'draft'">
-                          Fecha: <span t-field="o.invoice_date"/><br/>
-                  </span>
-                  <span t-if="o.state == 'posted' or o.state == 'draft'">
-                            <span t-field="o.display_name"/>
-                  </span>
-                  <p style="font-size: 8px;">
-                    <strong>Tipo de Documento </strong>
-                     <span t-field="o.l10n_latam_document_type_id.name"/>
-                   </p-->
+                  <h6>N° <span t-field="o.afip_picking_journal.code" />-</h6>
+		  <small>
+			Remito Electrónico<br />
+                        <small>Documento no válido como Factura</small>
+                  </small>
+		  <br />
+                  <small>
+                          Fecha: <span t-field="o.scheduled_date"/><br/>
+                  </small>
                 </div>
-                <!--END DATOS FACTURA-->
+                <!--END DATOS REMITO-->
             </div>
             <!--div class="row m-0" style="border: 1px solid black; margin-top: 2px !important; margin-bottom: 0px !important;">
                 <div  class="col-8" t-if="o.move_type == 'out_invoice' and (o.state == 'posted') and o.l10n_ar_afip_service_start and o.l10n_ar_afip_service_end">
@@ -85,11 +83,13 @@
                   </div>
                   <div class="col-6">
                     <p><br/></p>
+                    <p class="m-0"><strong>CUIT</strong> <span t-field="o.company_id.vat"/> - <span t-field="o.company_id.partner_id.l10n_ar_afip_responsibility_type_id.name"/></p>
+                    <p class="m-0"><strong>Ingresos Brutos:</strong> <span t-if="o.company_id.l10n_ar_gross_income_type == 'no_liquida'">No liquida</span> <span t-if="o.company_id.l10n_ar_gross_income_type != 'no_liquida'" t-field="o.company_id.l10n_ar_gross_income_number"/> <br/> <strong>Inicio de actividades:</strong> <span t-field="o.company_id.l10n_ar_afip_start_date"/></p>
                   </div>
               </div>
               <!--END MY COMPANY-->
               <!-- CLIENTE  -->
-              <!--div class="row m-0" style="border: 1px solid black;margin-top:2px !important;">
+              <div class="row m-0" style="border: 1px solid black;margin-top:2px !important;">
                 <div class="col-2">
                   <strong><span>Cliente</span></strong>
                 </div>
@@ -100,7 +100,7 @@
                   <strong>CUIT: </strong><span t-field="o.partner_id.vat"/>
                   <p><strong>Condicion de IVA </strong><span t-field="o.partner_id.l10n_ar_afip_responsibility_type_id.name"/></p>
                 </div>
-              </div-->
+              </div>
               <!-- END CLIENTE  -->
               <!-- ENCABEZADO FACTURA -->
               <!--div class="row m-0" style="border:solid 1px #000;margin-top:2px !important;">
@@ -125,55 +125,25 @@
               <!-- Is there a discount on at least one line? -->
               <!--t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/-->
               <!-- TABLA ITEMS -->
-              <!--table class="table table-condensed" style="margin-top:2px !important;">
+              <table class="table table-condensed" style="margin-top:2px !important;">
                   <thead>
                     <tr style="background: #ddd;">
                       <th style="border: solid 1px #000;padding: 8px;">Código</th>
-                      <th style="border: solid 1px #000;padding: 8px;">Producto / Servicio</th>
-                      <th class="hidden" style="border: solid 1px #000;padding: 8px;">Origen</th>
+                      <th style="border: solid 1px #000;padding: 8px;">Producto</th>
                       <th class="text-right" style="border: solid 1px #000;padding: 8px;">Cantidad</th>
-                      <th style="border: solid 1px #000;padding: 8px;" class="text-right">Precio Unit.</th>
-                      <th style="border: solid 1px #000;padding: 8px;" t-if="display_discount" class="text-right">Desc.(%)</th>
-      <div t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
-                        <th style="border: solid 1px #000;padding: 8px;" class="text-right">IVA</th>
-      </div>
-                      <th style="border: solid 1px #000;padding: 8px;" class="text-right">Subtotal</th>
                     </tr>
                   </thead>
                   <tbody class="invoice_tbody">
-                    <tr t-foreach="o.invoice_line_ids" t-as="l">
+                    <tr t-foreach="o.move_line_ids_without_package" t-as="l">
                       <td style="padding: 5px;"><span t-field="l.product_id.default_code"/></td>
-                      <td style="padding: 5px;"><span t-field="l.product_id.name"/></td>
-                      <td style="padding: 5px;" class="hidden"><span t-field="l.move_id.invoice_origin"/></td>
+                      <td style="padding: 5px;"><span t-field="l.product_id.name"/></td>   
                       <td style="padding: 5px;" class="text-right">
-			  <span t-esc="'{0:,.2f}'.format(l.quantity)"/>
-                          <span t-field="l.uom_id" groups="product.group_uom"/>
-                      </td>
-		   <div t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
-                        <td style="padding: 5px;" class="text-right">
-                            <span t-esc="'{0:,.2f}'.format(l.price_unit)"/>
-                        </td>
-    </div>
-    <div t-if="o.l10n_latam_document_type_id.l10n_ar_letter == 'B'">
-                        <td style="padding: 5px;" class="text-right">
-                            <span t-esc="'{0:,.2f}'.format(l.price_subtotal_vat / l.quantity)"/>
-                        </td>
-    </div>
-                      <td style="padding: 5px;" t-if="display_discount" class="text-right">
-                          <span t-field="l.discount"/>
-                      </td>
-                      <td style="padding: 5px;" class="text-right" t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
-                          <span t-esc="', '.join(map(lambda x: (x.description or x.name), l.tax_ids))"/>
-                      </td>
-                      <td style="padding: 5px;" class="text-right" t-if="o.l10n_latam_document_type_id.l10n_ar_letter != 'B'">
-                          <span t-field="l.price_subtotal" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
-                      </td>
-                      <td style="padding: 5px;" class="text-right" t-if="o.l10n_latam_document_type_id.l10n_ar_letter == 'B'">
-                          <span t-field="l.price_subtotal_vat" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+			  <span t-esc="'{0:,.2f}'.format(l.qty_done)"/>
+                          <span t-field="l.product_uom_id" groups="product.group_uom"/>
                       </td>
                   </tr>
                 </tbody>
-              </table--><!-- END TABLA ITEMS -->
+              </table><!-- END TABLA ITEMS -->
 
               <!--SUBTOTAL E IMPUESTOS INTEGRADOS-->
               <!--div class="row m-0" style="border: 1px solid #000;">
@@ -221,21 +191,24 @@
               </div--><!--END SUBTOTAL E IMPUESTOS INTEGRADOS-->
 
           <br/>
+	  <p t-if="o.note"><span t-field="o.note" /></p>
 
           </div><!--END PAGE-->
-          <!-- CAE -->
-          <!--div class="footer" style="border: 1px solid black;">
-	          <div class="row m-0">
-        	    <div class="col-6 p-2" t-if="o.texto_modificado_qr">
-                <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('QR', o.texto_modificado_qr, 450, 450)" style="width:110px;height:110px"/>
-              </div>
-              <div class="col-6 p-2" t-if="o.afip_cae">
-                <p/>
-                <p><strong> CAE: </strong><span t-field="o.afip_cae"/></p>
-                <p><strong> Fecha Vencimiento CAE: </strong><span t-field="o.afip_cae_due"/></p>
-              </div>
+          <!-- CAI -->
+          <div class="footer m-0 p-0" style="border: 1px solid black;">
+	      <div class="row m-0">
+                <div class="col-6 p-2 text-center" t-if="o.afip_cai">
+		<t t-set="barcode" t-value="o.company_id.vat + '91' + o.afip_picking_journal.code + o.afip_cai + o.afip_cai_due.strftime('%Y') + o.afip_cai_due.strftime('%m') + o.afip_cai_due.strftime('%d') + '0'"/>		
+                <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Codabar', barcode, 300, 30)" style="width:300px;height:30px"/>
+		<br />
+		<small><small t-esc="barcode" /></small>
+                </div>
+                <div class="col-6" t-if="o.afip_cai">
+                  <small><strong>CAI: </strong><span t-field="o.afip_cai"/></small><br />
+                  <small><strong>Fecha Vencimiento CAI: </strong><span t-field="o.afip_cai_due"/></small>
+                </div>
             </div>
-          </div-->
+          </div>
         </div><!--END ARTICLE-->
 </template>
 
@@ -250,7 +223,7 @@
 <!-- QWeb Reports -->
 <report
   id="l10n_stock_picking_report"
-  model="account.move"
+  model="stock.picking"
   string="Remitos Electrónicos"
   print_report_name = "((object.name or 'Remitos Electrónicos'))"
   report_type="qweb-pdf"
