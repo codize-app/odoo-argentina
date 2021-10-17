@@ -1,4 +1,4 @@
-# Factura Electrónica Argentina
+# Argentina Electronic Invoice
 
 ## Documentation
 
@@ -13,4 +13,4 @@ DOCS: http://www.afip.gob.ar/fe/documentos/WSBFEv1%20-%20Manual%20para%20el%20de
 
 ## Maintainer
 
-This module is maintained by the Exemax-Codize. Original develop by AdHoc SA
+This module is maintained by the Exemax-Codize team. Original develop by AdHoc SA

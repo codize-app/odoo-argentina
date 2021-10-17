@@ -17,4 +17,4 @@ In AFIP Portal go to "Administrador de Relaciones", then select the company in t
 
 ## Maintainer
 
-This module is maintained by the Exemax-Codize.
+This module is maintained by the Exemax-Codize team.
