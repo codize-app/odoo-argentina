@@ -16,7 +16,7 @@ Dentro del directorio, instalar las dependencias:
 
 ```
 sudo pip3 install -r requirements.txt
-sudo apt-get install python-m2crypto
+sudo apt-get install python3-m2crypto
 ```
 
 ### Preparar el Servidor
@@ -77,6 +77,8 @@ Ir al directorio de instalación de PyAFIPWS:
 ```
 cd /usr/local/lib/python3/dist-packages/pyafipws
 ```
+
+Nota: Reemplazar `python3` por la versión de python instalada en el sistema (como `python3.9`)
 
 Crear una carpeta con el nombre cache:
 
