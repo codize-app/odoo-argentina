@@ -72,8 +72,8 @@
                       <span t-field="o.invoice_date"/>
                     </span>
                   </div>
-              </div>
-          </div--><!--END HEADER-->
+              </div-->
+          </div><!--END HEADER-->
           <!--PAGE-->
           <div class="page" style="margin-top: 0px !important;font-size: 13px;">
 
@@ -235,8 +235,8 @@
                 <p><strong> Fecha Vencimiento CAE: </strong><span t-field="o.afip_cae_due"/></p>
               </div>
             </div>
-          </div>
-        </div--><!--END ARTICLE-->
+          </div-->
+        </div><!--END ARTICLE-->
 </template>
 
 <template id="report_stock_picking">
