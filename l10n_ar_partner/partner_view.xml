@@ -13,6 +13,11 @@
                 	<field name="internal_reference"/>
 		</group>
             </div>
+            <sheet position="before">
+              <header>
+		<button name="update_from_padron" string="Actualizar datos desde AFIP" help="Actualiza los datos del Contacto desde el Padrón de AFIP." type="object" />
+	      </header>
+            </sheet>
         </field>
     </record>
 
