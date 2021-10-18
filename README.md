@@ -1,3 +1,5 @@
+**English** | [Spanish](https://github.com/codize-app/odoo-argentina/blob/14.0/README_es.md)
+
 # Odoo Argentina
 Argentine Location for Odoo 14 Community. Original based on Location by Moldeo Interactive [and original based on Location by AdHoc]
 
@@ -118,6 +120,6 @@ For questions, or report bugs please use the following resources:
 ---
 Develop by Exemax SAS & Codize
 
-Funtional Contact: info@examax.com.ar
+Funtional Contact: contacto@exemax.com.ar
 
 Dev Contact: info@codize.ar
