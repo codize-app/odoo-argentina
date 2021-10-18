@@ -1,6 +1,6 @@
 {
     'name': 'Datos Extras para Contacto de Argentina',
-    'version': '14.0.0.0.0',
+    'version': '14.0.0.1.0',
     'category': 'Partner',
     'license': 'AGPL-3',
     'summary': "Datos Extras para Contacto de Argentina",
@@ -12,7 +12,7 @@ Datos Extras para Contacto de Argentina
     """,
     'author': 'Codize, Exemax',
     'website': 'http://www.codize.ar',
-    'depends': ['base'],
+    'depends': ['base', 'l10n_ar_afipws'],
     'data': ['partner_view.xml'],
     'installable': True,
 }

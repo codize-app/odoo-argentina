@@ -1,3 +1,5 @@
+**English** | [Spanish](https://github.com/codize-app/odoo-argentina/blob/14.0/README_es.md)
+
 # Odoo Argentina
 Argentine Location for Odoo 14 Community. Original based on Location by Moldeo Interactive [and original based on Location by AdHoc]
 
@@ -16,7 +18,7 @@ Inside directory, install dependencies:
 
 ```
 sudo pip3 install -r requirements.txt
-sudo apt-get install python-m2crypto
+sudo apt-get install python3-m2crypto
 ```
 
 ### Prepare Server
@@ -78,6 +80,8 @@ Go to installation directory of PyAFIPWS:
 cd /usr/local/lib/python3/dist-packages/pyafipws
 ```
 
+Note: Replace `python3` by the python version in the system (like `python3.9`)
+
 Create a folder with the name cache:
 
 ```
@@ -116,6 +120,6 @@ For questions, or report bugs please use the following resources:
 ---
 Develop by Exemax SAS & Codize
 
-Funtional Contact: info@examax.com.ar
+Funtional Contact: contacto@exemax.com.ar
 
 Dev Contact: info@codize.ar
