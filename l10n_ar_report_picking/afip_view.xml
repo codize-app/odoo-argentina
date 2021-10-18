@@ -7,13 +7,21 @@
 		<field name="inherit_id" ref="stock.view_picking_form"></field>
 		<field name="arch" type="xml">
 			<data>
-            			<notebook>
+                                <header>
+                                	<button name="validate_picking" type="object" string="Validar Remito" attrs="{'invisible': [('afip_picking_validate', '=', True)]}" />
+                                </header>
+				<div name="button_box" position="before">
+                                	<widget name="web_ribbon" title="Remito Validado" attrs="{'invisible': [('afip_picking_validate', '=', False)]}"/>
+            			</div>
+				<notebook>
                 			<page string="Remito" attrs="{'invisible': [('picking_type_code', '!=', 'outgoing')]}">
 					<group>
 					   <group>
-						<field name="afip_picking_journal" domain="[('is_afip_picking_journal', '=', True)]" />
-						<field name="afip_cai" />
-						<field name="afip_cai_due" />
+                                                <field name="afip_picking_validate" invisible="1" />
+						<field name="afip_picking_journal" domain="[('is_afip_picking_journal', '=', True)]" attrs="{'readonly': [('afip_picking_validate', '=', True)]}" />
+						<field name="afip_picking_number" readonly="1" />
+						<field name="afip_cai" attrs="{'readonly': [('afip_picking_validate', '=', True)]}" />
+						<field name="afip_cai_due" attrs="{'readonly': [('afip_picking_validate', '=', True)]}" />
 					   </group>
 					</group>
 					</page>
