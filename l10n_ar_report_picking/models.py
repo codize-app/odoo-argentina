@@ -8,6 +8,12 @@ from datetime import datetime, timedelta, date
 import json
 import base64
 
+
+class AccountJournal(models.Model):
+    _inherit = 'account.journal'
+
+    is_afip_picking_journal = fields.Boolean('Es Diario de Remitos Electrónicos')
+
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
@@ -19,7 +25,3 @@ class StockPicking(models.Model):
     afip_cai_due = fields.Date('Fecha de Vencimiento CAI')
     afip_picking_journal = fields.Many2one('account.journal', 'Diario de Remitos Electrónicos', default=_default_picking_journal)
 
-class AccountJournal(models.Model):
-    _inherit = 'account.journal'
-
-    is_afip_picking_journal = fields.Boolean('Es Diario de Remitos Electrónicos')
