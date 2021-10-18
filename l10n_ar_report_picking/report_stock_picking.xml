@@ -38,7 +38,7 @@
                 </div><!--END DOCUMENT LETTER-->
                 <!--TIPO,NRO Y FECHA REMITO-->
                 <div class="col-5 text-left" name="company_address" style="padding-left: 80px !important;">
-                  <h6>N° </h6>
+                  <h6>N° <span t-field="o.afip_picking_journal.code" />-</h6>
 		  <small>
 			Remito Electrónico<br />
                         <small>Documento no válido como Factura</small>
@@ -202,7 +202,7 @@
           <div class="footer m-0 p-0" style="border: 1px solid black;">
 	      <div class="row m-0">
                 <div class="col-6 p-2 text-center" t-if="o.afip_cai">
-		<t t-set="barcode" t-value="o.company_id.vat + '091' + o.afip_cai.zfill(18) + o.afip_cai_due.strftime('%Y') + o.afip_cai_due.strftime('%m') + o.afip_cai_due.strftime('%d') + '0'"/>		
+		<t t-set="barcode" t-value="o.company_id.vat + '91' + o.afip_picking_journal.code + o.afip_cai + o.afip_cai_due.strftime('%Y') + o.afip_cai_due.strftime('%m') + o.afip_cai_due.strftime('%d') + '0'"/>		
                 <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Codabar', barcode, 300, 30)" style="width:300px;height:30px"/>
 		<br />
 		<small><small t-esc="barcode" /></small>
