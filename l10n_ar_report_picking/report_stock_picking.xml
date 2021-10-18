@@ -90,13 +90,17 @@
               <!--END MY COMPANY-->
               <!-- CLIENTE  -->
               <div class="row m-0" style="border: 1px solid black;margin-top:2px !important;">
-                <div class="col-2">
-                  <strong><span>Cliente</span></strong>
+                <div class="col-6">
+                  <strong>Cliente: </strong><span t-field="o.partner_id"/>
+                  <t t-set="dir" t-value="o.partner_id.street +', ' + o.partner_id.city + '('+ o.partner_id.zip + '), ' + o.partner_id.country_id.code"/>
+                  <p><strong>Dirección: </strong><span t-esc="dir"/></p>
+
                 </div>
-                <div name="invoice_address" class="col-4">
+                <!--div name="invoice_address" class="col-4">
                   <address t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
-                </div>
-                <div name="invoice_address" class="col-4">
+                </div-->
+
+                <div name="invoice_address" class="col-6">
                   <strong>CUIT: </strong><span t-field="o.partner_id.vat"/>
                   <p><strong>Condicion de IVA </strong><span t-field="o.partner_id.l10n_ar_afip_responsibility_type_id.name"/></p>
                 </div>
@@ -198,7 +202,7 @@
           <div class="footer m-0 p-0" style="border: 1px solid black;">
 	      <div class="row m-0">
                 <div class="col-6 p-2 text-center" t-if="o.afip_cai">
-		<t t-set="barcode" t-value="o.company_id.vat + '91' + o.afip_cai.zfill(18) + o.afip_cai_due.strftime('%Y') + o.afip_cai_due.strftime('%m') + o.afip_cai_due.strftime('%d') + '0'"/>		
+		<t t-set="barcode" t-value="o.company_id.vat + '091' + o.afip_cai.zfill(18) + o.afip_cai_due.strftime('%Y') + o.afip_cai_due.strftime('%m') + o.afip_cai_due.strftime('%d') + '0'"/>		
                 <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Codabar', barcode, 300, 30)" style="width:300px;height:30px"/>
 		<br />
 		<small><small t-esc="barcode" /></small>
