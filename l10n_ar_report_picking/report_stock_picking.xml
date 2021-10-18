@@ -38,7 +38,7 @@
                 </div><!--END DOCUMENT LETTER-->
                 <!--TIPO,NRO Y FECHA REMITO-->
                 <div class="col-5 text-left" name="company_address" style="padding-left: 80px !important;">
-                  <h6>N° <span t-field="o.afip_picking_journal.code" />-</h6>
+                  <h6>N° <span t-field="o.afip_picking_journal.code" />-<span t-field="o.afip_picking_number" /></h6>
 		  <small>
 			Remito Electrónico<br />
                         <small>Documento no válido como Factura</small>
