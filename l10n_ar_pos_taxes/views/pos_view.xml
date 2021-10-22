@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="view_pos_order_form" model="ir.ui.view">
+      <field name="name">Internal Taxes</field>
+      <field name="model">pos.order</field>
+      <field name="inherit_id" ref="point_of_sale.view_pos_pos_form" />
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='lines']/tree/field[@name='tax_ids']" position="before">
+          <field name="internal_taxes" widget="monetary" options="{'currency_field': 'currency_id'}" />
+        </xpath>
+        <field name="amount_tax" position="before">
+          <field name="amount_subtotal" widget="monetary" options="{'currency_field': 'currency_id'}" />
+        </field>
+        <field name="amount_tax" position="after">
+          <field name="amount_internal_tax" widget="monetary" options="{'currency_field': 'currency_id'}" />
+        </field>
+        <field name="amount_paid" position="replace"/>
+      </field>
+    </record>
+  </data>
+</odoo>
