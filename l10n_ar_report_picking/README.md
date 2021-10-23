@@ -1,5 +1,19 @@
 # Electronic Picking of Argentina
 
+## Settings
+
+Create an Account Journal and check "Es Diario de Remitos Electrónicos". Then, create a Sequence with Step 1 and Next Number according to the next issue of Picking to validate.
+
+Load the List of Electronic Pickings CAI with CAI Due Date on table "Lista de Remitos Disponibles".
+
+## Validate Electronic Picking
+
+In order to Validate a Stock Picking like a Electronic Picking, search the Tab "Remito" inside a Stock Picking Out Type. Make sure Account Journal is load on "Diario de Remitos Electrónicos" field (normally is loaded by default). Click the button "Validar Remito".
+
+## Automatic Remove of Due CAI
+
+In order of remove the expired numbers of CAI, you can use the button "Eliminar CAI Vencidos" inside Account Journal of Electronic Pickings.
+
 ## Contributors
 
 * Exemax
