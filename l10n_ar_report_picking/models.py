@@ -7,6 +7,9 @@ import datetime
 from datetime import datetime, timedelta, date
 import json
 import base64
+from dateutil import parser
+
+_logger = logging.getLogger(__name__)
 
 class AccountJournal(models.Model):
     _inherit = 'account.journal'
@@ -16,7 +19,22 @@ class AccountJournal(models.Model):
             if datetime.now().date() > r.afip_cai_due:
                 r.unlink()
 
+    def upload_picking_csv(self):
+        if self.picking_csv:
+            csv = base64.b64decode(self.picking_csv).decode("utf-8", "ignore").replace('\r', '')
+            row = csv.split('\n')
+            for r in row:
+                col = r.split(',')
+                if len(col) == 2:
+                    _logger.info(col)
+                    d = parser.parse(col[1])
+                    self.env['account.journal.picking'].create({'res_id': self.id, 'afip_cai': col[0], 'afip_cai_due': d.strftime("%Y-%m-%d")})
+            self.picking_csv = False
+        else:
+            raise ValidationError('Debe Cargar un Archivo CSV con formato válido.')
+
     is_afip_picking_journal = fields.Boolean('Es Diario de Remitos Electrónicos')
+    picking_csv = fields.Binary('Lista de CAI en CSV')
     account_journal_picking = fields.One2many('account.journal.picking', 'res_id', string='Lista de CAI Disponibles')
 
 class AccountJournalPicking(models.Model):
