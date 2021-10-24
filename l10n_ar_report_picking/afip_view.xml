@@ -51,7 +51,9 @@
                             <page string="Lista de Remitos Disponibles" attrs="{'invisible': [('is_afip_picking_journal', '!=', True)]}">
                                    <field name="is_afip_picking_journal" invisible="1" />
 
-				   <button name="remove_afip_cai_due" type="object" class="btn btn-danger" string="Eliminar CAI Vencidos" />
+				   <field name="picking_csv" />
+				   <button name="upload_picking_csv" type="object" class="mr-2 ml-2 btn btn-primary" string="Importar CAI desde CSV" />
+                                   <button name="remove_afip_cai_due" type="object" class="mr-2 ml-2 btn btn-danger" string="Eliminar CAI Vencidos" />
 
                                    <group>
                                         <field name="account_journal_picking">
