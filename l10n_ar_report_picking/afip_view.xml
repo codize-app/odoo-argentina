@@ -41,4 +41,32 @@
                 </field>
         </record>
 
+        <record model="ir.ui.view" id="l10n_ar_account_journal_picking">
+                <field name="name">l10n.ar.account.journal.picking.form</field>
+                <field name="model">account.journal</field>
+                <field name="inherit_id" ref="account.view_account_journal_form"></field>
+                <field name="arch" type="xml">
+                        <data>
+                        <notebook>
+                            <page string="Lista de Remitos Disponibles" attrs="{'invisible': [('is_afip_picking_journal', '!=', True)]}">
+                                   <field name="is_afip_picking_journal" invisible="1" />
+
+				   <field name="picking_csv" />
+				   <button name="upload_picking_csv" type="object" class="mr-2 ml-2 btn btn-primary" string="Importar CAI desde CSV" />
+                                   <button name="remove_afip_cai_due" type="object" class="mr-2 ml-2 btn btn-danger" string="Eliminar CAI Vencidos" />
+
+                                   <group>
+                                        <field name="account_journal_picking">
+                                           <tree edit="1" create="1" editable="botttom">
+                                               <field name="afip_cai" />
+                                               <field name="afip_cai_due" />
+                                           </tree>
+                                        </field>
+                                   </group>
+                            </page>
+                        </notebook>
+                        </data>
+                </field>
+        </record>
+
 </odoo>
