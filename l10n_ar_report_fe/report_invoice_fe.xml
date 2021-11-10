@@ -82,8 +82,14 @@
              <!--MY COMPANY-->
               <div class="row m-0" style="border: 1px solid black;">
                   <div class="col-6" style="margin-top: 8px !important;">
-                    <span t-field="o.company_id.name" style="font-size: 16px; font-weight: bold;"/>
-                    <div t-field="company.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"/>
+                    <small>
+                      <span t-field="o.company_id.name" style="font-size: 12px; font-weight: bold;"/>
+                      <br/>
+		      <t t-if="o.company_id.partner_id.street"><span t-field="o.company_id.partner_id.street" />, </t>
+                      <t t-if="o.company_id.partner_id.city"><span t-field="o.company_id.partner_id.city" />, </t>
+                      <t t-if="o.company_id.partner_id.state_id"><span t-field="o.company_id.partner_id.state_id.name" />, </t>
+                      <t t-if="o.company_id.partner_id.country_id"><span t-field="o.company_id.partner_id.country_id.name" /></t>
+                    </small>
                   </div>
                   <div class="col-6">
                     <p><br/></p>
@@ -98,7 +104,14 @@
                   <strong><span>Cliente</span></strong>
                 </div>
                 <div name="invoice_address" class="col-4">
-                  <address t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
+                  <small>
+                    <span t-field="o.partner_id.name" style="font-size: 12px; font-weight: bold;"/>
+                    <br/>
+                    <t t-if="o.partner_id.street"><span t-field="o.partner_id.street" />, </t>
+                    <t t-if="o.partner_id.city"><span t-field="o.partner_id.city" />, </t>
+                    <t t-if="o.partner_id.state_id"><span t-field="o.partner_id.state_id.name" />, </t>
+                    <t t-if="o.partner_id.country_id"><span t-field="o.partner_id.country_id.name" /></t>
+                  </small>
                 </div>
                 <div name="invoice_address" class="col-4">
                   <strong>CUIT: </strong><span t-field="o.partner_id.vat"/>
