@@ -198,7 +198,7 @@
 
           </div><!--END PAGE-->
           <!-- CAI -->
-          <div class="footer m-0 p-0" style="border: 1px solid black;">
+          <div class="footer m-0 p-0" style="border: 1px solid black; color:#000;">
 	      <div class="row m-0">
                 <div class="col-6 p-2 text-center" t-if="o.afip_cai">
 		<t t-set="barcode" t-value="o.company_id.vat + '091' + o.afip_picking_journal.code + o.afip_cai + o.afip_cai_due.strftime('%Y') + o.afip_cai_due.strftime('%m') + o.afip_cai_due.strftime('%d')"/>		
