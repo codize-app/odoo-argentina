@@ -11,6 +11,10 @@
             <field name="taxes_id" position="before">
                 <field name="has_internal_taxes"/>
                 <field name="internal_taxes" attrs="{'invisible': [('has_internal_taxes', '=', False)]}" widget="monetary" options="{'currency_field': 'currency_id'}" />
+                <button name="update_internal_taxes" attrs="{'invisible': [('has_internal_taxes', '=', False)]}" string="Actualizar Imp. Int." help="Actualiza el Valor del Impuesto Interno." type="object" />
+            </field>
+            <field name="supplier_taxes_id" position="before">
+                <button name="update_internal_taxes" attrs="{'invisible': [('has_internal_taxes', '=', False)]}" string="Actualizar Imp. Int." help="Actualiza el Valor del Impuesto Interno." type="object" />
             </field>
         </field>
     </record>

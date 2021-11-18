@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    @api.depends(
+    """@api.depends(
         'line_ids.matched_debit_ids.debit_move_id.move_id.payment_id.is_matched',
         'line_ids.matched_debit_ids.debit_move_id.move_id.line_ids.amount_residual',
         'line_ids.matched_debit_ids.debit_move_id.move_id.line_ids.amount_residual_currency',
@@ -115,7 +115,7 @@ class AccountMove(models.Model):
                 if reverse_moves_full_recs.mapped('reconciled_line_ids.move_id').filtered(lambda x: x not in (reverse_moves + reverse_moves_full_recs.mapped('exchange_move_id'))) == move:
                     new_pmt_state = 'reversed'
 
-            move.payment_state = new_pmt_state
+            move.payment_state = new_pmt_state"""
 
     amount_internal_tax = fields.Float('Impuestos Internos', readonly=True)
 

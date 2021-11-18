@@ -6,7 +6,7 @@ from odoo.exceptions import ValidationError
 class PurchaseOrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
-    @api.onchange('product_id')
+    """@api.onchange('product_id')
     def _add_internal_taxes(self):
         if not self.product_id:
             return
@@ -49,18 +49,15 @@ class PurchaseOrderLine(models.Model):
             'date_maturity': move.invoice_date_due,
             'partner_id': move.partner_id.id,
         })
-        return res
+        return res"""
 
     internal_taxes = fields.Float('Impuestos Internos', default=0.0)
 
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
-    @api.depends('order_line.price_total')
+    """@api.depends('order_line.price_total')
     def _amount_all(self):
-        """
-        Compute the total amounts of the SO.
-        """
         for order in self:
             amount_untaxed = amount_tax = amount_internal_tax = 0.0
             for line in order.order_line:
@@ -72,6 +69,6 @@ class PurchaseOrder(models.Model):
                 'amount_tax': amount_tax,
                 'amount_internal_tax': amount_internal_tax,
                 'amount_total': amount_untaxed + amount_tax + amount_internal_tax,
-            })
+            })"""
 
     amount_internal_tax = fields.Float('Impuestos Internos', readonly=True)
