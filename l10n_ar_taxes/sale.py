@@ -6,7 +6,7 @@ from odoo.exceptions import ValidationError
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    @api.onchange('product_id')
+    """@api.onchange('product_id')
     def _add_internal_taxes(self):
         if not self.product_id:
             return
@@ -18,11 +18,6 @@ class SaleOrderLine(models.Model):
             return
 
     def _prepare_invoice_line(self, **optional_values):
-        """
-        Prepare the dict of values to create the new invoice line for a sales order line.
-        :param qty: float quantity to invoice
-        :param optional_values: any parameter that should be added to the returned invoice line
-        """
         self.ensure_one()
         res = {
             'display_type': self.display_type,
@@ -43,18 +38,15 @@ class SaleOrderLine(models.Model):
             res.update(optional_values)
         if self.display_type:
             res['account_id'] = False
-        return res
+        return res"""
 
     internal_taxes = fields.Float('Impuestos Internos', default=0.0)
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    @api.depends('order_line.price_total')
+    """@api.depends('order_line.price_total')
     def _amount_all(self):
-        """
-        Compute the total amounts of the SO.
-        """
         for order in self:
             amount_untaxed = amount_tax = amount_internal_tax = 0.0
             for line in order.order_line:
@@ -66,6 +58,6 @@ class SaleOrder(models.Model):
                 'amount_tax': amount_tax,
                 'amount_internal_tax': amount_internal_tax,
                 'amount_total': amount_untaxed + amount_tax + amount_internal_tax,
-            })
+            })"""
 
     amount_internal_tax = fields.Float('Impuestos Internos', readonly=True)
