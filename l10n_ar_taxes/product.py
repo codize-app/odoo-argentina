@@ -12,6 +12,9 @@ class ProductTemplate(models.Model):
         has_internal_sale = False
         has_internal_purchase = False
 
+        if not self.has_internal_taxes:
+           return
+
         for rec in self.taxes_id:
             if rec.tax_group_id.l10n_ar_tribute_afip_code == '04':
                 has_internal_sale = True
