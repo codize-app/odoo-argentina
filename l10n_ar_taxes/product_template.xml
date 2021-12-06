@@ -30,5 +30,17 @@
         </field>
     </record>
 
+    <record id="action_update_internal_taxes" model="ir.actions.server">
+            <field name="name">Actualizar Imp. Internos</field>
+            <field name="model_id" ref="product.model_product_template"/>
+            <field name="binding_model_id" ref="product.model_product_template"/>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                    for rec in records:
+                        rec.update_internal_taxes()
+            </field>
+    </record>
+
   </data>
 </odoo>
