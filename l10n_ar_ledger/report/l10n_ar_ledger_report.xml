@@ -42,13 +42,55 @@
                                               	<td><span t-field="invoice.partner_id.l10n_ar_afip_responsibility_type_id" /></td>
                                               	<td><span t-field="invoice.l10n_latam_document_type_id.name" /></td>
                                               	<td><span t-if="invoice.document_number" t-field="invoice.document_number" /></td>
+                                              	<td name="Neto Gravado">
+							<t t-set="netoG" t-value="0" />
+                                                        <t t-foreach="invoice.amount_by_group" t-as="tax">
+                                                                <t t-if="tax[0] != 'IVA Exento'">
+                                                                        <t t-set="netoG" t-value="netoG + tax[2]" />
+                                                                </t>
+                                                        </t>
+                                                        <p t-esc="netoG" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" />
+						</td>
+                                              	<td name="Neto Exento">
+							<t t-set="netoE" t-value="0" />
+                                                        <t t-foreach="invoice.amount_by_group" t-as="tax">
+                                                                <t t-if="tax[0] == 'IVA Exento'">
+                                                                        <t t-set="netoE" t-value="netoG + tax[2]" />
+                                                                </t>
+                                                        </t>
+                                                        <p t-esc="netoE" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" />
+						</td>
+                                              	<td name="iva27">
+							<t t-set="iva27" t-value="0" />
+                                                        <t t-foreach="invoice.amount_by_group" t-as="tax">
+                                                                <t t-if="tax[0] == 'IVA 27%'">
+                                                                        <t t-set="iva27" t-value="iva27 + tax[1]" />
+                                                                </t>
+                                                        </t>
+                                                        <p t-esc="iva27" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" />
+						</td>
+                                              	<td name="iva21">
+							<t t-set="iva21" t-value="0" />
+							<t t-foreach="invoice.amount_by_group" t-as="tax">
+								<t t-if="tax[0] == 'IVA 21%'">
+									<t t-set="iva21" t-value="iva21 + tax[1]" />
+								</t>
+							</t>
+							<p t-esc="iva21" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" />
+						</td>
+                                              	<td name="iva10.5">
+							<t t-set="iva105" t-value="0" />
+                                                        <t t-foreach="invoice.amount_by_group" t-as="tax">
+                                                                <t t-if="tax[0] == 'IVA 10.5%'">
+                                                                        <t t-set="iva105" t-value="iva105 + tax[1]" />
+                                                                </t>
+                                                        </t>
+                                                        <p t-esc="iva105" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" />
+						</td>
                                               	<td>0</td>
-                                              	<td>0</td>
-                                              	<td>0</td>
-                                              	<td>0</td>
-                                              	<td>0</td>
-                                              	<td>0</td>
-                                              	<td>0</td>
+                                              	<td>
+							<p t-esc="netoG + iva27 + iva21 + iva105" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" />
+						</td>
                                         </tr>
 				</tbody>
 			    </table>
