@@ -61,6 +61,32 @@
     	                    <page string="Notas" name="notes">
     	                        <field name="note" string="Notas"/>
     	                    </page>
+                            <page string="IVA Digital" name="IVA Digital">
+	                        <button name="compute_digital_data" type="object" string="Generar Informacion" />
+	                        <group>
+	                            <field name="digital_vouchers_filename" invisible="1"/>
+	                            <field name="digital_aliquots_filename" invisible="1"/>
+	                            <field name="digital_import_aliquots_filename" invisible="1"/>
+	                            <!--group>
+	                                <field name="digital_skip_invoice_tests"/>
+	                                <label for="digital_skip_lines"/>
+	                                <div>
+	                                    <field name="digital_skip_lines" class="oe_inline"/>
+	                                    <button name="digital_action_see_skiped_invoices" class="oe_inline oe_link" type="object" string="(Ver facturas salteadas)" attrs="{'invisible': [('digital_skip_lines', '=', False)]}"/>
+	                                </div>
+	                            </group-->
+                                </group>
+	                        <group>
+	                            <field name="digital_vouchers_file" filename="digital_vouchers_filename"/>
+	                            <field name="digital_aliquots_file" filename="digital_aliquots_filename"/>
+	                            <field name="digital_import_aliquots_file" filename="digital_import_aliquots_filename"/>
+	                        </group>
+                                <group groups="base.group_no_one">
+	                            <field name="REGDIGITAL_CV_CBTE" widget="ace"/>
+	                            <field name="REGDIGITAL_CV_ALICUOTAS" widget="ace"/>
+	                            <field name="REGDIGITAL_CV_COMPRAS_IMPORTACIONES" widget="ace" attrs="{'invisible': [('type', '!=', 'purchase')]}"/>
+	                        </group>
+                            </page>
     	                </notebook>
                     </sheet>
                     <div class="oe_chatter">
@@ -93,6 +119,30 @@
         <menuitem id="menu_account_sale_vat_ledger"
                   action="action_account_sale_vat_ledger"
                   parent="account.menu_finance_receivables"
-                  sequence="40"/>                          
+                  sequence="40"/>
+
+
+        <record id="view_document_type_digital_form" model="ir.ui.view">
+            <field name="name">account.document.type.digital.form</field>
+            <field name="model">l10n_latam.document.type</field>
+            <field name="inherit_id" ref="l10n_latam_invoice_document.view_document_type_form"/>
+            <field name="arch" type="xml">
+                <group>
+                    <field name="export_to_digital" widget="boolean_toggle"/>
+                </group>
+            </field>
+        </record>
+
+        <record id="view_document_type_digital_tree" model="ir.ui.view">
+            <field name="name">account.document.type.digital.tree</field>
+            <field name="model">l10n_latam.document.type</field>
+            <field name="inherit_id" ref="l10n_latam_invoice_document.view_document_type_tree"/>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="export_to_digital" widget="boolean_toggle"/>
+                </tree>
+            </field>
+        </record>
+                          
 	</data>
 </openerp>
