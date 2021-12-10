@@ -41,45 +41,35 @@
     	                </group>
     	                <notebook>
                             <page string="Diarios" name="journal_ids">
-                                <field name="journal_ids" domain="[('type','in',['purchase', 'sale', 'purchase_refund', 'sale_refund']),('company_id', 'child_of', company_id)]"/>
+                                <field name="journal_ids" domain="[('type','in',['purchase', 'sale', 'purchase_refund', 'sale_refund']),('company_id', 'child_of', company_id)]" readonly="1"/>
                             </page>
                             <page string="Facturas" name="invoices">
-                                <field name="invoice_ids">
-                                    <!-- tree default_order="date_invoice">
-                                        <field name="state" invisible="1"/>
-                                        <field name="invoice_date"/>
+                                <field name="invoice_ids" readonly="1">
+                                    <tree default_order="invoice_date">
                                         <field name="name"/>
-                                        <field name="commercial_partner_id"/>
-                                        <field name="afip_responsability_type_id"/>
-                                        <field name="main_id_number"/>
+                                        <field name="invoice_date"/>
+                                        <field name="partner_id"/>
                                         <field name="amount_untaxed"/>
                                         <field name="amount_tax"/>
                                         <field name="amount_total"/>
-                                    </tree -->
+                                        <field name="state" widget="badge"/>
+                                    </tree>
                                 </field>
                             </page>
     	                    <page string="Notas" name="notes">
     	                        <field name="note" string="Notas"/>
     	                    </page>
-                            <page string="IVA Digital" name="IVA Digital">
-	                        <button name="compute_digital_data" type="object" string="Generar Informacion" />
+                            <page string="IVA Digital" name="iva_digital">
+	                        <button name="compute_digital_data" type="object" string="Generar Informacion IVA Digital" help="Crea los archivos TXT con la información de las Facturas del presente período en formato de IVA Digital." />
 	                        <group>
-	                            <field name="digital_vouchers_filename" invisible="1"/>
-	                            <field name="digital_aliquots_filename" invisible="1"/>
-	                            <field name="digital_import_aliquots_filename" invisible="1"/>
-	                            <!--group>
-	                                <field name="digital_skip_invoice_tests"/>
-	                                <label for="digital_skip_lines"/>
-	                                <div>
-	                                    <field name="digital_skip_lines" class="oe_inline"/>
-	                                    <button name="digital_action_see_skiped_invoices" class="oe_inline oe_link" type="object" string="(Ver facturas salteadas)" attrs="{'invisible': [('digital_skip_lines', '=', False)]}"/>
-	                                </div>
-	                            </group-->
+	                            <field name="digital_vouchers_filename" invisible="1" string="IVA Digital Comprobante" />
+	                            <field name="digital_aliquots_filename" invisible="1" string="IVA Digital de Alícuotas" />
+	                            <field name="digital_import_aliquots_filename" invisible="1" string="IVA Digital de Alícuotas de Importaciones"/>
                                 </group>
 	                        <group>
-	                            <field name="digital_vouchers_file" filename="digital_vouchers_filename"/>
-	                            <field name="digital_aliquots_file" filename="digital_aliquots_filename"/>
-	                            <field name="digital_import_aliquots_file" filename="digital_import_aliquots_filename"/>
+	                            <field name="digital_vouchers_file" filename="digital_vouchers_filename" string="IVA Digital Comprobante"/>
+	                            <field name="digital_aliquots_file" filename="digital_aliquots_filename" string="IVA Digital de Alícuotas"/>
+	                            <field name="digital_import_aliquots_file" filename="digital_import_aliquots_filename" string="IVA Digital de Alícuotas de Importaciones" attrs="{'invisible': [('type', '!=', 'purchase')]}"/>
 	                        </group>
                                 <group groups="base.group_no_one">
 	                            <field name="REGDIGITAL_CV_CBTE" widget="ace"/>
@@ -128,7 +118,7 @@
             <field name="inherit_id" ref="l10n_latam_invoice_document.view_document_type_form"/>
             <field name="arch" type="xml">
                 <group>
-                    <field name="export_to_digital" widget="boolean_toggle"/>
+                    <field string="Exportar a Digital" help="Si marca esta casilla, el tipo de comprobante se podrá exportar a digital." name="export_to_digital" widget="boolean_toggle"/>
                 </group>
             </field>
         </record>
@@ -139,7 +129,7 @@
             <field name="inherit_id" ref="l10n_latam_invoice_document.view_document_type_tree"/>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="export_to_digital" widget="boolean_toggle"/>
+                    <field string="Exportar a Digital" name="export_to_digital" widget="boolean_toggle"/>
                 </tree>
             </field>
         </record>
