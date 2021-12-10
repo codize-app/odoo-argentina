@@ -16,7 +16,7 @@
 	                        </span>
 	                    </h2>
 
-			    <table class="table table-sm" style="font-size:12px;">
+			    <table class="table table-sm" style="font-size:11px;">
 				<thead class="thead-dark">
 					<tr>
 						<th style="width:auto;">Fecha</th>
@@ -26,6 +26,7 @@
 	      					<th>Tipo Comprobante</th>
 						<th>Nro Comprobante</th>
 						<th>Neto gravado</th>
+						<th>Neto no gravado</th>
 						<th>Neto exento</th>
 						<th>IVA 27</th>
 						<th>IVA 21</th>
@@ -45,12 +46,21 @@
                                               	<td name="Neto Gravado">
 							<t t-set="netoG" t-value="0" />
                                                         <t t-foreach="invoice.amount_by_group" t-as="tax">
-                                                                <t t-if="tax[0] != 'IVA Exento'">
+                                                                <t t-if="tax[0] != 'IVA Exento' and tax[0] != 'IVA No Gravado' and tax[0] != 'IVA 0%'">
                                                                         <t t-set="netoG" t-value="netoG + tax[2]" />
                                                                 </t>
                                                         </t>
                                                         <p t-esc="netoG" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" />
 						</td>
+						<td name="Neto No Gravado">
+                                                        <t t-set="netoN" t-value="0" />
+                                                        <t t-foreach="invoice.amount_by_group" t-as="tax">
+                                                                <t t-if="tax[0] == 'IVA No Gravado' or tax[0] == 'IVA 0%'">
+                                                                        <t t-set="netoG" t-value="netoG + tax[2]" />
+                                                                </t>
+                                                        </t>
+                                                        <p t-esc="netoN" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" />
+                                                </td>
                                               	<td name="Neto Exento">
 							<t t-set="netoE" t-value="0" />
                                                         <t t-foreach="invoice.amount_by_group" t-as="tax">
@@ -101,7 +111,7 @@
         </template>
 
         <record id="paperformat_landscape" model="report.paperformat">
-            <field name="name">Apaisado A4</field>
+            <field name="name">Apaisado - Libro IVA</field>
             <field name="default" eval="False"/>
             <field name="format">A4</field>
             <field name="page_height">0</field>
@@ -109,8 +119,8 @@
             <field name="orientation">Landscape</field>
             <field name="margin_top">10</field>
             <field name="margin_bottom">10</field>
-            <field name="margin_left">8</field>
-            <field name="margin_right">8</field>
+            <field name="margin_left">2</field>
+            <field name="margin_right">2</field>
             <field name="header_line" eval="False"/>
             <field name="header_spacing">40</field>
             <field name="dpi">95</field>
@@ -124,6 +134,7 @@
             paperformat="l10n_ar_ledger.paperformat_landscape"
             name="l10n_ar_ledger.ledger_report"
             file="l10n_ar_ledger.ledger_report"
+            print_report_name="'Libro IVA ' + ('Compras' if object.type == 'purchase' else 'Ventas') + '_' + (object.date_to.strftime('%d-%m-%Y')) + '.pdf'"
         />
 
     </data>
