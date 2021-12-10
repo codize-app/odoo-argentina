@@ -97,17 +97,6 @@ class account_vat_ledger(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
-
-    #@api.onchange('date_range_id')
-    #def onchange_date_range_id(self):
-    #    if self.date_range_id:
-    #        self.date_from = self.date_range_id.date_start
-    #        self.date_to = self.date_range_id.date_end
-    #    else:
-    #        self.date_from = self.date_to = None
-    # period_id = fields.Many2one(
-    #     'account.period', 'Period', required=True,
-    #     readonly=True, states={'draft': [('readonly', False)]},)
     journal_ids = fields.Many2many(
         'account.journal', 'account_vat_ledger_journal_rel',
         'vat_ledger_id', 'journal_id',
@@ -116,17 +105,6 @@ class account_vat_ledger(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
-    #first_page = fields.Integer(
-    #    "First Page",
-    #    required=True,
-    #    readonly=True,
-    #    states={'draft': [('readonly', False)]},
-    #)
-    #last_page = fields.Integer(
-    #    "Last Page",
-    #    readonly=True,
-    #    states={'draft': [('readonly', False)]},
-    #)
     presented_ledger = fields.Binary(
         "Presented Ledger",
         readonly=True,
@@ -143,7 +121,8 @@ class account_vat_ledger(models.Model):
     note = fields.Html(
         "Notas"
     )
-# Computed fields
+
+    # Computed fields
     name = fields.Char(
         'Nombre',
         compute='_get_name'
@@ -156,36 +135,6 @@ class account_vat_ledger(models.Model):
         string="Facturas",
         compute="_get_data"
     )
-    #document_type_ids = fields.Many2many(
-    #    'account.document.type',
-    #    string="Document Classes",
-    #    compute="_get_data"
-    #)
-    #vat_tax_ids = fields.Many2many(
-    #    'account.tax',
-    #    string="VAT Taxes",
-    #    compute="_get_data"
-    #)
-    #other_tax_ids = fields.Many2many(
-    #    'account.tax',
-    #    string="Other Taxes",
-    #    compute="_get_data"
-    #)
-    # vat_tax_code_ids = fields.Many2many(
-    #     'account.tax.code',
-    #     string="VAT Tax Codes",
-    #     compute="_get_data"
-    # )
-    # other_tax_code_ids = fields.Many2many(
-    #     'account.tax.code',
-    #     string="Other Tax Codes",
-    #     compute="_get_data"
-    # )
-    #afip_responsability_type_ids = fields.Many2many(
-    #    'l10nafip.responsability.type',
-    #    string="AFIP Responsabilities",
-    #    compute="_get_data"
-    #)
 
     def format_amount(self, amount, padding=15, decimals=2, invoice=False):
         # get amounts on correct sign despite conifiguration on taxes and tax
