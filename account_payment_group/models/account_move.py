@@ -209,6 +209,10 @@ class AccountMove(models.Model):
                 'default_partner_id': self.partner_id.id,
                 'to_pay_move_line_ids': self.open_move_line_ids.ids,
                 'pop_up': True,
+                #Datos para crear pago completo desde factura
+                'from_invoice': 'yes',
+                'amount_invoice': self.amount_total,
+                'invoice_id': self.id,
                 # We set this because if became from other view and in the
                 # context has 'create=False' you can't crate payment lines
                 #  (for ej: subscription)
