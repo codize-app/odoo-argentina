@@ -41,7 +41,7 @@
     	                </group>
     	                <notebook>
                             <page string="Diarios" name="journal_ids">
-                                <field name="journal_ids" domain="[('type','in',['purchase', 'sale', 'purchase_refund', 'sale_refund']),('company_id', 'child_of', company_id)]" readonly="1"/>
+                                <field name="journal_ids" domain="[('type','in',['purchase', 'sale', 'purchase_refund', 'sale_refund']),('company_id', 'child_of', company_id)]"/>
                             </page>
                             <page string="Facturas" name="invoices">
                                 <field name="invoice_ids" readonly="1">
