@@ -25,6 +25,9 @@ class AccountPaymentGroup(models.Model):
     _order = "payment_date desc"
     _inherit = 'mail.thread'
 
+
+    related_invoice = fields.Many2one(comodel_name='account.move',string="Factura Relacionada", readonly=1)
+    related_invoice_amount = fields.Monetary(string="Monto Factura", related="related_invoice.amount_total", readonly=1)
     document_number = fields.Char(
         string='Nro Documento',
         copy=False,
@@ -679,6 +682,18 @@ class AccountPaymentGroup(models.Model):
             to_pay_move_line_ids).filtered(lambda x: (
                 x.account_id.reconcile and
                 x.account_id.internal_type in ('receivable', 'payable')))
+        
+        if self._context.get('from_invoice') == 'yes':
+            rec['related_invoice'] = self.env['account.move'].browse(self._context.get('invoice_id')).id
+            rec['payment_ids'] = [(0, 0, {'payment_group_id': self.id, 
+                                            'state':'draft', 
+                                            'partner_type': 'customer', 
+                                            'ref': 'Pago directo de factura', 
+                                            'payment_type': 'inbound',
+                                            'destination_account_id': 6,
+                                            'journal_id': int(self.env['ir.config_parameter'].get_param('account_payment_group.journal_def')) or False,
+                                            'amount': self._context.get('amount_invoice')})]
+
         if to_pay_move_lines:
             partner = to_pay_move_lines.mapped('partner_id')
             if len(partner) != 1:
@@ -769,12 +784,14 @@ class AccountPaymentGroup(models.Model):
         create_from_expense = self._context.get('create_from_expense', False)
         self = self.with_context({})
         for rec in self:
-
+            _logger.warning("entro")
             if not rec.receiptbook_id:
                 rec.payment_ids.write({
                     'receiptbook_id': False,
                 })
                 continue
+            
+            _logger.warning("2")
             if not rec.document_number:
                 if not rec.receiptbook_id.sequence_id:
                     raise UserError(_(
@@ -790,7 +807,7 @@ class AccountPaymentGroup(models.Model):
             #    'receiptbook_id': rec.receiptbook_id.id,
             #})
 
-
+            _logger.warning("3")
             # TODO if we want to allow writeoff then we can disable this
             # constrain and send writeoff_journal_id and writeoff_acc_id
             if not rec.payment_ids:
@@ -799,6 +816,7 @@ class AccountPaymentGroup(models.Model):
                     'lines!'))
             # si el pago se esta posteando desde statements y hay doble
             # validacion no verificamos que haya deuda seleccionada
+            _logger.warning("4")
             if (rec.payment_subtype == 'double_validation' and
                     rec.payment_difference and (not create_from_statement and
                                                 not create_from_expense)):

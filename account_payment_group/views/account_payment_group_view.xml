@@ -144,6 +144,8 @@
                 <!-- <group attrs="{'invisible': [('payment_subtype', '!=', 'double_validation')]}"> -->
                     <group>
                         <field name="selected_debt" options="{'currency_field': 'currency_id'}" states="draft,confirmed"/>
+                        <field name="related_invoice" attrs="{'invisible': [('related_invoice', '==', False)]}"/>
+                        <field name="related_invoice_amount" attrs="{'invisible': [('related_invoice', '==', False)]}"/>
                         <field name="selected_finacial_debt" options="{'currency_field': 'currency_id'}" states="draft,confirmed" groups="account_financial_amount.account_use_financial_amounts"/>
                         <field name="matched_amount" options="{'currency_field': 'currency_id'}" states="posted" string="Monto a conciliar"/>
                         <field name="unmatched_amount" options="{'currency_field': 'currency_id'}" states="posted" string="Monto sin conciliar"/>
