@@ -675,22 +675,30 @@ class AccountPaymentGroup(models.Model):
 
     @api.model
     def default_get(self, fields):
-        # TODO si usamos los move lines esto no haria falta
         rec = super(AccountPaymentGroup, self).default_get(fields)
         to_pay_move_line_ids = self._context.get('to_pay_move_line_ids')
         to_pay_move_lines = self.env['account.move.line'].browse(
             to_pay_move_line_ids).filtered(lambda x: (
                 x.account_id.reconcile and
                 x.account_id.internal_type in ('receivable', 'payable')))
-        
+
         if self._context.get('from_invoice') == 'yes':
-            rec['related_invoice'] = self.env['account.move'].browse(self._context.get('invoice_id')).id
-            rec['payment_ids'] = [(0, 0, {'payment_group_id': self.id, 
-                                            'state':'draft', 
-                                            'partner_type': 'customer', 
-                                            'ref': 'Pago directo de factura', 
-                                            'payment_type': 'inbound',
-                                            'destination_account_id': 6,
+            invoice = self.env['account.move'].browse(self._context.get('invoice_id'))
+            rec['related_invoice'] = invoice.id
+
+            payment_type = ''
+            partner_type = ''
+            if invoice.move_type == 'out_invoice' or invoice.move_type == 'out_refund' or invoice.move_type == 'out_receipt':
+                payment_type = 'inbound'
+                partner_type = 'customer'
+            else:
+                payment_type = 'outbound'
+                partner_type = 'supplier'
+
+            rec['payment_ids'] = [(0, 0, {'payment_group_id': self.id,
+                                            'state': 'draft',
+                                            'partner_type': partner_type,
+                                            'payment_type': payment_type,
                                             'journal_id': int(self.env['ir.config_parameter'].get_param('account_payment_group.journal_def')) or False,
                                             'amount': self._context.get('amount_invoice')})]
 
@@ -698,13 +706,13 @@ class AccountPaymentGroup(models.Model):
             partner = to_pay_move_lines.mapped('partner_id')
             if len(partner) != 1:
                 raise ValidationError(_(
-                    'You can not send to pay lines from different partners'))
+                    'No se pueden mandar líneas de pagos a diferentes Contactos'))
 
             internal_type = to_pay_move_lines.mapped(
                 'account_id.internal_type')
             if len(internal_type) != 1:
                 raise ValidationError(_(
-                    'You can not send to pay lines from different partners'))
+                    'No se pueden mandar líneas de pagos desde diferentes Contactos'))
             rec['partner_id'] = self._context.get(
                 'default_partner_id', partner[0].id)
             partner_id = self._context.get('default_partner_id',partner[0].id)
@@ -715,13 +723,8 @@ class AccountPaymentGroup(models.Model):
                     rec['partner_type'] = 'customer'
                 if partner_id.supplier_rank:
                     rec['partner_type'] = 'supplier'
-            #rec['partner_type'] = MAP_ACCOUNT_TYPE_PARTNER_TYPE[
-            #    internal_type[0]]
-            # rec['currency_id'] = invoice['currency_id'][0]
-            # rec['payment_type'] = (
-            #     internal_type[0] == 'receivable' and
-            #     'inbound' or 'outbound')
             rec['to_pay_move_line_ids'] = [(6, False, to_pay_move_line_ids)]
+
         return rec
 
     def button_journal_entries(self):
