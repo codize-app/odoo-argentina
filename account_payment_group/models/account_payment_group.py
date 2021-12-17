@@ -685,22 +685,24 @@ class AccountPaymentGroup(models.Model):
         if self._context.get('from_invoice') == 'yes':
             invoice = self.env['account.move'].browse(self._context.get('invoice_id'))
             rec['related_invoice'] = invoice.id
+            
+            if self.env['ir.config_parameter'].get_param('account_payment_group.journal_def'):
 
-            payment_type = ''
-            partner_type = ''
-            if invoice.move_type == 'out_invoice' or invoice.move_type == 'out_refund' or invoice.move_type == 'out_receipt':
-                payment_type = 'inbound'
-                partner_type = 'customer'
-            else:
-                payment_type = 'outbound'
-                partner_type = 'supplier'
+                payment_type = ''
+                partner_type = ''
+                if invoice.move_type == 'out_invoice' or invoice.move_type == 'out_refund' or invoice.move_type == 'out_receipt':
+                    payment_type = 'inbound'
+                    partner_type = 'customer'
+                else:
+                    payment_type = 'outbound'
+                    partner_type = 'supplier'
 
-            rec['payment_ids'] = [(0, 0, {'payment_group_id': self.id,
-                                            'state': 'draft',
-                                            'partner_type': partner_type,
-                                            'payment_type': payment_type,
-                                            'journal_id': int(self.env['ir.config_parameter'].get_param('account_payment_group.journal_def')) or False,
-                                            'amount': self._context.get('amount_invoice')})]
+                rec['payment_ids'] = [(0, 0, {'payment_group_id': self.id,
+                                                'state': 'draft',
+                                                'partner_type': partner_type,
+                                                'payment_type': payment_type,
+                                                'journal_id': int(self.env['ir.config_parameter'].get_param('account_payment_group.journal_def')) or False,
+                                                'amount': self._context.get('amount_invoice')})]
 
         if to_pay_move_lines:
             partner = to_pay_move_lines.mapped('partner_id')
