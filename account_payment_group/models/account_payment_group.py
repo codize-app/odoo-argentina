@@ -1,6 +1,3 @@
-# © 2016 ADHOC SA
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-
 from odoo import models, api, fields, _
 from odoo.exceptions import ValidationError, UserError
 
@@ -25,7 +22,6 @@ class AccountPaymentGroup(models.Model):
     _order = "payment_date desc"
     _inherit = 'mail.thread'
 
-
     related_invoice = fields.Many2one(comodel_name='account.move',string="Factura Relacionada", readonly=1)
     related_invoice_amount = fields.Monetary(string="Monto Factura", related="related_invoice.amount_total", readonly=1)
     document_number = fields.Char(
@@ -39,10 +35,8 @@ class AccountPaymentGroup(models.Model):
     document_sequence_id = fields.Many2one(
         related='receiptbook_id.sequence_id',
     )
-    localization = fields.Char('Localizacion',default='argentina')
-    #localization = fields.Selection(
-#        related='company_id.localization',
- #   )
+    localization = fields.Char('Localizacion', default='argentina')
+
     receiptbook_id = fields.Many2one(
         'account.payment.receiptbook',
         'Talonario de Recibos',
@@ -52,12 +46,8 @@ class AccountPaymentGroup(models.Model):
         ondelete='restrict',
         auto_join=True,
     )
-    #document_type_id = fields.Many2one(
-    #    related='receiptbook_id.document_type_id',
-    #)
     next_number = fields.Integer(
         related='receiptbook_id.sequence_id.number_next_actual',
-        #compute='_compute_next_number',
         string='Prox Numero',
     )
     name = fields.Char(
@@ -68,7 +58,7 @@ class AccountPaymentGroup(models.Model):
     )
     company_id = fields.Many2one(
         'res.company',
-        string='Compania',
+        string='Compañía',
         required=True,
         index=True,
         change_default=True,

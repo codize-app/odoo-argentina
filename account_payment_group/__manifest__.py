@@ -1,17 +1,11 @@
-# © 2016 ADHOC SA
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 {
-    "name": "Grupos de Pagos con Múltiples Métodos",
+    "name": "Grupos de Pago con Múltiples Métodos",
     "version": "14.0.1.0.0",
     "category": "Accounting",
     "author": "ADHOC SA, Exemax, Codize",
     "license": "AGPL-3",
     "application": False,
     'installable': True,
-    "external_dependencies": {
-        "python": [],
-        "bin": [],
-    },
     "depends": [
         "account_financial_amount",
         "account_payment_fix",
