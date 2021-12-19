@@ -99,11 +99,11 @@ Agregar la ruta odoo-argentina a la ruta de addons en `odoo.conf`. Reiniciar el 
 ## l10n_ar extras
 
 * `l10n_ar_ledger`: Libro IVA para Ventas y Compras
-* `l10n_ar_report_picking`: Soporte para Remito Electrónico
+* `l10n_ar_report_picking`: Soporte para Remito PreImpreso
 * `l10n_ar_exchange_rate`: Obtiene el tipo de cambio desde AFIP
 * `l10n_ar_bank`: Instala la Lista de Bancos Argentinos
-* `l10n_ar_partner`: Agrega nuevas características a los contacos (como el nombre de fantasía)
-* `l10n_ar_taxes`: Agrega otro tipo de impuestos (como Impuestos Internos)
+* `l10n_ar_partner`: Agrega nuevas características a los contactos (como el nombre de fantasía, actualización desde Padrón)
+* `l10n_ar_taxes`: Agrega otro tipo de facilidades en la carga de impuestos (como Impuestos Internos)
 
 ## Extras
 
