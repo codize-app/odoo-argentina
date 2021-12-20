@@ -25,3 +25,8 @@ class ResConfigSettings(models.TransientModel):
         related='company_id.double_validation',
         readonly=False,
     )
+    journal_id_def = fields.Many2one(
+        comodel_name='account.journal',
+        string='Diario por defecto para pagos directos de factura', 
+        config_parameter='account_payment_group.journal_def'
+    )

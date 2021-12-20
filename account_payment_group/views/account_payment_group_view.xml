@@ -23,23 +23,6 @@
     </field>
 </record>
 
-<!-- <record id="view_account_supplier_payment_group_tree" model="ir.ui.view">
-    <field name="name">account.supplier.payment.tree</field>
-    <field name="model">account.payment.group</field>
-    <field name="arch" type="xml">
-        <tree decoration-info="state=='draft'" decoration-muted="state=='reconciled'" edit="false">
-            <field name="payment_date"/>
-            <field name="name"/>
-            <field name="partner_id" string="Vendor"/>
-            <field name="to_pay_amount"/>
-            <field name="company_id" groups="base.group_multi_company"/>
-            <field name="state"/>
-            <field name="currency_id" invisible="1"/>
-            <field name="partner_type" invisible="1"/>
-        </tree>
-    </field>
-</record> -->
-
 <record id="view_account_payment_group_search" model="ir.ui.view">
     <field name="name">account.payment.group.search</field>
     <field name="model">account.payment.group</field>
@@ -144,6 +127,8 @@
                 <!-- <group attrs="{'invisible': [('payment_subtype', '!=', 'double_validation')]}"> -->
                     <group>
                         <field name="selected_debt" options="{'currency_field': 'currency_id'}" states="draft,confirmed"/>
+                        <field name="related_invoice" attrs="{'invisible': [('related_invoice', '==', False)]}"/>
+                        <field name="related_invoice_amount" attrs="{'invisible': [('related_invoice', '==', False)]}"/>
                         <field name="selected_finacial_debt" options="{'currency_field': 'currency_id'}" states="draft,confirmed" groups="account_financial_amount.account_use_financial_amounts"/>
                         <field name="matched_amount" options="{'currency_field': 'currency_id'}" states="posted" string="Monto a conciliar"/>
                         <field name="unmatched_amount" options="{'currency_field': 'currency_id'}" states="posted" string="Monto sin conciliar"/>
@@ -183,7 +168,7 @@
                     </page>
                     <page string="Deudas" attrs="{'invisible': ['|', '|', ('pop_up', '=', True), ('payment_subtype', '!=', 'simple'), ('state', '!=', 'draft')]}">
                         <p>
-                            Payment will be automatically matched with the oldest lines of this list (by maturity date). You can remove any line you dont want to be matched.
+                            El pago se comparará automáticamente con las líneas más antiguas de esta lista (por fecha de vencimiento). Puede eliminar cualquier línea que no desee que coincida.
                         </p>
                         <button name="add_all" string="Agregar Todos / Refrescar" states="draft" type="object"/>
                         <button name="remove_all" string="Remover Todos" states="draft" type="object"/>
@@ -230,10 +215,11 @@
     <!-- <field name="view_id" ref="view_account_payment_group_tree"/> -->
     <field name="help" type="html">
         <p class="oe_view_nocontent_create">
-          Click to register a payment
-        </p><p>
-          Payments are used to register liquidity movements (send or collect).
-          You can then process those payments by your own means or by using installed facilities.
+          Click para registrar un pago
+        </p>
+        <p>
+          Los pagos se utilizan para registrar movimientos de liquidez (enviar o cobrar).
+          A continuación, puede procesar esos pagos por sus propios medios o utilizando las medios instalados.
         </p>
     </field>
 </record>
@@ -258,10 +244,11 @@
     <!-- <field name="view_id" ref="view_account_supplier_payment_group_tree"/> -->
     <field name="help" type="html">
         <p class="oe_view_nocontent_create">
-          Click to register a payment
-        </p><p>
-          Payments are used to register liquidity movements (send or collect).
-          You can then process those payments by your own means or by using installed facilities.
+          Click para registrar un pago
+        </p>
+        <p>
+          Los pagos se utilizan para registrar movimientos de liquidez (enviar o cobrar).
+          A continuación, puede procesar esos pagos por sus propios medios o utilizando las medios instalados.
         </p>
     </field>
 </record>
