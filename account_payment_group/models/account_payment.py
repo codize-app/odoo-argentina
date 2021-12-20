@@ -1,6 +1,3 @@
-# © 2016 ADHOC SA
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
@@ -31,10 +28,10 @@ class AccountPayment(models.Model):
     # we make a copy without transfer option, we try with related but it
     # does not works
     payment_type_copy = fields.Selection(
-        selection=[('outbound', 'Send Money'), ('inbound', 'Receive Money')],
+        selection=[('outbound', 'Enviar Dinero'), ('inbound', 'Recibir Dinero')],
         compute='_compute_payment_type_copy',
         inverse='_inverse_payment_type_copy',
-        string='Payment Type (without transfer)'
+        string='Tipo de Pago (sin transferencia)'
     )
     signed_amount = fields.Monetary(
         string='Monto',
@@ -68,7 +65,7 @@ class AccountPayment(models.Model):
     )
     company_currency_id = fields.Many2one(
         related='company_id.currency_id',
-        string='Company currency',
+        string='Moneda de compañía',
     )
 
     def _seek_for_lines(self):
@@ -112,8 +109,6 @@ class AccountPayment(models.Model):
             'currency_id', 'partner_id', 'destination_account_id', 'partner_bank_id', 'journal_id',
         )):
             return
-
-        
 
         for pay in self.with_context(skip_account_move_synchronization=True):
             if not pay.payment_group_id:
@@ -450,7 +445,6 @@ class AccountPayment(models.Model):
                 self.payment_group_id.communication,
                 self.communication and ": %s" % self.communication or "")
         return vals
-
 
     def _prepare_payment_moves(self):
         res = super(AccountPayment, self)._prepare_payment_moves()

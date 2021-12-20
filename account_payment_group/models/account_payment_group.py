@@ -1,6 +1,3 @@
-# © 2016 ADHOC SA
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-
 from odoo import models, api, fields, _
 from odoo.exceptions import ValidationError, UserError
 
@@ -25,6 +22,8 @@ class AccountPaymentGroup(models.Model):
     _order = "payment_date desc"
     _inherit = 'mail.thread'
 
+    related_invoice = fields.Many2one(comodel_name='account.move',string="Factura Relacionada", readonly=1)
+    related_invoice_amount = fields.Monetary(string="Monto Factura", related="related_invoice.amount_total", readonly=1)
     document_number = fields.Char(
         string='Nro Documento',
         copy=False,
@@ -36,10 +35,8 @@ class AccountPaymentGroup(models.Model):
     document_sequence_id = fields.Many2one(
         related='receiptbook_id.sequence_id',
     )
-    localization = fields.Char('Localizacion',default='argentina')
-    #localization = fields.Selection(
-#        related='company_id.localization',
- #   )
+    localization = fields.Char('Localizacion', default='argentina')
+
     receiptbook_id = fields.Many2one(
         'account.payment.receiptbook',
         'Talonario de Recibos',
@@ -49,12 +46,8 @@ class AccountPaymentGroup(models.Model):
         ondelete='restrict',
         auto_join=True,
     )
-    #document_type_id = fields.Many2one(
-    #    related='receiptbook_id.document_type_id',
-    #)
     next_number = fields.Integer(
         related='receiptbook_id.sequence_id.number_next_actual',
-        #compute='_compute_next_number',
         string='Prox Numero',
     )
     name = fields.Char(
@@ -65,7 +58,7 @@ class AccountPaymentGroup(models.Model):
     )
     company_id = fields.Many2one(
         'res.company',
-        string='Compania',
+        string='Compañía',
         required=True,
         index=True,
         change_default=True,
@@ -672,24 +665,46 @@ class AccountPaymentGroup(models.Model):
 
     @api.model
     def default_get(self, fields):
-        # TODO si usamos los move lines esto no haria falta
         rec = super(AccountPaymentGroup, self).default_get(fields)
         to_pay_move_line_ids = self._context.get('to_pay_move_line_ids')
         to_pay_move_lines = self.env['account.move.line'].browse(
             to_pay_move_line_ids).filtered(lambda x: (
                 x.account_id.reconcile and
                 x.account_id.internal_type in ('receivable', 'payable')))
+
+        if self._context.get('from_invoice') == 'yes':
+            invoice = self.env['account.move'].browse(self._context.get('invoice_id'))
+            rec['related_invoice'] = invoice.id
+            
+            if self.env['ir.config_parameter'].get_param('account_payment_group.journal_def'):
+
+                payment_type = ''
+                partner_type = ''
+                if invoice.move_type == 'out_invoice' or invoice.move_type == 'out_refund' or invoice.move_type == 'out_receipt':
+                    payment_type = 'inbound'
+                    partner_type = 'customer'
+                else:
+                    payment_type = 'outbound'
+                    partner_type = 'supplier'
+
+                rec['payment_ids'] = [(0, 0, {'payment_group_id': self.id,
+                                                'state': 'draft',
+                                                'partner_type': partner_type,
+                                                'payment_type': payment_type,
+                                                'journal_id': int(self.env['ir.config_parameter'].get_param('account_payment_group.journal_def')) or False,
+                                                'amount': self._context.get('amount_invoice')})]
+
         if to_pay_move_lines:
             partner = to_pay_move_lines.mapped('partner_id')
             if len(partner) != 1:
                 raise ValidationError(_(
-                    'You can not send to pay lines from different partners'))
+                    'No se pueden mandar líneas de pagos a diferentes Contactos'))
 
             internal_type = to_pay_move_lines.mapped(
                 'account_id.internal_type')
             if len(internal_type) != 1:
                 raise ValidationError(_(
-                    'You can not send to pay lines from different partners'))
+                    'No se pueden mandar líneas de pagos desde diferentes Contactos'))
             rec['partner_id'] = self._context.get(
                 'default_partner_id', partner[0].id)
             partner_id = self._context.get('default_partner_id',partner[0].id)
@@ -700,13 +715,8 @@ class AccountPaymentGroup(models.Model):
                     rec['partner_type'] = 'customer'
                 if partner_id.supplier_rank:
                     rec['partner_type'] = 'supplier'
-            #rec['partner_type'] = MAP_ACCOUNT_TYPE_PARTNER_TYPE[
-            #    internal_type[0]]
-            # rec['currency_id'] = invoice['currency_id'][0]
-            # rec['payment_type'] = (
-            #     internal_type[0] == 'receivable' and
-            #     'inbound' or 'outbound')
             rec['to_pay_move_line_ids'] = [(6, False, to_pay_move_line_ids)]
+
         return rec
 
     def button_journal_entries(self):
@@ -769,12 +779,14 @@ class AccountPaymentGroup(models.Model):
         create_from_expense = self._context.get('create_from_expense', False)
         self = self.with_context({})
         for rec in self:
-
+            _logger.warning("entro")
             if not rec.receiptbook_id:
                 rec.payment_ids.write({
                     'receiptbook_id': False,
                 })
                 continue
+            
+            _logger.warning("2")
             if not rec.document_number:
                 if not rec.receiptbook_id.sequence_id:
                     raise UserError(_(
@@ -790,7 +802,7 @@ class AccountPaymentGroup(models.Model):
             #    'receiptbook_id': rec.receiptbook_id.id,
             #})
 
-
+            _logger.warning("3")
             # TODO if we want to allow writeoff then we can disable this
             # constrain and send writeoff_journal_id and writeoff_acc_id
             if not rec.payment_ids:
@@ -799,6 +811,7 @@ class AccountPaymentGroup(models.Model):
                     'lines!'))
             # si el pago se esta posteando desde statements y hay doble
             # validacion no verificamos que haya deuda seleccionada
+            _logger.warning("4")
             if (rec.payment_subtype == 'double_validation' and
                     rec.payment_difference and (not create_from_statement and
                                                 not create_from_expense)):
