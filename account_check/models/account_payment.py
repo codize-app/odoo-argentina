@@ -57,7 +57,7 @@ class AccountPayment(models.Model):
         copy=False,
         states={'draft': [('readonly', False)]},
     )
-    check_number = fields.Integer(
+    check_number = fields.Char(
         'Numero',
         readonly=True,
         states={'draft': [('readonly', False)]},
