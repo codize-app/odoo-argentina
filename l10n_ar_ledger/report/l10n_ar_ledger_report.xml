@@ -21,7 +21,6 @@
 					<tr>
 						<th style="width:auto;">Fecha</th>
 	      					<th>Razón Social</th>
-						<th>Comprobante</th>
 	      					<th>CUIT</th>
 						<th>Responsabilidad AFIP</th>
 	      					<th>Tipo Comprobante</th>
@@ -34,17 +33,17 @@
 						<th>IVA 10.5</th>
 						<th>Otros</th>
 						<th>Total gravado</th>
+						<th>Total</th>
 	    				</tr>
 				</thead>
 				<tbody>
                                         <tr t-foreach="o.invoice_ids" t-as="invoice">
 						<td><span t-field="invoice.invoice_date_due" /></td>
                                               	<td><span t-field="invoice.partner_id.name" /></td>
-						<td><span t-field="invoice.name" /></td>
                                               	<td><span t-if="invoice.partner_id.l10n_latam_identification_type_id.name == 'CUIT'" t-field="invoice.partner_id.vat" /></td>
                                               	<td><span t-field="invoice.partner_id.l10n_ar_afip_responsibility_type_id" /></td>
                                               	<td><span t-field="invoice.l10n_latam_document_type_id.name" /></td>
-                                              	<td><span t-if="invoice.document_number" t-field="invoice.document_number" /></td>
+                                              	<td><span t-field="invoice.name" /></td>
                                               	<td name="Neto Gravado">
 							<t t-set="netoG" t-value="0" />
                                                         <t t-foreach="invoice.amount_by_group" t-as="tax">
@@ -103,6 +102,7 @@
                                               	<td>
 							<p t-esc="netoG + iva27 + iva21 + iva105" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" />
 						</td>
+						<td><span t-field="invoice.amount_total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" /></td>
                                         </tr>
 				</tbody>
 			    </table>
