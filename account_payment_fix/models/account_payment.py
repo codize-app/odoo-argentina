@@ -216,11 +216,11 @@ class AccountPayment(models.Model):
                 self.partner_type = 'customer'
             elif self.payment_type == 'outbound':
                 self.partner_type = 'supplier'
-    #        else:
-    #            self.partner_type = False
+            else:
+                self.partner_type = False
             # limpiamos journal ya que podria no estar disponible para la nueva
             # operacion y ademas para que se limpien los payment methods
-    #        self.journal_id = False
+            self.journal_id = False
         # # Set payment method domain
         # res = self._onchange_journal()
         # if not res.get('domain', {}):
@@ -250,8 +250,8 @@ class AccountPayment(models.Model):
         """
         return True
 
-    #@api.onchange('journal_id')
-    #def _onchange_journal(self):
+    @api.onchange('journal_id')
+    def _onchange_journal(self):
         """
         Sobre escribimos y desactivamos la parte del dominio de la funcion
         original ya que se pierde si se vuelve a entrar
@@ -260,12 +260,15 @@ class AccountPayment(models.Model):
         cuando el importe sea cero, imagino que para hacer ajustes por
         diferencias de cambio
         """
-        """if self.journal_id:
+        if self.journal_id:
 
+            #La numeración se recrea en la validación ya que puede ser erronea si hay mas de una fila por journla
             if not self.reconciled_bill_ids:
                 self.move_id.journal_id = self.journal_id.id
-                self.move_id.name.replace('False', self.move_id.journal_id.code)
+                self.name.replace('False', self.journal_id.code)
                 self.move_id._set_next_sequence()
+                self.name =self.move_id.name
+
 
             self.currency_id = (
                 self.journal_id.currency_id or self.company_id.currency_id)
@@ -295,7 +298,7 @@ class AccountPayment(models.Model):
         #             'payment_method_id': [
         #                 ('payment_type', '=', payment_type),
         #                 ('id', 'in', payment_methods.ids)]}}
-        # return {}"""
+        # return {}
 
     @api.depends('invoice_line_ids', 'payment_type', 'partner_type', 'partner_id')
     def _compute_destination_account_id(self):
@@ -317,3 +320,22 @@ class AccountPayment(models.Model):
                 self.destination_account_id = (
                     partner.property_account_payable_id.id)
         return res
+
+    def action_post(self):
+        #rehago la numeración acá porque get_last_secuence trae el último grabado y siempre trae el mismo si hay mas de un
+        #movimiento para un journal
+        for rec in self:
+            if rec.journal_id:
+                if not rec.reconciled_bill_ids:
+                    rec.move_id.journal_id = rec.journal_id.id
+                    last_sequence = rec.move_id._get_last_sequence()
+                    new = not last_sequence
+                    if new:
+                        last_sequence = rec.move_id._get_last_sequence(
+                            relaxed=True) or rec.move_id._get_starting_sequence()
+                    nro_move = int(rec.move_id.name[-4:])
+                    last_secuence_number = int(last_sequence[-4:])
+                    if last_secuence_number >= nro_move:
+                        rec.move_id._set_next_sequence()
+                    rec.name = rec.move_id.name
+            super(AccountPayment, rec).action_post()
