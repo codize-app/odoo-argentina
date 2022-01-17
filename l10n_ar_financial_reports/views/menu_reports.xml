@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_financial_reports_iva_ventas" 
+                name="Reportes Argentinos" 
+                parent="l10n_ar.account_reports_ar_statements_menu" 
+                action="action_financial_report" 
+                sequence="100" />
+
+</odoo>

@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="financial_report_iva_purchase" name="Report Iva Purchase">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <!-- Values Report -->
+                    <t t-set="total_neto" t-value="0"/>
+                    <t t-set="totales_iva21" t-value="0"/>
+                    <t t-set="totales_iva10" t-value="0"/>
+                    <t t-set="totales_iva27" t-value="0"/>
+                    <t t-set="totales_ivaNoCorresponde" t-value="0"/>
+                    <t t-set="totales_ivas" t-value="0"/>
+                    <t t-set="total_netoRI" t-value="0"/>
+                    <t t-set="total_netoSE" t-value="0"/>
+                    <t t-set="total_netoMono" t-value="0"/>
+                    <t t-set="total_netoCF" t-value="0"/>
+                    <t t-set="total_no_gravado" t-value="0"/>
+                    <t t-set="total_exento" t-value="0"/>
+
+                    <!-- Values Percepciones e Internos-->
+                    <t t-set="total_perIVA" t-value="0"/>
+                    <t t-set="total_perCABA" t-value="0"/>
+                    <t t-set="total_perARBA" t-value="0"/>
+                    <t t-set="total_impInter" t-value="0"/>
+                    <t t-set="totales_per" t-value="0"/>
+
+                    <!-- Values IVA RI -->
+                    <t t-set="total_iva10" t-value="0"/>
+                    <t t-set="total_iva21" t-value="0"/>
+                    <t t-set="total_iva27" t-value="0"/>
+                    <t t-set="total_ivaNoCorre" t-value="0"/>
+                    <t t-set="total_iva" t-value="0"/>
+
+                    <!-- Values IVA SE -->
+                    <t t-set="total_SEiva10" t-value="0"/>
+                    <t t-set="total_SEiva21" t-value="0"/>
+                    <t t-set="total_SEiva27" t-value="0"/>
+                    <t t-set="total_SEivaNoCorre" t-value="0"/>
+                    <t t-set="total_SEiva" t-value="0"/>
+
+                    <!-- Values IVA Mono -->
+                    <t t-set="total_Miva10" t-value="0"/>
+                    <t t-set="total_Miva21" t-value="0"/>
+                    <t t-set="total_Miva27" t-value="0"/>
+                    <t t-set="total_MivaNoCorre" t-value="0"/>
+                    <t t-set="total_Miva" t-value="0"/>
+
+                    <!-- Values IVA CF -->
+                    <t t-set="total_CFiva10" t-value="0"/>
+                    <t t-set="total_CFiva21" t-value="0"/>
+                    <t t-set="total_CFiva27" t-value="0"/>
+                    <t t-set="total_CFivaNoCorre" t-value="0"/>
+                    <t t-set="total_CFiva" t-value="0"/>
+
+
+                    <div class="text-center">
+                        <h3>IVA Compras</h3>
+                        <h4 class="text-right"><span t-esc="from_data['date_from']"/> al <span t-esc="from_data['date_to']"/></h4>
+                    </div>
+                    <br/>
+                    <table class="table table-bordered mt32" style="font-size:10px">
+                        <thead>
+                            <tr>
+                                <th name="th_fecha" class="text-left">
+                                    <span>Fecha</span>
+                                </th>
+                                <th name="th_comprobante" class="text-left">
+                                    <span>comprobante</span>
+                                </th>
+                                <th name="th_rsocial" class="text-left">
+                                    <span>Razón Social</span>
+                                </th>
+                                <th name="th_categoria" class="text-left">
+                                    <span>Categoria</span>
+                                </th>
+                                <th name="th_doc" class="text-left">
+                                    <span>DOC</span>
+                                </th>
+                                <th name="th_total" class="text-left">
+                                    <span>Total</span>
+                                </th>
+                                <th name="th_dIva" class="text-left">
+                                    <span>Detalle IVA</span>
+                                </th>
+                                <th name="th_dTributos" class="text-left">
+                                    <span>Detalle Tributos</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="invoices_ids" t-as="i">
+                            <tr t-if="i['l10n_ar_afip_responsibility_type_id']"><!-- Se hace un if a responsibility para afirmar que el documento a revisar es una factura AFIP-->
+                                <td>
+                                    <span t-esc="i['invoice_date']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i['name']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i['invoice_partner_display_name']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i['l10n_ar_afip_responsibility_type_id'][1]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i['document_partner']"/>
+                                </td>
+                                <td>
+                                    $<span t-esc="i['amount_total']"/>
+                                    <!-- Definicion de responsabilidad y sumatoria de iva en su respectiva categoria
+                                        los t-if="i['move_type'] == 'in_invoice'" en principio estan para confirmar que sea una factura y no una rectificativa
+                                        en el caso contrario el iva se descuenta a las sumatorias, en un futuro lo ideal seria encontrar una logica mas simple
+                                    -->
+                                    <!-- TOTALES NETO E IVA -->
+                                    <t t-set="total_neto" t-value="total_neto + i['l10n_latam_amount_untaxed']"/>
+                                    <t t-if="i['iva10'] != 0">
+                                        <t t-if="i['move_type'] == 'in_invoice'" t-set="totales_iva10" t-value="totales_iva10 + i['iva10']"/>
+                                        <t t-else="" t-set="totales_iva10" t-value="totales_iva10 - i['iva10']"/>
+                                    </t>
+                                    <t t-if="i['iva21'] != 0">
+                                        <t t-if="i['move_type'] == 'in_invoice'" t-set="totales_iva21" t-value="totales_iva21 + i['iva21']"/>
+                                        <t t-else="" t-set="totales_iva21" t-value="totales_iva21 - i['iva21']"/>
+                                    </t>
+                                    <t t-if="i['iva27'] != 0">
+                                        <t t-if="i['move_type'] == 'in_invoice'" t-set="totales_iva27" t-value="totales_iva27 + i['iva27']"/>
+                                        <t t-else="" t-set="totales_iva27" t-value="totales_iva27 - i['iva27']"/>
+                                    </t>
+                                    <t t-if="i['iva_no_corresponde'] != 0">
+                                        <t t-if="i['move_type'] == 'in_invoice'" t-set="totales_ivaNoCorresponde" t-value="totales_ivaNoCorresponde + i['iva_no_corresponde']"/>
+                                        <t t-else="" t-set="totales_ivaNoCorresponde" t-value="totales_ivaNoCorresponde - i['iva_no_corresponde']"/>
+                                    </t>
+
+                                    <!-- Responsable Inscripto -->
+                                    <t t-if="i['l10n_ar_afip_responsibility_type_id'][0] == 1" >
+                                        <t t-set="total_netoRI" t-value="total_netoRI + i['l10n_latam_amount_untaxed']"/>
+                                        <t t-if="i['iva10'] != 0">
+                                            <t t-if="i['move_type'] == 'in_invoice'">
+                                                <t t-set="total_iva10" t-value="total_iva10 + i['iva10']"/>
+                                                <t t-set="total_iva" t-value="total_iva + i['iva10']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="total_iva10" t-value="total_iva10 - i['iva10']"/>
+                                                <t t-set="total_iva" t-value="total_iva - i['iva10']"/>
+                                            </t>
+                                        </t>
+                                        <t t-if="i['iva21'] != 0">
+                                            <t t-if="i['move_type'] == 'in_invoice'">
+                                                <t t-set="total_iva21" t-value="total_iva21 + i['iva21']"/>
+                                                <t t-set="total_iva" t-value="total_iva + i['iva21']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="total_iva21" t-value="total_iva21 - i['iva21']"/>
+                                                <t t-set="total_iva" t-value="total_iva - i['iva21']"/>
+                                            </t>
+                                        </t>
+                                        <t t-if="i['iva27'] != 0">
+                                            <t t-if="i['move_type'] == 'in_invoice'">
+                                                <t t-set="total_iva27" t-value="total_iva27 + i['iva27']"/>
+                                                <t t-set="total_iva" t-value="total_iva + i['iva27']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="total_iva27" t-value="total_iva27 - i['iva27']"/>
+                                                <t t-set="total_iva" t-value="total_iva - i['iva27']"/>
+                                            </t>
+                                        </t>
+                                        <t t-if="i['iva_no_corresponde'] != 0">
+                                            <t t-if="i['move_type'] == 'in_invoice'">
+                                                <t t-set="total_ivaNoCorre" t-value="total_ivaNoCorre + i['iva_no_corresponde']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="total_ivaNoCorre" t-value="total_ivaNoCorre - i['iva_no_corresponde']"/>
+                                            </t>
+                                        </t>
+                                    </t>
+
+                                    <!-- IVA Sujeto Exento -->
+                                    <t t-if="i['l10n_ar_afip_responsibility_type_id'][0] == 4" >
+                                        <t t-set="total_netoSE" t-value="total_netoSE + i['l10n_latam_amount_untaxed']"/>
+                                        <t t-if="i['iva10'] != 0">
+                                            <t t-if="i['move_type'] == 'in_invoice'">
+                                                <t t-set="total_SEiva10" t-value="total_SEiva10 + i['iva10']"/>
+                                                <t t-set="total_SEiva" t-value="total_SEiva + i['iva10']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="total_SEiva10" t-value="total_SEiva10 - i['iva10']"/>
+                                                <t t-set="total_SEiva" t-value="total_SEiva - i['iva10']"/>
+                                            </t>
+                                        </t>
+                                        <t t-if="i['iva21'] != 0">
+                                            <t t-if="i['move_type'] == 'in_invoice'">
+                                                <t t-set="total_SEiva21" t-value="total_SEiva21 + i['iva21']"/>
+                                                <t t-set="total_SEiva" t-value="total_SEiva + i['iva21']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="total_SEiva21" t-value="total_SEiva21 - i['iva21']"/>
+                                                <t t-set="total_SEiva" t-value="total_SEiva - i['iva21']"/>
+                                            </t>
+                                        </t>
+                                        <t t-if="i['iva27'] != 0">
+                                            <t t-if="i['move_type'] == 'in_invoice'">
+                                                <t t-set="total_SEiva27" t-value="total_SEiva27 + i['iva27']"/>
+                                                <t t-set="total_SEiva" t-value="total_SEiva + i['iva27']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="total_SEiva27" t-value="total_SEiva27 - i['iva27']"/>
+                                                <t t-set="total_SEiva" t-value="total_SEiva - i['iva27']"/>
+                                            </t>
+                                        </t>
+                                        <t t-if="i['iva_no_corresponde'] != 0">
+                                            <t t-if="i['move_type'] == 'in_invoice'">
+                                                <t t-set="total_SEivaNoCorre" t-value="total_SEivaNoCorre + i['iva_no_corresponde']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="total_SEivaNoCorre" t-value="total_SEivaNoCorre - i['iva_no_corresponde']"/>
+                                            </t>
+                                        </t>
+                                    </t>
+
+                                    <!-- Monotributista -->
+                                    <t t-if="i['l10n_ar_afip_responsibility_type_id'][0] == 6" >
+                                        <t t-set="total_netoMono" t-value="total_netoMono + i['l10n_latam_amount_untaxed']"/>
+                                        <t t-if="i['iva10'] != 0">
+                                            <t t-if="i['move_type'] == 'in_invoice'">
+                                                <t t-set="total_Miva10" t-value="total_Miva10 + i['iva10']"/>
+                                                <t t-set="total_Miva" t-value="total_Miva + i['iva10']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="total_Miva10" t-value="total_Miva10 - i['iva10']"/>
+                                                <t t-set="total_Miva" t-value="total_Miva - i['iva10']"/>
+                                            </t>
+                                        </t>
+                                        <t t-if="i['iva21'] != 0">
+                                            <t t-if="i['move_type'] == 'in_invoice'">
+                                                <t t-set="total_Miva21" t-value="total_Miva21 + i['iva21']"/>
+                                                <t t-set="total_Miva" t-value="total_Miva + i['iva21']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="total_Miva21" t-value="total_Miva21 - i['iva21']"/>
+                                                <t t-set="total_Miva" t-value="total_Miva - i['iva21']"/>
+                                            </t>
+                                        </t>
+                                        <t t-if="i['iva27'] != 0">
+                                            <t t-if="i['move_type'] == 'in_invoice'">
+                                                <t t-set="total_Miva27" t-value="total_Miva27 + i['iva27']"/>
+                                                <t t-set="total_Miva" t-value="total_Miva + i['iva27']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="total_Miva27" t-value="total_Miva27 - i['iva27']"/>
+                                                <t t-set="total_Miva" t-value="total_Miva - i['iva27']"/>
+                                            </t>
+                                        </t>
+                                        <t t-if="i['iva_no_corresponde'] != 0">
+                                            <t t-if="i['move_type'] == 'in_invoice'">
+                                                <t t-set="total_MivaNoCorre" t-value="total_MivaNoCorre + i['iva_no_corresponde']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="total_MivaNoCorre" t-value="total_MivaNoCorre - i['iva_no_corresponde']"/>
+                                            </t>
+                                        </t>
+                                    </t>
+
+                                    <!-- Consumidor Final -->
+                                    <t t-if="i['l10n_ar_afip_responsibility_type_id'][0] == 5" >
+                                        <t t-set="total_netoCF" t-value="total_netoCF + i['l10n_latam_amount_untaxed']"/>
+                                        <t t-if="i['iva10'] != 0">
+                                            <t t-if="i['move_type'] == 'in_invoice'">
+                                                <t t-set="total_CFiva10" t-value="total_CFiva10 + i['iva10']"/>
+                                                <t t-set="total_CFiva" t-value="total_CFiva + i['iva10']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="total_CFiva10" t-value="total_CFiva10 - i['iva10']"/>
+                                                <t t-set="total_CFiva" t-value="total_CFiva - i['iva10']"/>
+                                            </t>
+                                        </t>
+                                        <t t-if="i['iva21'] != 0">
+                                            <t t-if="i['move_type'] == 'in_invoice'">
+                                                <t t-set="total_CFiva21" t-value="total_CFiva21 + i['iva21']"/>
+                                                <t t-set="total_CFiva" t-value="total_CFiva + i['iva21']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="total_CFiva21" t-value="total_CFiva21 - i['iva21']"/>
+                                                <t t-set="total_CFiva" t-value="total_CFiva - i['iva21']"/>
+                                            </t>
+                                        </t>
+                                        <t t-if="i['iva27'] != 0">
+                                            <t t-if="i['move_type'] == 'in_invoice'">
+                                                <t t-set="total_CFiva27" t-value="total_CFiva27 + i['iva27']"/>
+                                                <t t-set="total_CFiva" t-value="total_CFiva + i['iva21']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="total_CFiva27" t-value="total_CFiva27 - i['iva27']"/>
+                                                <t t-set="total_CFiva" t-value="total_CFiva - i['iva21']"/>
+                                            </t>
+                                        </t>
+                                        <t t-if="i['iva_no_corresponde'] != 0">
+                                            <t t-if="i['move_type'] == 'in_invoice'">
+                                                <t t-set="total_CFivaNoCorre" t-value="total_CFivaNoCorre + i['iva_no_corresponde']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-set="total_CFivaNoCorre" t-value="total_CFivaNoCorre - i['iva_no_corresponde']"/>
+                                            </t>
+                                        </t>
+                                    </t>
+                                
+                                    <!-- Iva No Gravado -->
+                                    <t t-if="i['no_gravado'] != 0" >
+                                        <t t-set="total_no_gravado" t-value="total_no_gravado + i['no_gravado']"/>
+                                    </t>
+                                    <!-- Iva Exento se suma al no gravado -->
+                                    <t t-if="i['iva_exento'] != 0" >
+                                        <t t-set="total_exento" t-value="total_exento + i['iva_exento']"/>
+                                        <t t-set="total_no_gravado" t-value="total_no_gravado + i['iva_exento']"/>
+                                    </t>
+                                
+                                
+                                </td>
+                                <td>
+                                    <t t-if="i['iva10'] != 0">
+                                        $<span t-esc="round(i['iva10'],2)"/>- IVA 10,5%<br/>
+                                    </t>
+                                    <t t-if="i['iva21'] != 0">
+                                        $<span t-esc="round(i['iva21'],2)"/>- IVA 21%<br/>
+                                    </t>
+                                    <t t-if="i['iva27'] != 0">
+                                        $<span t-esc="round(i['iva27'],2)"/>- IVA 27%<br/>
+                                    </t>
+                                    <t t-if="i['iva_no_corresponde'] != 0">
+                                        <span />No Corresponde<br/>
+                                    </t>
+                                    <t t-if="i['no_gravado'] != 0">
+                                        $<span t-esc="round(i['no_gravado'],2)"/>- No Gravado<br/>
+                                    </t>
+                                </td>
+                                <!-- TRIBUTOS -->
+                                <td>
+                                    <t t-foreach="i['amount_by_group']" t-as="gtax">
+                                        <!--<span  t-esc="gtax"/>-->
+                                        <t t-if="gtax[0] == 'Perc IIBB CABA'">
+                                            $<span t-esc="gtax[1]"/>- Perc IIBB CABA<br/>
+                                            <t t-set="total_perCABA" t-value="total_perCABA + gtax[1]"/>
+                                        </t>
+                                        <t t-if="gtax[0] == 'Perc IIBB ARBA'">
+                                            $<span t-esc="gtax[1]"/>- Perc IIBB ARBA<br/>
+                                            <t t-set="total_perARBA" t-value="total_perARBA + gtax[1]"/>
+                                        </t>
+                                        <t t-if="gtax[0] == 'Percepción de IVA'">
+                                            $<span t-esc="gtax[1]"/>- Percepción de IVA<br/>
+                                            <t t-set="total_perIVA" t-value="total_perIVA + gtax[1]"/>
+                                        </t>
+                                        <t t-if="gtax[0] == 'Impuestos Internos'">
+                                            $<span t-esc="gtax[1]"/>- Impuestos Internos<br/>
+                                            <t t-set="total_impInter" t-value="total_impInter + gtax[1]"/>
+                                        </t>
+                                    </t>
+                                </td>
+                            </tr>
+                        </t>
+                        <t t-set="totales_per" t-value="total_perIVA + total_perCABA + total_perARBA"/>
+                    </table>
+                    <p style="page-break-before:always;"> </p>
+                    <table class="table table-bordered mt32" style="font-size:20px">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Categ IVA</th>
+                                <th rowspan="2">Neto</th>
+                                <th colspan="7">IVA</th>
+                            </tr>
+                            <tr>
+                                <th>21%</th>
+                                <th>10,5%</th>
+                                <th>27%</th>
+                                <th>TOTAL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-if="total_netoRI > 0">
+                                <td>Responsable Inscripto</td>
+                                <td> $<span t-esc="round(total_netoRI,2)"/> </td>
+                                <td> <div t-if="total_iva21 != 0">$<span t-esc="round(total_iva21,2)"/></div> </td>
+                                <td> <div t-if="total_iva10 != 0">$<span t-esc="round(total_iva10,2)"/></div> </td>
+                                <td> <div t-if="total_iva27 != 0">$<span t-esc="round(total_iva27,2)"/></div> </td>
+                                <td> $<span t-esc="round(total_iva,2)"/> </td>
+                            </tr>
+                            <tr t-if="total_netoSE > 0">
+                                <td>Sujeto Exento</td>
+                                <td> $<span t-esc="round(total_netoSE,2)"/> </td>
+                                <td> <div t-if="total_SEiva21 != 0">$<span t-esc="round(total_SEiva21,2)"/></div> </td>
+                                <td> <div t-if="total_SEiva10 != 0">$<span t-esc="round(total_SEiva10,2)"/></div> </td>
+                                <td> <div t-if="total_SEiva27 != 0">$<span t-esc="round(total_SEiva27,2)"/></div> </td>
+                                <td> $<span t-esc="round(total_SEiva,2)"/> </td>
+                            </tr>
+                            <tr t-if="total_netoMono > 0">
+                                <td>Monotributista</td>
+                                <td> $<span t-esc="round(total_netoMono,2)"/> </td>
+                                <td> <div t-if="total_Miva21 != 0">$<span t-esc="round(total_Miva21,2)"/></div> </td>
+                                <td> <div t-if="total_Miva10 != 0">$<span t-esc="round(total_Miva10,2)"/></div> </td>
+                                <td> <div t-if="total_Miva27 != 0">$<span t-esc="round(total_Miva27,2)"/></div> </td>
+                                <td> $<span t-esc="round(total_Miva,2)"/> </td>
+                            </tr>
+                            <tr t-if="total_netoCF > 0">
+                                <td>Consumidor Final</td>
+                                <td> $<span t-esc="round(total_netoCF,2)"/> </td>
+                                <td> <div t-if="total_CFiva21 != 0">$<span t-esc="round(total_CFiva21,2)"/></div> </td>
+                                <td> <div t-if="total_CFiva10 != 0">$<span t-esc="round(total_CFiva10,2)"/></div> </td>
+                                <td> <div t-if="total_CFiva27 != 0">$<span t-esc="round(total_CFiva27,2)"/></div> </td>
+                                <td> $<span t-esc="round(total_CFiva,2)"/> </td>
+                            </tr>
+                            <tr>
+                                <td>TOTAL</td>
+                                <td> $<span t-esc="round(total_neto,2)"/> </td>
+                                <td> <div t-if="totales_iva21 != 0">$<span t-esc="round(totales_iva21,2)"/></div> </td>
+                                <td> <div t-if="totales_iva10 != 0">$<span t-esc="round(totales_iva10,2)"/></div> </td>
+                                <td> <div t-if="totales_iva27 != 0">$<span t-esc="round(totales_iva27,2)"/></div> </td>
+                                <t t-set="totales_ivas" t-value="totales_iva27 + totales_iva10 + totales_iva21"/>
+                                <td> $<span t-esc="round(totales_ivas,2)"/> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p style="page-break-before:always;"> </p>
+                    <table class="table table-bordered mt32"  style="width:30%; float: left;font-size:20px">
+                        
+                        <t t-set="total_neto" t-value="total_neto - total_no_gravado"/>
+                        <tbody>
+                          <tr>
+                            <th style="width:50%">No Gravado</th>
+                            <td> <div t-if="total_no_gravado != 0">$<span t-esc="round(total_no_gravado,2)"/></div> </td>
+                          </tr>
+                          <tr>
+                            <th style="width:50%">Gravado</th>
+                            <td> <div t-if="total_neto != 0">$<span t-esc="round(total_neto,2)"/></div> </td>
+                          </tr>
+                          <tr>
+                            <th style="width:50%">No Corresponde</th>
+                            <td> <div t-if="totales_ivaNoCorresponde != 0">$<span t-esc="round(totales_ivaNoCorresponde,2)"/></div> </td>
+                          </tr>
+                          <tr>
+                            <th style="width:50%">Percepciones</th>
+                            <td> <div t-if="totales_per != 0">$<span t-esc="round(totales_per,2)"/></div> </td>
+                          </tr>
+                          <tr>
+                            <th style="width:50%">Impuestos Internos</th>
+                            <td> <div t-if="total_impInter != 0">$<span t-esc="round(total_impInter,2)"/></div> </td>
+                          </tr>
+                          <tr>
+                            <th style="width:50%">IVA</th>
+                            <td> <div t-if="totales_ivas != 0">$<span t-esc="round(totales_ivas,2)"/></div> </td>
+                          </tr>
+                          <tr>
+                            <th style="width:50%">TOTAL</th>
+                            <td> $<span t-esc="round(totales_ivas + total_neto + total_no_gravado + totales_per + total_impInter,2)"/> </td>
+                          </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="table table-bordered mt32"  style="width:30%; font-size:20px"  align="right">
+                        
+                        <tbody>
+                          <tr>
+                            <th style="width:50%">Percepcion IVA</th>
+                            <td> <div t-if="total_perIVA != 0">$<span t-esc="round(total_perIVA,2)"/></div> </td>
+                          </tr>
+                          <tr>
+                            <th style="width:50%">Percepcion CABA</th>
+                            <td> <div t-if="total_perCABA != 0">$<span t-esc="round(total_perCABA,2)"/></div> </td>
+                          </tr>
+                          <tr>
+                            <th style="width:50%">Percepcion ARBA</th>
+                            <td> <div t-if="total_perARBA != 0">$<span t-esc="round(total_perARBA,2)"/></div> </td>
+                          </tr>
+                          <tr>
+                            <th style="width:50%">TOTAL</th>
+                            <td> <div t-if="totales_per != 0">$<span t-esc="round(totales_per,2)"/></div> </td>
+                          </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>
