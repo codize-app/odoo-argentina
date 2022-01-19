@@ -6,6 +6,8 @@ from odoo.tools import float_is_zero
 class IrSequence(models.Model):
     _inherit = 'ir.sequence'
 
+    l10n_latam_document_type_id = fields.Many2one('l10n_latam.document.type', 'Document Type') 
+
     def comp_consultar(self):
         self.ensure_one()
         if not self.journal_id or not self.l10n_latam_document_type_id:
@@ -24,5 +26,5 @@ class IrSequence(models.Model):
             'target': 'new',
         }
 
-
+    
 
