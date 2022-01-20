@@ -12,6 +12,7 @@
     'installable': True,
     'license': 'AGPL-3',
     'data': [
+        'security/ir.model.access.csv',
         'report_stock_picking.xml',
         'afip_view.xml'
     ],
