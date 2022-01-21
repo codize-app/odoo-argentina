@@ -23,6 +23,7 @@
         'views/account_journal_view.xml',
         'views/product_uom_view.xml',
         'views/res_currency_view.xml',
+        'views/ir_sequence.xml',
         'security/ir.model.access.csv',
     ],
     'demo': [
