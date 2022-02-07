@@ -25,7 +25,7 @@ class AccountDebitAutomatic(models.Model):
                 self.date = year + '-' + month + '-' + day
             else:
                 raise ValidationError('El archivo debe tener una formato compatible con Débito Automático. Es imposible cargar este TXT, consulte con su Administrador.')
-
+            self.result=''
             for id, line in enumerate(txt_lines):
                 if id != 0 and id != len(txt_lines)-1:
                     l = line.split('   ')
@@ -47,7 +47,9 @@ class AccountDebitAutomatic(models.Model):
                     amount_cent = int(amount_text[-2:])
                     amount_round = int(amount_text[:-2])
                     amout_total = amount_round + (amount_cent / 100.0)
-
+                    resultado='\n'+str(card_num)+":"+self.env['account.payment'].acc_payment(self.payment_account,self.payment_journal,self.payment_currency,card_num,amout_total,"")
+                    self.result=self.result+resultado
+            self.state='register'
     name = fields.Char('Nombre', required=True)
     company_id = fields.Many2one(
         'res.company',
@@ -62,3 +64,62 @@ class AccountDebitAutomatic(models.Model):
     state = fields.Selection([('draft', 'Borrador'), ('register', 'Registrado')], 'Estado', default='draft')
     debit_automatic_txt = fields.Binary('Archivo TXT de Débito Automático', help='Suba acá su archivo de Débito Automático exportado por Visa.')
     RG_TXT_DEBIT_AUTOMATIC = fields.Text('RG_TXT_DEBIT_AUTOMATIC')
+    result=fields.Text("Resultado")
+    payment_account= fields.Many2one('account.account',required=True, string='Cuenta')
+    payment_journal= fields.Many2one('account.journal',required=True, string='Diario')
+    payment_currency= fields.Many2one('res.currency',required=True, string='Moneda')
+
+
+class payment_custom(models.Model):
+    _inherit = 'account.payment'
+
+    def acc_payment(self,account,journal,currency,card_num,amout_total, mensaje=""):
+        res_bank_partner=self.env['res.partner.bank'].search([("acc_number","=",str(card_num))])
+        validar=True
+        payment=None
+        _logger.info(str(card_num))
+        if (len(res_bank_partner) == 0):
+            return mensaje +'\n\t No se encontro la tarjeta cargada.\n\t Pago no creado(crear manualmente)'
+        elif (len(res_bank_partner)>1):
+            return mensaje +'\n\t Existe mas de un contacto con la misma tarjeta.\n\t Pago no creado(crear manualmente)'
+        else:
+
+            vals={
+                'payment_type':'inbound',
+                'partner_type':'customer',
+                'partner_id': res_bank_partner.partner_id.id,
+                'destination_account_id': account.id,
+                'journal_id':journal.id,
+                'payment_method_id':res_bank_partner.partner_id.method_id.id,
+                'amount': amout_total,
+                'currency_id': currency.id,
+                'ref':''
+            }
+
+            try:
+                payment=self.env['account.payment'].sudo().create(vals)
+            except:
+                validar=False
+                if not res_bank_partner.partner_id.method_id:
+                    vals['ref']=vals['ref']+"Método de pago incorrecto o faltante."
+                    mensaje= mensaje +'\n\t Método de pago incorrecto o faltante.\n\t Cargar desde contactos->Contabilidad->Método de pago.\n\t Pago no creado(crear manualmente)'
+                    return mensaje
+                if not amout_total:
+                    vals['amount']= 0.0
+                    vals['ref']=vals['ref']+"Monto faltante o incorrecto."
+                    payment=self.env['account.payment'].sudo().create(vals)
+                    mensaje= mensaje +'\n\t Monto faltante o incorrecto.'
+
+            if validar:
+                # ''' draft -> posted '''
+                try:
+                    payment.move_id._post(soft=False)
+                except:
+                    return mensaje +'\n\t No se pudo validar.(pago creado como borrador)' 
+            return mensaje +'\n\t Validado.\n'
+
+
+class partner_method(models.Model):
+    _inherit = 'res.partner'
+
+    method_id = fields.Many2one('account.payment.method','Método de pago automático')
