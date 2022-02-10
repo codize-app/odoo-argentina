@@ -196,7 +196,8 @@ class AccountPayment(models.Model):
             padding = 8
             if len(str(number)) > padding:
                 padding = len(str(number))
-            return ('%%0%sd' % padding % number)
+            #return ('%%0%' % padding % number)
+            return str(padding) + str(number)
 
         for rec in self:
             if rec.payment_method_code in ['received_third_check']:
