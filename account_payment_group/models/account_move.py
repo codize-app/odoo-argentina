@@ -1,9 +1,5 @@
-# © 2016 ADHOC SA
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-
 from odoo import models, api, fields, _
 from odoo.exceptions import ValidationError
-
 
 class AccountMove(models.Model):
     _inherit = "account.move"
@@ -27,7 +23,6 @@ class AccountMove(models.Model):
         string='Payment Groups',
     )
 
-    #@api.depends('payment_move_line_ids')
     def _compute_payment_groups(self):
         """
         El campo en invoices "payment_id" no lo seteamos con los payment groups
@@ -49,7 +44,6 @@ class AccountMove(models.Model):
             rec.open_move_line_ids = rec.line_ids.filtered(
                 lambda r: not r.reconciled and r.account_id.internal_type in (
                     'payable', 'receivable'))
-
 
     def action_account_invoice_payment_group(self):
         self.ensure_one()
@@ -86,7 +80,6 @@ class AccountMove(models.Model):
         return res
 
     def pay_now(self):
-        # validate_payment = not self._context.get('validate_payment')
         for rec in self:
             pay_journal = rec.pay_now_journal_id
             if pay_journal and rec.state == 'open':
@@ -145,7 +138,6 @@ class AccountMove(models.Model):
                     'payment_method_id': payment_method.id,
                     'payment_date': rec.date_invoice,
                 })
-                # if validate_payment:
                 payment_group.post()
 
     def action_view_payment_groups(self):
@@ -167,14 +159,6 @@ class AccountMove(models.Model):
             result['res_id'] = self.payment_group_ids.id
         return result
 
-#    def pay_and_reconcile(self, pay_journal, pay_amount=None, date=None,
-#                          writeoff_acc=None):
-#       res = super(AccountInvoice, self.with_context(
-#            create_from_website=True)).pay_and_reconcile(
-#                pay_journal, pay_amount=pay_amount, date=date,
-#                writeoff_acc=writeoff_acc)
-#        return res
-
     @api.onchange('company_id')
     def _onchange_company_id(self):
         self.pay_now_journal_id = False
@@ -184,10 +168,6 @@ class AccountMove(models.Model):
             lambda x: x.state == 'open' and x.pay_now_journal_id).write(
                 {'pay_now_journal_id': False})
         return super(AccountMove, self).button_cancel()
-
-
-
-
 
     def action_account_invoice_payment_group(self):
         self.ensure_one()
@@ -220,4 +200,3 @@ class AccountMove(models.Model):
                 'default_company_id': self.company_id.id,
             },
         }
-
