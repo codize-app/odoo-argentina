@@ -1,9 +1,5 @@
-# © 2016 ADHOC SA
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-
 from odoo import models, fields, api
-# from odoo.exceptions import UserError, ValidationError
-
+from odoo.exceptions import UserError, ValidationError
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
@@ -15,7 +11,7 @@ class AccountMoveLine(models.Model):
         'account_move_line_payment_group_to_pay_rel',
         'to_pay_line_id',
         'payment_group_id',
-        string="Payment Groups",
+        string="Grupos de Pago",
         readonly=True,
         # auto_join not yet implemented for m2m. TODO enable when implemented
         # https://github.com/odoo/odoo/blob/master/odoo/osv/expression.py#L899
@@ -24,7 +20,7 @@ class AccountMoveLine(models.Model):
 
     def _compute_payment_group_matched_amount(self):
         """
-        Reciviendo un payment_group_id por contexto, decimos en ese payment
+        Recibir un payment_group_id por contexto, decimos en ese payment
         group, cuanto se pago para la lína en cuestión.
         """
         payment_group_id = self._context.get('payment_group_id')

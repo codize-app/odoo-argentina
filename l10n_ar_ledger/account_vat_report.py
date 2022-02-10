@@ -320,11 +320,8 @@ class account_vat_ledger(models.Model):
                     if self.type == 'purchase':
                         if tax.amount == 0:
                             vat_exempt_base_amount += invl.price_subtotal
-                    
-
 
             cant_alicuotas = len(vat_taxes)
-
 
             currency_rate = inv.l10n_ar_currency_rate
             currency_code = inv.currency_id.l10n_ar_afip_code

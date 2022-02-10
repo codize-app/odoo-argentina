@@ -1,6 +1,5 @@
 from odoo import models, api
 
-
 class AccountJournal(models.Model):
     _inherit = "account.journal"
 

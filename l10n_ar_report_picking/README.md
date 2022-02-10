@@ -18,6 +18,10 @@ You can add a list of CAI with the Due Date in CSV Format. The file must not hav
 
 In order of remove the expired numbers of CAI, you can use the button "Eliminar CAI Vencidos" inside Account Journal of Electronic Pickings.
 
+## Warning
+
+By regulation, it is not allowed to print a Pre-Printed Picking on a sheet that is not from the approved printing company. You will probably need to edit the PDF to match the press sheet (report_stock_picking.xml file).
+
 ## Contributors
 
 * Exemax

@@ -1,0 +1,62 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="account_debit_automatic_tree">
+            <field name="name">Account Debit Automatic</field>
+            <field name="model">account.debit.automatic</field>
+            <field name="arch" type="xml">
+                <tree string="Libro IVA">
+                    <field name="name" string="Nombre" />
+                    <field name="state" string="Estado" />
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_debit_automatic_form">
+            <field name="name">Account Debit Automatic</field>
+            <field name="model">account.debit.automatic</field>
+            <field name='arch' type='xml'>
+                <form string="Débito Automático">
+                    <header>
+                        <button name="register_debit_automatic" string="Registrar Pagos" states="draft" type="object" class="oe_highlight" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,register" />
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <h1>Archivo</h1>
+                                <field name="name" />
+                                <field name="debit_automatic_txt" />
+                                <field name="date" readonly="1" />
+                            </group>
+                            <group>
+                                <h1>Pagos</h1>
+                                <field name="payment_account" />
+                                <field name="payment_journal" />
+                                <field name="payment_currency" />
+                            </group>
+                        </group>
+                        <group groups="base.group_no_one">
+                            <field name="RG_TXT_DEBIT_AUTOMATIC" widget="ace" />
+                        </group>
+                        <group groups="base.group_no_one">
+                            <field name="result" readonly="1" />
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="action_account_debit_automatic" model="ir.actions.act_window">
+            <field name="name">Débito Automático</field>
+            <field name="res_model">account.debit.automatic</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <menuitem id="menu_account_debit_automatic" action="action_account_debit_automatic" parent="account.menu_finance_receivables" sequence="21" />
+    </data>
+</odoo>
