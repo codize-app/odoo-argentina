@@ -9,6 +9,19 @@ class ResPartner(models.Model):
 
     internal_reference = fields.Char('Nombre de Fantasía')
 
+    def write(self, values):
+        res = super(ResPartner, self).write(values)
+
+        if self.l10n_latam_identification_type_id.name == 'CUIT' or self.l10n_latam_identification_type_id.name == 'CUIL' or self.l10n_latam_identification_type_id.name == 'DNI':
+            if '-' in self.vat:
+                vat = self.vat.replace('-', '')
+                self.vat = vat
+            if '.' in self.vat:
+                vat = self.vat.replace('.', '')
+                self.vat = vat
+
+        return res
+
     def name_get(self):
         result = []
         for record in self:
@@ -20,7 +33,7 @@ class ResPartner(models.Model):
             else:
                 if record.parent_id:
                     result.append((record.id, str(record.parent_id.name) + ', ' + str(record.name)))
-                else:    
+                else:
                     result.append((record.id, record.name))
         return result
 

@@ -33,7 +33,7 @@ class AccountJournal(models.Model):
         else:
             raise ValidationError('Debe Cargar un Archivo CSV con formato válido.')
 
-    is_afip_picking_journal = fields.Boolean('Es Diario de Remitos Electrónicos')
+    is_afip_picking_journal = fields.Boolean('Es Diario de Remitos')
     picking_csv = fields.Binary('Lista de CAI en CSV')
     account_journal_picking = fields.One2many('account.journal.picking', 'res_id', string='Lista de CAI Disponibles')
 
