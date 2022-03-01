@@ -69,6 +69,16 @@ class AfipwsCertificate(models.Model):
         compute='_compute_request_file',
         store=True
     )
+    company_id = fields.Many2one(
+        'res.company',
+        'Company',
+        required=True,
+        states={'draft': [('readonly', False)]},
+        readonly=True,
+        default=lambda self: self.env.user.company_id,
+        auto_join=True,
+        index=True,
+    )
 
     @api.depends('csr')
     def _compute_request_file(self):
