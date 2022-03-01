@@ -13,12 +13,14 @@ class ResPartner(models.Model):
         res = super(ResPartner, self).write(values)
 
         if self.l10n_latam_identification_type_id.name == 'CUIT' or self.l10n_latam_identification_type_id.name == 'CUIL' or self.l10n_latam_identification_type_id.name == 'DNI':
-            if '-' in self.vat:
-                vat = self.vat.replace('-', '')
-                self.vat = vat
-            if '.' in self.vat:
-                vat = self.vat.replace('.', '')
-                self.vat = vat
+            for rec in self:
+                if rec.vat:
+                    if '-' in rec.vat:
+                        vat = rec.vat.replace('-', '')
+                        rec.vat = vat
+                    if '.' in rec.vat:
+                        vat = rec.vat.replace('.', '')
+                        rec.vat = vat
 
         return res
 
