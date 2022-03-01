@@ -103,6 +103,7 @@ Add path odoo-argentina to addons path in `odoo.conf`. Restart Odoo Server, Upda
 * `l10n_ar_exchange_rate`: Get Exchange Rate from AFIP
 * `l10n_ar_bank`: Install Argentina Bank's List
 * `l10n_ar_partner`: Add features to contacts (like fantasy name, update from Padrón)
+* `l10n_ar_sale`: Add features to sales (like sale order in USD but invoice in ARS)
 * `l10n_ar_taxes`: Add other taxes (like Internal Taxes)
 
 ## Extras
