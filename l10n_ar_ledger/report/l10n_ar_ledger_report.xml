@@ -63,6 +63,9 @@
                                                                         <t t-set="netoG" t-value="netoG + tax[2]" />
                                                                 </t>
                                                         </t>
+							<t t-if="invoice.l10n_latam_document_type_id.internal_type == 'credit_note'">
+                                                        	<t t-set="netoG" t-value="netoG * -1" />
+							</t>
 							<t t-set="total_neto_gravado" t-value="total_neto_gravado + netoG" />
                                                         <p t-esc="netoG" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" />
 						</td>
@@ -72,6 +75,9 @@
                                                                 <t t-if="tax[0] == 'IVA No Gravado' or tax[0] == 'IVA 0%'">
                                                                         <t t-set="netoG" t-value="netoG + tax[2]" />
                                                                 </t>
+                                                        </t>
+                                                        <t t-if="invoice.l10n_latam_document_type_id.internal_type == 'credit_note'">
+                                                                <t t-set="netoN" t-value="netoN * -1" />
                                                         </t>
 							<t t-set="total_neto_no_gravado" t-value="total_neto_no_gravado + netoN" />
                                                         <p t-esc="netoN" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" />
@@ -83,6 +89,9 @@
                                                                         <t t-set="netoE" t-value="netoG + tax[2]" />
                                                                 </t>
                                                         </t>
+							<t t-if="invoice.l10n_latam_document_type_id.internal_type == 'credit_note'">
+                                                                <t t-set="netoE" t-value="netoE * -1" />
+                                                        </t>
 							<t t-set="total_neto_exento" t-value="total_neto_exento + netoE" />
                                                         <p t-esc="netoE" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" />
 						</td>
@@ -92,6 +101,9 @@
                                                                 <t t-if="tax[0] == 'IVA 27%'">
                                                                         <t t-set="iva27" t-value="iva27 + tax[1]" />
                                                                 </t>
+                                                        </t>
+							<t t-if="invoice.l10n_latam_document_type_id.internal_type == 'credit_note'">
+                                                                <t t-set="iva27" t-value="iva27 * -1" />
                                                         </t>
 							<t t-set="total_iva27" t-value="total_iva27 + iva27" />
                                                         <p t-esc="iva27" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" />
@@ -103,6 +115,9 @@
 									<t t-set="iva21" t-value="iva21 + tax[1]" />
 								</t>
 							</t>
+							<t t-if="invoice.l10n_latam_document_type_id.internal_type == 'credit_note'">
+                                                                <t t-set="iva21" t-value="iva21 * -1" />
+                                                        </t>
 							<t t-set="total_iva21" t-value="total_iva21 + iva21" />
 							<p t-esc="iva21" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" />
 						</td>
@@ -113,6 +128,9 @@
                                                                         <t t-set="iva105" t-value="iva105 + tax[1]" />
                                                                 </t>
                                                         </t>
+							<t t-if="invoice.l10n_latam_document_type_id.internal_type == 'credit_note'">
+                                                                <t t-set="iva105" t-value="iva105 * -1" />
+                                                        </t>
 							<t t-set="total_iva105" t-value="total_iva105 + iva105" />
                                                         <p t-esc="iva105" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" />
 						</td>
@@ -122,8 +140,12 @@
 							<t t-set="total_gravado" t-value="total_gravado + netoG + iva27 + iva21 + iva105" />
 						</td>
 						<td>
-							<span t-field="invoice.amount_total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" />
-							<t t-set="total_total" t-value="total_total + invoice.amount_total" />
+							<t t-set="total_amount" t-value="invoice.amount_total" />
+							<t t-if="invoice.l10n_latam_document_type_id.internal_type == 'credit_note'">
+								<t t-set="total_amount" t-value="total_amount * -1" />
+                                                        </t>
+							<span t-esc="total_amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: invoice.currency_id}" />
+							<t t-set="total_total" t-value="total_total + total_amount" />
 						</td>
                                         </tr>
                                         <tr>
