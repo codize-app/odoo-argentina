@@ -152,7 +152,7 @@ class account_vat_ledger(models.Model):
         # seguramente para algunos otros tambien pero realmente no se usan y el digital tiende a depreciarse
         # y el uso de internal_type a cambiar
         if invoice and invoice.l10n_latam_document_type_id.code in ['39', '40', '41', '66', '99'] \
-           and invoice.type in ['in_refund', 'out_refund']:
+           and invoice.move_type in ['in_refund', 'out_refund']:
             amount = -amount
 
         if amount < 0:
@@ -290,7 +290,8 @@ class account_vat_ledger(models.Model):
     def get_REGDIGITAL_CV_CBTE(self, alicuotas):
         self.ensure_one()
         res = []
-        invoices = self.get_digital_invoices()
+        invoices = self.get_digital_invoices().filtered(
+                lambda r: r.state != 'cancel')
         #if not self.digital_skip_invoice_tests:
         #    invoices.check_argentinian_invoice_taxes()
         if self.type == 'purchase':
@@ -312,14 +313,15 @@ class account_vat_ledger(models.Model):
             cant_alicuotas = 0
             vat_taxes = []
             vat_exempt_base_amount = 0
-            for invl in inv.invoice_line_ids:
-                for tax in invl.tax_ids:
-                    if tax.tax_group_id.tax_type == 'vat':
-                        if tax.id not in vat_taxes:
-                            vat_taxes.append(tax.id)
-                    if self.type == 'purchase':
-                        if tax.amount == 0:
-                            vat_exempt_base_amount += invl.price_subtotal
+            if inv.l10n_latam_document_type_id.code != '11' and inv.l10n_latam_document_type_id.code != '6':
+                for invl in inv.invoice_line_ids:
+                    for tax in invl.tax_ids:
+                        if tax.tax_group_id.tax_type == 'vat':
+                            if tax.id not in vat_taxes:
+                                vat_taxes.append(tax.id)
+                        if self.type == 'purchase':
+                            if tax.amount == 0:
+                                vat_exempt_base_amount += invl.price_subtotal
 
             cant_alicuotas = len(vat_taxes)
 
@@ -429,6 +431,9 @@ class account_vat_ledger(models.Model):
 
                 ]
             else:
+                type_internal = 'debit'
+                if inv.l10n_latam_document_type_id.internal_type == 'credit_note':
+                    type_internal = 'credit'
                 #if inv.id == 200:
                 #    raise ValidationError('estamos aca %s'%(inv.l10n_latam_tax_ids[1].tax_ids))
                 row += [
@@ -448,8 +453,9 @@ class account_vat_ledger(models.Model):
                         sum(inv.move_tax_ids.filtered(lambda r: (
                             r.tax_id.tax_group_id.tax_type == 'withholding' and
                             r.tax_id.tax_group_id.tax == 'vat' and
-                            r.tax_id.tax_group_id.l10n_ar_tribute_afip_code \
-                            == '01')
+                            r.tax_id.tax_group_id.l10n_ar_tribute_afip_code == '01' or
+                            r.tax_id.tax_group_id.l10n_ar_tribute_afip_code == '06'
+                            )
                         ).mapped(
                             'tax_amount')), invoice=inv),
                     # Campo 13: Importe de percepciones o pagos a cuenta de
@@ -462,13 +468,12 @@ class account_vat_ledger(models.Model):
                         ).mapped('tax_amount')), invoice=inv),
 
                     # Campo 14: Importe de percepciones de ingresos brutos
-                    self.format_amount(
-                        sum(inv.l10n_latam_tax_ids.filtered(lambda r: (
-                            r.tax_line_id.tax_group_id.tax_type == 'withholdings' and
-                            r.tax_line_id.tax_group_id.l10n_ar_tribute_afip_code \
-                            == '07')
-                        ).mapped('debit')), invoice=inv),
-
+                        self.format_amount(
+                            sum(inv.l10n_latam_tax_ids.filtered(lambda r: (
+                                r.tax_line_id.tax_group_id.tax_type == 'withholdings' and
+                                r.tax_line_id.tax_group_id.l10n_ar_tribute_afip_code \
+                                == '07')
+                            ).mapped(type_internal)), invoice=inv),
                 ]
 
             row += [
@@ -688,10 +693,11 @@ class account_vat_ledger(models.Model):
         # auto)
         if impo:
             invoices = self.get_digital_invoices().filtered(
-                lambda r: r.l10n_latam_document_type_id.code == '66')
+                lambda r: r.l10n_latam_document_type_id.code == '66' and r.state != 'cancel')
         else:
             invoices = self.get_digital_invoices().filtered(
-                lambda r: r.l10n_latam_document_type_id.code != '66')
+                lambda r: r.l10n_latam_document_type_id.code != '66' and r.l10n_latam_document_type_id.code != '11' and r.l10n_latam_document_type_id.code != '6' and r.state != 'cancel')
+
         for inv in invoices:
             lines = []
             is_zero = inv.currency_id.is_zero
