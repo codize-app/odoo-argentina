@@ -4,7 +4,6 @@ from odoo.exceptions import ValidationError
 
 
 class AccountPaymentGroup(models.Model):
-
     _inherit = "account.payment.group"
 
     withholdings_amount = fields.Monetary(
@@ -16,6 +15,29 @@ class AccountPaymentGroup(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
+    retencion_ganancias = fields.Selection([
+        ('imposibilidad_retencion', 'Imposibilidad de Retención'),
+        ('no_aplica', 'No Aplica'),
+        ('nro_regimen', 'Nro Regimen'),
+    ],
+        'Retención Ganancias',
+        readonly=True,
+        states={'draft': [('readonly', False)],
+                'confirmed': [('readonly', False)]}
+    )
+    regimen_ganancias_id = fields.Many2one(
+        'afip.tabla_ganancias.alicuotasymontos',
+        'Regimen Ganancias',
+        readonly=True,
+        ondelete='restrict',
+        states={'draft': [('readonly', False)],
+                'confirmed': [('readonly', False)]}
+    )
+    company_regimenes_ganancias_ids = fields.Many2many(
+        'afip.tabla_ganancias.alicuotasymontos',
+        compute='_company_regimenes_ganancias',
+    )
+    temp_payment_ids = fields.Char('temp_payment_ids')
 
     @api.onchange('unreconciled_amount')
     def set_withholdable_advanced_amount(self):
@@ -52,8 +74,7 @@ class AccountPaymentGroup(models.Model):
                 rec.compute_withholdings()
         return res
 
-    def _get_withholdable_amounts(
-            self, withholding_amount_type, withholding_advances):
+    def _get_withholdable_amounts(self, withholding_amount_type, withholding_advances):
         """ Method to help on getting withholding amounts from account.tax
         """
         self.ensure_one()
@@ -135,3 +156,53 @@ class AccountPaymentGroup(models.Model):
                 withholdable_advanced_amount = \
                     self.withholdable_advanced_amount
         return (withholdable_advanced_amount, withholdable_invoiced_amount)
+
+    def _company_regimenes_ganancias(self):
+        """
+        Lo hacemos con campo computado y no related para que solo se setee
+        y se exija si es pago de o a proveedor
+        """
+        for rec in self.filtered(lambda x: x.partner_type == 'supplier'):
+            rec.company_regimenes_ganancias_ids = (
+                rec.company_id.regimenes_ganancias_ids)
+        for rec in self.filtered(lambda x: x.partner_type == 'customer'):
+            rec.company_regimenes_ganancias_ids = [(6,0,[])]
+
+    @api.onchange('commercial_partner_id')
+    def change_retencion_ganancias(self):
+        if self.commercial_partner_id.imp_ganancias_padron in ['EX', 'NC']:
+            self.retencion_ganancias = 'no_aplica'
+        else:
+            cia_regs = self.company_regimenes_ganancias_ids
+            partner_regimen = (
+                self.commercial_partner_id.default_regimen_ganancias_id)
+            if partner_regimen:
+                def_regimen = partner_regimen
+            elif cia_regs:
+                def_regimen = cia_regs[0]
+            else:
+                def_regimen = False
+            self.regimen_ganancias_id = def_regimen
+
+    @api.onchange('company_regimenes_ganancias_ids')
+    def change_company_regimenes_ganancias(self):
+        if self.company_regimenes_ganancias_ids:
+            self.retencion_ganancias = 'nro_regimen'
+
+    def post(self):
+        res = super(AccountPaymentGroup, self).post()
+        for rec in self:
+            if rec.temp_payment_ids:
+                payment_ids = rec.temp_payment_ids.split(',')
+                for payment_id in payment_ids:
+                    payment = self.env['account.payment'].browse(int(payment_id))
+                    payment.write({'used_withholding': True})
+            withholding = None
+            for payment in rec.payment_ids:
+                if payment.tax_withholding_id:
+                    withholding = True
+            if withholding == True:
+                for payment in rec.payment_ids:
+                    payment.write({'used_withholding': True})
+
+        return res

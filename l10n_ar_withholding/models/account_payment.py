@@ -63,6 +63,7 @@ class AccountPayment(models.Model):
     computed_withholding_amount = fields.Float(
         readonly=True,
     )
+    used_withholding = fields.Boolean(string='Usado en retenciones')
 
     def _get_counterpart_move_line_vals(self, invoice=False):
         vals = super(AccountPayment, self)._get_counterpart_move_line_vals(

@@ -9,3 +9,6 @@ from . import account_move
 from . import account_payment_group
 from . import account_tax_withholding_rule
 from . import res_company
+from . import res_partner
+from . import afip
+from . import afip_padron
