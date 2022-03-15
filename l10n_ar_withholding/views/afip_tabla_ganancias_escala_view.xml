@@ -1,26 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
+<odoo>
     <data>
-
-<!--         <record id="view_afip_tabla_ganancias_escala_form" model="ir.ui.view">
-            <field name="name">afip.tabla_ganancias.escala.form</field>
-            <field name="model">afip.tabla_ganancias.escala</field>
-            <field name="arch" type="xml">
-                <form string="AFIP tax">
-                    <group>
-                        <field name="name"/>
-                        <field name='code'/>
-                        <field name='active'/>
-                    </group>
-                </form>
-            </field>
-        </record> -->
 
         <record id="view_afip_tabla_ganancias_escala_tree" model="ir.ui.view">
             <field name="name">afip.tabla_ganancias.escala.tree</field>
             <field name="model">afip.tabla_ganancias.escala</field>
             <field name="arch" type="xml">
-                <tree string="AFIP tax" editable="top">
+                <tree string="AFIP - Escalas Ganancias" editable="top">
                     <field name="importe_desde"/>
                     <field name="importe_hasta"/>
                     <field name="importe_fijo"/>
@@ -31,7 +17,7 @@
         </record>
 
         <record model="ir.actions.act_window" id="act_afip_tabla_ganancias_escala">
-            <field name="name">AFIP tax</field>
+            <field name="name">AFIP - Escalas Ganancias</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">afip.tabla_ganancias.escala</field>
             <field name="view_mode">tree</field>
@@ -40,6 +26,4 @@
         <menuitem name="Escalas Ganancias" action="act_afip_tabla_ganancias_escala" id="menu_action_afip_tabla_ganancias_escala" sequence="95" parent="l10n_ar.menu_afip_config"/>
 
     </data>
-</openerp>
-<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4
-     -->
+</odoo>
