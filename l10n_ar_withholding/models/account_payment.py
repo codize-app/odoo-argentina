@@ -64,6 +64,21 @@ class AccountPayment(models.Model):
         readonly=True,
     )
     used_withholding = fields.Boolean(string='Usado en retenciones')
+    print_withholding = fields.Boolean('Imprimir Retenciones', compute=_compute_print_withholding)
+
+    def btn_print_withholding(self):
+            self.ensure_one()
+            return self.env.ref('l10n_ar_withholding.account_payment_withholdings').report_action(self)
+
+    def _compute_print_withholding(self):
+            for rec in self:
+                if rec.state == 'posted':
+                    if rec.tax_withholding_id:
+                        rec.print_withholding = True
+                    else:
+                        rec.print_withholding = False
+                else:
+                    rec.print_withholding = False
 
     def _get_counterpart_move_line_vals(self, invoice=False):
         vals = super(AccountPayment, self)._get_counterpart_move_line_vals(

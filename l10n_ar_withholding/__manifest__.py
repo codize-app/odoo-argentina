@@ -12,6 +12,8 @@
         'views/afip_activity_view.xml',
         'views/afip_tabla_ganancias_escala_view.xml',
         'views/afip_tabla_ganancias_alicuotasymontos_view.xml',
+        'views/withholding_view.xml',
+        'report/report_payment_withholding.xml',
         'security/ir.model.access.csv',
         'security/security.xml',
         'data/account_payment_method_data.xml',
