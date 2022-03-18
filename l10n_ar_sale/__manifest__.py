@@ -6,10 +6,7 @@
         Ventas Localizadas para Argentina""",
 
     'description': """
-    Ventas Localizadas para Argentina
-    ======================
-
-    * Actualiza importes de facturas en ARS cuando el pedido está en USD 
+    Ventas Localizadas para Argentina. Actualiza importes de facturas en ARS cuando el pedido está en USD 
     """,
 
     'author': 'Codize, Exemax',
