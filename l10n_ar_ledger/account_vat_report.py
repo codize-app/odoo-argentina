@@ -244,7 +244,10 @@ class account_vat_ledger(models.Model):
         else:
             #number = partner.cuit_required()
             number = partner.vat
-        return number.rjust(20, '0')
+        if number != False:
+            return number.rjust(20, '0')
+        else:
+            raise ValidationError('El contacto ' + partner.name + ' no posee CUIT/CUIL o DNI. Agréguelo para poder generar el Libro de IVA.')
 
     @api.model
     def get_point_of_sale(self, invoice):
