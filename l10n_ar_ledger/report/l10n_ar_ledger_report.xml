@@ -50,7 +50,7 @@
 					<!-- END TOTALs VARs -->
 
                                         <tr t-foreach="o.invoice_ids" t-as="invoice">
-						<td><span t-field="invoice.invoice_date_due" /></td>
+						<td><span t-field="invoice.invoice_date" /></td>
                                               	<td><span t-field="invoice.partner_id.name" /></td>
                                               	<td><span t-if="invoice.partner_id.l10n_latam_identification_type_id.name == 'CUIT'" t-field="invoice.partner_id.vat" /></td>
                                               	<td><span t-field="invoice.partner_id.l10n_ar_afip_responsibility_type_id" /></td>
