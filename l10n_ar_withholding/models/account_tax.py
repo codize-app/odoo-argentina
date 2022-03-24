@@ -459,7 +459,6 @@ class AccountTax(models.Model):
                     payment_withholding.unlink()
                 continue
 
-
             vals['withholding_base_amount'] = vals.get(
                 'withholdable_advanced_amount') + vals.get(
                 'withholdable_invoiced_amount')
@@ -487,6 +486,10 @@ class AccountTax(models.Model):
                 vals['payment_type'] = 'outbound'
                 vals['partner_type'] = payment_group.partner_type
                 vals['partner_id'] = payment_group.partner_id.id
+                #if not 'name' in vals:
+                #    sequence_obj = self.env['ir.sequence']
+                #    correlativo = sequence_obj.next_by_code('account.tax.withholding')
+                #    vals['name'] = correlativo
                 payment_withholding = payment_withholding.create(vals)
         return True
 
@@ -525,108 +528,6 @@ class AccountTax(models.Model):
             ('payment_group_id.id', '!=', payment_group.id),
         ]
         return (previous_payment_groups_domain, previous_payments_domain)
-
-    # def get_withholding_vals(
-    #         self, payment_group, force_withholding_amount_type=None):
-    #     """
-    #     If you wan to inherit and implement your own type, the most important
-    #     value tu return are period_withholding_amount and
-    #     previous_withholding_amount, with thos values the withholding amount
-    #     will be calculated.
-    #     """
-    #     self.ensure_one()
-    #     withholding_amount_type = force_withholding_amount_type or \
-    #         self.withholding_amount_type
-    #     withholdable_advanced_amount, withholdable_invoiced_amount = \
-    #         payment_group._get_withholdable_amounts(
-    #             withholding_amount_type, self.withholding_advances)
-
-    #     accumulated_amount = previous_withholding_amount = 0.0
-
-    #     if self.withholding_accumulated_payments:
-    #         previos_payment_groups_domain, previos_payments_domain = (
-    #             self.get_period_payments_domain(payment_group))
-    #         same_period_payments = self.env['account.payment.group'].search(
-    #             previos_payment_groups_domain)
-
-    #         for same_period_payment_group in same_period_payments:
-    #             same_period_amounts = \
-    #                 same_period_payment_group._get_withholdable_amounts(
-    #                     withholding_amount_type, self.withholding_advances)
-    #             accumulated_amount += \
-    #                 same_period_amounts[0] + same_period_amounts[1]
-    #         if self.withholding_type != 'tabla_ganancias':
-    #             previous_withholding_amount = sum(
-    #                 self.env['account.payment'].search(
-    #                     previos_payments_domain).mapped('amount'))
-    #         else:
-    #             previous_withholding_amount = 0
-    #             #Se cambia el dominio de busqueda payment_date a date ya que Odoo 14 descontinuo este campo en account.payment
-    #             for x in range(len(previos_payments_domain)):
-    #                 if previos_payments_domain[x][0] == 'payment_date':
-    #                     l = list(previos_payments_domain[x])
-    #                     l[0] = 'date'
-    #                     previos_payments_domain[x] = tuple(l)
-    #             prev_payments = self.env['account.payment'].search(previos_payments_domain)
-    #             for prev_payment in prev_payments:
-    #                 if prev_payment.payment_group_id.payment_date.year == payment_group.payment_date.year and prev_payment.payment_group_id.payment_date.month == payment_group.payment_date.month and \
-    #                         prev_payment.payment_group_id.payment_date.day <= payment_group.payment_date.day:
-    #                             previous_withholding_amount += prev_payment.amount
-
-
-    #     total_amount = (
-    #         accumulated_amount +
-    #         withholdable_advanced_amount +
-    #         withholdable_invoiced_amount)
-    #     withholding_non_taxable_minimum = self.withholding_non_taxable_minimum
-    #     withholding_non_taxable_amount = self.withholding_non_taxable_amount
-    #     withholdable_base_amount = (
-    #         (total_amount > withholding_non_taxable_minimum) and
-    #         (total_amount - withholding_non_taxable_amount) or 0.0)
-    #     comment = False
-    #     if self.withholding_type == 'code':
-    #         localdict = {
-    #             'withholdable_base_amount': withholdable_base_amount,
-    #             'payment': payment_group,
-    #             'partner': payment_group.commercial_partner_id,
-    #             'withholding_tax': self,
-    #         }
-    #         eval(
-    #             self.withholding_python_compute, localdict,
-    #             mode="exec", nocopy=True)
-    #         period_withholding_amount = localdict['result']
-    #     else:
-    #         rule = self._get_rule(payment_group)
-    #         percentage = 0.0
-    #         fix_amount = 0.0
-    #         if rule:
-    #             percentage = rule.percentage
-    #             fix_amount = rule.fix_amount
-    #             comment = '%s x %s + %s' % (
-    #                 withholdable_base_amount,
-    #                 percentage,
-    #                 fix_amount)
-    #         if self.withholding_type != 'tabla_ganancias':
-    #             period_withholding_amount = ((total_amount > withholding_non_taxable_minimum) and (
-    #                 withholdable_base_amount * percentage + fix_amount) or 0.0)
-    #         else:
-    #             period_withholding_amount = total_amount
-
-    #     return {
-    #         'withholdable_invoiced_amount': withholdable_invoiced_amount,
-    #         'withholdable_advanced_amount': withholdable_advanced_amount,
-    #         'accumulated_amount': accumulated_amount,
-    #         'total_amount': total_amount,
-    #         'withholding_non_taxable_minimum': withholding_non_taxable_minimum,
-    #         'withholding_non_taxable_amount': withholding_non_taxable_amount,
-    #         'withholdable_base_amount': withholdable_base_amount,
-    #         'period_withholding_amount': period_withholding_amount,
-    #         'previous_withholding_amount': previous_withholding_amount,
-    #         'payment_group_id': payment_group.id,
-    #         'tax_withholding_id': self.id,
-    #         'automatic': True,
-    #         'comment': comment,
-    #     }
 
     def get_partner_alicuota_percepcion(self, partner, date):
         if partner and date:

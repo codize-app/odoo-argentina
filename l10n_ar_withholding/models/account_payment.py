@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+import logging
+_logger = logging.getLogger(__name__)
 
 class AccountPayment(models.Model):
     _inherit = "account.payment"
@@ -90,10 +92,9 @@ class AccountPayment(models.Model):
             vals['tax_ids'] = [(6, False, taxes.ids)]
         return vals
 
-    def post(self):
+    def action_post(self):
         without_number = self.filtered(
             lambda x: x.tax_withholding_id and not x.withholding_number)
-
         without_sequence = without_number.filtered(
             lambda x: not x.tax_withholding_id.withholding_sequence_id)
         if without_sequence:
@@ -106,8 +107,12 @@ class AccountPayment(models.Model):
         for payment in (without_number - without_sequence):
             payment.withholding_number = \
                 payment.tax_withholding_id.withholding_sequence_id.next_by_id()
+            #Si el pago de retencion no tiene nombre o es '/' lo seteamos con el mismo nombre que su numero para no tener problemas
+            # con account_payment_fix
+            if payment.name == '/':
+                payment.write({'name': payment.withholding_number})
 
-        return super(AccountPayment, self).post()
+        return super(AccountPayment, self).action_post()
 
     def _get_liquidity_move_line_vals(self, amount):
         vals = super(AccountPayment, self)._get_liquidity_move_line_vals(

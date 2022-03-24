@@ -60,6 +60,24 @@ class AccountPaymentGroup(models.Model):
         for rec in self:
             if rec.partner_type != 'supplier':
                 continue
+
+            #Seteamos campo Retencion de Ganancias y nro de regimen
+            if rec.commercial_partner_id.imp_ganancias_padron in ['EX', 'NC']:
+                rec.retencion_ganancias = 'no_aplica'
+            else:
+                cia_regs = rec.company_regimenes_ganancias_ids
+                partner_regimen = (
+                    rec.commercial_partner_id.default_regimen_ganancias_id)
+                if partner_regimen:
+                    def_regimen = partner_regimen
+                # Si el partner no tiene nro regimen seteado se le asigna el primero que tenga seteado la compañia
+                elif cia_regs:
+                    def_regimen = cia_regs[0]
+                else:
+                    def_regimen = False
+                rec.retencion_ganancias = 'nro_regimen'
+                rec.regimen_ganancias_id = def_regimen
+
             # limpiamos el type por si se paga desde factura ya que el en ese
             # caso viene in_invoice o out_invoice y en search de tax filtrar
             # por impuestos de venta y compra (y no los nuestros de pagos

@@ -63,12 +63,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr t-foreach="o.reconciled_invoice_ids" t-as="inv">
+                            <tr t-foreach="o.reconciled_bill_ids" t-as="inv">
                                 <td><span t-field="inv.invoice_date"/></td>
                                 <td><span t-field="inv.name"/></td>
                                 <td><span t-field="inv.ref"/></td>
                                 <td class="text-right"><span t-field="inv.amount_total"/></td>
-                                <td class="text-right"><span t-esc="o._get_invoice_payment_amount(inv)" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/></td>
+                                <td class="text-right"><span t-esc="inv.amount_total - inv.amount_residual" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/></td>
                                 <td class="text-right"><span t-field="inv.amount_residual"/></td>
                             </tr>
                         </tbody>
@@ -80,7 +80,7 @@
     <template id="report_payment_withholding">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <t t-call="l10n_ar_report_withholding.report_payment_withholding_document" t-lang="o.partner_id.lang"/>
+                <t t-call="l10n_ar_withholding.report_payment_withholding_document" t-lang="o.partner_id.lang"/>
             </t>
         </t>
     </template>
@@ -90,8 +90,8 @@
         model="account.payment"
         string="Retenciones"
         report_type="qweb-pdf"
-        name="l10n_ar_report_withholding.report_payment_withholding"
-        file="l10n_ar_report_withholding.report_payment_withholding"
+        name="l10n_ar_withholding.report_payment_withholding"
+        file="l10n_ar_withholding.report_payment_withholding"
         attachment="(object.state in ('posted','sent')) and ('RET'+(object.withholding_number or '').replace('/','')+'.pdf')"
     />
 
