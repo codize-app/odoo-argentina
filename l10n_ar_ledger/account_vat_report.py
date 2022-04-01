@@ -319,7 +319,7 @@ class account_vat_ledger(models.Model):
             if inv.l10n_latam_document_type_id.code != '11' and inv.l10n_latam_document_type_id.code != '6':
                 for invl in inv.invoice_line_ids:
                     for tax in invl.tax_ids:
-                        if tax.tax_group_id.tax_type == 'vat':
+                        if tax.tax_group_id.tax_type == 'vat' and tax.tax_group_id.l10n_ar_vat_afip_code not in ['1','2']:
                             if tax.id not in vat_taxes:
                                 vat_taxes.append(tax.id)
                         if self.type == 'purchase':
@@ -755,7 +755,8 @@ class account_vat_ledger(models.Model):
                     impo=impo,
                 )))
             # Agrega IVA exento e IVA no gravado
-            for inv_line in inv.invoice_line_ids:
+            # Sacamos el Iva Exento e IVA no gravado ya que no debe generar alícuotas
+            """for inv_line in inv.invoice_line_ids:
                 for tax in inv_line.tax_ids:
                     if tax.tax_group_id.tax_type == 'vat' and tax.tax_group_id.l10n_ar_vat_afip_code in ['1','2']:
                         text_line = ''
@@ -776,7 +777,7 @@ class account_vat_ledger(models.Model):
                         text_line += str(tax.tax_group_id.l10n_ar_vat_afip_code).rjust(4, '0')
                         # Campo 6: Impuesto Liquidado.
                         text_line += self.format_amount(0, invoice=inv)
-                        lines.append(text_line)
+                        lines.append(text_line)"""
             res[inv] = lines
         return res
 

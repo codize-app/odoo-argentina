@@ -14,6 +14,12 @@ Clone this repository with branch 14.0
 git clone https://github.com/codize-app/odoo-argentina -b 14.0
 ```
 
+Verify dependencies:
+
+```
+sudo apt-get install libpq-dev python-dev libxml2-dev libxslt1-dev libldap2-dev libsasl2-dev libffi-dev libssl-dev
+```
+
 Inside directory, install dependencies:
 
 ```
