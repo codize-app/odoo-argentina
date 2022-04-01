@@ -12,3 +12,4 @@ from . import res_company
 from . import res_partner
 from . import afip
 from . import afip_padron
+from . import account_export_sicore

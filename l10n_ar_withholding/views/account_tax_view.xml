@@ -31,6 +31,10 @@
             <xpath expr="//page" position="inside">
                     <group attrs="{'invisible': [('type_tax_use', '!=', 'supplier')]}">
                         <group name="withholdings">
+                            <label for="condicion_sicore"/>
+                            <div>
+                                <field name="condicion_sicore" class="oe_inline"/>
+                            </div>
                             <label for="withholding_type"/>
                             <div>
                                 <field name="withholding_type" class="oe_inline"/>

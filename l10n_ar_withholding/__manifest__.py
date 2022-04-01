@@ -13,6 +13,7 @@
         'views/afip_tabla_ganancias_escala_view.xml',
         'views/afip_tabla_ganancias_alicuotasymontos_view.xml',
         'views/withholding_view.xml',
+        'views/account_export_sicore_view.xml',
         'report/report_payment_withholding.xml',
         'security/ir.model.access.csv',
         'security/security.xml',
@@ -20,6 +21,7 @@
         'data/tabla_ganancias_data.xml',
     ],
     'depends': [
+        'base',
         'account',
         'l10n_ar',
         'account_payment_group',

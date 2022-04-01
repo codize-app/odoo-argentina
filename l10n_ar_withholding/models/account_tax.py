@@ -50,6 +50,14 @@ class AccountTax(models.Model):
         digits=dp.get_precision('Account'),
         help="Importes inferiores a este no tendrán retención"
     )
+    condicion_sicore = fields.Selection([
+        ('withholding', 'Retencion'),
+        ('perception', 'Percepcion'),
+        # ('percentage_of_total', 'Percentage Of Total'),
+    ],
+        'Condicion de SICORE',
+        help='Tipo utilizado para txt de sicore',
+    )
     withholding_amount_type = fields.Selection([
         ('untaxed_amount', 'Importe neto'),
         ('total_amount', 'Importe total'),
@@ -181,7 +189,6 @@ class AccountTax(models.Model):
         withholdable_base_amount = (
             (total_amount > withholding_non_taxable_minimum) and
             (total_amount - withholding_non_taxable_amount) or 0.0)
-
         comment = False
         if self.withholding_type == 'code':
             localdict = {
@@ -226,9 +233,7 @@ class AccountTax(models.Model):
             'automatic': True,
             'comment': comment,
         }
-        #fin modulo account_withholding_automatic
-        #vals = super(AccountTax, self).get_withholding_vals(
-        #    payment_group, force_withholding_amount_type)
+
         base_amount = vals['withholdable_base_amount']
 
         if self.withholding_type == 'partner_tax':
@@ -309,31 +314,34 @@ class AccountTax(models.Model):
                     vals['previous_withholding_amount'] = 0
                     base_amount = vals['withholdable_base_amount']
 
-                withholdable_base_amount = 0
-                if not payment_group.debt_move_line_ids:
-                    withholdable_base_amount += payment_group.to_pay_amount
-                else:
-                    for matched_move in payment_group.debt_move_line_ids:
-                        matched_amount = matched_move.move_id._get_tax_factor() * (-1) * matched_move.with_context({'payment_group_id': payment_group.id}).amount_residual
-                        withholdable_base_amount += matched_amount
+                withholdable_base_amount = vals['withholdable_base_amount']
+                #if not payment_group.debt_move_line_ids:
+                #    withholdable_base_amount += payment_group.to_pay_amount
+                #else:
+                #    for matched_move in payment_group.debt_move_line_ids:
+                #        matched_amount = matched_move.move_id._get_tax_factor() * (-1) * matched_move.with_context({'payment_group_id': payment_group.id}).amount_residual
+                #        withholdable_base_amount += matched_amount
+                
                 period_withholding_amount = 0
-                non_taxable_amount = 0
-                non_taxable_amount = payment_group.partner_id.default_regimen_ganancias_id.montos_no_sujetos_a_retencion
-                # Agregar soporte a montos netos de facturas
-                prev_payments_no_withholding = self.env['account.payment'].search([('payment_type','=','outbound'),('state','=','posted'),('payment_group_id.payment_date','>=',str(prev_date)),\
-                                        ('payment_group_id.payment_date','<=',today),('partner_id','=',payment_group.partner_id.id),('tax_withholding_id','!=',self.id)])
-                prev_payments_with_withholding = self.env['account.payment'].search([('payment_type','=','outbound'),('state','=','posted'),('payment_group_id.payment_date','>=',str(prev_date)),\
-                                        ('payment_group_id.payment_date','<=',today),('partner_id','=',payment_group.partner_id.id),('tax_withholding_id','=',self.id)])
-                if not prev_payments_with_withholding :
-                    if prev_payments_no_withholding:
-                        for prev_payments in prev_payments_no_withholding:
-                            withholdable_base_amount += prev_payments.amount
-                    withholdable_base_amount = withholdable_base_amount - non_taxable_amount
+                #non_taxable_amount = 0
+                #non_taxable_amount = payment_group.partner_id.default_regimen_ganancias_id.montos_no_sujetos_a_retencion
+                ## Agregar soporte a montos netos de facturas
+                #prev_payments_no_withholding = self.env['account.payment'].search([('payment_type','=','outbound'),('state','=','posted'),('payment_group_id.payment_date','>=',str(prev_date)),\
+                #                        ('payment_group_id.payment_date','<=',today),('partner_id','=',payment_group.partner_id.id),('tax_withholding_id','!=',self.id)])
+                #prev_payments_with_withholding = self.env['account.payment'].search([('payment_type','=','outbound'),('state','=','posted'),('payment_group_id.payment_date','>=',str(prev_date)),\
+                #                        ('payment_group_id.payment_date','<=',today),('partner_id','=',payment_group.partner_id.id),('tax_withholding_id','=',self.id)])
+                #if not prev_payments_with_withholding :
+                #    if prev_payments_no_withholding:
+                #        for prev_payments in prev_payments_no_withholding:
+                #            withholdable_base_amount += prev_payments.amount
+                #            _logger.warning('******* prev_payments.amount: {0}'.format(prev_payments.amount))
+                #    withholdable_base_amount = withholdable_base_amount - non_taxable_amount
+                #_logger.warning('******* withholdable_base_amount$$2: {0}'.format(withholdable_base_amount))
                 if withholdable_base_amount > 0:
                     period_withholding_amount = withholdable_base_amount * payment_group.partner_id.default_regimen_ganancias_id.porcentaje_inscripto / 100
                 if period_withholding_amount < self.withholding_non_taxable_minimum and not prev_payments_with_withholding:
                     period_withholding_amount = 0
-                vals['withholdable_base_amount'] = withholdable_base_amount
+                #vals['withholdable_base_amount'] = withholdable_base_amount
                 vals['period_withholding_amount'] = period_withholding_amount
 
                 if regimen.porcentaje_inscripto == -1:

@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+   <data>
+
+    <record id="view_account_export_sicore_form" model="ir.ui.view">
+         <field name="name">account.export.sicore.form</field>
+         <field name="model">account.export.sicore</field>
+         <field name="arch" type="xml">
+            <form>
+		<header>
+			<button name="compute_sicore_data" string="Generar SICORE" type="object" />
+		</header>
+		<sheet>
+			<group>
+				<field name="name" />
+				<field name="date_from" />
+				<field name="date_to" />
+			</group>
+			<group string="Archivo y datos">
+				<field name="export_sicore_file" />
+				<field name="export_sicore_data" readonly="1"/>
+			</group>
+		</sheet>
+            </form>
+         </field>
+    </record>
+
+    <record id="view_account_export_sicore" model="ir.ui.view">
+         <field name="name">account.export.sicore.tree</field>
+         <field name="model">account.export.sicore</field>
+         <field name="arch" type="xml">
+            <tree>
+		<field name="name" />
+		<field name="date_from" />
+		<field name="date_to" />
+            </tree>
+         </field>
+    </record>
+
+
+
+        <record id="action_account_export_sicore" model="ir.actions.act_window">
+            <field name="name">Exportaciones de SICORE</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.export.sicore</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_account_export_sicore"
+                  action="action_account_export_sicore"
+                  parent="l10n_ar.account_reports_ar_statements_menu"
+                  sequence="6"/>
+
+
+       </data>
+</odoo>
