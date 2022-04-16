@@ -21,6 +21,7 @@
         'security/ir.model.access.csv',
         'views/account_debit_automatic.xml',
         'views/partner_method.xml',
+        'report/automatic_debit.xml'
     ],
     'demo': [],
 }
