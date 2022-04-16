@@ -1,6 +1,6 @@
 <odoo>
     <data>
-      <record model="ir.ui.view" id="view_partner_method">
+        <record model="ir.ui.view" id="view_partner_method">
               <field name="name">res.partner.property.form.inherit</field>
               <field name="model">res.partner</field>
               <field name="inherit_id" ref="base.view_partner_form"/>
@@ -12,9 +12,8 @@
                   </data>
               </field>
           </record>
-
-      </data>
-  </odoo>
+    </data>
+</odoo>
 
 <!-- 
   <page name="sales_purchases" position="after">
