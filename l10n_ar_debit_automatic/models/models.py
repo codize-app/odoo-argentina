@@ -38,10 +38,10 @@ class AccountDebitAutomatic(models.Model):
                     amount_cent = int(amount_text[-2:])
                     amount_round = int(amount_text[:-2])
                     amount_total = amount_round + (amount_cent / 100.0)
-                    _logger.info(amount_total)
-                    #resultado='\n'+str(card_num)+":"+self.env['account.payment'].acc_payment(self.payment_account,self.payment_journal,self.payment_currency,card_num,amount_total,"")
-                    #self.result=self.result+resultado
-            #self.state = 'register'
+
+                    resultado = '\n' + str(card_num) + ":" + self.env['account.payment'].acc_payment(self.payment_account,self.payment_journal,self.payment_currency,card_num,amount_total,'')
+                    self.result = self.result + resultado
+            self.state = 'register'
 
     name = fields.Char('Nombre', required=True)
     company_id = fields.Many2one(
@@ -50,8 +50,7 @@ class AccountDebitAutomatic(models.Model):
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        default=lambda self: self.env[
-            'res.company']._company_default_get('account.debit.automatic')
+        default=lambda self: self.env['res.company']._company_default_get('account.debit.automatic')
     )
     date = fields.Date('Fecha', readonly=True)
     state = fields.Selection([('draft', 'Borrador'), ('register', 'Registrado')], 'Estado', default='draft')
