@@ -537,21 +537,21 @@ class AccountTax(models.Model):
         ]
         return (previous_payment_groups_domain, previous_payments_domain)
 
-    def get_partner_alicuota_percepcion(self, partner, date):
-        if partner and date:
-            arba = self.get_partner_alicuot(partner, date)
-            return arba.alicuota_percepcion / 100.0
-        return 0.0
-
-    def get_partner_alicuot(self, partner, date):
-        self.ensure_one()
-        commercial_partner = partner.commercial_partner_id
-        company = self.company_id
-        alicuot = 0
-        for alicuot_id in commercial_partner.arba_alicuot_ids:
-            if alicuot_id.tax_id.id == self.id:
-                alicuot = alicuot_id.percent
-        return alicuot
+    #def get_partner_alicuota_percepcion(self, partner, date):
+    #    if partner and date:
+    #        arba = self.get_partner_alicuot(partner, date)
+    #        return arba.alicuota_percepcion / 100.0
+    #    return 0.0
+#
+    #def get_partner_alicuot(self, partner, date):
+    #    self.ensure_one()
+    #    commercial_partner = partner.commercial_partner_id
+    #    company = self.company_id
+    #    alicuot = 0
+    #    for alicuot_id in commercial_partner.arba_alicuot_ids:
+    #        if alicuot_id.tax_id.id == self.id:
+    #            alicuot = alicuot_id.percent
+    #    return alicuot
 
     def _compute_amount(
             self, base_amount, price_unit, quantity=1.0, product=None,

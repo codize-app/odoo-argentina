@@ -1,5 +1,5 @@
 {
-    'name': 'Retenciones en Pagos de Argentina',
+    'name': 'Ret/Per de Argentina',
     'license': 'AGPL-3',
     'author': 'ADHOC SA, Moldeo Interactive, Exemax, Codize',
     'category': 'Accounting & Finance',
