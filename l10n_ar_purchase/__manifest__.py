@@ -12,7 +12,7 @@
     'author': 'Codize, Exemax',
     'website': 'http://www.codize.ar',
 
-    'category': 'Sale',
+    'category': 'Purchase',
     'version': '14.0.0.1.0',
     'license': 'AGPL-3',
 
