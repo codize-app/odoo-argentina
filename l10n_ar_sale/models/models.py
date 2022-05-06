@@ -2,11 +2,18 @@
 
 from odoo.exceptions import UserError
 from odoo import api, fields, models
-# import logging
-# _logger=logging.getLogger(__name__)
+import logging
+_logger=logging.getLogger(__name__)
 
 class product_pricelist_report(models.Model):
     _inherit = "sale.order"
+    currency_invoice_id = fields.Many2one('res.currency', string='Currency')
+    tipo_cambio_othercurrency = fields.Float(string='Tipo de cambio')
+
+    def _set_currency_invoice(self, currency_choice,tipo_cambio_choice):
+        for order in self:
+            order.currency_invoice_id= currency_choice
+            order.tipo_cambio_othercurrency = tipo_cambio_choice
 
     def _prepare_invoice(self):
         """
@@ -15,18 +22,14 @@ class product_pricelist_report(models.Model):
         a clean extension chain).
         """
         self.ensure_one()
-        journal = self.env['account.move'].with_context(default_type='out_invoice')._get_default_journal()
-
-        currency = self.pricelist_id.currency_id
-
-        if self.pricelist_id.currency_id.name=="USD":
-            currency = self.env['res.currency'].search([('name','=','ARS')])[0]
+        journal = self.env['account.move'].with_context(default_move_type='out_invoice')._get_default_journal()
+        currency= self.currency_invoice_id
 
         invoice_vals = {
             'ref': self.client_order_ref or '',
             'move_type': 'out_invoice',
             'narration': self.note,
-            'currency_id': currency.id,
+            'currency_id': currency,
             'campaign_id': self.campaign_id.id,
             'medium_id': self.medium_id.id,
             'source_id': self.source_id.id,
@@ -36,6 +39,7 @@ class product_pricelist_report(models.Model):
             'partner_id': self.partner_invoice_id.id,
             'partner_shipping_id': self.partner_shipping_id.id,
             'fiscal_position_id': self.fiscal_position_id.id or self.partner_invoice_id.property_account_position_id.id,
+            'partner_bank_id': self.company_id.partner_id.bank_ids[:1].id,
             'journal_id': journal.id,  # company comes from the journal
             'invoice_origin': self.name,
             'invoice_payment_term_id': self.payment_term_id.id,
@@ -57,9 +61,8 @@ class SaleOrderLine(models.Model):
         :param optional_values: any parameter that should be added to the returned invoice line
         """
         price_unit = self.price_unit
-
-        if(self.order_id.currency_id.id==2):
-            price_unit = self.price_unit/self.order_id.currency_id.rate
+        if (self.order_id.currency_id.name != self.order_id.currency_invoice_id.name):
+            price_unit = self.price_unit * self.order_id.tipo_cambio_othercurrency
 
         self.ensure_one()
         res = {
