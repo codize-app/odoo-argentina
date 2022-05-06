@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<odoo>
+ <data>
+<template id="automatic_debit_report">0DEBLIQC <t t-if="docs[0].company_id.debit_number"><t t-esc="docs[0].company_id.debit_number" />900000    <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y%m%d%H%M')"/>0                                                         *</t><t t-set="index" t-value="1" /><t t-set="total" t-value="0" />
+<t t-foreach="docs" t-as="p"><t t-foreach="p.invoice_line_ids" t-as="l"><t t-if="p.partner_id.bank_ids">1<t t-esc="p.partner_id.bank_ids[0].acc_number"/>   <t t-esc="str(index).zfill(8)" /><t t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y%m%d')"/>0005<t t-esc="str(int(l.price_subtotal * 100)).zfill(15)" /><t t-esc="str(index).zfill(15)" />                             *</t><!--END BANK_ID-->
+<t t-set="index" t-value="index + 1" /><t t-set="total" t-value="total + l.price_subtotal" /></t><!--END INVOICE_LINE_IDS--></t><!-- END FOREACH DOCS -->9DEBLIQC <t t-if="docs[0].company_id.debit_number"><t t-esc="docs[0].company_id.debit_number" />900000    <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y%m%d%H%M')"/><t t-esc="str(index-1).zfill(7)"/><t t-esc="str(int(total * 100)).zfill(15)" />                                    *</t>
+</template>
+
+  <record id="action_report_automatic_debit_report" model="ir.actions.report">
+            <field name="name">Reporte de Débito Automático</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-text</field>
+            <field name="report_name">l10n_ar_debit_automatic.automatic_debit_report</field>
+            <field name="report_file">l10n_ar_debit_automatic.automatic_debit_report</field>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">DEBLIQ.txt</field>
+  </record>
+ </data>
+</odoo>

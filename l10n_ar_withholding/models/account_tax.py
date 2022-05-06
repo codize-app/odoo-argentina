@@ -328,8 +328,8 @@ class AccountTax(models.Model):
                 ## Agregar soporte a montos netos de facturas
                 #prev_payments_no_withholding = self.env['account.payment'].search([('payment_type','=','outbound'),('state','=','posted'),('payment_group_id.payment_date','>=',str(prev_date)),\
                 #                        ('payment_group_id.payment_date','<=',today),('partner_id','=',payment_group.partner_id.id),('tax_withholding_id','!=',self.id)])
-                #prev_payments_with_withholding = self.env['account.payment'].search([('payment_type','=','outbound'),('state','=','posted'),('payment_group_id.payment_date','>=',str(prev_date)),\
-                #                        ('payment_group_id.payment_date','<=',today),('partner_id','=',payment_group.partner_id.id),('tax_withholding_id','=',self.id)])
+                prev_payments_with_withholding = self.env['account.payment'].search([('payment_type','=','outbound'),('state','=','posted'),('payment_group_id.payment_date','>=',str(prev_date)),\
+                                        ('payment_group_id.payment_date','<=',today),('partner_id','=',payment_group.partner_id.id),('tax_withholding_id','=',self.id)])
                 #if not prev_payments_with_withholding :
                 #    if prev_payments_no_withholding:
                 #        for prev_payments in prev_payments_no_withholding:
@@ -537,21 +537,21 @@ class AccountTax(models.Model):
         ]
         return (previous_payment_groups_domain, previous_payments_domain)
 
-    def get_partner_alicuota_percepcion(self, partner, date):
-        if partner and date:
-            arba = self.get_partner_alicuot(partner, date)
-            return arba.alicuota_percepcion / 100.0
-        return 0.0
-
-    def get_partner_alicuot(self, partner, date):
-        self.ensure_one()
-        commercial_partner = partner.commercial_partner_id
-        company = self.company_id
-        alicuot = 0
-        for alicuot_id in commercial_partner.arba_alicuot_ids:
-            if alicuot_id.tax_id.id == self.id:
-                alicuot = alicuot_id.percent
-        return alicuot
+    #def get_partner_alicuota_percepcion(self, partner, date):
+    #    if partner and date:
+    #        arba = self.get_partner_alicuot(partner, date)
+    #        return arba.alicuota_percepcion / 100.0
+    #    return 0.0
+#
+    #def get_partner_alicuot(self, partner, date):
+    #    self.ensure_one()
+    #    commercial_partner = partner.commercial_partner_id
+    #    company = self.company_id
+    #    alicuot = 0
+    #    for alicuot_id in commercial_partner.arba_alicuot_ids:
+    #        if alicuot_id.tax_id.id == self.id:
+    #            alicuot = alicuot_id.percent
+    #    return alicuot
 
     def _compute_amount(
             self, base_amount, price_unit, quantity=1.0, product=None,
