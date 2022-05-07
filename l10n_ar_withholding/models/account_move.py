@@ -17,8 +17,7 @@ class AccountMove(models.Model):
 			tax_factor = 1.0 / 1.21
 		return tax_factor
 
-	@api.onchange('invoice_line_ids')
-	def change_invoice_percepciones_ids(self):
+	def calculate_perceptions(self):
 		if self.move_type == 'out_invoice' or self.move_type == 'out_refund':
 			if self.invoice_line_ids:
 				if self.partner_id:
@@ -30,4 +29,6 @@ class AccountMove(models.Model):
 								if str(self.partner_id.percepciones_ids[0].tax_id.id) == str(tax.id)[-2:]:
 									_tiene_precepcion = 1
 							if not _tiene_precepcion:
-								iline.write({'tax_ids': [(4, self.partner_id.percepciones_ids[0].tax_id.id)]})
+								iline.write({'tax_ids': [(4, self.partner_id.percepciones_ids[0].tax_id.id)], 'recompute_tax_line': True})
+						#self._recompute_tax_lines()
+						#self._recompute_tax_lines(recompute_tax_base_amount=True)
