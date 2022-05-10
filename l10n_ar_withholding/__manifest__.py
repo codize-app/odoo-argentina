@@ -14,6 +14,7 @@
         'views/afip_tabla_ganancias_alicuotasymontos_view.xml',
         'views/withholding_view.xml',
         'views/account_export_sicore_view.xml',
+        'views/account_move_view.xml',
         'report/report_payment_withholding.xml',
         'security/ir.model.access.csv',
         'security/security.xml',
