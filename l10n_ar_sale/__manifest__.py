@@ -18,6 +18,6 @@
 
     'depends': ['base', 'sale'],
 
-    'data': [],
+    'data': ['wizard/sale_make_invoice_advance_views.xml'],
     'demo': [],
 }
