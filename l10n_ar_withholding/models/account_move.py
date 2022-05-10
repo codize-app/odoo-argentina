@@ -18,8 +18,13 @@ class AccountMove(models.Model):
 		return tax_factor
 	
 	def _check_balanced(self):
-		### TODO llamar al super y que se retorne True solo en el caso que el cliente de la factura tenga percepciones sino dejar su flujo normal
-		return True
+		if self.move_type == 'out_invoice' or self.move_type == 'out_refund':
+			if self.invoice_line_ids:
+				if self.partner_id:
+					if len(self.partner_id.percepciones_ids) > 0:
+						return True
+		res = super(AccountMove, self)._check_balanced()
+		return res
 
 	def calculate_perceptions(self):
 		if self.move_type == 'out_invoice' or self.move_type == 'out_refund':
