@@ -16,6 +16,10 @@ class AccountMove(models.Model):
 		if tax_factor == 1.0 and doc_letter == 'B':
 			tax_factor = 1.0 / 1.21
 		return tax_factor
+	
+	def _check_balanced(self):
+		### TODO llamar al super y que se retorne True solo en el caso que el cliente de la factura tenga percepciones sino dejar su flujo normal
+		return True
 
 	def calculate_perceptions(self):
 		if self.move_type == 'out_invoice' or self.move_type == 'out_refund':
@@ -29,6 +33,9 @@ class AccountMove(models.Model):
 								if str(self.partner_id.percepciones_ids[0].tax_id.id) == str(tax.id)[-2:]:
 									_tiene_precepcion = 1
 							if not _tiene_precepcion:
-								iline.write({'tax_ids': [(4, self.partner_id.percepciones_ids[0].tax_id.id)], 'recompute_tax_line': True})
-						#self._recompute_tax_lines()
-						#self._recompute_tax_lines(recompute_tax_base_amount=True)
+								iline.write({'tax_ids': [(4, self.partner_id.percepciones_ids[0].tax_id.id)]})
+						# Recomputamos Apuntes contables y actualizamos el valor de Cuenta a Pagar por el total de la factura
+						self._recompute_tax_lines(recompute_tax_base_amount=False)
+						for lac in self.line_ids:
+							if lac.account_id.id == self.partner_id.property_account_receivable_id.id:
+								lac.write({'debit' : self.amount_total})
