@@ -18,11 +18,12 @@ class AccountMove(models.Model):
 		return tax_factor
 	
 	def _check_balanced(self):
-		if self.move_type == 'out_invoice' or self.move_type == 'out_refund':
-			if self.invoice_line_ids:
-				if self.partner_id:
-					if len(self.partner_id.percepciones_ids) > 0:
-						return True
+		for rec in self:
+			if rec.move_type == 'out_invoice' or rec.move_type == 'out_refund':
+				if rec.invoice_line_ids:
+					if rec.partner_id:
+						if len(rec.partner_id.percepciones_ids) > 0:
+							return True
 		res = super(AccountMove, self)._check_balanced()
 		return res
 

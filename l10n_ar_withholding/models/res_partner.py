@@ -17,6 +17,7 @@ class ResPartner(models.Model):
     #    'partner_id',
     #    'Alícuotas PERC-RET',
     #)
+    iibb_number = fields.Char('Ingresos Burtos')
     percepciones_ids = fields.One2many(
         'res.partner.per',
         'partner_id',

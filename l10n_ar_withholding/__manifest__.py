@@ -15,11 +15,15 @@
         'views/withholding_view.xml',
         'views/account_export_sicore_view.xml',
         'views/account_move_view.xml',
+        'views/res_partner_view.xml',
         'report/report_payment_withholding.xml',
         'security/ir.model.access.csv',
         'security/security.xml',
         'data/account_payment_method_data.xml',
         'data/tabla_ganancias_data.xml',
+        'wizards/withholdings_reports.xml',
+        'report/action_report.xml',
+        'report/withholdings_report.xml'
     ],
     'depends': [
         'base',
