@@ -5,9 +5,9 @@
 		<report
 		  id="account_vat_ledger_xlsx"
 		  model="account.vat.ledger"
-		  string="Imprimir Libro en XLSX"
+		  string="Libro IVA (XLSX)"
 		  report_type="xlsx"
-		  name="l10n_ar_account_vat_ledger.account_vat_ledger_xlsx"
+		  name="l10n_ar_ledger.account_vat_ledger_xlsx"
 		  file="account_vat_ledger"
 		  attachment_use="False"
 		 />

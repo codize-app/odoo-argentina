@@ -13,7 +13,7 @@ import re
 import logging
 _logger = logging.getLogger(__name__)
 
-class account_vat_ledger(models.Model):
+class AccountVatLedger(models.Model):
 
     _name = "account.vat.ledger"
     _description = "Account VAT Ledger"
