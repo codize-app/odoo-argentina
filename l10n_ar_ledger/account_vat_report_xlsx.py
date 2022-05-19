@@ -18,7 +18,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
             sheet = workbook.add_worksheet(report_name[:31])
             h = "#"
-            money_format = workbook.add_format({'num_format': "$ " + h + h + '.' + h + h + ',' + h + h})
+            money_format = workbook.add_format({'num_format': "$ 0" + h + h + '.' + h + h + ',' + h + h})
             bold = workbook.add_format({'bold': True})
             sheet.write(1, 0, vat_ledger.display_name, bold)
 
@@ -41,6 +41,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(row + index, 4, obj.l10n_latam_document_type_id.name) # Tipo de Comprobante
                 sheet.write(row + index, 5, obj.name) # Nro Comprobante
 
+                # Neto gravado
                 netoG = 0
                 for tax in obj.amount_by_group:
                     if tax[0] == 'IVA 21%' or tax[0] == 'IVA 10.5%' or tax[0] == 'IVA 27%':
@@ -49,6 +50,61 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     netoG = netoG * -1
                 sheet.write(row + index, 6, netoG, money_format) # Neto gravado
 
+                # Neto no gravado
+                netoN = 0
+                for tax in obj.amount_by_group:
+                    if tax[0] == 'IVA No Gravado' or tax[0] == 'IVA 0%':
+                        netoN = netoN + tax[2]
+                if obj.l10n_latam_document_type_id.internal_type == 'credit_note':
+                    netoN = netoN * -1
+                sheet.write(row + index, 7, netoN, money_format) # Neto no gravado
 
+                # Neto exento
+                netoE = 0
+                for tax in obj.amount_by_group:
+                    if tax[0] == 'IVA Exento':
+                        netoE = netoE + tax[2]
+                if obj.l10n_latam_document_type_id.internal_type == 'credit_note':
+                    netoE = netoE * -1
+                sheet.write(row + index, 8, netoE, money_format) # Neto exento
+
+                # IVA 27
+                iva27 = 0
+                for tax in obj.amount_by_group:
+                    if tax[0] == 'IVA 27%':
+                        iva27 = iva27 + tax[1]
+                if obj.l10n_latam_document_type_id.internal_type == 'credit_note':
+                    iva27 = iva27 * -1
+                sheet.write(row + index, 9, iva27, money_format) # IVA 27
+
+                # IVA 21
+                iva21 = 0
+                for tax in obj.amount_by_group:
+                    if tax[0] == 'IVA 21%':
+                        iva21 = iva21 + tax[1]
+                if obj.l10n_latam_document_type_id.internal_type == 'credit_note':
+                    iva21 = iva21 * -1
+                sheet.write(row + index, 10, iva21, money_format) # IVA 21
+
+                # IVA 10.5
+                iva105 = 0
+                for tax in obj.amount_by_group:
+                    if tax[0] == 'IVA 10.5%':
+                        iva105 = iva105 + tax[1]
+                if obj.l10n_latam_document_type_id.internal_type == 'credit_note':
+                    iva105 = iva105 * -1
+                sheet.write(row + index, 11, iva105, money_format) # IVA 10.5
+
+                # Otros
+                otros = 0
+                for tax in obj.amount_by_group:
+                    if tax[0] != 'IVA 21%' and tax[0] != 'IVA 10.5%' and tax[0] != 'IVA 27%' and tax[0] != 'IVA 0%' and tax[0] != 'IVA Exento' and tax[0] != 'IVA No Gravado':
+                        otros = otros + tax[1]
+                if obj.l10n_latam_document_type_id.internal_type == 'credit_note':
+                    otros = otros * -1
+                sheet.write(row + index, 12, otros, money_format) # Otros
+
+                sheet.write(row + index, 13, netoG + iva27 + iva21 + iva105 + otros, money_format) # Total gravado
+                sheet.write(row + index, 14, obj.amount_total, money_format) # Total
 
                 index += 1
