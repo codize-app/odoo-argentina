@@ -9,3 +9,4 @@ access_afip_tabla_ganancias_alicuotasymontos_all,access_afip_tabla_ganancias_ali
 access_res_partner_per,access_res_partner_per,model_res_partner_per,,1,1,1,1
 access_account_export_sicore,account_export_sicore_user,model_account_export_sicore,base.group_user,1,1,1,1
 access_ar_withholdings_reports,access_ar_withholdings_reports,model_ar_withholdings_reports,base.group_user,1,1,1,1
+access_arba_padron,access_arba_padron,model_arba_padron,base.group_user,1,1,1,1

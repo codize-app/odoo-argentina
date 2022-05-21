@@ -94,21 +94,21 @@ class ResPartner(models.Model):
     )
     actividad_monotributo_padron = fields.Char(string='Actividad Monotributo')
     empleador_padron = fields.Boolean(string="Padrón Empleador")
-    actividades_padron = fields.Many2many(
-        'afip.activity',
-        'res_partner_afip_activity_rel',
-        'partner_id', 'afip_activity_id',
-        string='Actividades',
-    )
-    impuestos_padron = fields.Many2many(
-        'afip.tax',
-        'res_partner_afip_tax_rel',
-        'partner_id', 'afip_tax_id',
-        string='Impuestos',
-    )
-    last_update_padron = fields.Date(
-        'Última Actualización del Padrón',
-    )
+    #actividades_padron = fields.Many2many(
+    #    'afip.activity',
+    #    'res_partner_afip_activity_rel',
+    #    'partner_id', 'afip_activity_id',
+    #    string='Actividades',
+    #)
+    #impuestos_padron = fields.Many2many(
+    #    'afip.tax',
+    #    'res_partner_afip_tax_rel',
+    #    'partner_id', 'afip_tax_id',
+    #    string='Impuestos',
+    #)
+    #last_update_padron = fields.Date(
+    #    'Última Actualización del Padrón',
+    #)
 
     #def get_arba_alicuota_percepcion(self):
     #    company = self._context.get('invoice_company')
@@ -209,7 +209,7 @@ class ResPartner(models.Model):
             'actividad_monotributo_padron': padron.actividad_monotributo,
             'empleador_padron': padron.empleador == 'S' and True,
             'integrante_soc_padron': padron.integrante_soc,
-            'last_update_padron': fields.Date.today(),
+            #'last_update_padron': fields.Date.today(),
         }
         ganancias_inscripto = [10, 11]
         ganancias_exento = [12]

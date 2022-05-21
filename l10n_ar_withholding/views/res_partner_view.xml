@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
-
-        <record id="view_partner_iibb_number_form" model="ir.ui.view">
-            <field name="name">res.partner.form</field>
-            <field name="model">res.partner</field>
-            <field name="inherit_id" ref="account.view_partner_property_form"/>
-            <field name="arch" type="xml">
-            
-                <xpath expr="//page[@name='accounting']/group" position="inside">
-                    <group string="Ingresos Brutos" name="iibb">
-                        <field name="iibb_number"/>
-                    </group>
-                </xpath>
-            
-            </field>
-        </record>
-    
+<odoo>    
         <record id="view_partner_property_form" model="ir.ui.view">
             <field name="name">res.partner.form</field>
             <field name="model">res.partner</field>
@@ -28,7 +12,7 @@
                     <group string="AFIP" name="afip">
                         <group name="afip_col_1">
                             <field name="start_date"/>
-                            <field name="last_update_padron"/>
+                            <!--<field name="last_update_padron"/>-->
                             <field name="estado_padron"/>
                             <field name="imp_ganancias_padron"/>
                		    <field name="default_regimen_ganancias_id" attrs="{'invisible': [('imp_ganancias_padron', 'in', ['EX', 'NC'])]}"/>
@@ -39,8 +23,8 @@
                         </group>
                         <group name="afip_col_2">
                             <field name="actividad_monotributo_padron"/>
-                            <field name="actividades_padron" widget="many2many_tags"/>
-                            <field name="impuestos_padron" widget="many2many_tags"/>
+                            <!--<field name="actividades_padron" widget="many2many_tags"/>
+                            <field name="impuestos_padron" widget="many2many_tags"/>-->
                         </group>
                     </group>
                     <!-- TODO agregar esto -->
@@ -66,6 +50,12 @@
                     </group>
                 </page>
             </page>
+
+            <xpath expr="//page[@name='accounting']/group" position="inside">
+                <group string="Ingresos Brutos" name="iibb">
+                    <field name="iibb_number"/>
+                </group>
+            </xpath>
 
         </field>
     </record>

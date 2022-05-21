@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_arba_padron_form" model="ir.ui.view">
+        <field name="name">arba.padron.form</field>
+        <field name="model">arba.padron</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="publication_date" />
+                            <field name="effective_date_from" />
+                            <field name="effective_date_to" />
+                            <field name="type_contr_insc" />
+                            <field name="alta_baja" />
+                        </group>
+                        <group>
+                            <field name="cambio" />
+                            <field name="a_per" />
+                            <field name="a_ret" />
+                            <field name="nro_grupo_perc" />
+                            <field name="nro_grupo_ret" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    
+
+    <record id="view_arba_padron_tree" model="ir.ui.view">
+        <field name="name">arba.padron.tree</field>
+        <field name="model">arba.padron</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="publication_date" />
+                <field name="effective_date_from" />
+                <field name="effective_date_to" />
+                <field name="a_per" />
+                <field name="a_ret" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_arba_padron_tree" model="ir.actions.act_window">
+        <field name="name">Padron</field>
+        <field name="res_model">arba.padron</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain" eval="False"/>
+        <field name="view_id" ref="l10n_ar_withholding.view_arba_padron_tree"/>
+    </record>
+
+    <menuitem name="Padron IIBB" action="action_arba_padron_tree" id="menu_arba_padron_tree" parent="account.account_account_menu" sequence="1"/>
+</odoo>
