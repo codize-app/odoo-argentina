@@ -316,7 +316,7 @@ class AccountVatLedger(models.Model):
             cant_alicuotas = 0
             vat_taxes = []
             vat_exempt_base_amount = 0
-            if inv.l10n_latam_document_type_id.code != '11' and inv.l10n_latam_document_type_id.code != '6':
+            if inv.l10n_latam_document_type_id.code != '11' and inv.l10n_latam_document_type_id.code != '12' and inv.l10n_latam_document_type_id.code != '13':
                 for invl in inv.invoice_line_ids:
                     for tax in invl.tax_ids:
                         if tax.tax_group_id.tax_type == 'vat' and tax.tax_group_id.l10n_ar_vat_afip_code not in ['1','2']:
@@ -699,7 +699,7 @@ class AccountVatLedger(models.Model):
                 lambda r: r.l10n_latam_document_type_id.code == '66' and r.state != 'cancel')
         else:
             invoices = self.get_digital_invoices().filtered(
-                lambda r: r.l10n_latam_document_type_id.code != '66' and r.l10n_latam_document_type_id.code != '11' and r.l10n_latam_document_type_id.code != '6' and r.state != 'cancel')
+                lambda r: r.l10n_latam_document_type_id.code != '66' and r.l10n_latam_document_type_id.code != '11' and r.l10n_latam_document_type_id.code != '12' and r.l10n_latam_document_type_id.code != '13' and r.state != 'cancel')
 
         for inv in invoices:
             lines = []
