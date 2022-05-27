@@ -94,7 +94,7 @@
                   <div class="col-6">
                     <p><br/></p>
                     <p class="m-0"><strong>CUIT</strong> <span t-field="o.company_id.vat"/> - <span t-field="o.company_id.partner_id.l10n_ar_afip_responsibility_type_id.name"/></p>
-                    <p class="m-0"><strong>Ingresos Brutos:</strong> <span t-if="o.company_id.l10n_ar_gross_income_type == 'no_liquida'">No liquida</span> <span t-if="o.company_id.l10n_ar_gross_income_type != 'no_liquida'" t-field="o.company_id.l10n_ar_gross_income_number"/> <br/> <strong>Inicio de actividades:</strong> <span t-field="o.company_id.l10n_ar_afip_start_date"/></p>
+                    <p class="m-0"><strong>Ingresos Brutos:</strong> <span t-if="o.company_id.l10n_ar_gross_income_type == 'exempt'">Exento</span> <span t-if="o.company_id.l10n_ar_gross_income_type != 'exempt'" t-field="o.company_id.l10n_ar_gross_income_number"/> <br/> <strong>Inicio de actividades:</strong> <span t-field="o.company_id.l10n_ar_afip_start_date"/></p>
                   </div>
               </div>
               <!--END MY COMPANY-->

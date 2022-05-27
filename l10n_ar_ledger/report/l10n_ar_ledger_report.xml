@@ -73,7 +73,7 @@
                                                         <t t-set="netoN" t-value="0" />
                                                         <t t-foreach="invoice.amount_by_group" t-as="tax">
                                                                 <t t-if="tax[0] == 'IVA No Gravado' or tax[0] == 'IVA 0%'">
-                                                                        <t t-set="netoG" t-value="netoG + tax[2]" />
+                                                                        <t t-set="netoN" t-value="netoN + tax[2]" />
                                                                 </t>
                                                         </t>
                                                         <t t-if="invoice.l10n_latam_document_type_id.internal_type == 'credit_note'">

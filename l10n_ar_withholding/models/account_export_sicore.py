@@ -34,15 +34,16 @@ class AccountExportSicore(models.Model):
     def compute_sicore_data(self):
         self.ensure_one()
         windows_line_ending = '\r' + '\n'
-        payments = self.env['account.payment'].search([('payment_type','=','outbound'),('state','not in',['cancel','draft'])])
+        payments = self.env['account.payment'].search([('payment_type','=','outbound'),('state','not in',['cancel','draft']),('date','<=',self.date_to),('date','>=',self.date_from)])
         #,('payment_date','<=',self.date_to),('payment_date','>=',self.date_from)])
         string = ''
+        _logger.warning('***** payments: {0}'.format(payments))
         for payment in payments:
-            if payment.date < self.date_from or payment.date > self.date_to:
-                continue
             if not payment.communication or not payment.withholding_number:
+                _logger.warning('***** if2: {0}'.format(payment.name))
                 continue
             if 'Retenciones' not in payment.journal_id.name:
+                _logger.warning('***** if3: {0}'.format(payment.name))
                 continue
             # 1er campo codigo de comprobante: pago 06
             string = string + '06'
@@ -117,5 +118,6 @@ class AccountExportSicore(models.Model):
             # CRLF
             string = string + windows_line_ending
             
+        _logger.warning('******* string: {0}'.format(string))
         self.export_sicore_data = string
 

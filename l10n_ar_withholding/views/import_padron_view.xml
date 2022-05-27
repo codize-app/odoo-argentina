@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record model="ir.ui.view" id="import_padron_view_form">
+		<field name="name">import.padron.view.form</field>
+		<field name="model">import.padron</field>
+		<field name="arch" type="xml">
+			<form string="Importar Padron">
+				<header>
+					<button name="btn_process" type="object" string="Procesar" states="draft" />
+					<field name="state" widget="statusbar" />
+				</header>
+				<sheet>
+					<group>
+						<field name="name" />
+						<field name="padron_file" widget="binary"/>
+						<field name="delimiter" />
+						<field name="skip_first_line" />
+						<field name="padron_match" />
+					</group>
+					<notebook>
+						<page string="Contenido" >
+							<field name="file_content" readonly="1"/>
+						</page>
+						<page string="No procesados">
+							<field name="not_processed_content" readonly="1"/>
+						</page>
+                        <page string="Padrones Cargados">
+                                <field name="clientes_cargados" readonly="1"/>
+                        </page>
+					</notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record model="ir.ui.view" id="import_padron_tree">
+		<field name="name">import.padron.view.tree</field>
+		<field name="model">import.padron</field>
+		<field name="arch" type="xml">
+		<tree string="Import Padron">
+			<field name="name" />
+			<field name="padron_file" />
+			<field name="state" />
+		</tree>
+		</field>
+	</record>
+
+	<record model="ir.actions.act_window" id="action_import_padron">
+		<field name="name">Cargar Padron</field>
+		<field name="res_model">import.padron</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+
+	<menuitem name="Carga de padron" id="import_padron_form"
+		parent="account.account_account_menu"
+		action="action_import_padron"
+		sequence="1"/>
+
+</odoo>
