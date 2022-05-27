@@ -137,6 +137,7 @@ class AfipwsConnection(models.Model):
         # https://groups.google.com/d/msg/pyafipws/Xr08e4ZuMmQ/6iDzXwdJAwAJ
         # TODO mejorar ya que probablemente no ande en test pero el tema es
         # que en esta parte no tenemos data del env_type
+        #if self.afip_ws in ['ws_sr_padron_a4', 'ws_sr_padron_a5', 'wsremcarne']:
         if self.afip_ws in ['ws_sr_padron_a4', 'ws_sr_padron_a5']:
             ws.HOMO = False
 
@@ -172,7 +173,6 @@ class AfipwsConnection(models.Model):
         Method to be inherited
         """
         _logger.info('Getting ws %s from libraries ' % afip_ws)
-        # por ahora el unico implementado es ws_sr_padron_a4
         ws = False
         if afip_ws == 'ws_sr_padron_a4':
             from pyafipws.ws_sr_padron import WSSrPadronA4
@@ -180,4 +180,7 @@ class AfipwsConnection(models.Model):
         elif afip_ws == 'ws_sr_padron_a5':
             from pyafipws.ws_sr_padron import WSSrPadronA5
             ws = WSSrPadronA5()
+        #elif afip_ws == 'wsremcarne':
+        #    from pyafipws.wsremcarne import WSRemCarne
+        #    ws = WSRemCarne()
         return ws

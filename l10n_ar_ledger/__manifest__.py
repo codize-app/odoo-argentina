@@ -10,13 +10,14 @@
     "depends": [
 	"base",
         "l10n_ar",
+        "report_xlsx"
     ],
-    'external_dependencies': {
-    },
+    'external_dependencies': {},
     "data": [
         'account_vat_report_view.xml',
         'security/ir.model.access.csv',
-        'report/l10n_ar_ledger_report.xml'
+        'report/l10n_ar_ledger_report.xml',
+        'report/l10n_ar_ledger_report_xlsx.xml'
     ],
     'demo': [],
     'installable': True,
