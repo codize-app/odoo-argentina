@@ -24,6 +24,7 @@ class AccountPaymentGroup(models.Model):
 
     related_invoice = fields.Many2one(comodel_name='account.move',string="Factura Relacionada", readonly=1)
     related_invoice_amount = fields.Monetary(string="Monto Factura", related="related_invoice.amount_total", readonly=1)
+    related_invoice_currency = fields.Many2one(string="Moneda Factura", related="related_invoice.currency_id", readonly=1)
     document_number = fields.Char(
         string='Nro Documento',
         copy=False,
