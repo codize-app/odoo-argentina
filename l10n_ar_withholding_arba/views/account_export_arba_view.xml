@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+   <data>
+
+    <record id="view_account_export_arba_form" model="ir.ui.view">
+         <field name="name">account.export.arba.form</field>
+         <field name="model">account.export.arba</field>
+         <field name="arch" type="xml">
+            <form>
+		<header>
+			<button name="compute_arba_data" string="Generar TXT ARBA" type="object" />
+		</header>
+		<sheet>
+			<group>
+				<field name="name" />
+				<field name="date_from" />
+				<field name="date_to" />
+				<field name="tax_withholding" />
+			</group>
+			<group string="Archivo y datos">
+				<field name="export_arba_file_ret" />
+				<field name="export_arba_data_ret" readonly="1"/>
+				<field name="export_arba_file_per" />
+				<field name="export_arba_data_per" readonly="1"/>
+			</group>
+		</sheet>
+            </form>
+         </field>
+    </record>
+
+    <record id="view_account_export_arba" model="ir.ui.view">
+         <field name="name">account.export.arba.tree</field>
+         <field name="model">account.export.arba</field>
+         <field name="arch" type="xml">
+            <tree>
+		<field name="name" />
+		<field name="date_from" />
+		<field name="date_to" />
+            </tree>
+         </field>
+    </record>
+
+
+
+        <record id="action_account_export_arba" model="ir.actions.act_window">
+            <field name="name">Exportaciones de ARBA</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.export.arba</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_account_export_arba"
+                  action="action_account_export_arba"
+                  parent="l10n_ar.account_reports_ar_statements_menu"
+                  sequence="6"/>
+
+
+       </data>
+</odoo>
