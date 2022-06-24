@@ -8,6 +8,7 @@
                 <sheet>
                     <group>
                         <group>
+                            <field name="type_alicuot" />
                             <field name="name" />
                             <field name="publication_date" />
                             <field name="effective_date_from" />
@@ -35,6 +36,7 @@
         <field name="model">arba.padron</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="type_alicuot" />
                 <field name="name" />
                 <field name="publication_date" />
                 <field name="effective_date_from" />
@@ -46,12 +48,12 @@
     </record>
 
     <record id="action_arba_padron_tree" model="ir.actions.act_window">
-        <field name="name">Padron</field>
+        <field name="name">Padron ARBA</field>
         <field name="res_model">arba.padron</field>
         <field name="view_mode">tree,form</field>
         <field name="domain" eval="False"/>
-        <field name="view_id" ref="l10n_ar_withholding.view_arba_padron_tree"/>
+        <field name="view_id" ref="l10n_ar_withholding_arba.view_arba_padron_tree"/>
     </record>
 
-    <menuitem name="Padron IIBB" action="action_arba_padron_tree" id="menu_arba_padron_tree" parent="account.account_account_menu" sequence="1"/>
+    <menuitem name="Padron IIBB ARBA" action="action_arba_padron_tree" id="menu_arba_padron_tree" parent="account.account_account_menu" sequence="1"/>
 </odoo>

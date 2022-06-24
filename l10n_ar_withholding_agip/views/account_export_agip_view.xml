@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+   <data>
+
+    <record id="view_account_export_agip_form" model="ir.ui.view">
+         <field name="name">account.export.agip.form</field>
+         <field name="model">account.export.agip</field>
+         <field name="arch" type="xml">
+            <form>
+		<header>
+			<button name="compute_agip_data" string="Generar AGIP" type="object" />
+		</header>
+		<sheet>
+			<group>
+				<field name="name" />
+				<field name="date_from" />
+				<field name="date_to" />
+				<field name="tax_withholding" />
+			</group>
+			<group string="Archivo y datos">
+				<field name="export_agip_file" />
+				<field name="export_agip_data" readonly="1"/>
+			</group>
+		</sheet>
+            </form>
+         </field>
+    </record>
+
+    <record id="view_account_export_agip" model="ir.ui.view">
+         <field name="name">account.export.agip.tree</field>
+         <field name="model">account.export.agip</field>
+         <field name="arch" type="xml">
+            <tree>
+		<field name="name" />
+		<field name="date_from" />
+		<field name="date_to" />
+            </tree>
+         </field>
+    </record>
+
+
+
+        <record id="action_account_export_agip" model="ir.actions.act_window">
+            <field name="name">Exportaciones de AGIP</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.export.agip</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_account_export_agip"
+                  action="action_account_export_agip"
+                  parent="l10n_ar.account_reports_ar_statements_menu"
+                  sequence="6"/>
+
+
+       </data>
+</odoo>

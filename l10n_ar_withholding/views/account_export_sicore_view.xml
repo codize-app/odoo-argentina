@@ -15,6 +15,7 @@
 				<field name="name" />
 				<field name="date_from" />
 				<field name="date_to" />
+				<field name="tax_withholding" />
 			</group>
 			<group string="Archivo y datos">
 				<field name="export_sicore_file" />

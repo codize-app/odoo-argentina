@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_export_arba,account_export_arba_user,model_account_export_arba,base.group_user,1,1,1,1
+access_import_padron_arba,import_padron_arba_user,model_import_padron_arba,base.group_user,1,1,1,1
+access_arba_padron,arba_padron_user,model_arba_padron,base.group_user,1,1,1,1
+access_partner_padron_arba_ret,access_partner_padron_arba_ret,model_partner_padron_arba_ret,base.group_user,1,1,1,1
+access_partner_padron_arba_per,access_partner_padron_arba_per,model_partner_padron_arba_per,base.group_user,1,1,1,1
+access_res_partner_per_arba,access_res_partner_per_arba,model_res_partner_per_arba,base.group_user,1,1,1,1
+

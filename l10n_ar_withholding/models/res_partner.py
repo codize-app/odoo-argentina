@@ -18,11 +18,11 @@ class ResPartner(models.Model):
     #    'Alícuotas PERC-RET',
     #)
     iibb_number = fields.Char('Ingresos Burtos')
-    percepciones_ids = fields.One2many(
-        'res.partner.per',
-        'partner_id',
-        'Percepciones de cliente'
-    )
+    #percepciones_ids = fields.One2many(
+    #    'res.partner.per',
+    #    'partner_id',
+    #    'Percepciones de cliente'
+    #)
     drei = fields.Selection([
         ('activo', 'Activo'),
         ('no_activo', 'No Activo'),
@@ -34,15 +34,16 @@ class ResPartner(models.Model):
         'Regimen Ganancias por Defecto',
     )
     gross_income_number = fields.Char(
-        'Gross Income Number',
+        'Número IIBB',
         size=64,
     )
     gross_income_type = fields.Selection([
         ('multilateral', 'Multilateral'),
         ('local', 'Local'),
         ('no_liquida', 'No Liquida'),
+        ('reg_simplificado', 'Reg.Simplificado'),
     ],
-        'Gross Income Type',
+        'Tipo IIBB',
     )
     gross_income_jurisdiction_ids = fields.Many2many(
         'res.country.state',
@@ -392,24 +393,24 @@ class ResPartner(models.Model):
     #    string='Artículo/Inciso para el cálculo retención',
     #)
 
-class ResPartnerPer(models.Model):
-    _name = "res.partner.per"
-    _order = "company_id"
-
-    partner_id = fields.Many2one(
-        'res.partner',
-        required=True,
-        ondelete='cascade',
-    )
-    tax_id = fields.Many2one(
-        'account.tax',
-        'Impuesto',
-        domain=[('type_tax_use', '=', 'sale'),('tax_group_id.l10n_ar_tribute_afip_code','=','07')],
-    )
-    company_id = fields.Many2one(
-        'res.company',
-        required=True,
-        ondelete='cascade',
-        default=lambda self: self.env.user.company_id,
-    )
+#class ResPartnerPer(models.Model):
+#    _name = "res.partner.per"
+#    _order = "company_id"
+#
+#    partner_id = fields.Many2one(
+#        'res.partner',
+#        required=True,
+#        ondelete='cascade',
+#    )
+#    tax_id = fields.Many2one(
+#        'account.tax',
+#        'Impuesto',
+#        domain=[('type_tax_use', '=', 'sale'),('tax_group_id.l10n_ar_tribute_afip_code','=','09')],
+#    )
+#    company_id = fields.Many2one(
+#        'res.company',
+#        required=True,
+#        ondelete='cascade',
+#        default=lambda self: self.env.user.company_id,
+#    )
 

@@ -91,6 +91,7 @@ class AccountTax(models.Model):
         ('code', 'Python Code'),
         ('tabla_ganancias', 'Tabla Ganancias'),
         ('partner_tax', 'Alícuota en el Partner'),
+        ('partner_iibb_padron', 'Padron en Partner'),
         # ('balance', 'Balance')
     ],
         'Tipo',

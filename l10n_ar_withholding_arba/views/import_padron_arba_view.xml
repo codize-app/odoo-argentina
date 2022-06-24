@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-	<record model="ir.ui.view" id="import_padron_view_form">
-		<field name="name">import.padron.view.form</field>
-		<field name="model">import.padron</field>
+	<record model="ir.ui.view" id="import_padron_arba_view_form">
+		<field name="name">import.padron.arba.view.form</field>
+		<field name="model">import.padron.arba</field>
 		<field name="arch" type="xml">
-			<form string="Importar Padron">
+			<form string="Importar Padron ARBA">
 				<header>
 					<button name="btn_process" type="object" string="Procesar" states="draft" />
 					<field name="state" widget="statusbar" />
@@ -34,11 +34,11 @@
 		</field>
 	</record>
 
-	<record model="ir.ui.view" id="import_padron_tree">
-		<field name="name">import.padron.view.tree</field>
-		<field name="model">import.padron</field>
+	<record model="ir.ui.view" id="import_padron_arba_tree">
+		<field name="name">import.padron.arba.view.tree</field>
+		<field name="model">import.padron.arba</field>
 		<field name="arch" type="xml">
-		<tree string="Import Padron">
+		<tree string="Import Padron ARBA">
 			<field name="name" />
 			<field name="padron_file" />
 			<field name="state" />
@@ -46,16 +46,16 @@
 		</field>
 	</record>
 
-	<record model="ir.actions.act_window" id="action_import_padron">
-		<field name="name">Cargar Padron</field>
-		<field name="res_model">import.padron</field>
+	<record model="ir.actions.act_window" id="action_import_padron_arba">
+		<field name="name">Cargar Padron ARBA</field>
+		<field name="res_model">import.padron.arba</field>
 		<field name="view_mode">tree,form</field>
 	</record>
 
 
-	<menuitem name="Carga de padron" id="import_padron_form"
+	<menuitem name="Carga padron ARBA" id="import_padron_arba_form"
 		parent="account.account_account_menu"
-		action="action_import_padron"
+		action="action_import_padron_arba"
 		sequence="1"/>
 
 </odoo>

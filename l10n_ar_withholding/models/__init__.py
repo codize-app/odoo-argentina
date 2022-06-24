@@ -13,5 +13,3 @@ from . import res_partner
 from . import afip
 from . import afip_padron
 from . import account_export_sicore
-from . import padron_ret_iibb
-from . import import_padron

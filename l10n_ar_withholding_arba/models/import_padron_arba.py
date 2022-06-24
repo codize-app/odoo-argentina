@@ -11,9 +11,9 @@ _logger = logging.getLogger(__name__)
 
 
 
-class ImportPadron(models.Model):
-    _name = 'import.padron'
-    _description = 'import.padron'
+class ImportPadronArba(models.Model):
+    _name = 'import.padron.arba'
+    _description = 'import.padron.arba'
 
     def btn_process(self):
         _procesados = ""
@@ -36,7 +36,6 @@ class ImportPadron(models.Model):
                 continue
             lista = line.split(self.delimiter)
             if len(lista) > 10:
-                _logger.warning('********** lista: {0}'.format(lista))
                 tipo = lista[0]
                 publication_date = lista[1]
                 effective_date_from = lista[2]
@@ -47,24 +46,19 @@ class ImportPadron(models.Model):
                 cambio = lista[7]
                 a_per = False
                 a_ret = False
-                if tipo == 'P':
-                    a_per = lista[8]
-                else:
-                    a_ret = lista[8]
                 nro_grupo_perc = False
                 nro_grupo_ret = False
                 if tipo == 'P':
+                    a_per = lista[8]
                     nro_grupo_perc = lista[9]
                 else:
+                    a_ret = lista[8]
                     nro_grupo_ret = lista[9]
 
                 vals.clear()
 
                 # Carga vals
-                #client = self.env['res.partner'].search([(self.client_match,'=',vat_client)])
-                # Carga vals
                 if tipo == 'P' or tipo == 'R': 
-                    _logger.warning('******** Fecha: {0}'.format(publication_date[:2] + '/' + publication_date[2:4] + '/' + publication_date[4:]))
                     vals['publication_date'] = datetime.strptime((publication_date[:2] + '/' + publication_date[2:4] + '/' + publication_date[4:]), '%d/%m/%Y')
                     vals['effective_date_from'] = datetime.strptime((effective_date_from[:2] + '/' + effective_date_from[2:4] + '/' + effective_date_from[4:]), '%d/%m/%Y')
                     vals['effective_date_to'] = datetime.strptime((effective_date_to[:2] + '/' + effective_date_to[2:4] + '/' + effective_date_to[4:]), '%d/%m/%Y')
@@ -73,7 +67,9 @@ class ImportPadron(models.Model):
                     vals['alta_baja'] = alta_baja
                     if a_per:
                         vals['a_per'] = float(a_per.replace(',','.'))
-                    if a_ret:
+                        vals['a_ret'] = 0.0
+                    else:
+                        vals['a_per'] = 0.0
                         vals['a_ret'] = float(a_ret.replace(',','.'))
                     if nro_grupo_perc:
                         vals['nro_grupo_perc'] = nro_grupo_perc
@@ -82,7 +78,11 @@ class ImportPadron(models.Model):
 
                     padron_existe = self.env['arba.padron'].search([('name','=',cuit)])
                     if len(padron_existe) > 0:
-                        padron_existe.sudo().write(vals)
+                        a = lambda a : vals['a_per'] if tipo =='P' else 0.0
+                        padron_existe.sudo().update({
+                            'a_per' : vals['a_per'],
+                            'a_ret' : vals['a_ret']
+                        })
                     else:
                         self.env['arba.padron'].sudo().create(vals)
                     _procesados += "{} \n".format(cuit)
@@ -93,7 +93,6 @@ class ImportPadron(models.Model):
             elif len(lista) == 1:
                 continue
             else:
-                _logger.warning("***** lista: {0}".format(len(lista)))
                 raise ValidationError("El CSV no se procesara por estar mal formado en la linea {0}, contenido de linea: {1}. Se necesitan al menos 11 columnas".format(i, line))
         self.clientes_cargados = _procesados
         self.not_processed_content = _noprocesados

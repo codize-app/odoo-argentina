@@ -43,7 +43,7 @@
                             <strong>Monto Retención </strong><span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
                         </div>
                         <div class="col-3" t-if="o.amount">
-                            <strong>Monto Imponible </strong><span t-field="o.withholdable_base_amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                            <strong>Monto Imponible </strong><span t-field="o.withholding_base_amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
                         </div>
                         <div class="col-3" t-if="o.communication">
                             <strong>Memo: </strong><span t-field="o.communication"/>
@@ -63,13 +63,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr t-foreach="o.reconciled_bill_ids" t-as="inv">
-                                <td><span t-field="inv.invoice_date"/></td>
-                                <td><span t-field="inv.name"/></td>
-                                <td><span t-field="inv.ref"/></td>
-                                <td class="text-right"><span t-field="inv.amount_total"/></td>
-                                <td class="text-right"><span t-esc="inv.amount_total - inv.amount_residual" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/></td>
-                                <td class="text-right"><span t-field="inv.amount_residual"/></td>
+                            <tr t-foreach="o.payment_group_id.matched_move_line_ids" t-as="inv">
+                                <td><span t-field="inv.move_id.invoice_date"/></td>
+                                <td><span t-field="inv.move_id.name"/></td>
+                                <td><span t-field="inv.move_id.ref"/></td>
+                                <td class="text-right"><span t-field="inv.move_id.amount_total"/></td>
+                                <td class="text-right"><span t-esc="inv.move_id.amount_total - inv.move_id.amount_residual" t-options="{'widget': 'monetary', 'display_currency': inv.move_id.currency_id}"/></td>
+                                <td class="text-right"><span t-field="inv.move_id.amount_residual"/></td>
                             </tr>
                         </tbody>
                     </table>

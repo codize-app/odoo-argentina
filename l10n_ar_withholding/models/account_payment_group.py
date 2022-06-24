@@ -2,6 +2,7 @@
 from odoo import models, api, fields, _
 from odoo.exceptions import ValidationError
 import logging
+from datetime import datetime
 _logger = logging.getLogger(__name__)
 
 
@@ -86,6 +87,25 @@ class AccountPaymentGroup(models.Model):
                 ('type_tax_use', '=', rec.partner_type),
                 ('company_id', '=', rec.company_id.id),
             ]).create_payment_withholdings(rec)
+
+            # Busco en las lineas de pago cual es el pago de retencion para luego cambiarle en su asiento contable la cuenta, 
+            # esto lo hacemos porque por defecto toma la cuenta del diario y queremos que tome la cuenta configurada en el impuesto
+            _imp_ret_ganancias = self.env['account.tax'].search([('withholding_type','=','tabla_ganancias')],limit=1)
+            line_ret = rec.payment_ids.filtered(lambda r: r.tax_withholding_id.id == _imp_ret_ganancias.id)
+            line_tax_account = line_ret.move_id.line_ids.filtered(lambda r: r.credit > 0)
+            account_imp_ret = _imp_ret_ganancias.invoice_repartition_line_ids.filtered(lambda r: len(r.account_id) > 0)
+            if len(account_imp_ret) > 0:
+                #Guardo "Cuenta de efectivo" que tiene el diario
+                cuenta_anterior = line_ret.move_id.journal_id.default_account_id
+                #La cambio por la cuenta que tiene el impuesto de retencion configurada
+                line_ret.move_id.journal_id.default_account_id = account_imp_ret.account_id
+                #Cambio en el Apunte contable del Asiento contable la cuenta que esta configurada en el impuesto de retencion
+                line_tax_account.account_id = account_imp_ret.account_id
+                #Vuelvo a poner en el diario la cuenta que tenia anteriormente
+                line_ret.move_id.journal_id.default_account_id = cuenta_anterior
+                #TODO Este cambio se hace para evitar el error de validacion que hace por defecto en
+                #https://github.com/odoo/odoo/blob/14.0/addons/account/models/account_payment.py#L699
+                #Es necesario revisar si este funcionamiento es correcto o existe una forma diferente de realizar
 
     def confirm(self):
         res = super(AccountPaymentGroup, self).confirm()

@@ -16,32 +16,7 @@ class AccountMove(models.Model):
 		if tax_factor == 1.0 and doc_letter == 'B':
 			tax_factor = 1.0 / 1.21
 		return tax_factor
-	
-	def _check_balanced(self):
-		for rec in self:
-			if rec.move_type == 'out_invoice' or rec.move_type == 'out_refund':
-				if rec.invoice_line_ids:
-					if rec.partner_id:
-						if len(rec.partner_id.percepciones_ids) > 0:
-							return True
-		res = super(AccountMove, self)._check_balanced()
-		return res
 
 	def calculate_perceptions(self):
-		if self.move_type == 'out_invoice' or self.move_type == 'out_refund':
-			if self.invoice_line_ids:
-				if self.partner_id:
-					if len(self.partner_id.percepciones_ids) > 0:
-						# Recomerremos las lineas en busca de si ya se encuentra el impuesto de percepcion, de caso contrario se agrega
-						for iline in self.invoice_line_ids:
-							_tiene_precepcion = 0
-							for tax in iline.tax_ids:
-								if str(self.partner_id.percepciones_ids[0].tax_id.id) == str(tax.id)[-2:]:
-									_tiene_precepcion = 1
-							if not _tiene_precepcion:
-								iline.write({'tax_ids': [(4, self.partner_id.percepciones_ids[0].tax_id.id)]})
-						# Recomputamos Apuntes contables y actualizamos el valor de Cuenta a Pagar por el total de la factura
-						self._recompute_tax_lines(recompute_tax_base_amount=False)
-						for lac in self.line_ids:
-							if lac.account_id.id == self.partner_id.property_account_receivable_id.id:
-								lac.write({'debit' : self.amount_total})
+		#Esta funcion se utiliza para todos los submodulos de percepciones
+		_logger.warning('**** Se calcular Per')
