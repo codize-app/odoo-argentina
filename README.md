@@ -105,6 +105,7 @@ Add path odoo-argentina to addons path in `odoo.conf`. Restart Odoo Server, Upda
 ## l10n_ar extras
 
 * `l10n_ar_ledger`: VAT Ledger for Sales and Purchases
+* `l10n_ar_withholding`: Withholding on Invoices and Payments (beta, support on exports for ARBA `l10n_ar_withholding_arba` and AGIP `l10n_ar_withholding_agip`) 
 * `l10n_ar_report_picking`: Support for PrePrint Picking
 * `l10n_ar_exchange_rate`: Get Exchange Rate from AFIP
 * `l10n_ar_bank`: Install Argentina Bank's List
