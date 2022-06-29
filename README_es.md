@@ -99,6 +99,7 @@ Agregar la ruta odoo-argentina a la ruta de addons en `odoo.conf`. Reiniciar el 
 ## l10n_ar extras
 
 * `l10n_ar_ledger`: Libro IVA para Ventas y Compras
+* `l10n_ar_withholding`: Percepciones/Retenciones en Pagos y Facturas (beta, soporte en exportables para ARBA `l10n_ar_withholding_arba` y AGIP `l10n_ar_withholding_agip`) 
 * `l10n_ar_report_picking`: Soporte para Remito PreImpreso (Autoimpresor)
 * `l10n_ar_exchange_rate`: Obtiene el tipo de cambio desde AFIP
 * `l10n_ar_bank`: Instala la Lista de Bancos Argentinos
