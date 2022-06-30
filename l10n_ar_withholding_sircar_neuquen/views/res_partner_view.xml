@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>    
+        <record id="view_partner_iibb_sircar_neuquen_form" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="l10n_ar_withholding.view_partner_property_form"/>
+            <field name="arch" type="xml">
+
+                <page name="fiscal_data" position="inside">
+                    <h3 style="text-align: center;">Retenciones IIBB SIRCAR Neuquen</h3>
+                    <field name="alicuot_ret_sircar_neuquen_ids">
+                        <tree string="Retenciones IIBB SIRCAR Neuquen" editable="bottom">
+                            <field name="publication_date"/>
+                            <field name="effective_date_from"/>
+                            <field name="effective_date_to"/>
+                            <field name="type_contr_insc"/>
+                            <field name="alta_baja"/>
+                            <field name="cambio"/>
+                            <field name="a_ret"/>
+                            <field name="nro_grupo_ret"/>
+                        </tree>
+                    </field>
+                    <h3 style="text-align: center;">Percepciones IIBB SIRCAR Neuquen</h3>
+                    <field name="alicuot_per_sircar_neuquen_ids">
+                        <tree string="Percepciones IIBB SIRCAR Neuquen" editable="bottom">
+                            <field name="publication_date"/>
+                            <field name="effective_date_from"/>
+                            <field name="effective_date_to"/>
+                            <field name="type_contr_insc"/>
+                            <field name="alta_baja"/>
+                            <field name="cambio"/>
+                            <field name="a_per"/>
+                            <field name="nro_grupo_per"/>
+                        </tree>
+                    </field>
+                </page>
+
+            </field>
+    </record>
+
+</odoo>

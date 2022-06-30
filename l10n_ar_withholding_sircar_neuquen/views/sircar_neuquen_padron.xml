@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sircar_neuquen_padron_form" model="ir.ui.view">
+        <field name="name">sircar.neuquen.padron.form</field>
+        <field name="model">sircar.neuquen.padron</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="type_alicuot" />
+                            <field name="name" />
+                            <field name="publication_date" />
+                            <field name="effective_date_from" />
+                            <field name="effective_date_to" />
+                            <field name="type_contr_insc" />
+                            <field name="alta_baja" />
+                        </group>
+                        <group>
+                            <field name="cambio" />
+                            <field name="a_per" />
+                            <field name="a_ret" />
+                            <field name="nro_grupo_perc" />
+                            <field name="nro_grupo_ret" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    
+
+    <record id="view_sircar_neuquen_padron_tree" model="ir.ui.view">
+        <field name="name">sircar.neuquen.padron.tree</field>
+        <field name="model">sircar.neuquen.padron</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="type_alicuot" />
+                <field name="name" />
+                <field name="publication_date" />
+                <field name="effective_date_from" />
+                <field name="effective_date_to" />
+                <field name="a_per" />
+                <field name="a_ret" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_sircar_neuquen_padron_tree" model="ir.actions.act_window">
+        <field name="name">Padron SIRCAR Neuquen</field>
+        <field name="res_model">sircar.neuquen.padron</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain" eval="False"/>
+        <field name="view_id" ref="l10n_ar_withholding_sircar_neuquen.view_sircar_neuquen_padron_tree"/>
+    </record>
+
+    <menuitem name="Padron IIBB SIRCAR Neuquen" action="action_sircar_neuquen_padron_tree" id="menu_sircar_neuquen_padron_tree" parent="account.account_account_menu" sequence="1"/>
+</odoo>
