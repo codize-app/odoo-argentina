@@ -232,17 +232,34 @@ class AccountPaymentGroup(models.Model):
     def post(self):
         res = super(AccountPaymentGroup, self).post()
         for rec in self:
+            #TODO codigo comentado viene de l10n_ar_withholding y es a revisar
             if rec.temp_payment_ids:
                 payment_ids = rec.temp_payment_ids.split(',')
                 for payment_id in payment_ids:
                     payment = self.env['account.payment'].browse(int(payment_id))
-                    payment.write({'used_withholding': True})
+                    _logger.warning('**** Entro aqui con pago: {}'.format(payment))
+                    if payment.tax_withholding_id.withholding_type != 'partner_iibb_padron':
+                        _logger.warning('**** Actualizo pago: {}'.format(payment))
+                        payment.write({'used_withholding': True})
+            #withholding = None
+            #for payment in rec.payment_ids:
+            #    if payment.tax_withholding_id:
+            #        withholding = True
+            #if withholding == True:
+            #    for payment in rec.payment_ids:
+            #        payment.write({'used_withholding': True})
+
+            #for payment in rec.payment_ids:
+            #    if payment.tax_withholding_id.withholding_type == 'tabla_ganancias':
+            #        payment.write({'used_withholding': True})
+
             withholding = None
             for payment in rec.payment_ids:
-                if payment.tax_withholding_id:
+                if payment.tax_withholding_id and payment.tax_withholding_id.withholding_type != 'partner_iibb_padron':
                     withholding = True
             if withholding == True:
                 for payment in rec.payment_ids:
-                    payment.write({'used_withholding': True})
+                    if payment.tax_withholding_id.withholding_type != 'partner_iibb_padron':
+                        payment.write({'used_withholding': True})
 
         return res

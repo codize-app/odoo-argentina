@@ -18,32 +18,6 @@ class ResPartner(models.Model):
         'partner_id',
         'Alicuotas Percepcion',
     )
-    imp_per_arba_ids = fields.One2many(
-        'res.partner.per.arba',
-        'partner_id',
-        'Impuestos Per ARBA'
-    )
-
-class ResPartnerPerArba(models.Model):
-    _name = "res.partner.per.arba"
-    _order = "company_id"
-
-    partner_id = fields.Many2one(
-        'res.partner',
-        required=True,
-        ondelete='cascade',
-    )
-    tax_id = fields.Many2one(
-        'account.tax',
-        'Impuesto',
-        domain=[('type_tax_use', '=', 'sale'),('tax_group_id.l10n_ar_tribute_afip_code','=','07')],
-    )
-    company_id = fields.Many2one(
-        'res.company',
-        required=True,
-        ondelete='cascade',
-        default=lambda self: self.env.user.company_id,
-    )
 
 class ResPartnerAlicuotRet(models.Model):
     _name = 'partner.padron.arba.ret'

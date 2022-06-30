@@ -33,17 +33,6 @@
                             <field name="nro_grupo_per"/>
                         </tree>
                     </field>
-                    <group>
-                        <group>
-                        </group>
-                        <group>
-                            <field name="imp_per_arba_ids">
-                                    <tree string="Impuesto Per ARBA" editable="bottom">
-                                            <field name="tax_id" />
-                                    </tree>
-                            </field>
-                        </group>
-                    </group>
                 </page>
 
             </field>

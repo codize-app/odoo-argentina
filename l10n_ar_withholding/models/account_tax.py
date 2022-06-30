@@ -266,7 +266,7 @@ class AccountTax(models.Model):
                     payment_date = str(payment_group.payment_date)[:8]
                     payment_date = payment_date + '00'
                     payments = self.env['account.payment'].search([('payment_type','=','outbound'),('state','=','posted'),('payment_group_id','!=',payment_group.id),\
-                                        ('partner_id','=',payment_group.partner_id.id),('used_withholding','=',False),('payment_group_id.retencion_ganancias','=','nro_regimen')])
+                                        ('partner_id','=',payment_group.partner_id.id),('used_withholding','=',False),('payment_group_id.retencion_ganancias','=','nro_regimen'),'|',('tax_withholding_id.withholding_type','!=','partner_iibb_padron'),('tax_withholding_id','=',False)])
                     previous_amount = 0
                     for payment in payments:
                         if payment_group.payment_date.month == payment.payment_group_id.payment_date.month and payment_group.payment_date.year == payment.payment_group_id.payment_date.year:
@@ -333,17 +333,16 @@ class AccountTax(models.Model):
                                         ('payment_group_id.payment_date','<=',today),('partner_id','=',payment_group.partner_id.id),('tax_withholding_id','=',self.id)])
                 #if not prev_payments_with_withholding :
                 #    if prev_payments_no_withholding:
-                #        for prev_payments in prev_payments_no_withholding:
-                #            withholdable_base_amount += prev_payments.amount
-                #            _logger.warning('******* prev_payments.amount: {0}'.format(prev_payments.amount))
+                #       for prev_payments in prev_payments_no_withholding:
+                #           withholdable_base_amount += prev_payments.amount
                 #    withholdable_base_amount = withholdable_base_amount - non_taxable_amount
-                #_logger.warning('******* withholdable_base_amount$$2: {0}'.format(withholdable_base_amount))
                 if withholdable_base_amount > 0:
                     period_withholding_amount = withholdable_base_amount * payment_group.partner_id.default_regimen_ganancias_id.porcentaje_inscripto / 100
                 if period_withholding_amount < self.withholding_non_taxable_minimum and not prev_payments_with_withholding:
                     period_withholding_amount = 0
-                #vals['withholdable_base_amount'] = withholdable_base_amount
+                vals['withholdable_base_amount'] = withholdable_base_amount
                 vals['period_withholding_amount'] = period_withholding_amount
+                vals['date'] = payment_group.payment_date
 
                 if regimen.porcentaje_inscripto == -1:
                     escala = self.env['afip.tabla_ganancias.escala'].search([

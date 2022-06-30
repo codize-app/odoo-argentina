@@ -39,7 +39,7 @@ class AccountPaymentGroupInherit(models.Model):
                     'tax_withholding_id': _imp_ret.id,
                     'payment_method_description': 'Retencion IIBB',
                     'payment_method_id': _payment_method.id,
-                    'date': fields.Datetime.now(),
+                    'date': rec.payment_date,
                     'destination_account_id': rec.partner_id.property_account_payable_id.id,
                     'amount': _amount_ret_iibb,
                     'withholding_base_amount': amount_untaxed_total_invs
