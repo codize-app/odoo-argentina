@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form_inherit_sircar_neuquen" model="ir.ui.view">
+            <field name="name">res.config.settings.form.inherit.sircar.neuquen</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+
+                <!-- Default Journal -->
+                <xpath expr="//div[@data-key='account']//div[hasclass('row','mt16', 'o_settings_container')][4]">
+                    <div class="col-12 col-lg-6 o_setting_box" id="tax_ret_sircar_neuquen">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Impuesto de percepciones SIRCAR Neuquen</span>
+                            <div class="text-muted">
+                                Impuesto por defecto para las lineas de factura a la hora de aplicar percepciones de SIRCAR Neuquen
+                            </div>
+                            <div class="text-muted">
+                                <field name="tax_ret_sircar_neuquen"/>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+
+            
+            </field>
+        </record>
+    
+    </data>
+</odoo>
