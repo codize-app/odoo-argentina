@@ -47,6 +47,17 @@ class ResPartnerAlicuotRet(models.Model):
     nro_grupo_ret = fields.Char('Nro Grupo Retencion')
     padron_activo = fields.Boolean('Activo')
 
+    @api.model
+    def create(self, vals):
+        parent = self.env['res.partner'].search([('id','=',int(vals['partner_id'])),('parent_id','=',False)],limit=1)
+        for alicuota in parent.alicuot_ret_arba_ids:
+            if alicuota.padron_activo == True:
+                alicuota.padron_activo = False
+        
+        vals['padron_activo'] = True
+        rec = super(ResPartnerAlicuotRet, self).create(vals)
+        return rec
+
 class ResPartnerAlicuotPer(models.Model):
     _name = 'partner.padron.arba.per'
     _order = 'create_date desc'
@@ -74,3 +85,14 @@ class ResPartnerAlicuotPer(models.Model):
     a_per = fields.Float('Alicuota-Percepcion')
     nro_grupo_per = fields.Char('Nro Grupo Percepcion')
     padron_activo = fields.Boolean('Activo')
+
+    @api.model
+    def create(self, vals):
+        parent = self.env['res.partner'].search([('id','=',int(vals['partner_id'])),('parent_id','=',False)],limit=1)
+        for alicuota in parent.alicuot_per_arba_ids:
+            if alicuota.padron_activo == True:
+                alicuota.padron_activo = False
+        
+        vals['padron_activo'] = True
+        rec = super(ResPartnerAlicuotPer, self).create(vals)
+        return rec
