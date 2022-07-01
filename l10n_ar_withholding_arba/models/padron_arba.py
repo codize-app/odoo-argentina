@@ -35,7 +35,7 @@ class Padron(models.Model):
     @api.model
     def create(self, vals):
         padron = super(Padron, self).create(vals)
-        partner = self.env['res.partner'].search([('vat','=',padron.name)])
+        partner = self.env['res.partner'].search([('vat','=',padron.name),('parent_id','=',False)])
         if len(partner)>0:
 
             if padron.type_alicuot == 'R':
@@ -75,7 +75,7 @@ class Padron(models.Model):
     def write(self, variables):
         if 'publication_date' in variables or 'effective_date_from' in variables or 'effective_date_to' in variables or 'alta_baja' in variables or 'a_per' in variables or 'a_ret' in variables:
             res = super(Padron, self).write(variables)
-            partner = self.env['res.partner'].search([('vat','=',self.name)])
+            partner = self.env['res.partner'].search([('vat','=',self.name),('parent_id','=',False)])
             _logger.warning('***** 1 lo modifico en : {0}'.format(partner.name))
             if len(partner)>0:
 
