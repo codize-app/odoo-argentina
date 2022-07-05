@@ -59,9 +59,9 @@
             <button name="action_reverse" position="attributes">
                     <attribute name="attrs">{'invisible': [('show_credit_button','=',False)]}</attribute>
             </button>
-            <button name="%(account_debit_note.action_view_account_move_debit)d" position="attributes">
+           <!-- <button name="%(account_debit_note.action_view_account_move_debit)d" position="attributes">
                     <attribute name="invisible">1</attribute>
-            </button>
+            </button>-->
 
             <button name="action_post" position="after">
 		    <button name="action_post" type="object" attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('validation_type', '!=', 'production')]}"
