@@ -279,6 +279,7 @@ class AccountTax(models.Model):
                                     previous_amount += payment.amount
                                 prev_payments.append(str(payment.id))
                     base_amount += previous_amount
+                    vals['withholdable_advanced_amount'] = previous_amount
                     payment_group.write({'temp_payment_ids': ','.join(prev_payments)})
 
                 if base_amount < non_taxable_amount and not prev_payments:
@@ -375,19 +376,19 @@ class AccountTax(models.Model):
                 regimen.codigo_de_regimen, regimen.concepto_referencia)
         return vals
 
-    def get_period_payments_domain(self, payment_group):
-        previos_payment_groups_domain, previos_payments_domain = super(
-            AccountTax, self).get_period_payments_domain(payment_group)
-        if self.withholding_type == 'tabla_ganancias':
-            previos_payment_groups_domain += [
-                ('regimen_ganancias_id', '=',
-                    payment_group.regimen_ganancias_id.id)]
-            previos_payments_domain += [
-                ('payment_group_id.regimen_ganancias_id', '=',
-                    payment_group.regimen_ganancias_id.id)]
-        return (
-            previos_payment_groups_domain,
-            previos_payments_domain)
+    #def get_period_payments_domain(self, payment_group):
+    #    previos_payment_groups_domain, previos_payments_domain = super(
+    #        AccountTax, self).get_period_payments_domain(payment_group)
+    #    if self.withholding_type == 'tabla_ganancias':
+    #        previos_payment_groups_domain += [
+    #            ('regimen_ganancias_id', '=',
+    #                payment_group.regimen_ganancias_id.id)]
+    #        previos_payments_domain += [
+    #            ('payment_group_id.regimen_ganancias_id', '=',
+    #                payment_group.regimen_ganancias_id.id)]
+    #    return (
+    #        previos_payment_groups_domain,
+    #        previos_payments_domain)
 
     @api.model
     def create(self, vals):
@@ -535,6 +536,16 @@ class AccountTax(models.Model):
             ('tax_withholding_id', '=', self.id),
             ('payment_group_id.id', '!=', payment_group.id),
         ]
+        if self.withholding_type == 'tabla_ganancias':
+            previous_payment_groups_domain += [
+                ('regimen_ganancias_id', '=',
+                    payment_group.regimen_ganancias_id.id),
+                ('receiptbook_id.partner_type','=','supplier'),
+                ('partner_id', '=', payment_group.partner_id.id)]
+            previous_payments_domain += [
+                ('payment_group_id.regimen_ganancias_id', '=',
+                    payment_group.regimen_ganancias_id.id),
+                ('partner_id', '=', payment_group.partner_id.id)]
         return (previous_payment_groups_domain, previous_payments_domain)
 
     #def get_partner_alicuota_percepcion(self, partner, date):
