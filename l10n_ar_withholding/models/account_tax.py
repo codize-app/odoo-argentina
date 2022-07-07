@@ -149,36 +149,35 @@ class AccountTax(models.Model):
 
         accumulated_amount = previous_withholding_amount = 0.0
 
-        if self.withholding_accumulated_payments:
-            previos_payment_groups_domain, previos_payments_domain = (
-                self.get_period_payments_domain(payment_group))
-            #raise ValidationError('%s %s'%(previos_payment_groups_domain, previos_payments_domain))
-            same_period_payments = self.env['account.payment.group'].search(
-                previos_payment_groups_domain)
-
-            for same_period_payment_group in same_period_payments:
-                same_period_amounts = \
-                    same_period_payment_group._get_withholdable_amounts(
-                        withholding_amount_type, self.withholding_advances)
-                accumulated_amount += \
-                    same_period_amounts[0] + same_period_amounts[1]
-            if self.withholding_type != 'tabla_ganancias':
-                previous_withholding_amount = sum(
-                    self.env['account.payment'].search(
-                        previos_payments_domain).mapped('amount'))
-            else:
-                previous_withholding_amount = 0
-                #Se cambia el dominio de busqueda payment_date a date ya que Odoo 14 descontinuo este campo en account.payment
-                for x in range(len(previos_payments_domain)):
-                    if previos_payments_domain[x][0] == 'payment_date':
-                        l = list(previos_payments_domain[x])
-                        l[0] = 'date'
-                        previos_payments_domain[x] = tuple(l)
-                prev_payments = self.env['account.payment'].search(previos_payments_domain)
-                for prev_payment in prev_payments:
-                    if prev_payment.payment_group_id.payment_date.year == payment_group.payment_date.year and prev_payment.payment_group_id.payment_date.month == payment_group.payment_date.month and \
-                            prev_payment.payment_group_id.payment_date.day <= payment_group.payment_date.day:
-                                previous_withholding_amount += prev_payment.amount
+        #if self.withholding_accumulated_payments:
+        #    previos_payment_groups_domain, previos_payments_domain = (
+        #        self.get_period_payments_domain(payment_group))
+        #    #raise ValidationError('%s %s'%(previos_payment_groups_domain, previos_payments_domain))
+        #    same_period_payments = self.env['account.payment.group'].search(
+        #        previos_payment_groups_domain)
+        #    for same_period_payment_group in same_period_payments:
+        #        same_period_amounts = \
+        #            same_period_payment_group._get_withholdable_amounts(
+        #                withholding_amount_type, self.withholding_advances)
+        #        accumulated_amount += \
+        #            same_period_amounts[0] + same_period_amounts[1]
+        #    if self.withholding_type != 'tabla_ganancias':
+        #        previous_withholding_amount = sum(
+        #            self.env['account.payment'].search(
+        #                previos_payments_domain).mapped('amount'))
+        #    else:
+        #        previous_withholding_amount = 0
+        #        #Se cambia el dominio de busqueda payment_date a date ya que Odoo 14 descontinuo este campo en account.payment
+        #        for x in range(len(previos_payments_domain)):
+        #            if previos_payments_domain[x][0] == 'payment_date':
+        #                l = list(previos_payments_domain[x])
+        #                l[0] = 'date'
+        #                previos_payments_domain[x] = tuple(l)
+        #        prev_payments = self.env['account.payment'].search(previos_payments_domain)
+        #        for prev_payment in prev_payments:
+        #            if prev_payment.payment_group_id.payment_date.year == payment_group.payment_date.year and prev_payment.payment_group_id.payment_date.month == payment_group.payment_date.month and \
+        #                    prev_payment.payment_group_id.payment_date.day <= payment_group.payment_date.day:
+        #                        previous_withholding_amount += prev_payment.amount
 
             #raise ValidationError('%s %s'%(previous_withholding_amount,previos_payments_domain))
         total_amount = (
