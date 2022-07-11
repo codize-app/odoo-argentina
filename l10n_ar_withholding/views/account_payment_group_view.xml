@@ -43,7 +43,7 @@
                     </div>
                     <label for="withholdable_advanced_amount_calculation_type" attrs="{'invisible': [('company_regimenes_ganancias_ids', '=', [])]}"/>
                     <div attrs="{'invisible': [('company_regimenes_ganancias_ids', '=', [])]}">
-                        <field name="withholdable_advanced_amount_calculation_type" class="oe_inline" attrs="{'invisible': [('retencion_ganancias', '!=', 'nro_regimen')]"/>
+                        <field name="withholdable_advanced_amount_calculation_type" class="oe_inline" attrs="{'invisible': [('retencion_ganancias', '!=', 'nro_regimen')]}"/>
                     </div>
                 </field>
             </field>
