@@ -475,30 +475,31 @@ class AccountTax(models.Model):
 
             vals.pop('comment')
             if payment_withholding:
-                payment_withholding.write(vals)
-            else:
-                payment_method = self.env.ref(
-                    'l10n_ar_withholding.'
-                    'account_payment_method_out_withholding')
-                journal = self.env['account.journal'].search([
-                    ('company_id', '=', tax.company_id.id),
-                    ('outbound_payment_method_ids', '=', payment_method.id),
-                    ('type', 'in', ['cash', 'bank']),
-                ], limit=1)
-                if not journal:
-                    raise UserError(_(
-                        'No journal for withholdings found on company %s') % (
-                        tax.company_id.name))
-                vals['journal_id'] = journal.id
-                vals['payment_method_id'] = payment_method.id
-                vals['payment_type'] = 'outbound'
-                vals['partner_type'] = payment_group.partner_type
-                vals['partner_id'] = payment_group.partner_id.id
-                #if not 'name' in vals:
-                #    sequence_obj = self.env['ir.sequence']
-                #    correlativo = sequence_obj.next_by_code('account.tax.withholding')
-                #    vals['name'] = correlativo
-                payment_withholding = payment_withholding.create(vals)
+                #payment_withholding.write(vals)
+                payment_withholding.unlink()
+            
+            payment_method = self.env.ref(
+                'l10n_ar_withholding.'
+                'account_payment_method_out_withholding')
+            journal = self.env['account.journal'].search([
+                ('company_id', '=', tax.company_id.id),
+                ('outbound_payment_method_ids', '=', payment_method.id),
+                ('type', 'in', ['cash', 'bank']),
+            ], limit=1)
+            if not journal:
+                raise UserError(_(
+                    'No journal for withholdings found on company %s') % (
+                    tax.company_id.name))
+            vals['journal_id'] = journal.id
+            vals['payment_method_id'] = payment_method.id
+            vals['payment_type'] = 'outbound'
+            vals['partner_type'] = payment_group.partner_type
+            vals['partner_id'] = payment_group.partner_id.id
+            #if not 'name' in vals:
+            #    sequence_obj = self.env['ir.sequence']
+            #    correlativo = sequence_obj.next_by_code('account.tax.withholding')
+            #    vals['name'] = correlativo
+            payment_withholding = payment_withholding.create(vals)
         return True
 
     def get_period_payments_domain(self, payment_group):

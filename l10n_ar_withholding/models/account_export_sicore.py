@@ -45,57 +45,52 @@ class AccountExportSicore(models.Model):
                 continue
             if payment.tax_withholding_id.id != self.tax_withholding.id:
                 continue
-            # Recorrepemos todas las facturas que se pagaron mediantes el grupo de pago al que corresponde este pago
-            # Esto lo hacemos para hacer una linea por factura en el TXT de SICORE
-            for invoce_pay in payment.payment_group_id.matched_move_line_ids:
-                _logger.warning('Factura {0} en pago {1}'.format(invoce_pay.move_id.name,payment.name))
-                # 1er campo codigo de comprobante: pago 06
-                string = string + '06'
-                # 2do campo fecha de emision de comprobante
-                string = string + str(payment.date)[8:10] + '/' + str(payment.date)[5:7] + '/' + str(payment.date)[:4]
-                # 3er campo Número del comprobante: 16 caracteres. Exporta el número interno de la orden de pago, agregando ceros 
-                # hacia la izquierda hasta completar los 16 caracteres.
-                string = string + payment.withholding_number.zfill(12) + '    '
-                # 4to campo Importe comprobante: 16 caracteres de los cuales 13 son enteros, 2 decimales separados por una coma.
-                # Monto de la orden de pago, sin sustraer las retenciones.
-                string = string + ("%.2f"%payment.payment_group_id.payments_amount).replace('.',',').zfill(16)
-                # 5to Campo - Código de impuesto: 4 caracteres. Exporta el Código de impuesto ingresado en el alta de la retención aplicada.
-                # Impuesto 217 - SICORE - Impuesto a las Ganancias
-                # Impuesto 219 - SICORE- Impuesto sobre los Bienes Personales
-                string = string + '0217'
-                # 6to campo - Código de régimen:  3 caracteres. Exporta el Código de régimen ingresado en el alta de la retención aplicada.
-                concepto = int(payment.communication[:3])
-                string = string + str(concepto).zfill(3)
-                # 7mo campo - codigo de operacion 1 tomado de ejemplo XLS
-                string = string + '1'
-                # 8vo campo - Base de cálculo: 14 caracteres de los cuales 11 son enteros, 2 decimales separados por una coma. 
-                string = string +("%.2f"%invoce_pay.move_id.amount_untaxed).replace('.',',').zfill(14)
-                # 9vo campo - fecha de emision de la retencion (66 a 75)
-                string = string + str(payment.date)[8:10] + '/' + str(payment.date)[5:7] + '/' + str(payment.date)[:4]
-                # 10mo (76 a 77) codigo de condicioon
-                if payment.tax_withholding_id.condicion_sicore == 'withholding':
-                    string = string + '01'
-                elif payment.tax_withholding_id.condicion_sicore == 'perception':
-                    string = string + '02'
-                else:
-                    string = string + '99'
-                # 11vo(78 a 78) - retencion a sujetos suspendidos
-                string = string + '0'
-                # 12mo campo - importe retencion - 14 caracteres, de los cuales 11 son enteros y 2 decimales, separados por una coma. Exporta el importe a retener.
-                #Calculo cuanto corresponde del total de la retencion del pago agrupado a la factura que recorremos
-                porcen_en_total_ret = ((invoce_pay.move_id.amount_untaxed * 100) / payment.withholding_base_amount) / 100
-                string = string + ("%.2f"%(payment.amount * porcen_en_total_ret)).replace('.',',').zfill(14) 
-                # 13vo campo - porcentaje de la exclusion
-                cadena = '000,00' + '          '
-                string = string + cadena
-                # 14 tipo de documento del retenido
-                string = string + '80'
-                # 15vo campo - Nro. de documento del sujeto: 11 caracteres. Exporta el C.U.I.T. del retenido.
-                string = string + payment.partner_id.vat + '         '
-                # 16vo campo nro certificado original
-                string = string + '0'.zfill(14) + '                              0                      '
-                # CRLF
-                string = string + windows_line_ending
+
+            # 1er campo codigo de comprobante: pago 06
+            string = string + '06'
+            # 2do campo fecha de emision de comprobante
+            string = string + str(payment.date)[8:10] + '/' + str(payment.date)[5:7] + '/' + str(payment.date)[:4]
+            # 3er campo Número del comprobante: 16 caracteres. Exporta el número interno de la orden de pago, agregando ceros 
+            # hacia la izquierda hasta completar los 16 caracteres.
+            string = string + payment.withholding_number.zfill(12) + '    '
+            # 4to campo Importe comprobante: 16 caracteres de los cuales 13 son enteros, 2 decimales separados por una coma.
+            # Monto de la orden de pago, sin sustraer las retenciones.
+            string = string + ("%.2f"%payment.payment_group_id.payments_amount).replace('.',',').zfill(16)
+            # 5to Campo - Código de impuesto: 4 caracteres. Exporta el Código de impuesto ingresado en el alta de la retención aplicada.
+            # Impuesto 217 - SICORE - Impuesto a las Ganancias
+            # Impuesto 219 - SICORE- Impuesto sobre los Bienes Personales
+            string = string + '0217'
+            # 6to campo - Código de régimen:  3 caracteres. Exporta el Código de régimen ingresado en el alta de la retención aplicada.
+            concepto = int(payment.communication[:3])
+            string = string + str(concepto).zfill(3)
+            # 7mo campo - codigo de operacion 1 tomado de ejemplo XLS
+            string = string + '1'
+            # 8vo campo - Base de cálculo: 14 caracteres de los cuales 11 son enteros, 2 decimales separados por una coma. 
+            string = string +("%.2f"%payment.withholdable_base_amount).replace('.',',').zfill(14)
+            # 9vo campo - fecha de emision de la retencion (66 a 75)
+            string = string + str(payment.date)[8:10] + '/' + str(payment.date)[5:7] + '/' + str(payment.date)[:4]
+            # 10mo (76 a 77) codigo de condicioon
+            if payment.tax_withholding_id.condicion_sicore == 'withholding':
+                string = string + '01'
+            elif payment.tax_withholding_id.condicion_sicore == 'perception':
+                string = string + '02'
+            else:
+                string = string + '99'
+            # 11vo(78 a 78) - retencion a sujetos suspendidos
+            string = string + '0'
+            # 12mo campo - importe retencion - 14 caracteres, de los cuales 11 son enteros y 2 decimales, separados por una coma. Exporta el importe a retener.
+            string = string + ("%.2f"%(payment.amount)).replace('.',',').zfill(14) 
+            # 13vo campo - porcentaje de la exclusion
+            cadena = '000,00' + '          '
+            string = string + cadena
+            # 14 tipo de documento del retenido
+            string = string + '80'
+            # 15vo campo - Nro. de documento del sujeto: 11 caracteres. Exporta el C.U.I.T. del retenido.
+            string = string + payment.partner_id.vat + '         '
+            # 16vo campo nro certificado original
+            string = string + '0'.zfill(14) + '                              0                      '
+            # CRLF
+            string = string + windows_line_ending
             
         _logger.warning('******* string: {0}'.format(string))
         self.export_sicore_data = string

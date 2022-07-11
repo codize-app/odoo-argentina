@@ -18,6 +18,14 @@ class AccountPaymentGroup(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
+    withholdable_advanced_amount_calculation_type = fields.Selection([
+        ('iva21', 'IVA 21%'),
+        ('iva10', 'IVA 10,5%'),
+        ('none', 'Ninguna'),
+    ], 'Deduccion de total a pagar', 
+        help='Esta campo se utiliza para pagos adelantados, el cual selecciona al tipo de deduccion que se le hara al total del pago para luego hacer el calculo de retencion. Solo aplicable cuando el pago no tiene una o varias facturas asociadas',
+        default='iva21'
+    )
     retencion_ganancias = fields.Selection([
         ('imposibilidad_retencion', 'Imposibilidad de Retención'),
         ('no_aplica', 'No Aplica'),
@@ -42,10 +50,15 @@ class AccountPaymentGroup(models.Model):
     )
     temp_payment_ids = fields.Char('temp_payment_ids')
 
-    @api.onchange('unreconciled_amount')
+    @api.onchange('unreconciled_amount','withholdable_advanced_amount_calculation_type')
     def set_withholdable_advanced_amount(self):
         for rec in self:
-            rec.withholdable_advanced_amount = rec.unreconciled_amount
+            if rec.withholdable_advanced_amount_calculation_type == 'iva21':
+                rec.withholdable_advanced_amount = (rec.unreconciled_amount / 1.21)
+            elif rec.withholdable_advanced_amount_calculation_type == 'iva10':
+                rec.withholdable_advanced_amount = (rec.unreconciled_amount / 1.105)
+            else:
+                rec.withholdable_advanced_amount = rec.unreconciled_amount
 
     @api.depends(
         'payment_ids.tax_withholding_id',
