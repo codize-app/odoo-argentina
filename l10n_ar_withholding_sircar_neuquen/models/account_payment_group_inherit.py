@@ -18,6 +18,7 @@ class AccountPaymentGroupInherit(models.Model):
                 amount_untaxed_total_invs = 0
                 for invs in self.debt_move_line_ids:
                     amount_untaxed_total_invs += invs.move_id.amount_untaxed
+                amount_untaxed_total_invs += rec.withholdable_advanced_amount
                 _amount_ret_iibb = amount_untaxed_total_invs * (retencion.a_ret / 100)
                 _payment_method = self.env.ref(
                     'l10n_ar_withholding.'
@@ -32,6 +33,17 @@ class AccountPaymentGroupInherit(models.Model):
                     ('company_id', '=', rec.company_id.id),
                     ('withholding_type', '=', 'partner_iibb_padron'),
                     ('tax_sircar_neuquen_ret','=',True)], limit=1)
+                
+                #Busco si el pago ya existe en el payment.group de existir lo elimino y vuelvo a crear
+                payment_withholding = self.env[
+                'account.payment'].search([
+                    ('payment_group_id', '=', rec.id),
+                    ('tax_withholding_id', '=', _imp_ret.id),
+                ], limit=1)
+
+
+                if payment_withholding:
+                    payment_withholding.unlink()
                 rec.payment_ids = [(0,0, {
                     'name': '/',
                     'payment_type': 'outbound',
