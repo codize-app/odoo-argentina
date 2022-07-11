@@ -237,8 +237,7 @@ class AccountMove(models.Model):
         # that happens if you choose the modify option of the credit note
         # wizard. A mapping of which documents can be reported as related
         # documents would be a better solution
-        if self.l10n_latam_document_type_id.internal_type in ['debit_note', 'credit_note'] \
-                and self.invoice_origin:
+        if self.l10n_latam_document_type_id.internal_type == 'credit_note' and self.invoice_origin:
             return self.search([
                 ('commercial_partner_id', '=', self.commercial_partner_id.id),
                 ('company_id', '=', self.company_id.id),
@@ -248,6 +247,8 @@ class AccountMove(models.Model):
                 ('l10n_latam_document_type_id', '!=', self.l10n_latam_document_type_id.id),
                 ('state', 'not in', ['draft', 'cancel'])],
                 limit=1)
+        elif self.l10n_latam_document_type_id.internal_type == 'debit_note':
+            return self.debit_origin_id
         else:
             return self.browse()
 
@@ -745,15 +746,6 @@ print "Observaciones:", wscdc.Obs
                         self.company_id.vat,
                         invoice_date,
                     )
-            # Notas de debito
-            if inv.l10n_latam_document_type_id.code in ['2','7']:
-                year = date.today().year
-                month = date.today().month
-                day = date.today().day
-                fecha_desde = str(year) + str(month).zfill(2) + '01'
-                fecha_hasta = str(year) + str(month).zfill(2) + str(day).zfill(2)
-                ws.AgregarPeriodoComprobantesAsociados(fecha_desde,fecha_hasta)
-
 
 
             # analize line items - invoice detail
