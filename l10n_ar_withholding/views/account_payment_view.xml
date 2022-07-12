@@ -43,9 +43,9 @@
                 <field name="withholding_non_taxable_minimum" attrs="{'invisible': [('automatic', '=', False)]}"/>
                 <field name="withholding_non_taxable_amount" attrs="{'invisible': [('automatic', '=', False)]}"/>
                 <field name="withholdable_base_amount" attrs="{'invisible': [('automatic', '=', False)]}"/>
-                <field name="period_withholding_amount" attrs="{'invisible': [('withholding_accumulated_payments', '=', False)]}"/>
+                <field name="period_withholding_amount" readonly="1" attrs="{'invisible': [('withholding_accumulated_payments', '=', False)]}"/>
                 <field name="previous_withholding_amount" attrs="{'invisible': [('withholding_accumulated_payments', '=', False)]}"/>
-                <field name="computed_withholding_amount" attrs="{'invisible': [('automatic', '=', False)]}"/>
+                <field name="computed_withholding_amount" readonly="1" attrs="{'invisible': [('automatic', '=', False)]}"/>
             </group>
          </field>
     </record>

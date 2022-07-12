@@ -66,15 +66,11 @@ class AccountPayment(models.Model):
     withholdable_base_amount = fields.Float(
         readonly=True,
     )
-    period_withholding_amount = fields.Float(
-        readonly=True,
-    )
+    period_withholding_amount = fields.Float('Retención del período')
     previous_withholding_amount = fields.Float(
         readonly=True,
     )
-    computed_withholding_amount = fields.Float(
-        readonly=True,
-    )
+    computed_withholding_amount = fields.Float('Retención calculada')
     used_withholding = fields.Boolean(string='Usado en retenciones')
     print_withholding = fields.Boolean('Imprimir Retenciones', compute=_compute_print_withholding)
 
