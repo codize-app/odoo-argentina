@@ -8,6 +8,7 @@
 			<form string="Importar Padron ARBA">
 				<header>
 					<button name="btn_process" type="object" string="Procesar" states="draft" />
+					<button name="btn_process_next" type="object" string="Volver a procesar" states="processed" />
 					<field name="state" widget="statusbar" />
 				</header>
 				<sheet>
@@ -17,6 +18,7 @@
 						<field name="delimiter" />
 						<field name="skip_first_line" />
 						<field name="padron_match" />
+						<field name="lineas_archivo" />
 					</group>
 					<notebook>
 						<page string="Contenido" >

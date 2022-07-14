@@ -31,16 +31,26 @@ class ImportPadronSircarNeuquen(models.Model):
             raise ValidationError('Archivo procesado!')
         self.file_content = base64.decodebytes(self.padron_file)
         lines = self.file_content.split('\n')
+
+        #Guardamos todos los cuit de clientes para luego consultar si el cliente existe y evitar hacer un search por cada linea de TXT
+        partners = self.env['res.partner'].search([('vat','!=',False),('parent_id','=',False)])
+        cuit_partners = []
+        for c in partners:
+            cuit_partners.append(c.vat)
+
         for i,line in enumerate(lines):
             if self.skip_first_line and i == 0:
                 continue
             lista = line.split(self.delimiter)
             if len(lista) > 10:
+                #Consultamos si existe el cliente segun el cuit sino seguimos a la siguiente linea para minimizar el proceso
+                cuit = lista[4]
+                if cuit not in cuit_partners:
+                    continue
                 tipo = lista[0]
                 publication_date = lista[1]
                 effective_date_from = lista[2]
                 effective_date_to = lista[3]
-                cuit = lista[4]
                 type_contr_insc = lista[5]
                 alta_baja = lista[6]
                 cambio = lista[7]
@@ -66,9 +76,11 @@ class ImportPadronSircarNeuquen(models.Model):
                     vals['type_contr_insc'] = type_contr_insc
                     vals['alta_baja'] = alta_baja
                     if a_per:
+                        vals['type_alicuot'] = 'P'
                         vals['a_per'] = float(a_per.replace(',','.'))
                         vals['a_ret'] = 0.0
                     else:
+                        vals['type_alicuot'] = 'R'
                         vals['a_per'] = 0.0
                         vals['a_ret'] = float(a_ret.replace(',','.'))
                     if nro_grupo_perc:
@@ -97,13 +109,29 @@ class ImportPadronSircarNeuquen(models.Model):
         self.clientes_cargados = _procesados
         self.not_processed_content = _noprocesados
         self.state = 'processed'
+    
+    @api.depends('padron_file')
+    def compute_lineas_archivo(self):
+        for rec in self:
+            if rec.padron_file != False:
+                rec.file_content_tmp = base64.decodebytes(rec.padron_file)
+                lines = rec.file_content_tmp.split('\n')
+                for i,line in enumerate(lines):
+                    rec.lineas_archivo += 1
+
+
+            else:
+                rec.lineas_archivo = 0
+        pass
 
     name = fields.Char('Nombre')
     padron_file = fields.Binary('Archivo')
     delimiter = fields.Char('Delimitador',default=";")
     state = fields.Selection(selection=[('draft','Borrador'),('processed','Procesado')],string='Estado',default='draft')
     file_content = fields.Text('Texto archivo')
+    file_content_tmp = fields.Text('Texto archivo')
     not_processed_content = fields.Text('Texto no procesado')
     clientes_cargados = fields.Text('Clientes cargados')
     skip_first_line = fields.Boolean('Saltear primera linea',default=True)
     padron_match = fields.Selection(selection=[('cuit','CUIT')],string='Buscar clientes por...',default='cuit')
+    lineas_archivo = fields.Integer(compute=compute_lineas_archivo, store=True)
