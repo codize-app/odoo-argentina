@@ -21,7 +21,8 @@ class Padron(models.Model):
     ], 'Tipo')
     alta_baja = fields.Selection([
         ('S', 'Se incorpora al padron'),
-        ('N', 'Baja')
+        ('N', 'No incorpora al padron'),
+        ('B', 'Baja')
     ], 'Alta/Baja')
     cambio = fields.Selection([
         ('S', 'Cambio al anterior'),

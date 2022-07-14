@@ -17,6 +17,7 @@
 						<field name="delimiter" />
 						<field name="skip_first_line" />
 						<field name="padron_match" />
+						<field name="lineas_archivo" />
 					</group>
 					<notebook>
 						<page string="Contenido" >
