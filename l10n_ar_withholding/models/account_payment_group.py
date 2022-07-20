@@ -78,6 +78,7 @@ class AccountPaymentGroup(models.Model):
             #Seteamos campo Retencion de Ganancias y nro de regimen
             if rec.commercial_partner_id.imp_ganancias_padron in ['EX', 'NC']:
                 rec.retencion_ganancias = 'no_aplica'
+                continue
             else:
                 cia_regs = rec.company_regimenes_ganancias_ids
                 partner_regimen = (
