@@ -8,6 +8,10 @@ from dateutil import relativedelta
 import base64
 import logging
 _logger = logging.getLogger(__name__)
+try:
+    from base64 import encodebytes
+except ImportError:  # 3+
+    from base64 import encodestring as encodebytes
 
 class AccountExportSicore(models.Model):
     _name = 'account.export.sicore'
@@ -26,7 +30,7 @@ class AccountExportSicore(models.Model):
         # http://www.planillasutiles.com.ar/2015/08/
         # como-descargar-los-archivos-de.html
         self.export_sicore_filename = _('Sicore_%s_%s.txt') % (str(self.date_from),str(self.date_to))
-        self.export_sicore_file = base64.encodestring(self.export_sicore_data.encode('ISO-8859-1'))
+        self.export_sicore_file = encodebytes(self.export_sicore_data.encode('ISO-8859-1'))
 
     export_sicore_file = fields.Binary('Archivo SICORE',compute=_compute_files)
     export_sicore_filename = fields.Char('Archivo SICORE',compute=_compute_files)
