@@ -33,7 +33,11 @@
                                 <field name="payment_account" />
                                 <field name="payment_journal" />
                                 <field name="payment_currency" />
+                                <field name="validar"/>
                             </group>
+                        </group>
+                        <group>
+                            <field name="RG_ERR_TXT_DEBIT_AUTOMATIC" widget="ace" />
                         </group>
                         <group groups="base.group_no_one">
                             <field name="RG_TXT_DEBIT_AUTOMATIC" widget="ace" />

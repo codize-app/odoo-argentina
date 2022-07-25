@@ -15,13 +15,14 @@
     'category': 'Account',
     'version': '0.1',
 
-    'depends': ['base', 'account', 'mail'],
+    'depends': ['base', 'account', 'mail', 'account_payment_group'],
 
     'data': [
         'security/ir.model.access.csv',
         'views/account_debit_automatic.xml',
         'views/partner_method.xml',
-        'report/automatic_debit.xml'
+        'report/automatic_debit.xml',
+        'report/debit_automatic_payments_xlsx.xml'
     ],
     'demo': [],
 }
