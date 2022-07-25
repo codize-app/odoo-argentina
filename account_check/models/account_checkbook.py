@@ -32,7 +32,7 @@ class AccountCheckbook(models.Model):
         inverse='_inverse_next_number',
     )
     issue_check_subtype = fields.Selection(
-        [('deferred', 'Deferred'), ('currents', 'Currents')],
+        [('deferred', 'Deferred'), ('currents', 'Currents'), ('electronics','Electronics')],
         string='Issue Check Subtype',
         required=True,
         default='deferred',
