@@ -22,6 +22,7 @@
         'views/account_debit_automatic.xml',
         'views/partner_method.xml',
         'report/automatic_debit.xml',
+        'report/control_debit_automatic.xml'
     ],
     'demo': [],
 }
