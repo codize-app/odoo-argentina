@@ -48,7 +48,7 @@ class AccountDebitAutomatic(models.Model):
                     if(err_code):
                         err_msg=line[132:161]
                         if(res_bank_partner.partner_id.name):
-                            self.RG_ERR_TXT_DEBIT_AUTOMATIC = self.RG_ERR_TXT_DEBIT_AUTOMATIC+res_bank_partner.partner_id.name+ ". Tarjeta " + str(card_num) + " (Monto: $"+str(amount_total)+")" + ": " + str(err_code)+'--'+err_msg
+                            self.RG_ERR_TXT_DEBIT_AUTOMATIC = self.RG_ERR_TXT_DEBIT_AUTOMATIC+res_bank_partner.partner_id.name+ ". Tarjeta " + str(card_num) + " (Monto: $"+str(amount_total)+")" + ": " + str(err_code)+'--'+err_msg + '\n'
                         else:
                             self.RG_ERR_TXT_DEBIT_AUTOMATIC =self.RG_ERR_TXT_DEBIT_AUTOMATIC+'No se encontro contacto para la tarjeta ' + str(card_num) + " (Monto: $"+str(amount_total)+")" + ": " + str(err_code)+'--'+err_msg + '\n'
                     else:
@@ -101,7 +101,7 @@ class AccountPayment(models.Model):
 
         mensaje=""
         if (not res_bank_partner or len(res_bank_partner)  !=1 or not res_bank_partner.partner_id.method_id):
-            mensaje= mensaje +" Método de pago incorrecto o faltante. Cargar desde contactos->Contabilidad->Método de pago. Pago no creado(crear manualmente)"
+            mensaje= mensaje +" Método de pago incorrecto o faltante. Cargar desde contactos->Contabilidad->Método de pago. Pago no creado(crear manualmente)\n"
             return mensaje
 
         if( len(res_bank_partner) == 1 and res_bank_partner.partner_id.id):
@@ -135,7 +135,7 @@ class AccountPayment(models.Model):
                 try:
                      a_pagar.move_id._post(soft=False)
                 except:
-                    mensaje=mensaje +'\n\t No se pudo validar.(pago creado como borrador)'
+                    mensaje=mensaje +'\n\t No se pudo validar.(pago creado como borrador)\n'
             mensaje=mensaje +'\n\t Validado.\n'
         return mensaje
 
