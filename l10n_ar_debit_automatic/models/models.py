@@ -115,7 +115,7 @@ class AccountPayment(models.Model):
                     })
         for line in vals:
             if not line['amount_total']:
-                mensaje= mensaje +' Monto faltante o incorrecto.('+str(line['amount_total'])+')'
+                mensaje= mensaje +' Monto faltante o incorrecto.('+str(line['amount_total'])+')\n'
             a_pagar=self.env['account.payment'].create(
                     {
                     'payment_type':'inbound',
@@ -133,10 +133,10 @@ class AccountPayment(models.Model):
             if validar:
                 # ''' draft -> posted '''
                 try:
-                     a_pagar.move_id._post(soft=False)
+                    a_pagar.move_id._post(soft=False)
+                    mensaje=mensaje+' - '+str(a_pagar.name) +' -> Validado.\n'
                 except:
-                    mensaje=mensaje +'\n\t No se pudo validar.(pago creado como borrador)\n'
-            mensaje=mensaje +'\n\t Validado.\n'
+                    mensaje=mensaje +'No se pudo validar.(pago creado como borrador)\n'
         return mensaje
 
 class ResPartner(models.Model):
