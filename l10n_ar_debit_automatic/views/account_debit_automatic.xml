@@ -43,7 +43,7 @@
                             <field name="RG_TXT_DEBIT_AUTOMATIC" widget="ace" />
                         </group>
                         <group groups="base.group_no_one">
-                            <field name="result" readonly="1" />
+                            <field name="result" widget="ace" readonly="1" />
                         </group>
                     </sheet>
                     <div class="oe_chatter">
