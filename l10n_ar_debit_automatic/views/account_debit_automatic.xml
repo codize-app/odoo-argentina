@@ -36,14 +36,12 @@
                                 <field name="validar"/>
                             </group>
                         </group>
+                        
                         <group>
-                            <field name="RG_ERR_TXT_DEBIT_AUTOMATIC" widget="ace" />
+                            <field name="result" widget="ace" readonly="1" />
                         </group>
                         <group groups="base.group_no_one">
                             <field name="RG_TXT_DEBIT_AUTOMATIC" widget="ace" />
-                        </group>
-                        <group groups="base.group_no_one">
-                            <field name="result" widget="ace" readonly="1" />
                         </group>
                     </sheet>
                     <div class="oe_chatter">
