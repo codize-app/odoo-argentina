@@ -29,7 +29,6 @@ class AccountDebitAutomatic(models.Model):
             else:
                 raise ValidationError('El archivo debe tener una formato compatible con Débito Automático. Es imposible cargar este TXT, consulte con su Administrador.')
             self.result = ''
-            self.RG_ERR_TXT_DEBIT_AUTOMATIC = ''
             lines_by_card_numbers=dict()
             for id, line in enumerate(txt_lines):
                 if id != 0 and id != len(txt_lines)-1:
@@ -48,15 +47,15 @@ class AccountDebitAutomatic(models.Model):
                     if(err_code):
                         err_msg=line[132:161]
                         if(res_bank_partner.partner_id.name):
-                            self.RG_ERR_TXT_DEBIT_AUTOMATIC = self.RG_ERR_TXT_DEBIT_AUTOMATIC+res_bank_partner.partner_id.name+ ". Tarjeta " + str(card_num) + " (Monto: $"+str(amount_total)+")" + ": " + str(err_code)+'--'+err_msg + '\n'
+                            self.result = self.result+res_bank_partner.partner_id.name+ ". Tarjeta " + str(card_num) + " (Monto: $"+str(amount_total)+")" + ": " + str(err_code)+'--'+err_msg + '\n'
                         else:
-                            self.RG_ERR_TXT_DEBIT_AUTOMATIC =self.RG_ERR_TXT_DEBIT_AUTOMATIC+'No se encontro contacto para la tarjeta ' + str(card_num) + " (Monto: $"+str(amount_total)+")" + ": " + str(err_code)+'--'+err_msg + '\n'
+                            self.result =self.result+'No se encontro contacto para la tarjeta ' + str(card_num) + " (Monto: $"+str(amount_total)+")" + ": " + str(err_code)+'--'+err_msg + '\n'
                     else:
                         if (len(res_bank_partner) == 0):
-                            self.RG_ERR_TXT_DEBIT_AUTOMATIC =self.RG_ERR_TXT_DEBIT_AUTOMATIC+'No se encontro contacto para la tarjeta ' + str(card_num) + " (Monto: $"+str(amount_total)+")" + ": El pago se realizo correctamente, pero no se registro en el sistema."+ '\n'
+                            self.result =self.result+'No se encontro contacto para la tarjeta ' + str(card_num) + " (Monto: $"+str(amount_total)+")" + ": El pago se realizo correctamente, pero no se registro en el sistema."+ '\n'
                             continue
                         elif (len(res_bank_partner)>1):
-                            self.RG_ERR_TXT_DEBIT_AUTOMATIC =self.RG_ERR_TXT_DEBIT_AUTOMATIC+'Se encontraron múltiples contactos para la tarjeta ' + str(card_num) + " (Monto: $"+str(amount_total)+")" + ": El pago se realizo correctamente, pero no se registro en el sistema."+ '\n'
+                            self.result =self.result+'Se encontraron múltiples contactos para la tarjeta ' + str(card_num) + " (Monto: $"+str(amount_total)+")" + ": El pago se realizo correctamente, pero no se registro en el sistema."+ '\n'
                             continue
                         else:
                             if(card_num not in lines_by_card_numbers.keys()):
@@ -69,7 +68,7 @@ class AccountDebitAutomatic(models.Model):
                                 'date':date,
                             })
             for key in lines_by_card_numbers.keys():
-                resultado = '\n' + str(card_num) + ":" + self.env['account.payment'].acc_payment(self,self.payment_currency,key,lines_by_card_numbers[key],self.validar)
+                resultado = '\n' + str(key) + ":" + self.env['account.payment'].acc_payment(self,self.payment_currency,key,lines_by_card_numbers[key],self.validar)
                 self.result = self.result + resultado
             self.state = 'register'
 
@@ -86,7 +85,6 @@ class AccountDebitAutomatic(models.Model):
     state = fields.Selection([('draft', 'Borrador'), ('register', 'Registrado')], 'Estado', default='draft')
     debit_automatic_txt = fields.Binary('Archivo TXT de Débito Automático', help='Suba acá su archivo de Débito Automático exportado por Visa.')
     RG_TXT_DEBIT_AUTOMATIC = fields.Text('RG_TXT_DEBIT_AUTOMATIC')
-    RG_ERR_TXT_DEBIT_AUTOMATIC = fields.Text('Registo de fallas')
     result = fields.Char("Resultado")
     payment_account = fields.Many2one('account.account', required=True, string='Cuenta del Pago')
     payment_journal = fields.Many2one('account.journal', required=True, string='Diario del Pago')
