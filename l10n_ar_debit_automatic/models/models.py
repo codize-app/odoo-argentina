@@ -98,7 +98,7 @@ class AccountPayment(models.Model):
         res_bank_partner=self.env['res.partner.bank'].search([("acc_number","=",str(card_num))])
 
         mensaje=""
-        if (not res_bank_partner or len(res_bank_partner)  !=1 or not res_bank_partner.partner_id.method_id):
+        if (not res_bank_partner or len(res_bank_partner)  !=1):
             mensaje= mensaje +" Método de pago incorrecto o faltante. Cargar desde contactos->Contabilidad->Método de pago. Pago no creado(crear manualmente)\n"
             return mensaje
 
