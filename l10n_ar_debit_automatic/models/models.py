@@ -125,6 +125,7 @@ class AccountPayment(models.Model):
                     'amount': line['amount_total'],
                     'date': line['date'],
                     'currency_id': currency.id,
+                    'ref': 'DA',
                     'payment_group_id':pago.id,
                      })
 
