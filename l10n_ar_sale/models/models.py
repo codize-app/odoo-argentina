@@ -63,7 +63,7 @@ class SaleOrderLine(models.Model):
         price_unit = self.price_unit
         if (self.order_id.currency_id.name != self.order_id.currency_invoice_id.name):
             price_unit = self.price_unit * self.order_id.tipo_cambio_othercurrency
-
+        _logger.info("#######################AAAAAAAA####################")
         self.ensure_one()
         res = {
             'display_type': self.display_type,
