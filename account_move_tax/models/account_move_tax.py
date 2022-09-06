@@ -8,20 +8,21 @@ from datetime import date
 import os
 import base64
 from collections import defaultdict
+import logging
+_logger = logging.getLogger(__name__)
 
 class AccountMove(models.Model):
         _inherit = 'account.move'
 
         def action_post(self):
-            if self.move_type in ['out_invoice','out_refund']:
+            if self.move_type in ['out_invoice','out_refund','in_invoice','in_refund']:
                 self.compute_taxes()
             return super(AccountMove, self).action_post()
-        
 
         def _compute_tax_amounts(self):
             for rec in self:
                 if rec.move_tax_ids:
-                    if rec.move_type in ['out_invoice','out_refund']:
+                    if rec.move_type in ['out_invoice','out_refund','in_invoice','in_refund']:
                         vat_taxable_amount = 0
                         other_taxes_amount = 0
                         vat_exempt_base_amount = 0
@@ -55,7 +56,7 @@ class AccountMove(models.Model):
         def compute_taxes(self):
             self.ensure_one()
             if self.state == 'draft':
-                if self.move_type in ['out_invoice','out_refund']:
+                if self.move_type in ['out_invoice','out_refund','in_invoice','in_refund']:
                     for move_tax in self.move_tax_ids:
                         move_tax.unlink()
                     for invoice_line in self.invoice_line_ids:
@@ -63,6 +64,39 @@ class AccountMove(models.Model):
                             for tax in invoice_line.tax_ids.ids:
                                 account_tax = self.env['account.tax'].browse(tax)
                                 move_tax_id = self.env['account.move.tax'].search([('move_id','=',self.id),('tax_id','=',tax)])
+                                if account_tax.tax_group_id.tax_type == 'vat':
+                                    if not move_tax_id:
+                                        vals = {
+                                                'move_id': self.id,
+                                                'tax_id': tax
+                                                }
+                                        move_tax_id = self.env['account.move.tax'].create(vals)
+                                    move_tax_id.base_amount = move_tax_id.base_amount + invoice_line.price_subtotal
+                                    move_tax_id.tax_amount = move_tax_id.tax_amount + invoice_line.price_subtotal * (account_tax.amount / 100)
+                    for taxes in self.amount_by_group:
+                        in_tax = self.env['account.tax'].search([('tax_group_id', '=', taxes[0])], limit=1)
+                        if in_tax.tax_group_id.tax_type != 'vat':
+                            move_tax_id = self.env['account.move.tax'].search([('move_id', '=', self.id),('tax_id', '=', in_tax.id)])
+                            if not move_tax_id:
+                                vals = {
+                                    'move_id': self.id,
+                                    'tax_id': in_tax.id
+                                    }
+                                move_tax_id = self.env['account.move.tax'].create(vals)
+                            move_tax_id.base_amount = move_tax_id.base_amount + taxes[2]
+                            move_tax_id.tax_amount = move_tax_id.tax_amount + taxes[1]
+
+        def recompute_taxes(self):
+            self.ensure_one()
+            if self.move_type in ['out_invoice','out_refund','in_invoice','in_refund']:
+                for move_tax in self.move_tax_ids:
+                    move_tax.unlink()
+                for invoice_line in self.invoice_line_ids:
+                    if invoice_line.tax_ids:
+                        for tax in invoice_line.tax_ids.ids:
+                            account_tax = self.env['account.tax'].browse(tax)
+                            move_tax_id = self.env['account.move.tax'].search([('move_id','=',self.id),('tax_id','=',tax)])
+                            if account_tax.tax_group_id.tax_type == 'vat':
                                 if not move_tax_id:
                                     vals = {
                                             'move_id': self.id,
@@ -71,8 +105,18 @@ class AccountMove(models.Model):
                                     move_tax_id = self.env['account.move.tax'].create(vals)
                                 move_tax_id.base_amount = move_tax_id.base_amount + invoice_line.price_subtotal
                                 move_tax_id.tax_amount = move_tax_id.tax_amount + invoice_line.price_subtotal * (account_tax.amount / 100)
-
-
+                for taxes in self.amount_by_group:
+                    in_tax = self.env['account.tax'].search([('tax_group_id', '=', taxes[0])], limit=1)
+                    if in_tax.tax_group_id.tax_type != 'vat':
+                        move_tax_id = self.env['account.move.tax'].search([('move_id', '=', self.id),('tax_id', '=', in_tax.id)])
+                        if not move_tax_id:
+                            vals = {
+                                'move_id': self.id,
+                                'tax_id': in_tax.id
+                                }
+                            move_tax_id = self.env['account.move.tax'].create(vals)
+                        move_tax_id.base_amount = move_tax_id.base_amount + taxes[2]
+                        move_tax_id.tax_amount = move_tax_id.tax_amount + taxes[1]
 
         move_tax_ids = fields.One2many(comodel_name='account.move.tax',inverse_name='move_id',string='Impuestos')
         vat_taxable_amount = fields.Float('Base imponible de IVA',compute=_compute_tax_amounts)

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_purchase_advance_invoice" model="ir.ui.view">
+            <field name="name">Invoice Orders</field>
+            <field name="model">purchase.advance.invoice</field>
+            <field name="arch" type="xml">
+                <form string="Invoice Purchase Order">
+                    <p class="oe_grey">
+                        Las facturas serán creadas en borrador y podrá revisarlas antes de la validación
+                    </p>
+                    <group>
+                        <field name="currency_id"/>
+                        <field name="tipo_cambio"/>
+                    </group>
+                    <footer>
+                        <button name="create_invoices" string="Crear Factura" type="object"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="action_view_purchase_advance_invoice" model="ir.actions.act_window">
+            <field name="name">Crear Factura</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.advance.invoice</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="groups_id" eval="[(4,ref('purchase.group_purchase_manager'))]"/>
+        </record>
+</odoo>
+

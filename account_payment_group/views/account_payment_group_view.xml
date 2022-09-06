@@ -128,7 +128,8 @@
                     <group>
                         <field name="selected_debt" options="{'currency_field': 'currency_id'}" states="draft,confirmed"/>
                         <field name="related_invoice" attrs="{'invisible': [('related_invoice', '==', False)]}"/>
-                        <field name="related_invoice_amount" attrs="{'invisible': [('related_invoice', '==', False)]}"/>
+                        <field name="related_invoice_currency" invisible="1"/>
+                        <field name="related_invoice_amount" options="{'currency_field': 'related_invoice_currency'}" attrs="{'invisible': [('related_invoice', '==', False)]}"/>
                         <field name="selected_finacial_debt" options="{'currency_field': 'currency_id'}" states="draft,confirmed" groups="account_financial_amount.account_use_financial_amounts"/>
                         <field name="matched_amount" options="{'currency_field': 'currency_id'}" states="posted" string="Monto a conciliar"/>
                         <field name="unmatched_amount" options="{'currency_field': 'currency_id'}" states="posted" string="Monto sin conciliar"/>
@@ -137,6 +138,7 @@
                     </group>
                     <group>
                         <field name="payments_amount" string="Monto pago" options="{'currency_field': 'currency_id'}"/>
+                        <field name="amount_letters" string="En letras"/>
                         <field name="payment_difference" options="{'currency_field': 'currency_id'}" states="draft,confirmed"/>
 <!--                         <label for="payments_amount" string="Payments Amount"/>
                         <div class="oe_inline">

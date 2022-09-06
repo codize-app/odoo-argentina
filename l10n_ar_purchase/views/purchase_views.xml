@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+			<record id="purchase_order_form_currency_inv" model="ir.ui.view">
+			<field name="name">purchase.order.form.currency</field>
+			<field name="model">purchase.order</field>
+			<field name="inherit_id" ref="purchase.purchase_order_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//button[@name='action_create_invoice']" position="replace">
+                    <button name="%(action_view_purchase_advance_invoice)d" string="Crear Factura"
+                        type="action" class="btn-primary" groups="purchase.group_purchase_manager"
+                        attrs="{'invisible': [('invoice_status', '!=', 'to invoice')]}"/>
+                </xpath>
+            </field>
+        	</record>
+</odoo>

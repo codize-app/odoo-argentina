@@ -6,6 +6,10 @@ Creates Sale and Purchase VAT report menus in "Accounting/Reporting/Argentina St
 
 For export into Digital Aliquots format (TXT file) first you need create a VAT Ledger with the period (like the current month). Next you need go to "IVA Digital" tab, press the "Generar Información" button and and you can download the TXT.
 
+## OCA Dependencies
+
+reporting-engine
+
 ## Contributors
 
 * Exemax

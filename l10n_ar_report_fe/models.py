@@ -6,7 +6,10 @@ import logging
 import datetime
 from datetime import datetime, timedelta, date
 import json
-import base64
+try:
+    from base64 import encodebytes
+except ImportError:  # 3+
+    from base64 import encodestring as encodebytes
 
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
@@ -56,9 +59,11 @@ class AccountMove(models.Model):
                 res = 'N/A'
             rec.json_qr = res
             if type(dict_invoice) == dict:
-                enc = res.encode('utf-8')
-                b64 = base64.b64encode(enc)
-                rec.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?p=' + str(b64, 'utf-8')
+                enc = res.encode()
+                b64 = encodebytes(enc)
+                b64 = encodebytes(json.dumps(dict_invoice, indent=None).encode('ascii')).decode('ascii')
+                b64 = str(b64).replace("\n", "")
+                rec.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?p=' + str(b64)
             else:
                 rec.texto_modificado_qr = 'https://www.afip.gob.ar/fe/qr/?ERROR'
     
