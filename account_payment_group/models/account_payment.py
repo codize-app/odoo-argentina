@@ -209,7 +209,7 @@ class AccountPayment(models.Model):
             if rec.other_currency and rec.amount_company_currency != \
                     rec.currency_id._convert(
                         rec.amount, rec.company_id.currency_id,
-                        rec.company_id, rec.payment_date):
+                        rec.company_id, rec.date):
                 force_amount_company_currency = rec.amount_company_currency
             else:
                 force_amount_company_currency = False
@@ -230,7 +230,7 @@ class AccountPayment(models.Model):
             else:
                 amount_company_currency = rec.currency_id._convert(
                     rec.amount, rec.company_id.currency_id,
-                    rec.company_id, rec.payment_date)
+                    rec.company_id, rec.date)
             rec.amount_company_currency = amount_company_currency
 
     @api.onchange('payment_type_copy')
