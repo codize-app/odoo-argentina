@@ -1,6 +1,6 @@
 from odoo import models, api, fields, _
 from odoo.exceptions import ValidationError, UserError
-from num2words import num2words
+
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -24,13 +24,11 @@ class AccountPaymentGroup(models.Model):
 
     related_invoice = fields.Many2one(comodel_name='account.move',string="Factura Relacionada", readonly=1)
     related_invoice_amount = fields.Monetary(string="Monto Factura", related="related_invoice.amount_total", readonly=1)
-    related_invoice_currency = fields.Many2one(string="Moneda Factura", related="related_invoice.currency_id", readonly=1)
     document_number = fields.Char(
         string='Nro Documento',
         copy=False,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        track_visibility='always',
         index=True,
     )
     document_sequence_id = fields.Many2one(
@@ -42,7 +40,6 @@ class AccountPaymentGroup(models.Model):
         'account.payment.receiptbook',
         'Talonario de Recibos',
         readonly=True,
-        track_visibility='always',
         states={'draft': [('readonly', False)]},
         ondelete='restrict',
         auto_join=True,
@@ -74,7 +71,6 @@ class AccountPaymentGroup(models.Model):
     )
     partner_type = fields.Selection(
         [('customer', 'Customer'), ('supplier', 'Vendor')],
-        track_visibility='always',
         change_default=True,
     )
     partner_id = fields.Many2one(
@@ -83,7 +79,6 @@ class AccountPaymentGroup(models.Model):
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        track_visibility='always',
         change_default=True,
         index=True,
     )
@@ -97,7 +92,6 @@ class AccountPaymentGroup(models.Model):
         default=lambda self: self.env.user.company_id.currency_id,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        track_visibility='always',
     )
     payment_date = fields.Date(
         string='Fecha de Pago',
@@ -157,12 +151,10 @@ class AccountPaymentGroup(models.Model):
         # string='Total To Pay Amount',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        track_visibility='always',
     )
     payments_amount = fields.Monetary(
         compute='_compute_payments_amount',
         string='Monto',
-        track_visibility='always',
     )
     state = fields.Selection([
         ('draft', 'Borrador'),
@@ -176,7 +168,6 @@ class AccountPaymentGroup(models.Model):
         default='draft',
         copy=False,
         string="Status",
-        track_visibility='onchange',
         index=True,
     )
     move_lines_domain = [
@@ -253,7 +244,6 @@ class AccountPaymentGroup(models.Model):
         'account.payment',
         'payment_group_id',
         string='Lineas de Pago',
-        ondelete='cascade',
         copy=False,
         readonly=True,
         states={
@@ -279,24 +269,12 @@ class AccountPaymentGroup(models.Model):
         copy=False,
         help="It indicates that the receipt has been sent."
     )
-    amount_letters = fields.Char('Monto en letras', compute="_compute_amount_in_letters", store=True)
 
 
 
     _sql_constraints = [
         ('document_number_uniq', 'unique(document_number, receiptbook_id)',
             'Document number must be unique per receiptbook!')]
-    @api.depends('payments_amount')
-    def _compute_amount_in_letters(self):
-        for rec in self:
-            rec.amount_letters = rec.monto_letras(rec.payments_amount)
-
-    # Dejamos el método armado para que pueda llamarse desde otros modelos que sean necesario la conversión
-    def monto_letras(self,amount_total):
-        number_dec = round((amount_total-int(amount_total)) * 100,0)
-        palabra1 = num2words(int(amount_total),lang="es")
-        palabra2 = num2words(number_dec,lang="es")
-        return palabra1.capitalize() + ' con ' + palabra2.replace('punto cero','') + ' centavos'
 
     def _compute_next_number(self):
         """

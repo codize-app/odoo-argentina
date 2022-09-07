@@ -98,14 +98,14 @@ Agregar la ruta odoo-argentina a la ruta de addons en `odoo.conf`. Reiniciar el 
 
 ## l10n_ar extras
 
-* `l10n_ar_ledger`: Libro IVA para Ventas y Compras
+* `l10n_ar_ledger`: Libro IVA para Ventas y Compras [No está listo en 15.0]
 * `l10n_ar_withholding`: Percepciones/Retenciones en Pagos y Facturas. El paquete premium (`odoo-argentina-withholding`) soporta la exportación para ARBA, AGIP, SIRCAR Neuquén y SIRCAR Río Negro
-* `l10n_ar_report_picking`: Soporte para Remito PreImpreso (Autoimpresor)
-* `l10n_ar_exchange_rate`: Obtiene el tipo de cambio desde AFIP
-* `l10n_ar_bank`: Instala la Lista de Bancos Argentinos
-* `l10n_ar_partner`: Agrega nuevas características a los contactos (como el nombre de fantasía, actualización desde Padrón)
-* `l10n_ar_sale`: Agrega nuevas características a ventas (como permitir pedidos de venta en USD pero facturarlos en ARS)
-* `l10n_ar_taxes`: Agrega otro tipo de facilidades en la carga de impuestos (como Impuestos Internos)
+* `l10n_ar_report_picking`: Soporte para Remito PreImpreso (Autoimpresor) [No está listo en 15.0]
+* `l10n_ar_exchange_rate`: Obtiene el tipo de cambio desde AFIP [No está listo en 15.0]
+* `l10n_ar_bank`: Instala la Lista de Bancos Argentinos [No está listo en 15.0]
+* `l10n_ar_partner`: Agrega nuevas características a los contactos (como el nombre de fantasía, actualización desde Padrón) [No está listo en 15.0]
+* `l10n_ar_sale`: Agrega nuevas características a ventas (como permitir pedidos de venta en USD pero facturarlos en ARS) [No está listo en 15.0]
+* `l10n_ar_taxes`: Agrega otro tipo de facilidades en la carga de impuestos (como Impuestos Internos) [No está listo en 15.0]
 
 ## Extras
 

@@ -29,11 +29,11 @@
                 <attribute name="widget">many2one</attribute>
                 <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
             </field -->
-            <field name="payment_method_id" position="attributes">
-                <attribute name="domain">[('id', 'in', payment_method_ids)]</attribute>
-                <attribute name="widget">many2one</attribute>
-                <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
-            </field>
+            <!--<field name="payment_method_id" position="attributes">-->
+                <!--<attribute name="domain">[('id', 'in', payment_method_ids)]</attribute>-->
+                <!--<attribute name="widget">many2one</attribute>-->
+                <!--<attribute name="options">{'no_create': True, 'no_open': True}</attribute>-->
+            <!--</field>-->
             <!--field name="partner_id" position="attributes">
                 <attribute name="domain">[(partner_type, '=', True)]</attribute>
             </field-->
@@ -50,18 +50,18 @@
     <menuitem id="account_payment_fix.menu_finance_bank_and_cash" parent="account.menu_finance" sequence="4" groups="account.group_account_user" name="Bank and Cash"/>
 
 
-    <record id="view_account_payment_tree" model="ir.ui.view">
-        <field name="name">payment.tree.inherit</field>
-        <field name="model">account.payment</field>
-        <field name="inherit_id" ref="account.view_account_payment_tree"/>
-        <field name="arch" type="xml">
-            <field name="payment_method_id" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </field>
-            <field name="payment_method_id" position="after">
-                <field name="payment_method_description"/>
-            </field>
-        </field>
-    </record>
+    <!--<record id="view_account_payment_tree" model="ir.ui.view">-->
+        <!--<field name="name">payment.tree.inherit</field>-->
+        <!--<field name="model">account.payment</field>-->
+        <!--<field name="inherit_id" ref="account.view_account_payment_tree"/>-->
+        <!--<field name="arch" type="xml">-->
+            <!--<field name="payment_method_id" position="attributes">-->
+                <!--<attribute name="invisible">1</attribute>-->
+            <!--</field>-->
+            <!--<field name="payment_method_id" position="after">-->
+                <!--<field name="payment_method_description"/>-->
+            <!--</field>-->
+        <!--</field>-->
+    <!--</record>-->
 
 </odoo>

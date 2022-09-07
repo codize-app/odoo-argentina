@@ -333,16 +333,9 @@ class AccountPayment(models.Model):
                     if new:
                         last_sequence = rec.move_id._get_last_sequence(
                             relaxed=True) or rec.move_id._get_starting_sequence()
-                    # Modificación de BIRTUM ya que cuando en los pagos
-                    # vienen retenciones el name es '/' por lo que al tratar
-                    # de hacer el typecast a int salta un error.
-                    last_num = rec.move_id.name[-4:]
-                    try:
-                        nro_move = int(last_num)
-                    except:
-                        nro_move = False
+                    nro_move = int(rec.move_id.name[-4:])
                     last_secuence_number = int(last_sequence[-4:])
-                    if isinstance(nro_move, int) and last_secuence_number >= nro_move:
+                    if last_secuence_number >= nro_move:
                         rec.move_id._set_next_sequence()
                     rec.name = rec.move_id.name
             super(AccountPayment, rec).action_post()

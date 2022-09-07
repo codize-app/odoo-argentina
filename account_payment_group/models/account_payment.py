@@ -84,8 +84,6 @@ class AccountPayment(models.Model):
         for line in self.move_id.line_ids:
             if line.account_id in (
                     self.journal_id.default_account_id,
-                    self.journal_id.payment_debit_account_id,
-                    self.journal_id.payment_credit_account_id,
             ):
                 if len(liquidity_lines) != 1:
                     liquidity_lines += line
@@ -209,7 +207,7 @@ class AccountPayment(models.Model):
             if rec.other_currency and rec.amount_company_currency != \
                     rec.currency_id._convert(
                         rec.amount, rec.company_id.currency_id,
-                        rec.company_id, rec.date):
+                        rec.company_id, rec.payment_date):
                 force_amount_company_currency = rec.amount_company_currency
             else:
                 force_amount_company_currency = False
@@ -230,7 +228,7 @@ class AccountPayment(models.Model):
             else:
                 amount_company_currency = rec.currency_id._convert(
                     rec.amount, rec.company_id.currency_id,
-                    rec.company_id, rec.date)
+                    rec.company_id, rec.payment_date)
             rec.amount_company_currency = amount_company_currency
 
     @api.onchange('payment_type_copy')
