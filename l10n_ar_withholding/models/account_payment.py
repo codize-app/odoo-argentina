@@ -157,8 +157,6 @@ class AccountPayment(models.Model):
         for line in self.move_id.line_ids:
             if line.account_id in (
                     self.journal_id.default_account_id,
-                    self.journal_id.payment_debit_account_id,
-                    self.journal_id.payment_credit_account_id,
             ):
                 liquidity_lines += line
             elif line.account_id.internal_type in ('receivable', 'payable') or line.partner_id == line.company_id.partner_id:
@@ -171,3 +169,11 @@ class AccountPayment(models.Model):
         return liquidity_lines, counterpart_lines, writeoff_lines
 
 
+class AccountPaymentMethod(models.Model):
+    _inherit = 'account.payment.method'
+
+    @api.model
+    def _get_payment_method_information(self):
+        res = super()._get_payment_method_information()
+        res['withholding'] = {'mode': 'multi', 'domain': [('type', '=', 'bank', 'cash')]}
+        return res

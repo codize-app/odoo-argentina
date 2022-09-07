@@ -1,8 +1,8 @@
 {
     "name": "Grupos de Pago con Múltiples Métodos",
-    "version": "14.0.1.0.0",
+    "version": "15.0.1.0.0",
     "category": "Accounting",
-    "author": "ADHOC SA, Exemax, Codize",
+    "author": "ADHOC SA, Exemax, Codize, Birtum",
     "license": "AGPL-3",
     "application": False,
     'installable': True,

@@ -1,7 +1,7 @@
 {
     'name': 'Ret/Per de Argentina',
     'license': 'AGPL-3',
-    'author': 'ADHOC SA, Moldeo Interactive, Exemax, Codize',
+    'author': 'ADHOC SA, Moldeo Interactive, Exemax, Codize, Birtum',
     'category': 'Accounting & Finance',
     'data': [
         'views/account_tax_view.xml',
@@ -32,5 +32,5 @@
         'account_payment_group',
     ],
     'installable': True,
-    'version': '14.0.1.0.0',
+    'version': '15.0.1.0.0',
 }
