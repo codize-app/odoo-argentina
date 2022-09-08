@@ -1,17 +1,17 @@
-[English](https://github.com/codize-app/odoo-argentina/blob/14.0/README.md) | **Spanish**
+[English](https://github.com/codize-app/odoo-argentina/blob/15.0/README.md) | **Spanish**
 
 # Odoo Argentina
-Localización Argentina para Odoo 14 Community. Basada en la Localización de Moldeo Interactive [y a su vez basada en la Localización de AdHoc]
+Localización Argentina para Odoo 15 Community. Basada en la Localización de Moldeo Interactive [y a su vez basada en la Localización de AdHoc]
 
 ## Instalación
 ### Instalar módulo base l10n_ar
 
 Primero, instalr el módulo de Odoo Community l10n_ar
 
-Clanar este repositorio con la branch 14.0:
+Clonar este repositorio con la branch 15.0:
 
 ```
-git clone https://github.com/codize-app/odoo-argentina -b 14.0
+git clone https://github.com/codize-app/odoo-argentina -b 15.0
 ```
 
 Dentro del directorio, instalar las dependencias:
@@ -102,14 +102,14 @@ Agregar la ruta odoo-argentina a la ruta de addons en `odoo.conf`. Reiniciar el 
 * `l10n_ar_withholding`: Percepciones/Retenciones en Pagos y Facturas. El paquete premium (`odoo-argentina-withholding`) soporta la exportación para ARBA, AGIP, SIRCAR Neuquén y SIRCAR Río Negro
 * `l10n_ar_report_picking`: Soporte para Remito PreImpreso (Autoimpresor) [No está listo en 15.0]
 * `l10n_ar_exchange_rate`: Obtiene el tipo de cambio desde AFIP [No está listo en 15.0]
-* `l10n_ar_bank`: Instala la Lista de Bancos Argentinos [No está listo en 15.0]
-* `l10n_ar_partner`: Agrega nuevas características a los contactos (como el nombre de fantasía, actualización desde Padrón) [No está listo en 15.0]
+* `l10n_ar_bank`: Instala la Lista de Bancos Argentinos
+* `l10n_ar_partner`: Agrega nuevas características a los contactos (como el nombre de fantasía, actualización desde Padrón)
 * `l10n_ar_sale`: Agrega nuevas características a ventas (como permitir pedidos de venta en USD pero facturarlos en ARS) [No está listo en 15.0]
 * `l10n_ar_taxes`: Agrega otro tipo de facilidades en la carga de impuestos (como Impuestos Internos) [No está listo en 15.0]
 
 ## Extras
 
-* `account_debt_managment`: Obtiene Deuda de Cliente / Proveedor
+* `account_debt_managment`: Obtiene Deuda de Cliente / Proveedor [No está listo en 15.0]
 * `account_check`: Gestion para Cheques (rechazados, diferidos, de terceros)
 
 ## Preguntas y Bugs
