@@ -13,10 +13,10 @@
     'website': 'http://www.codize.ar',
 
     'category': 'Sale',
-    'version': '14.0.0.1.0',
+    'version': '15.0.0.1.0',
     'license': 'AGPL-3',
 
-    'depends': ['base', 'sale'],
+    'depends': ['base', 'sale', 'sale_management'],
 
     'data': ['wizard/sale_make_invoice_advance_views.xml'],
     'demo': [],
