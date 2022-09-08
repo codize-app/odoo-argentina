@@ -1,6 +1,6 @@
 {
     'name': 'Datos Extras para Contacto de Argentina',
-    'version': '14.0.0.1.0',
+    'version': '15.0.0.1.0',
     'category': 'Partner',
     'license': 'AGPL-3',
     'summary': "Datos Extras para Contacto de Argentina",

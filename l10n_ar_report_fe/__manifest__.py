@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Reporte de la Factura Electrónica Argentina",
-    'version': '14.0',
+    'version': '15.0.0.0.1.0',
     'author': "Moldeo Interactive, Exemax, Codize, ADHOC SA, Odoo Community Association (OCA)",
-    'category': 'Accounting/Localizations',
+    'category': 'Accounting',
     'depends': [
         'l10n_ar_afipws_fe'
     ],

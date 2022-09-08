@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Libros IVA de Argentina",
-    'version': '14.0.0.0.0',
+    'version': '15.0.0.1.0',
     'category': 'Accounting/Localizations',
     'sequence': 14,
     'author': 'ADHOC SA, Moldeo Interactive, Odoo Community Association (OCA), Exemax, Codize',

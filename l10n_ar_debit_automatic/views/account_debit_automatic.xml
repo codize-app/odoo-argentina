@@ -59,6 +59,6 @@
             <field name="domain">[]</field>
         </record>
 
-        <menuitem id="menu_account_debit_automatic" action="action_account_debit_automatic" parent="account.menu_finance_receivables" sequence="21" />
+        <menuitem id="menu_account_debit_automatic" action="action_account_debit_automatic" parent="account.menu_finance_receivables" groups="account.group_account_readonly,account.group_account_invoice" sequence="21" />
     </data>
 </odoo>
