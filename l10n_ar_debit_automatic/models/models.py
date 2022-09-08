@@ -143,6 +143,11 @@ class ResPartner(models.Model):
 
     method_id = fields.Many2one('account.payment.method', 'Método de pago automático')
 
+class ResCompany(models.Model):
+    _inherit = 'res.company'
+
+    debit_number = fields.Char('Número de Débito')
+
 class AccountPaymentGroup(models.Model):
     _inherit = 'account.payment.group'
 
