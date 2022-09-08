@@ -100,17 +100,18 @@ Change permission of folder:
 sudo chmod -R 777 cache
 ```
 
-Add path odoo-argentina to addons path in `odoo.conf`. Restart Odoo Server, Update Apps List and install modules `l10n_ar_afipws` and `l10n_ar_afipws_fe`. For reports install `l10n_ar_report_fe`.
+Add path odoo-argentina to addons path in `odoo.conf`. Restart Odoo Server, Update Apps List and install modules `l10n_ar_afipws` and `l10n_ar_afipws_fe`
+For reports install `l10n_ar_report_fe`
 
 ## l10n_ar extras
 
 * `l10n_ar_ledger`: VAT Ledger for Sales and Purchases
 * `l10n_ar_withholding`: Withholding on Invoices and Payments. Premium package (`odoo-argentina-withholding`) support on exports for ARBA, AGIP, SIRCAR Neuquén and SIRCAR Río Negro
 * `l10n_ar_report_picking`: Support for PrePrint Picking [Not ready in 15.0]
-* `l10n_ar_exchange_rate`: Get Exchange Rate from AFIP [Not ready in 15.0]
 * `l10n_ar_bank`: Install Argentina Bank's List
 * `l10n_ar_partner`: Add features to contacts (like fantasy name, update from Padrón)
-* `l10n_ar_sale`: Add features to sales (like sale order in USD but invoice in ARS) [Not ready in 15.0]
+* `l10n_ar_sale`: Add features to sales (like sale order in USD but invoice in ARS)
+* `l10n_ar_purchase`: Add features to purchases (like purchase order in USD but invoice in ARS)
 * `l10n_ar_taxes`: Add other taxes (like Internal Taxes)
 
 ## Extras

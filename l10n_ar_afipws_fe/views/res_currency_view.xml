@@ -5,12 +5,12 @@
         <field name="model">res.currency</field>
         <field name="inherit_id" ref="base.view_currency_form"/>
         <field name="arch" type="xml">
-            <field name="position" position="after">
-                <label for="afip_code"/>
+            <field name="l10n_ar_afip_code" position="replace">
+                <label for="l10n_ar_afip_code" />
                 <div>
-                    <field name="afip_code" class="oe_inline"/>
-                    <button name="action_get_pyafipws_currency_rate" string="⇒ Get Rate" type="object" attrs="{'invisible':['|', ('afip_code','=',False), ('afip_code', '=', 'PES')]}" class="oe_link"/>
-                    <button name="action_get_pyafipws_currencies" string="⇒ Get Currencies Data" type="object" attrs="{'invisible':[('afip_code','!=',False)]}" class="oe_link"/>
+                    <field name="l10n_ar_afip_code" />
+                    <button name="action_get_pyafipws_currency_rate" string="⇒ Obtener Tasa" type="object" attrs="{'invisible':['|', ('l10n_ar_afip_code','=',False), ('l10n_ar_afip_code', '=', 'PES')]}" class="oe_link"/>
+                    <button name="action_get_pyafipws_currencies" string="⇒ Obtener Información de Monedas" type="object" attrs="{'invisible':[('l10n_ar_afip_code','!=',False)]}" class="oe_link"/>
                 </div>
             </field>
         </field>
