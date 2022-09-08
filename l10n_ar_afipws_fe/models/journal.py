@@ -5,14 +5,8 @@
 from odoo import models, api, fields, _
 import logging
 from odoo.exceptions import UserError
-#from odoo.addons.l10n_ar.models import account_journal
 
 _logger = logging.getLogger(__name__)
-
-#old_selection = account_journal.AccountJournal._point_of_sale_types_selection
-#new_selection = old_selection.append(('electronic', 'Electronic'))
-#account_journal.AccountJournal._point_of_sale_types_selection = new_selection
-
 
 class AccountJournal(models.Model):
     _inherit = 'account.journal'
@@ -31,10 +25,7 @@ class AccountJournal(models.Model):
             ('wsbfe', 'Bono Fiscal -con detalle- RG2557 (WSBFE)'),
         ]
 
-    afip_ws = fields.Selection(
-        _afip_ws_selection,
-        'AFIP WS',
-    )
+    afip_ws = fields.Selection(selection=_get_afip_ws_selection, string='AFIP WS')
 
     def get_name_and_code_suffix(self):
         name = super(AccountJournal, self).get_name_and_code_suffix()
@@ -52,12 +43,6 @@ class AccountJournal(models.Model):
                 _logger.info(
                     'Could not sincronize local and remote numbers')
         return journal
-
-    # @api.model
-    # def _get_point_of_sale_types(self):
-    #     types = super(AccountJournal, self)._get_point_of_sale_types()
-    #     types.append(['electronic', _('Electronic')])
-    #     return types
 
     @api.constrains('point_of_sale_type', 'afip_ws')
     def check_afip_ws_and_type(self):

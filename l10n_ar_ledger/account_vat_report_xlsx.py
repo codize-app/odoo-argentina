@@ -9,6 +9,7 @@ from odoo.exceptions import Warning, ValidationError
 class AccountVatLedgerXlsx(models.AbstractModel):
     _name = 'report.l10n_ar_ledger.account_vat_ledger_xlsx'
     _inherit = 'report.report_xlsx.abstract'
+    _description = 'Report VAT Ledger XLSX'
 
     def generate_xlsx_report(self, workbook, data, vat_ledger):
         if vat_ledger.invoice_ids:
