@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Debit Automatic Payment",
+    'name': "Pagos con Débito Automático",
 
     'summary': """
         Allows use Debit Automatic TXT file""",
