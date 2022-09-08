@@ -36,7 +36,7 @@ class ProductTemplate(models.Model):
                 break
 
         group = self.env['account.tax.group'].search([('l10n_ar_tribute_afip_code', '=', '04')], limit=1)
-        account = self.env['account.account'].search([('code', '=', '5.4.3.01.020')], limit=1)
+        account = self.env['account.account'].search([('name', 'like', 'Impuestos Internos')], limit=1)
 
         if not has_internal_sale:
             if self.default_code:
