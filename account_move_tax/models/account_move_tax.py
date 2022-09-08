@@ -7,6 +7,7 @@ from odoo.addons import decimal_precision as dp
 from datetime import date
 import os
 import base64
+import json
 from collections import defaultdict
 import logging
 _logger = logging.getLogger(__name__)
@@ -73,18 +74,19 @@ class AccountMove(models.Model):
                                         move_tax_id = self.env['account.move.tax'].create(vals)
                                     move_tax_id.base_amount = move_tax_id.base_amount + invoice_line.price_subtotal
                                     move_tax_id.tax_amount = move_tax_id.tax_amount + invoice_line.price_subtotal * (account_tax.amount / 100)
-                    for taxes in self.amount_by_group:
-                        in_tax = self.env['account.tax'].search([('tax_group_id', '=', taxes[0])], limit=1)
+                    json_taxes = json.loads(self.tax_totals_json)
+                    for taxes in json_taxes['groups_by_subtotal']['Importe libre de impuestos']:
+                        in_tax = self.env['account.tax'].search([('tax_group_id', '=', taxes['tax_group_name'])], limit=1)
                         if in_tax.tax_group_id.tax_type != 'vat':
                             move_tax_id = self.env['account.move.tax'].search([('move_id', '=', self.id),('tax_id', '=', in_tax.id)])
                             if not move_tax_id:
                                 vals = {
                                     'move_id': self.id,
                                     'tax_id': in_tax.id
-                                    }
+                                     }
                                 move_tax_id = self.env['account.move.tax'].create(vals)
-                            move_tax_id.base_amount = move_tax_id.base_amount + taxes[2]
-                            move_tax_id.tax_amount = move_tax_id.tax_amount + taxes[1]
+                            move_tax_id.base_amount = move_tax_id.base_amount + taxes['tax_group_base_amount']
+                            move_tax_id.tax_amount = move_tax_id.tax_amount + taxes['tax_group_amount']
 
         def recompute_taxes(self):
             self.ensure_one()
@@ -105,18 +107,19 @@ class AccountMove(models.Model):
                                     move_tax_id = self.env['account.move.tax'].create(vals)
                                 move_tax_id.base_amount = move_tax_id.base_amount + invoice_line.price_subtotal
                                 move_tax_id.tax_amount = move_tax_id.tax_amount + invoice_line.price_subtotal * (account_tax.amount / 100)
-                for taxes in self.amount_by_group:
-                    in_tax = self.env['account.tax'].search([('tax_group_id', '=', taxes[0])], limit=1)
+                json_taxes = json.loads(self.tax_totals_json)
+                for taxes in json_taxes['groups_by_subtotal']['Importe libre de impuestos']:
+                    in_tax = self.env['account.tax'].search([('tax_group_id', '=', taxes['tax_group_name'])], limit=1)
                     if in_tax.tax_group_id.tax_type != 'vat':
                         move_tax_id = self.env['account.move.tax'].search([('move_id', '=', self.id),('tax_id', '=', in_tax.id)])
                         if not move_tax_id:
                             vals = {
                                 'move_id': self.id,
                                 'tax_id': in_tax.id
-                                }
+                            }
                             move_tax_id = self.env['account.move.tax'].create(vals)
-                        move_tax_id.base_amount = move_tax_id.base_amount + taxes[2]
-                        move_tax_id.tax_amount = move_tax_id.tax_amount + taxes[1]
+                        move_tax_id.base_amount = move_tax_id.base_amount + taxes['tax_group_base_amount']
+                        move_tax_id.tax_amount = move_tax_id.tax_amount + taxes['tax_group_amount']
 
         move_tax_ids = fields.One2many(comodel_name='account.move.tax',inverse_name='move_id',string='Impuestos')
         vat_taxable_amount = fields.Float('Base imponible de IVA',compute=_compute_tax_amounts)

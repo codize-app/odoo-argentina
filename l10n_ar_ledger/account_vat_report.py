@@ -704,34 +704,14 @@ class AccountVatLedger(models.Model):
         for inv in invoices:
             lines = []
             is_zero = inv.currency_id.is_zero
-            # reportamos como linea de iva si:
-            # * el impuesto es iva cero
-            # * el impuesto es iva 21, 27 etc pero tiene impuesto liquidado,
-            # si no tiene impuesto liquidado (is_zero), entonces se inventa
-            # una linea
-            #vat_taxes = inv.move_tax_ids.filtered(
-            #vat_taxes = inv.l10n_latam_tax_ids.filtered(
-                #lambda r: r.tax_id.tax_group_id.tax_type == 'vat' and r.tax_id.tax_group_id.l10n_ar_vat_afip_code == 3 or (
-                #    r.tax_id.tax_group_id.l10n_ar_vat_afip_code in [
-                #        4, 5, 6, 8, 9] and not is_zero(r.tax_amount)))
-            #    lambda r: r.l10n_latam_tax_ids[0].tax_group_id.tax_type == 'vat' and r.l10n_latam_tax_ids[0].tax_group_id.l10n_ar_vat_afip_code == '3' or (
-            #        r.l10n_latam_tax_ids[0].tax_group_id.l10n_ar_vat_afip_code in [
-            #            '4','5', '6', '8', '9'] and not is_zero(r.tax_base_amount)))
-            vat_taxes = self.env['account.move.line']
-            for mvl_tax in inv.l10n_latam_tax_ids:
-                #raise ValidationError('estamos aca %s %s %s'%(inv,mvl_tax.tax_group_id.l10n_ar_vat_afip_code + 'X',mvl_tax.tax_group_id.tax_type))
-                #if not mvl_tax.l10n_latam_tax_ids:
-                #    continue
-                tax_group_id = mvl_tax.tax_group_id
-                #if tax_group_id.l10n_ar_vat_afip_code == '1':
-                #    raise ValidationError('existe el registro')
-                #if tax_group_id.tax_type == 'vat' and (tax_group_id.l10n_ar_vat_afip_code == 3 or (tax_group_id.l10n_ar_vat_afip_code in [4, 5, 6, 8, 9])):
+
+            vat_taxes = self.env['account.move.tax']
+            for mvl_tax in inv.move_tax_ids:
+                tax_group_id = mvl_tax.tax_id.tax_group_id
                 if tax_group_id.tax_type == 'vat' and tax_group_id.l10n_ar_vat_afip_code in ['1','2','3', '4', '5', '6', '8', '9']:
                     vat_taxes += mvl_tax
 
             for mvl_tax in inv.line_ids:
-                #if inv.id == 652 and mvl_tax.name == 'No gravado':
-                #    raise ValidationError('estamos aca %s'%(mvl_tax.tax_ids[0].tax_group_id.l10n_ar_vat_afip_code))
                 if mvl_tax.tax_ids and mvl_tax.tax_ids[0].tax_group_id.l10n_ar_vat_afip_code == '3':
                     lines.append(''.join(self.get_tax_row(
                         inv, 0.0, 3, 0.0, impo=impo)))
@@ -741,12 +721,10 @@ class AccountVatLedger(models.Model):
                 lines.append(''.join(self.get_tax_row(
                     inv, 0.0, 3, 0.0, impo=impo)))
 
-            # we group by afip_code
-            #raise ValidationError('estamos aca %s %s %s %s'%(inv,vat_taxes,vat_taxes[0].tax_base_amount,vat_taxes[0].price_subtotal))
-            for afip_code in vat_taxes.mapped('tax_group_id.l10n_ar_vat_afip_code'):
-                taxes = vat_taxes.filtered(lambda x: x.tax_group_id.l10n_ar_vat_afip_code == afip_code)
-                imp_neto = sum(taxes.mapped('tax_base_amount'))
-                imp_liquidado = sum(taxes.mapped('price_subtotal'))
+            for afip_code in vat_taxes.mapped('tax_id.tax_group_id.l10n_ar_vat_afip_code'):
+                taxes = vat_taxes.filtered(lambda x: x.tax_id.tax_group_id.l10n_ar_vat_afip_code == afip_code)
+                imp_neto = sum(taxes.mapped('tax_amount'))
+                imp_liquidado = sum(taxes.mapped('base_amount'))
                 lines.append(''.join(self.get_tax_row(
                     inv,
                     imp_neto,
@@ -754,52 +732,22 @@ class AccountVatLedger(models.Model):
                     imp_liquidado,
                     impo=impo,
                 )))
-            # Agrega IVA exento e IVA no gravado
-            # Sacamos el Iva Exento e IVA no gravado ya que no debe generar alícuotas
-            """for inv_line in inv.invoice_line_ids:
-                for tax in inv_line.tax_ids:
-                    if tax.tax_group_id.tax_type == 'vat' and tax.tax_group_id.l10n_ar_vat_afip_code in ['1','2']:
-                        text_line = ''
-                        # Campo 1
-                        text_line += "{:0>3d}".format(int(inv.l10n_latam_document_type_id.code))
-                        # Campo 2
-                        text_line += "{:0>5d}".format(int(inv.l10n_latam_document_number[:inv.l10n_latam_document_number.find('-')]))
-                        # Campo 3
-                        doc_number = int(inv.name.split('-')[2])
-                        text_line += "{:0>20d}".format(doc_number)
-                        ## Campo 4: Código de documento del vendedor
-                        text_line += self.get_partner_document_code(inv.commercial_partner_id)
-                        ## Campo 5: Número de identificación del vendedor
-                        text_line += self.get_partner_document_number(inv.commercial_partner_id)
-                        # Campo 6: Importe Neto Gravado
-                        text_line += self.format_amount(inv_line.price_subtotal, invoice=inv)
-                        # Campo 5: Alícuota de IVA.
-                        text_line += str(tax.tax_group_id.l10n_ar_vat_afip_code).rjust(4, '0')
-                        # Campo 6: Impuesto Liquidado.
-                        text_line += self.format_amount(0, invoice=inv)
-                        lines.append(text_line)"""
             res[inv] = lines
         return res
 
-    # Sacamos el depends por un error con el cache en esqume multi cia al
-    # cambiar periodo de una cia hija con usuario distinto a admin
-    # @api.depends('journal_ids', 'period_id')
     def _get_data(self):
-        #self.afip_responsability_type_ids = self.env[
-        #    'l10n_ar.afip.responsibility.type'].search([])
 
         if self.type == 'sale':
             invoices_domain = [
                 # cancel invoices with internal number are invoices
                 ('state', '!=', 'draft'),
-                ('document_number', '!=', False),
+                ('l10n_latam_document_number', '!=', False),
                 #('internal_number', '!=', False),
                 ('journal_id', 'in', self.journal_ids.ids),
                 ('date', '>=', self.date_from),
                 ('date', '<=', self.date_to),
             ]
             invoices = self.env['account.move'].search(
-                # TODO, tal vez directamente podemos invertir el orden, como?
                 invoices_domain,
                 order='invoice_date asc, document_number asc, id asc')
         else:
@@ -813,22 +761,10 @@ class AccountVatLedger(models.Model):
                 ('date', '<=', self.date_to),
             ]
             invoices = self.env['account.move'].search(
-                # TODO, tal vez directamente podemos invertir el orden, como?
                 invoices_domain,
                 order='invoice_date asc, name asc, id asc')
 
-
-        #self.document_type_ids = invoices.mapped('l10n_latam_document_type_id')
         self.invoice_ids = invoices
-
-        #self.vat_tax_ids = invoices.mapped(
-        #    'vat_tax_ids.tax_id')
-        #self.other_tax_ids = invoices.mapped(
-        #    'not_vat_tax_ids.tax_id')
-        # self.vat_tax_code_ids = invoices.mapped(
-        #     'vat_tax_ids.tax_code_id')
-        # self.other_tax_code_ids = invoices.mapped(
-        #     'not_vat_tax_ids.tax_code_id')
 
     def _get_name(self):
         for rec in self:
@@ -838,8 +774,6 @@ class AccountVatLedger(models.Model):
                 ledger_type = _('Compras')
 
             lang = self.env['res.lang']
-            #date_format = lang.browse(lang._lang_get(
-            #    self._context.get('lang', 'en_US'))).date_format
 
             name = _("%s Libro de IVA %s - %s") % (
                 ledger_type,
