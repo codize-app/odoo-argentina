@@ -15,7 +15,7 @@
             <field name="report_file">l10n_ar_debit_automatic.control_debit_report</field>
             <field name="binding_model_id" ref="account.model_account_move"/>
             <field name="binding_type">report</field>
-            <field name="print_report_name">ctrlDEBLIQ.txt</field>
+            <field name="print_report_name"></field>
   </record>
  </data>
 </odoo>
