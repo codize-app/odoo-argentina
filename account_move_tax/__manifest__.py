@@ -1,7 +1,7 @@
 {
     "name": "Account Move Tax",
     'version': '14.0.1.3.0',
-    'category': 'Localization/Argentina',
+    'category': 'Accounting',
     'sequence': 14,
     'author': 'ADHOC SA, Moldeo Interactive, Exemax, Codize, Odoo Community Association (OCA)',
     'license': 'AGPL-3',

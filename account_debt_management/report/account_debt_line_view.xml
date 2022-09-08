@@ -117,26 +117,12 @@
          </field>
     </record>
 
-    <record id="view_account_debt_line_graph" model="ir.ui.view">
-         <field name="name">account.debt.line.graph</field>
-         <field name="model">account.debt.line</field>
-         <field name="arch" type="xml">
-            <graph string="Analisis de Deudas" type="pivot">
-                <field name="partner_id" type="row"/>
-                <field name="document_number" type="row"/>
-                <field name="date" type="col"/>
-                <field name="amount" type="measure"/>
-            </graph>
-         </field>
-    </record>
-
     <record id="action_account_debt_line" model="ir.actions.act_window">
         <field name="name">Deudas</field>
         <field name="res_model">account.debt.line</field>
         <field name="view_mode">tree,form,graph</field>
         <field name="context">{}</field>
     </record>
-
 
     <menuitem id="menu_current_account" parent="account.menu_finance_entries" sequence="5" action="action_account_debt_line" name="Deudas"/>
 
