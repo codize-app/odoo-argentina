@@ -98,7 +98,7 @@ Agregar la ruta odoo-argentina a la ruta de addons en `odoo.conf`. Reiniciar el 
 
 ## l10n_ar extras
 
-* `l10n_ar_ledger`: Libro IVA para Ventas y Compras [No está listo en 15.0]
+* `l10n_ar_ledger`: Libro IVA para Ventas y Compras
 * `l10n_ar_withholding`: Percepciones/Retenciones en Pagos y Facturas. El paquete premium (`odoo-argentina-withholding`) soporta la exportación para ARBA, AGIP, SIRCAR Neuquén y SIRCAR Río Negro
 * `l10n_ar_report_picking`: Soporte para Remito PreImpreso (Autoimpresor) [No está listo en 15.0]
 * `l10n_ar_exchange_rate`: Obtiene el tipo de cambio desde AFIP [No está listo en 15.0]
