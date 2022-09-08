@@ -1,17 +1,17 @@
-**English** | [Spanish](https://github.com/codize-app/odoo-argentina/blob/14.0/README_es.md)
+**English** | [Spanish](https://github.com/codize-app/odoo-argentina/blob/15.0/README_es.md)
 
 # Odoo Argentina
-Argentine Location for Odoo 14 Community. Original based on Location by Moldeo Interactive [and original based on Location by AdHoc]
+Argentine Location for Odoo 15 Community. Original based on Location by Moldeo Interactive [and original based on Location by AdHoc]
 
 ## Installation
 ### Install l10n_ar base
 
 First, install Odoo Community module l10n_ar
 
-Clone this repository with branch 14.0
+Clone this repository with branch 15.0
 
 ```
-git clone https://github.com/codize-app/odoo-argentina -b 14.0
+git clone https://github.com/codize-app/odoo-argentina -b 15.0
 ```
 
 Verify dependencies:
@@ -108,14 +108,14 @@ Add path odoo-argentina to addons path in `odoo.conf`. Restart Odoo Server, Upda
 * `l10n_ar_withholding`: Withholding on Invoices and Payments. Premium package (`odoo-argentina-withholding`) support on exports for ARBA, AGIP, SIRCAR Neuquén and SIRCAR Río Negro
 * `l10n_ar_report_picking`: Support for PrePrint Picking [Not ready in 15.0]
 * `l10n_ar_exchange_rate`: Get Exchange Rate from AFIP [Not ready in 15.0]
-* `l10n_ar_bank`: Install Argentina Bank's List [Not ready in 15.0]
-* `l10n_ar_partner`: Add features to contacts (like fantasy name, update from Padrón) [Not ready in 15.0]
+* `l10n_ar_bank`: Install Argentina Bank's List
+* `l10n_ar_partner`: Add features to contacts (like fantasy name, update from Padrón)
 * `l10n_ar_sale`: Add features to sales (like sale order in USD but invoice in ARS) [Not ready in 15.0]
 * `l10n_ar_taxes`: Add other taxes (like Internal Taxes) [Not ready in 15.0]
 
 ## Extras
 
-* `account_debt_managment`: Get Debt of Customer / Supplier
+* `account_debt_managment`: Get Debt of Customer / Supplier [Not ready in 15.0]
 * `account_check`: Manager for Checks (rejected, deferred, holding)
 
 ## Questions & Bugs
