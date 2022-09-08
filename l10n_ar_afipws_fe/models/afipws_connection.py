@@ -12,19 +12,7 @@ _logger = logging.getLogger(__name__)
 class AfipwsConnection(models.Model):
     _inherit = "afipws.connection"
 
-    # TODO use _get_afip_ws_selection to add values to this selection
-    #afip_ws = fields.Selection(
-    #    selection_add=[
-    #        ('wsfe', 'Mercado interno -sin detalle- RG2485 (WSFEv1)'),
-    #        ('wsmtxca', 'Mercado interno -con detalle- RG2904 (WSMTXCA)'),
-    #        ('wsfex', 'Exportación -con detalle- RG2758 (WSFEXv1)'),
-    #        ('wsbfe', 'Bono Fiscal -con detalle- RG2557 (WSBFE)'),
-    #        ('wscdc', 'Constatación de Comprobantes (WSCDC)'),
-    #    ],string='AFIP WS',
-    #    setdefault='wsfe',
-    #    ondelete='cascade')
-
-    afip_ws = fields.Selection([
+    afip_ws = fields.Selection(selection_add=[
         ('wsfe', 'Mercado interno -sin detalle- RG2485 (WSFEv1)'),
         ('wsmtxca', 'Mercado interno -con detalle- RG2904 (WSMTXCA)'),
         ('wsfex', 'Exportación -con detalle- RG2758 (WSFEXv1)'),
@@ -35,7 +23,19 @@ class AfipwsConnection(models.Model):
         ('ws_sr_padron_a10', 'Servicio de Consulta de Padrón Alcance 10'),
         ('ws_sr_padron_a100', 'Servicio de Consulta de Padrón Alcance 100'),
     ],
-    'AFIP WS',
+    ondelete={
+        'wsfe': 'set default',
+        'wsmtxca': 'set default',
+        'wsfex': 'set default',
+        'wsbfe': 'set default',
+        'wscdc': 'set default',
+        'ws_sr_padron_a4': 'set default',
+        'ws_sr_padron_a5': 'set default',
+        'ws_sr_padron_a10': 'set default',
+        'ws_sr_padron_a100': 'set default',
+    },
+    default='wsfe',
+    string='AFIP WS',
     required=True,
     )
 

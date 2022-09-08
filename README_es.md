@@ -105,7 +105,7 @@ Agregar la ruta odoo-argentina a la ruta de addons en `odoo.conf`. Reiniciar el 
 * `l10n_ar_bank`: Instala la Lista de Bancos Argentinos
 * `l10n_ar_partner`: Agrega nuevas características a los contactos (como el nombre de fantasía, actualización desde Padrón)
 * `l10n_ar_sale`: Agrega nuevas características a ventas (como permitir pedidos de venta en USD pero facturarlos en ARS) [No está listo en 15.0]
-* `l10n_ar_taxes`: Agrega otro tipo de facilidades en la carga de impuestos (como Impuestos Internos) [No está listo en 15.0]
+* `l10n_ar_taxes`: Agrega otro tipo de facilidades en la carga de impuestos (como Impuestos Internos)
 
 ## Extras
 
