@@ -19,18 +19,18 @@
             <field name="lang">${object.partner_id.lang}</field>
             <field name="body_html"><![CDATA[
 <div style="font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
-    <p>Hello ${object.partner_id.name},</p>
-    <p>Here is your receipt from ${object.company_id.name}: </p>
+    <p>Hola ${object.partner_id.name},</p>
+    <p>Aquí está su recibo de ${object.company_id.name}: </p>
 
     <p style="border-left: 1px solid #8e0000; margin-left: 30px;">
-       &nbsp;&nbsp;<strong>REFERENCES</strong><br />
-       &nbsp;&nbsp;Receipt number: <strong>${object.display_name}</strong><br />
-       &nbsp;&nbsp;Receipt reference: <strong>${object.communication or 'n/a'}</strong><br />
-       &nbsp;&nbsp;Receipt total: <strong>${object.payments_amount}</strong><br />
+       &nbsp;&nbsp;<strong>REFERENCIAS</strong><br />
+       &nbsp;&nbsp;Número de recibo: <strong>${object.display_name}</strong><br />
+       &nbsp;&nbsp;Referencia del recibo: <strong>${object.communication or 'n/a'}</strong><br />
+       &nbsp;&nbsp;Recibo total: <strong>${object.payments_amount}</strong><br />
     </p>
 
-    <p>If you have any question, do not hesitate to contact us.</p>
-    <p>Thank you for choosing ${object.company_id.name or 'us'}!</p>
+    <p>Si tiene alguna pregunta, no dude en ponerse en contacto con nosotros.</p>
+    <p>¡Gracias por elegir ${object.company_id.name or 'nos'}!</p>
     <br/>
     <br/>
     <div style="width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;">
