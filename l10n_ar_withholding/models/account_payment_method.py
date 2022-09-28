@@ -7,4 +7,4 @@ class AccountPaymentMethod(models.Model):
     def _get_payment_method_information(self):
         res = super()._get_payment_method_information()
         res['withholding'] = {'mode': 'multi', 'domain': [('type', '=', 'cash')]}
-        return 
+        return res
