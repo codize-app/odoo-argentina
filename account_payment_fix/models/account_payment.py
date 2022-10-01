@@ -51,7 +51,7 @@ class AccountPayment(models.Model):
         # inverse='_inverse_exchange_rate',
         digits=(16, 4),
     )
-    payment_type = fields.Selection(selection_add=[('transfer', 'Transferencia')])
+    payment_type = fields.Selection(selection_add=[('transfer', 'Transferencia')], ondelete={'transfer':'set default'})
 
     @api.depends('amount', 'other_currency', 'amount_company_currency')
     def _compute_exchange_rate(self):
