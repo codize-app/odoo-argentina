@@ -18,7 +18,8 @@
                 <form string="Débito Automático">
                     <header>
                         <button name="register_debit_automatic" string="Registrar Pagos" states="draft" type="object" class="oe_highlight" />
-                        <field name="state" widget="statusbar" statusbar_visible="draft,register" />
+                        <button name="validate_account_groups" string="Validar Pagos" states="register" type="object" class="oe_highlight" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,register,posted" />
                     </header>
                     <sheet>
                         <group>
