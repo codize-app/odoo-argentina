@@ -72,6 +72,16 @@ class AccountDebitAutomatic(models.Model):
                 self.result = self.result + resultado
             self.state = 'register'
 
+
+    def validate_account_groups(self):
+        for rec in self:
+            if(rec.state== 'register'):
+                paymnet_groups=self.env['account.payment.group'].search([('account_debit_automatic_id','=',rec.id),('state','=','draft')])
+                for payment_group in paymnet_groups:
+                    payment_group.post()
+                    _logger.info("payment_group aprobado: "+ str(payment_group.id) + ' - '+ str(payment_group.name))
+                rec.state='posted'
+
     name = fields.Char('Nombre', required=True)
     company_id = fields.Many2one(
         'res.company',
@@ -82,7 +92,7 @@ class AccountDebitAutomatic(models.Model):
         default=lambda self: self.env['res.company']._company_default_get('account.debit.automatic')
     )
     date = fields.Date('Fecha', readonly=True)
-    state = fields.Selection([('draft', 'Borrador'), ('register', 'Registrado')], 'Estado', default='draft')
+    state = fields.Selection([('draft', 'Borrador'), ('register', 'Registrado'), ('posted', 'Pagos Aprobados')], 'Estado', default='draft')
     debit_automatic_txt = fields.Binary('Archivo TXT de Débito Automático', help='Suba acá su archivo de Débito Automático exportado por Visa.')
     RG_TXT_DEBIT_AUTOMATIC = fields.Text('RG_TXT_DEBIT_AUTOMATIC')
     result = fields.Char("Resultado")
