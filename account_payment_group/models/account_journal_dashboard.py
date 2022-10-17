@@ -3,7 +3,7 @@ from odoo import models, api
 class AccountJournal(models.Model):
     _inherit = "account.journal"
 
-    def open_payments_action(self, payment_type):
+    def open_payments_action(self, payment_type, mode='form'):
         if payment_type == 'transfer':
             ctx = self._context.copy()
             ctx.update({
