@@ -294,8 +294,8 @@
           </p>
           <!-- Show total amount in letters for MiPyMEs document types according to the law
           http://biblioteca.afip.gob.ar/dcp/LEY_C_027440_2018_05_09 article 5.f -->
-          <t t-if="o.l10n_latam_document_type_id.code in ['201', '202', '203', '206', '207', '208', '211', '212', '2>
-              <strong style="font-size:13px;">Son: </strong><span style="font-size:13px;" t-esc="o.currency_id.with_>
+          <t t-if="o.l10n_latam_document_type_id.code in ['201', '202', '203', '206', '207', '208', '211', '212', '213']">
+              <strong>Son: </strong><span t-esc="o.currency_id.with_context(lang='es_AR').amount_to_text(o.amount_total)"/>
           </t>
           <!-- RG 5003: Add legend for 'A' documents that have a Monotribuista receptor -->
           <p class="m-0" style="font-size:13px;" t-if="o.partner_id.l10n_ar_afip_responsibility_type_id.code == '6' and o.l10n_latam_document_type_id.l10n_ar_letter == 'A'">
