@@ -8,59 +8,44 @@
         <!--Email template -->
         <record id="email_template_edi_payment_group" model="mail.template">
             <field name="name">Recibo de Cliente - Enviar por Email</field>
-            <field name="email_from">${(object.company_id.email or '')|safe}</field>
-            <field name="subject">${object.company_id.name|safe} Receipt ${object.display_name or 'n/a'}</field>
-            <field name="partner_to">${object.partner_id.id}</field>
+            <field name="email_from">{{object.company_id.email or ''}}</field>
+            <field name="subject">{{object.company_id.name}} Receipt {{object.display_name or 'n/a'}}</field>
+            <field name="partner_to">{{object.partner_id.id}}</field>
             <field name="model_id" ref="account_payment_group.model_account_payment_group"/>
             <field name="auto_delete" eval="True"/>
-            <field name="report_name">Receipt_${(object.display_name or '').replace('/','_')}</field>
+            <field name="report_name">Receipt_{{(object.display_name or '').replace('/','_')}}</field>
             <!-- field name="report_template" ref="account_payment_group.action_report_payment_group"/ -->
             <field name="report_template" ref="account_payment_group.account_payment_group_report"/>
-            <field name="lang">${object.partner_id.lang}</field>
+            <field name="lang">{{object.partner_id.lang}}</field>
             <field name="body_html"><![CDATA[
-<div style="font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
-    <p>Hola ${object.partner_id.name},</p>
-    <p>Aquí está su recibo de ${object.company_id.name}: </p>
-    <p style="border-left: 1px solid #8e0000; margin-left: 30px;">
-       &nbsp;&nbsp;<strong>REFERENCIAS</strong><br />
-       &nbsp;&nbsp;Número de recibo: <strong>${object.display_name}</strong><br />
-       &nbsp;&nbsp;Referencia del recibo: <strong>${object.communication or 'n/a'}</strong><br />
-       &nbsp;&nbsp;Recibo total: <strong>${object.payments_amount}</strong><br />
+<div style="font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: #222222; background-color: #FFF; ">
+    <p style="margin:0px 0 12px 0;box-sizing:border-box;">Hola <t t-out="object.partner_id.name or ''" data-oe-t-inline="true" contenteditable="false">Exemax-Codize</t>,</p>
+    <p style="margin:0px 0 12px 0;box-sizing:border-box;">Aquí está su recibo de <t t-out="object.company_id.name or ''" data-oe-t-inline="true" contenteditable="false">Exemax-Codize</t>: </p>
+    <p style="border-style:none none none solid;box-sizing:border-box;border-left-width:1px;border-left-color:#8e0000;border-left: 1px solid #8e0000; margin-left: 30px;">
+       &nbsp;&nbsp;<strong style="box-sizing:border-box;font-weight:500;">REFERENCIAS</strong><br>
+       &nbsp;&nbsp;Número de recibo: <strong style="box-sizing:border-box;font-weight:500;"><t t-out="object.display_name or ''" data-oe-t-inline="true" contenteditable="false">Nº 000000</t>:</strong><br>
+       &nbsp;&nbsp;Referencia del recibo: <strong style="box-sizing:border-box;font-weight:500;"><t t-out="object.communication or ''" data-oe-t-inline="true" contenteditable="false"></t></strong><br>
+       &nbsp;&nbsp;Recibo total: <strong style="box-sizing:border-box;font-weight:500;"><t t-out="object.payments_amount or ''" data-oe-t-inline="true" contenteditable="false">$---</t></strong><br>
     </p>
-    <p>Si tiene alguna pregunta, no dude en ponerse en contacto con nosotros.</p>
-    <p>¡Gracias por elegir ${object.company_id.name or 'nos'}!</p>
-    <br/>
-    <br/>
+    <p style="margin:0px 0 12px 0;box-sizing:border-box;">Si tiene alguna pregunta, no dude en ponerse en contacto con nosotros.</p>
+    <p style="margin:0px 0 12px 0;box-sizing:border-box;">¡Gracias por elegir<t t-out=" object.company_id.name or ''" data-oe-t-inline="true" contenteditable="false">nos</t>!</p>
+    <br>
+    <br>
     <div style="width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;">
-        <h3 style="margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
-            <strong style="text-transform:uppercase;">${object.company_id.name}</strong></h3>
+        <h3 style="box-sizing:border-box;line-height:1.2;font-weight:500;margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
+            <strong style="box-sizing:border-box;font-weight:500;text-transform:uppercase;"><t t-out="object.company_id.name or ''" data-oe-t-inline="true" contenteditable="false">Exemax-Codize</t></strong></h3>
     </div>
     <div style="width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
         <span style="color: #222; margin-bottom: 5px; display: block; ">
-        % if object.company_id.street:
-            ${object.company_id.street}<br/>
-        % endif
-        % if object.company_id.street2:
-            ${object.company_id.street2}<br/>
-        % endif
-        % if object.company_id.city or object.company_id.zip:
-            ${object.company_id.zip} ${object.company_id.city}<br/>
-        % endif
-        % if object.company_id.country_id:
-            ${object.company_id.state_id and ('%s, ' % object.company_id.state_id.name) or ''} ${object.company_id.country_id.name or ''}<br/>
-        % endif
+        <t t-out="object.company_id.street or ''" data-oe-t-inline="true" contenteditable="false"></t><br>
+        <t t-out="object.company_id.street2 or ''" data-oe-t-inline="true" contenteditable="false"></t><br>
+        <t t-out="object.company_id.zip or ''" data-oe-t-inline="true" contenteditable="false"></t><t t-out="object.company_id.city or ''" data-oe-t-inline="true" contenteditable="false"></t><br>
+        <t t-out="object.company_id.state_id.name or ''" data-oe-t-inline="true" contenteditable="false"></t> - <t t-out="object.company_id.country_id.name or ''" data-oe-t-inline="true" contenteditable="false"></t><br>
         </span>
-        % if object.company_id.phone:
             <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
-                Phone:&nbsp; ${object.company_id.phone}
+        <t t-out="object.company_id.phone or ''" data-oe-t-inline="true" contenteditable="false"></t>
             </div>
-        % endif
-        % if object.company_id.website:
-            <div>
-                Web :&nbsp;<a href="${object.company_id.website}">${object.company_id.website}</a>
-            </div>
-        %endif
-        <p></p>
+        <p style="margin:0px 0 12px 0;box-sizing:border-box;"></p>
     </div>
 </div>
             ]]></field>
