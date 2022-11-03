@@ -167,13 +167,13 @@ class AccountPayment(models.Model):
         """
         self.ensure_one()
         domain = [('type', 'in', ('bank', 'cash'))]
-        if self.payment_type == 'inbound':
-            domain.append(('at_least_one_inbound', '=', True))
+        #if self.payment_type == 'inbound':
+        #    domain.append(('at_least_one_inbound', '=', True))
         # Al final dejamos que para transferencias se pueda elegir
         # cualquier sin importar si tiene outbound o no
         # else:
-        elif self.payment_type == 'outbound':
-            domain.append(('at_least_one_outbound', '=', True))
+        #elif self.payment_type == 'outbound':
+        #    domain.append(('at_least_one_outbound', '=', True))
         return domain
 
     @api.depends(
