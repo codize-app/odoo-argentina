@@ -68,33 +68,6 @@ class AccountPayment(models.Model):
         string='Moneda de compañía',
     )
 
-    def _seek_for_lines(self):
-        ''' Helper used to dispatch the journal items between:
-        - The lines using the temporary liquidity account.
-        - The lines using the counterpart account.
-        - The lines being the write-off lines.
-        :return: (liquidity_lines, counterpart_lines, writeoff_lines)
-        '''
-        self.ensure_one()
-
-        liquidity_lines = self.env['account.move.line']
-        counterpart_lines = self.env['account.move.line']
-        writeoff_lines = self.env['account.move.line']
-
-        for line in self.move_id.line_ids:
-            if line.account_id in (
-                    self.journal_id.default_account_id,
-            ):
-                if len(liquidity_lines) != 1:
-                    liquidity_lines += line
-            elif line.account_id.internal_type in ('receivable', 'payable') or line.partner_id == line.company_id.partner_id:
-                if len(counterpart_lines) != 1:
-                    counterpart_lines += line
-            else:
-                writeoff_lines += line
-
-        return liquidity_lines, counterpart_lines, writeoff_lines
-
     def _synchronize_to_moves(self, changed_fields):
         ''' Update the account.move regarding the modified account.payment.
         :param changed_fields: A list containing all modified fields on account.payment.
