@@ -180,7 +180,7 @@ class AfipwsConnection(models.Model):
         elif afip_ws == 'ws_sr_padron_a5':
             from pyafipws.ws_sr_padron import WSSrPadronA5
             ws = WSSrPadronA5()
-        #elif afip_ws == 'wsremcarne':
-        #    from pyafipws.wsremcarne import WSRemCarne
-        #    ws = WSRemCarne()
+        elif afip_ws == 'wsremcarne':
+            from pyafipws.wsremcarne import WSRemCarne
+            ws = WSRemCarne()
         return ws
