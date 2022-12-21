@@ -29,14 +29,14 @@ class ResPartner(models.Model):
         for record in self:
             if record.internal_reference:
                 if record.parent_id:
-                    result.append((record.id, record.parent_id.name + ', ' + record.internal_reference + ' - [' + record.name + ']'))
+                    result.append((record.id, str(record.parent_id.name) + ', ' + str(record.internal_reference) + ' - [' + str(record.name) + ']'))
                 else:
-                    result.append((record.id, record.internal_reference + ' - [' + record.name + ']'))
+                    result.append((record.id, str(record.internal_reference) + ' - [' + str(record.name) + ']'))
             else:
                 if record.parent_id:
                     result.append((record.id, str(record.parent_id.name) + ', ' + str(record.name)))
                 else:
-                    result.append((record.id, record.name))
+                    result.append((record.id, str(record.name)))
         return result
 
     def update_from_padron(self):
