@@ -689,7 +689,7 @@ class AccountPaymentGroup(models.Model):
             invoice = self.env['account.move'].browse(self._context.get('invoice_id'))
             rec['related_invoice'] = invoice.id
             
-            if self.env['ir.config_parameter'].get_param('account_payment_group.journal_def'):
+            if self.env['ir.config_parameter'].sudo().get_param('account_payment_group.journal_def'):
 
                 payment_type = ''
                 partner_type = ''
@@ -704,7 +704,7 @@ class AccountPaymentGroup(models.Model):
                                                 'state': 'draft',
                                                 'partner_type': partner_type,
                                                 'payment_type': payment_type,
-                                                'journal_id': int(self.env['ir.config_parameter'].get_param('account_payment_group.journal_def')) or False,
+                                                'journal_id': int(self.env['ir.config_parameter'].sudo().get_param('account_payment_group.journal_def')) or False,
                                                 'amount': self._context.get('amount_invoice')})]
 
         if to_pay_move_lines:
