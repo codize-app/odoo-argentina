@@ -1,4 +1,5 @@
 import logging
+import json
 from odoo import api, fields, models, _
 
 _logger = logging.getLogger(__name__)
@@ -23,17 +24,18 @@ class WithholdingsReports(models.TransientModel):
 
             #Percepciones en Facturas
             for invoice in invoices_ids:
-                for iline in invoice.amount_by_group:
-                    if 'Per' in iline[0] or 'per' in iline[0] or 'PER' in iline[0]:
+                taxes = json.loads(invoice.tax_totals_json)['groups_by_subtotal']['Importe libre de impuestos']
+                for tax in taxes:
+                    if 'Per' in tax['tax_group_name']  or 'PER' in tax['tax_group_name'] or 'per' in tax['tax_group_name']:
                         _valsI = []     
-                        _valsI.append(iline[0])#Tipo
+                        _valsI.append(tax['tax_group_name'])#Tipo
                         _valsI.append(invoice.name)#Factura
                         _valsI.append(invoice.invoice_date)#Fecha
                         _valsI.append(invoice.partner_id.name)#Cliente/Proveedor
                         _valsI.append(invoice.partner_id.vat)#CUIT
                         _valsI.append(invoice.partner_id.state_id.name)#Provincia
-                        _valsI.append(iline[1])#Total
-                        _valsI.append(iline[2])#Monto imponible
+                        _valsI.append(tax['tax_group_amount'])#Total
+                        _valsI.append(tax['tax_group_base_amount'])#Monto imponible
                         _valsI.append(invoice.partner_id.iibb_number)#Ingresos Brutos       
 #
                         invoices_whit_perceptions.append(_valsI)
