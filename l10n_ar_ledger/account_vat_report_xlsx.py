@@ -43,7 +43,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(row + index, 4, obj.l10n_latam_document_type_id.name) # Tipo de Comprobante
                 sheet.write(row + index, 5, obj.name) # Nro Comprobante
                 
-                taxes = json.loads(self.tax_totals_json)['groups_by_subtotal']['Importe libre de impuestos']
+                taxes = json.loads(obj.tax_totals_json)['groups_by_subtotal']['Importe libre de impuestos']
 
                 # Neto gravado
                 netoG = 0
