@@ -39,7 +39,7 @@ class SaleAdvancePaymentInv(models.TransientModel):
                         "The product used to invoice a down payment should be of type 'Service'. Please use another product or update this product."))
                 taxes = self.product_id.taxes_id.filtered(
                     lambda r: not order.company_id or r.company_id == order.company_id)
-                tax_ids = order.fiscal_position_id.map_tax(taxes, self.product_id, order.partner_shipping_id).ids
+                tax_ids = order.fiscal_position_id.map_tax(taxes).ids
                 analytic_tag_ids = []
                 for line in order.order_line:
                     analytic_tag_ids = [(4, analytic_tag.id, None) for analytic_tag in line.analytic_tag_ids]
