@@ -16,7 +16,7 @@
     'version': '15.0.0.1.0',
     'license': 'AGPL-3',
 
-    'depends': ['base', 'purchase'],
+    'depends': ['base', 'purchase', 'custom_rate'],
 
     'data': ['wizard/purchase_make_invoice_advance_views.xml',
              'views/purchase_views.xml',

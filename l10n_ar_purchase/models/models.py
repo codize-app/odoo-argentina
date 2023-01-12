@@ -8,6 +8,16 @@ class product_purchase_othercurrency(models.Model):
     currency_invoice_id = fields.Many2one('res.currency', string='Currency')
     tipo_cambio_othercurrency = fields.Float(string='Tipo de cambio')
 
+    @api.onchange('currency_id')
+    def _get_tasa_currency(self):
+        for order in self:
+            _logger.info('nombre' + order.currency_id.name)
+            if order.currency_id.name != 'ARS':
+                    _logger.info('rate'+ str(order.currency_id.rate))
+                    order.tipo_cambio_othercurrency = 1 / order.currency_id.rate
+            else:
+                    order.tipo_cambio_othercurrency = 1
+
     def _set_currency_invoice(self, currency_choice,tipo_cambio_choice):
         for purchase in self:
             purchase.currency_invoice_id= currency_choice
@@ -22,7 +32,7 @@ class product_purchase_othercurrency(models.Model):
         currency = self.currency_invoice_id
 
         if not journal:
-            raise UserError(_('Please define an accounting purchase journal for the company %s (%s).') % (
+            raise UserError(('Please define an accounting purchase journal for the company %s (%s).') % (
             self.company_id.name, self.company_id.id))
 
         partner_invoice_id = self.partner_id.address_get(['invoice'])['invoice']
@@ -31,6 +41,9 @@ class product_purchase_othercurrency(models.Model):
             'move_type': move_type,
             'narration': self.notes,
             'currency_id': currency,
+
+            'currency_rate': self.tipo_cambio_othercurrency,
+            'es_manual_rate': True,
             'invoice_user_id': self.user_id and self.user_id.id or self.env.user.id,
             'partner_id': partner_invoice_id,
             'fiscal_position_id': (self.fiscal_position_id or self.fiscal_position_id.get_fiscal_position(
