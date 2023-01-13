@@ -70,6 +70,7 @@ class ReportWithholdingsSuffered(models.Model):
 
     sifere_data_ret = fields.Text('Contenidos SIFERE Ret', default='')
     sifere_data_per = fields.Text('Contenidos SIFERE Per', default='')
+    esicol_data_per = fields.Text('Contenidos E-SICOL Per', default='')
     
     #Retenciones
     @api.depends('sifere_data_ret')
@@ -88,6 +89,15 @@ class ReportWithholdingsSuffered(models.Model):
         self.sifere_file_per = encodebytes(self.sifere_data_per.encode('ISO-8859-1'))
     sifere_file_per = fields.Binary('TXT SIFERE Per',compute=_compute_files_per)
     sifere_filename_per = fields.Char('TXT SIFERE Per',compute=_compute_files_per)
+    
+    #Percepciones e-Sicol
+    @api.depends('esicol_data_per')
+    def _compute_files_esicol_per(self):
+        self.ensure_one()
+        self.esicol_filename_per = _('Sifere_per_%s_%s.txt') % (str(self.date_from),str(self.date_to))
+        self.esicol_file_per = encodebytes(self.esicol_data_per.encode('ISO-8859-1'))
+    esicol_file_per = fields.Binary('TXT SIFERE Per',compute=_compute_files_esicol_per)
+    esicol_filename_per = fields.Char('TXT SIFERE Per',compute=_compute_files_esicol_per)
 
     def _get_name(self):
         for rec in self:
@@ -155,7 +165,10 @@ class ReportWithholdingsSuffered(models.Model):
             elif rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.internal_type == 'credit_note':
                 string = string + 'C'
             #Letra del comprobante
-            string = string + rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.l10n_ar_letter
+            if rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id:
+                string = string + rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.l10n_ar_letter
+            else:
+                string = string + '#SIN LETRA COMPROBANTE, REEMPLACE ESTO POR LA CORRESPONDIENTE'
             #Número de Comprobante Original
             string = string + rec.payment.ref.zfill(20) if rec.payment.ref else string + ''.zfill(20)
             #Importe retenido
@@ -186,6 +199,54 @@ class ReportWithholdingsSuffered(models.Model):
             self.invoice_ids = [(0, 0, {'invoice' : invoice.id})]
 
         self.set_txt_sifere_per()
+        self.set_txt_esicol_per()
+    
+    def set_txt_esicol_per(self):
+        self.ensure_one()
+        windows_line_ending = '\r' + '\n'
+
+        string = ''
+        for rec in self.invoice_ids:		
+            #https://www.agip.gob.ar/impuestos/ingresos-brutos/contribuyentes-locales/aplicativo-esicol-preguntas-utiles
+            #CUIT
+            string = string + rec.invoice.partner_id.vat
+            #Numero de factura
+            i = 0
+            for n in str(rec.invoice.name)[-8:]:
+                if n == '0':
+                    string = string + ' '
+                    i += 1
+                else:
+                    string = string + str(rec.invoice.name)[-(8-i)]
+                    break
+            #Fecha de la Percepción
+            string = string + str(rec.invoice.invoice_date)[:4] + str(rec.invoice.invoice_date)[5:7] + str(rec.invoice.invoice_date)[8:10]
+            #Sucursal de factura
+            i = 0
+            for n in str(rec.invoice.name)[6:10]:
+                if n == '0':
+                    string = string + ' '
+                    i += 1
+                else:
+                    string = string + str(rec.invoice.name)[(6+i):10]
+                    break
+            #Monto base de la Percepcion
+            string = string +  ("%.2f"%rec.invoice.amount_untaxed).rjust(16," ")
+            #Monto de la Percepcion
+            string = string +  ("%.2f"%rec.total_withholdings_suffered).rjust(16," ")
+            #Tipo de Comprobante
+            if rec.invoice.l10n_latam_document_type_id.internal_type == 'invoice':
+                string = string + 'F'
+            elif rec.invoice.l10n_latam_document_type_id.internal_type == 'debit_note':
+                string = string + 'D'
+            elif rec.invoice.l10n_latam_document_type_id.internal_type == 'credit_note':
+                string = string + 'C'
+            #Letra del comprobante
+            string = string + rec.invoice.l10n_latam_document_type_id.l10n_ar_letter
+
+            string = string + windows_line_ending
+            
+        self.esicol_data_per = string
     
     def set_txt_sifere_per(self):
         self.ensure_one()

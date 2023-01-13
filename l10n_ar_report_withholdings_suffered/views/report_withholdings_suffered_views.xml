@@ -63,7 +63,11 @@
                                 </group>
                             </group>
                         </page>
-                        <page name="agip" string="AGIP">
+                        <page name="esicol" string="e-SICOL">
+                            <group>
+                                <field name="esicol_file_per" widget="binary" filename="esicol_filename_per"/>
+                                <field name="esicol_data_per" readonly="1"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
