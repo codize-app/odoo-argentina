@@ -174,18 +174,20 @@ class ReportWithholdingsSuffered(models.Model):
             except:
                 string = string + 'R'
             #Letra del comprobante 
-            if rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id:
+            try:
                 string = string + rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.l10n_ar_letter
-            else:
+            except:
                 string = string + '#SIN LETRA COMPROBANTE, REEMPLACE ESTO POR LA CORRESPONDIENTE (1 CAMPO)'
             #Número de Comprobante Original
             string = string + rec.payment.name.zfill(20) if rec.payment.name else string + ''.zfill(20)
             #Importe retenido
-            if rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.internal_type == 'credit_note':
-                string = string + '-' + (("%.2f"%rec.total_withholdings_suffered).zfill(10)).replace('.',',')
-            else:
+            try:
+                if rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.internal_type == 'credit_note':
+                    string = string + '-' + (("%.2f"%rec.total_withholdings_suffered).zfill(10)).replace('.',',')
+                else:
+                    string = string +  (("%.2f"%rec.total_withholdings_suffered).zfill(11)).replace('.',',')
+            except:
                 string = string +  (("%.2f"%rec.total_withholdings_suffered).zfill(11)).replace('.',',')
-
             string = string + windows_line_ending
             
         self.sifere_data_ret = string
