@@ -159,9 +159,9 @@ class ReportWithholdingsSuffered(models.Model):
             except:
                 string = string + '#SIN Nº SUCURSAL, REEMPLACE ESTO POR LA CORRESPONDIENTE (4 CAMPOS)'
             #Número de la Constancia 
-            try:
+            if rec.payment.ref:
                 string = string + str(rec.payment.ref).zfill(16)
-            except:
+            else:
                 string = string + '#SIN Nº DE CONSTANCIA, REEMPLACE ESTO POR EL CORRESPONDIENTE (16 CAMPOS)'
             #Tipo de Comprobante
             try:
@@ -171,6 +171,8 @@ class ReportWithholdingsSuffered(models.Model):
                     string = string + 'D'
                 elif rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.internal_type == 'credit_note':
                     string = string + 'C'
+                else:
+                    string = string + 'R'
             except:
                 string = string + 'R'
             #Letra del comprobante 
