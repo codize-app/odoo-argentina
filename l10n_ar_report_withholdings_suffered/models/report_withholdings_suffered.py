@@ -164,17 +164,20 @@ class ReportWithholdingsSuffered(models.Model):
             except:
                 string = string + '#SIN Nº DE CONSTANCIA, REEMPLACE ESTO POR EL CORRESPONDIENTE (16 CAMPOS)'
             #Tipo de Comprobante
-            if rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.internal_type == 'invoice':
-                string = string + 'F'
-            elif rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.internal_type == 'debit_note':
-                string = string + 'D'
-            elif rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.internal_type == 'credit_note':
-                string = string + 'C'
+            try:
+                if rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.internal_type == 'invoice':
+                    string = string + 'F'
+                elif rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.internal_type == 'debit_note':
+                    string = string + 'D'
+                elif rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.internal_type == 'credit_note':
+                    string = string + 'C'
+            except:
+                string = string + 'R'
             #Letra del comprobante 
             if rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id:
                 string = string + rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.l10n_ar_letter
             else:
-                string = string + '#SIN LETRA COMPROBANTE, REEMPLACE ESTO POR LA CORRESPONDIENTE (1 CAMPOS)'
+                string = string + '#SIN LETRA COMPROBANTE, REEMPLACE ESTO POR LA CORRESPONDIENTE (1 CAMPO)'
             #Número de Comprobante Original
             string = string + rec.payment.name.zfill(20) if rec.payment.name else string + ''.zfill(20)
             #Importe retenido
