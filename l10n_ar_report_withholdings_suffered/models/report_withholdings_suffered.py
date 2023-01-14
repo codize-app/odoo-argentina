@@ -94,10 +94,10 @@ class ReportWithholdingsSuffered(models.Model):
     @api.depends('esicol_data_per')
     def _compute_files_esicol_per(self):
         self.ensure_one()
-        self.esicol_filename_per = _('Sifere_per_%s_%s.txt') % (str(self.date_from),str(self.date_to))
+        self.esicol_filename_per = _('e-SICOL_%s_%s.txt') % (str(self.date_from),str(self.date_to))
         self.esicol_file_per = encodebytes(self.esicol_data_per.encode('ISO-8859-1'))
-    esicol_file_per = fields.Binary('TXT SIFERE Per',compute=_compute_files_esicol_per)
-    esicol_filename_per = fields.Char('TXT SIFERE Per',compute=_compute_files_esicol_per)
+    esicol_file_per = fields.Binary('TXT e-SICOL Per',compute=_compute_files_esicol_per)
+    esicol_filename_per = fields.Char('TXT e-SICOL Per',compute=_compute_files_esicol_per)
 
     def _get_name(self):
         for rec in self:
@@ -154,9 +154,15 @@ class ReportWithholdingsSuffered(models.Model):
             #Fecha de la Retencion
             string = string + str(rec.payment.date)[8:10] + '/' + str(rec.payment.date)[5:7] + '/' + str(rec.payment.date)[:4]
             #Número de la Sucursal 
-            string = string + str(rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_number)[1:5]
+            try:
+                string = string + str(rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_number)[1:5]
+            except:
+                string = string + '#SIN Nº SUCURSAL, REEMPLACE ESTO POR LA CORRESPONDIENTE (4 CAMPOS)'
             #Número de la Constancia 
-            string = string + str(rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_number)[6:15]
+            try:
+                string = string + str(rec.payment.ref).zfill(16)
+            except:
+                string = string + '#SIN Nº DE CONSTANCIA, REEMPLACE ESTO POR EL CORRESPONDIENTE (16 CAMPOS)'
             #Tipo de Comprobante
             if rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.internal_type == 'invoice':
                 string = string + 'F'
@@ -164,15 +170,14 @@ class ReportWithholdingsSuffered(models.Model):
                 string = string + 'D'
             elif rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.internal_type == 'credit_note':
                 string = string + 'C'
-            #Letra del comprobante
+            #Letra del comprobante 
             if rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id:
                 string = string + rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.l10n_ar_letter
             else:
-                string = string + '#SIN LETRA COMPROBANTE, REEMPLACE ESTO POR LA CORRESPONDIENTE'
+                string = string + '#SIN LETRA COMPROBANTE, REEMPLACE ESTO POR LA CORRESPONDIENTE (1 CAMPOS)'
             #Número de Comprobante Original
-            string = string + rec.payment.ref.zfill(20) if rec.payment.ref else string + ''.zfill(20)
+            string = string + rec.payment.name.zfill(20) if rec.payment.name else string + ''.zfill(20)
             #Importe retenido
-            #Importe Percibido
             if rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.internal_type == 'credit_note':
                 string = string + '-' + (("%.2f"%rec.total_withholdings_suffered).zfill(10)).replace('.',',')
             else:
@@ -217,7 +222,7 @@ class ReportWithholdingsSuffered(models.Model):
                     string = string + ' '
                     i += 1
                 else:
-                    string = string + str(rec.invoice.name)[-(8-i)]
+                    string = string + str(rec.invoice.name)[-(8-i):]
                     break
             #Fecha de la Percepción
             string = string + str(rec.invoice.invoice_date)[:4] + str(rec.invoice.invoice_date)[5:7] + str(rec.invoice.invoice_date)[8:10]
@@ -340,6 +345,7 @@ class PaymentSufferedLine(models.Model):
         related='payment.currency_id'
     )
     total_withholdings_suffered = fields.Monetary('Retencion Sufrida', related='payment.amount', store = True)
+    payment_ref = fields.Char('Nº Retención',related='payment.ref')
     payment_date = fields.Date('Fecha',related='payment.date')
     withholdings_suffered_id = fields.Many2one('report.withholdings.suffered', 'Report Id', ondelete='cascade')
 

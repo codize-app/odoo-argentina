@@ -45,6 +45,7 @@
                                 <tree default_order="payment">
                                     <field name="payment"/>
                                     <field name="client"/>
+                                    <field name="payment_ref"/>
                                     <field name="payment_date"/>
                                     <field name="total_withholdings_suffered" sum="Total Retencion"/>
                                     <field name="currency_id" invisible="1"/>
