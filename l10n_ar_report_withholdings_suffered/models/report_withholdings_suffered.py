@@ -235,7 +235,7 @@ class ReportWithholdingsSuffered(models.Model):
             string = string + str(rec.invoice.invoice_date)[:4] + str(rec.invoice.invoice_date)[5:7] + str(rec.invoice.invoice_date)[8:10]
             #Sucursal de factura
             i = 0
-            for n in str(rec.invoice.name)[6:10]:
+            for n in str(rec.invoice.name)[-14:-9]:
                 if n == '0':
                     string = string + ' '
                     i += 1
