@@ -270,6 +270,8 @@ class AccountPaymentGroup(models.Model):
         help="It indicates that the receipt has been sent."
     )
 
+    num_op = fields.Char('Nº OP Cliente')
+    branch_op = fields.Char('Sucursal OP Cliente')
 
 
     _sql_constraints = [
