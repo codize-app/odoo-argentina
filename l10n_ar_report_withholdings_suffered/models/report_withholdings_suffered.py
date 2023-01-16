@@ -154,34 +154,26 @@ class ReportWithholdingsSuffered(models.Model):
             #Fecha de la Retencion
             string = string + str(rec.payment.date)[8:10] + '/' + str(rec.payment.date)[5:7] + '/' + str(rec.payment.date)[:4]
             #Número de la Sucursal 
-            try:
-                string = string + str(rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_number)[1:5]
-            except:
-                string = string + '#SIN Nº SUCURSAL, REEMPLACE ESTO POR LA CORRESPONDIENTE (4 CAMPOS)'
+            if rec.payment.payment_group_id.branch_op:
+                string = string + rec.payment.payment_group_id.branch_op[:4].zfill(4)
+            else:
+                string = string + '0000'
             #Número de la Constancia 
             if rec.payment.ref:
                 string = string + str(rec.payment.ref).zfill(16)
             else:
                 string = string + '#SIN Nº DE CONSTANCIA, REEMPLACE ESTO POR EL CORRESPONDIENTE (16 CAMPOS)'
             #Tipo de Comprobante
-            try:
-                if rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.internal_type == 'invoice':
-                    string = string + 'F'
-                elif rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.internal_type == 'debit_note':
-                    string = string + 'D'
-                elif rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.internal_type == 'credit_note':
-                    string = string + 'C'
-                else:
-                    string = string + 'R'
-            except:
-                string = string + 'R'
+            string = string + 'R'
             #Letra del comprobante 
-            try:
-                string = string + rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.l10n_ar_letter
-            except:
-                string = string + '#SIN LETRA COMPROBANTE, REEMPLACE ESTO POR LA CORRESPONDIENTE (1 CAMPO)'
+            string = string + ' '
             #Número de Comprobante Original
-            string = string + rec.payment.name.zfill(20) if rec.payment.name else string + ''.zfill(20)
+            if rec.payment.payment_group_id.num_op:
+                string = string + rec.payment.payment_group_id.num_op[:20].zfill(20)
+            elif rec.payment.payment_group_id.communication:
+                string = string + rec.payment.payment_group_id.communication[:20].zfill(20)
+            else:
+                string = string + '00000000000000000000'
             #Importe retenido
             try:
                 if rec.payment.payment_group_id.matched_move_line_ids[0].move_id.l10n_latam_document_type_id.internal_type == 'credit_note':
