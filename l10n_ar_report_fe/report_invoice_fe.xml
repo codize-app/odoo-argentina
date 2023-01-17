@@ -39,7 +39,7 @@
                 <!--TIPO,NRO Y FECHA FACTURA-->
                 <div class="col-5 text-left" name="company_address" style="padding-left: 80px !important;">
                   <h6>
-			  <span t-field="o.l10n_latam_document_type_id.name"></span>
+			  <span t-field="o.l10n_latam_document_type_id.report_name"></span>
                   </h6>
                   <span t-if="o.state == 'posted' or o.state == 'draft'">
                           Fecha: <span t-field="o.invoice_date"/><br/>
