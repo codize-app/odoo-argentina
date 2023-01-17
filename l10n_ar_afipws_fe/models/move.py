@@ -652,7 +652,7 @@ print "Observaciones:", wscdc.Obs
                     nombre_cliente, cuit_pais_cliente, domicilio_cliente,
                     id_impositivo, moneda_id, moneda_ctz, obs_comerciales,
                     obs_generales, forma_pago, incoterms,
-                    idioma_cbte, incoterms_ds
+                    idioma_cbte, incoterms_ds, fecha_pago=fecha_venc_pago
                 )
             elif afip_ws == 'wsbfe':
                 zona = 1  # Nacional (la unica devuelta por afip)
