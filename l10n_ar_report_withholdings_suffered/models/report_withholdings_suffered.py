@@ -193,7 +193,7 @@ class ReportWithholdingsSuffered(models.Model):
         #Buscamos facturas de proveedor dentro del rango de fechas
         invoices = self.env['account.move'].search([('company_id','=',self.company_id.id),('invoice_date','>=',self.date_from),('invoice_date','<=',self.date_to),('state','=','posted'),('move_type','in',['in_invoice','in_refound'])])
         #Filtramos solo aquellas que contengan el impuesto seleccionado para el informe
-        invoices = invoices.filtered(lambda r: r.tax_totals_json.find(self.tax_withholdings_suffered.tax_group_id.name) != -1)
+        invoices = invoices.filtered(lambda r: str(json.loads(r.tax_totals_json)).find(self.tax_withholdings_suffered.tax_group_id.name) != -1)
         if len(invoices) < 1:
             return
 
