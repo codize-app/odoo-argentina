@@ -13,8 +13,8 @@ class WithholdingsReports(models.TransientModel):
 
     def print_report(self):
         if self.type_report == 'withholdings':
-            invoices_ids = self.env['account.move'].search([('move_type','in',['out_invoice','out_refund']),('invoice_date','>=',self.date_from),('invoice_date','<=',self.date_to)])
-            payments_ids = self.env['account.payment.group'].search([('payment_date','>=',self.date_from),('payment_date','<=',self.date_to)])
+            invoices_ids = self.env['account.move'].search([('state','=','posted'),('move_type','in',['out_invoice','out_refund']),('invoice_date','>=',self.date_from),('invoice_date','<=',self.date_to)])
+            payments_ids = self.env['account.payment.group'].search([('state','=','posted'),('payment_date','>=',self.date_from),('payment_date','<=',self.date_to)])
             payments_whit_withholdings = []
             payments_whit_profit_withholdings = []
             invoices_whit_perceptions = []
