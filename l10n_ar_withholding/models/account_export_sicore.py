@@ -56,7 +56,7 @@ class AccountExportSicore(models.Model):
             string = string + str(payment.date)[8:10] + '/' + str(payment.date)[5:7] + '/' + str(payment.date)[:4]
             # 3er campo Número del comprobante: 16 caracteres. Exporta el número interno de la orden de pago, agregando ceros 
             # hacia la izquierda hasta completar los 16 caracteres.
-            string = string + payment.withholding_number.zfill(12) + '    '
+            string = string + (payment.payment_group_id.display_name[-8:]).zfill(16)
             # 4to campo Importe comprobante: 16 caracteres de los cuales 13 son enteros, 2 decimales separados por una coma.
             # Monto de la orden de pago, sin sustraer las retenciones.
             string = string + ("%.2f"%payment.payment_group_id.payments_amount).replace('.',',').zfill(16)
@@ -92,7 +92,7 @@ class AccountExportSicore(models.Model):
             # 15vo campo - Nro. de documento del sujeto: 11 caracteres. Exporta el C.U.I.T. del retenido.
             string = string + payment.partner_id.vat + '         '
             # 16vo campo nro certificado original
-            string = string + '0'.zfill(14) + '                              0                      '
+            string = string + payment.withholding_number.zfill(14) + '                              0                      '
             # CRLF
             string = string + windows_line_ending
             
