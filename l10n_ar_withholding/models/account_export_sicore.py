@@ -65,7 +65,7 @@ class AccountExportSicore(models.Model):
             # Impuesto 219 - SICORE- Impuesto sobre los Bienes Personales
             string = string + '0217'
             # 6to campo - Código de régimen:  3 caracteres. Exporta el Código de régimen ingresado en el alta de la retención aplicada.
-            concepto = int(payment.communication[:3])
+            concepto = payment.communication[:3]
             #Eliminamos elementos no numericos
             concepto = ''.join(filter(str.isnumeric, concepto))
             string = string + str(concepto).zfill(3)
