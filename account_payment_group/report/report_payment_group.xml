@@ -90,7 +90,9 @@
 	            <tr class="border-black">
 					<th></th>
 	                <th>Tipo</th>
-	                <th>Diario</th>
+	                <!-- <th>Diario</th> -->
+					<!-- AGREGO EL TIPO DE PAGO EN EL REPORTE -->
+					<th>Diario (Tipo de pago)</th>
 	                <th>Fecha Cobro</th>
 	                <th>Estado</th>
 	                <th class="text-right">Monto</th>
@@ -100,7 +102,9 @@
 	            <tr t-foreach="o.payment_ids" t-as="p">
 				  <td></td>
 	              <td><span t-if="p.payment_type_copy" t-field="p.payment_type_copy"/></td>
-	              <td><span t-if="p.journal_id" t-field="p.journal_id"/></td>
+	              <!-- <td><span t-if="p.journal_id" t-field="p.journal_id"/></td> -->
+				  <!-- DIARIO + TIPO DE PAGO -->
+				  <td><span t-if="p.journal_id" t-field="p.journal_id"/> (<span t-if="p.payment_method_description" t-field="p.payment_method_description"/></td>
 	              <td><span t-if="p.date" t-field="p.date"/></td>
 	              <td><span t-if="p.state" t-field="p.state"/></td>
 	              <td class="text-right">

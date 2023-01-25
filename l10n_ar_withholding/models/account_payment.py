@@ -160,6 +160,11 @@ class AccountPayment(models.Model):
                     self.journal_id.payment_debit_account_id,
                     self.journal_id.payment_credit_account_id,
             ):
+                #CAMBIOS POR MARITO
+                #Chequeo si viene con algun impuesto de retención, y cambio la cuenta a donde apunta.
+                if self.tax_withholding_id:
+                    account_imp_ret = self.tax_withholding_id.invoice_repartition_line_ids.filtered(lambda r: len(r.account_id) > 0)
+                    line.account_id = account_imp_ret.account_id
                 liquidity_lines += line
             elif line.account_id.internal_type in ('receivable', 'payable') or line.partner_id == line.company_id.partner_id:
                 counterpart_lines += line
