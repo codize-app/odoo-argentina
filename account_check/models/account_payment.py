@@ -310,6 +310,19 @@ class AccountPayment(models.Model):
                 res.create_check(check_type,None,bank)
         return res
 
+    #Cuenta para cheques propios
+    @api.model
+    def create(self,vals):
+        res = super(AccountPayment, self).create(vals)
+        check_method = self.env.ref('account_check.account_payment_method_issue_check')
+        if (not check_method):
+            return res
+        if (not res.hide_payment_method and res.move_id and res.payment_method_id == check_method):
+            for move in res.move_id.line_ids:
+                if(move.credit>0):
+                    move.update({'account_id':res.checkbook_id.account_id.id,'name': ""})
+        return res
+
     def create_check(self, check_type, operation, bank):
         self.ensure_one()
 
@@ -672,3 +685,7 @@ class AccountPayment(models.Model):
                 x.check_deposit_type == 'detailed'):
             self._split_aml_line_per_check(transfer_debit_aml.move_id)
         return transfer_debit_aml
+
+    #Cuenta para cheques propios
+    def _synchronize_from_moves(self, changed_fields):
+        return True
