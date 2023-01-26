@@ -25,13 +25,22 @@ class PurchaseAdvanceInvoice(models.TransientModel):
         purchase_orders = self.env['purchase.order'].browse(self._context.get('active_ids', []))
         for order in purchase_orders:
         # for rec in self:
+            rate=1
             if (order.currency_id.name != self.currency_id.name):
                 if order.currency_id.name == 'ARS':
                     rate = self.currency_id.rate
                 else:
-                    rate = 1/ order.currency_id.rate
+                    if order.tipo_cambio_othercurrency>0:
+                        rate = order.tipo_cambio_othercurrency
+                    else:
+                        rate = 1/ order.currency_id.rate
             else:
-                    rate=1
+                if order.currency_id.name != 'ARS':
+                    #si guardo en dolar desde dolar igual tomo el rate para el monto en moneda de la compañia
+                    if order.tipo_cambio_othercurrency>0:
+                        rate = order.tipo_cambio_othercurrency
+                    else:
+                        rate = 1/ order.currency_id.rate
             self.tipo_cambio = rate
 
     @api.model
