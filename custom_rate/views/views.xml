@@ -1,0 +1,16 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="account_move_form_customtc">
+      <field name="name">account.move.form.customtc</field>
+      <field name="model">account.move</field>
+      <field name="inherit_id" ref="account.view_move_form"/>
+      <field name="arch" type="xml">
+         <xpath expr="//div[@name='journal_div']"  position="after">
+            <field name="es_manual_rate" attrs="{'invisible': ['|',('move_type', 'in', ('out_invoice', 'out_refund')),('currency_id', 'in', (19))]}"/>
+            <field name="currency_rate" attrs="{'invisible': ['|',('move_type', 'in', ('out_invoice', 'out_refund')),('currency_id', 'in', (19))]}"/>
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>
+

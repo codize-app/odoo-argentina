@@ -83,11 +83,12 @@
                 <div name="amount_company_currency" class="o_row" attrs="{'invisible': [('other_currency', '=', False)]}">
                     x <field name="exchange_rate"/> = <field name="amount_company_currency" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                 </div>
+                <field name="es_manual_rate" />
             </div>
 
             <form position="attributes">
                 <attribute name="create">false</attribute>
-                <!--<attribute name="edit">false</attribute>-->
+                <attribute name="edit">false</attribute>
             </form>
             <form>
                 <field name="payment_group_company_id" invisible="1"/>
@@ -103,12 +104,12 @@
             <!-- <button name="post" position="attributes">
                 <attribute name="invisible">context.get('payment_group')</attribute>
             </button> -->
-            <!--<button name="action_post" position="attributes">-->
-                <!--&lt;!&ndash; idem cancel &ndash;&gt;-->
-                <!--&lt;!&ndash; <attribute name="invisible">1</attribute> &ndash;&gt;-->
-                <!--<attribute name="groups">base.group_no_one</attribute>-->
-                <!--<attribute name="confirm">IMPORTANTE: La validación de la línea de pago se debe hacer desde el recibo. La validación manual de una línea de pago se usa solo para correcciones y usos avanzados. Seguro desea continuar?</attribute>-->
-            <!--</button>-->
+            <button name="action_post" position="attributes">
+                <!-- idem cancel -->
+                <!-- <attribute name="invisible">1</attribute> -->
+                <attribute name="groups">base.group_no_one</attribute>
+                <attribute name="confirm">IMPORTANTE: La validación de la línea de pago se debe hacer desde el recibo. La validación manual de una línea de pago se usa solo para correcciones y usos avanzados. Seguro desea continuar?</attribute>
+            </button>
 
             <button name="action_cancel" position="attributes">
                 <!-- al final lo hacemos visible para poder hacer ajustes sin cancelar todo el payment group, pero solo si no transfer, con tec group y un confirm -->
@@ -118,18 +119,18 @@
             </button>
 
             <field name="payment_type" position="after">
-                <field name="payment_type_copy" invisible="1" string="Payment Type" widget="radio" attrs="{'readonly': [('state', '!=', 'draft')]}" groups="account_payment_group.group_choose_payment_type"/>
+                <field name="payment_type_copy" string="Payment Type" widget="radio" attrs="{'readonly': [('state', '!=', 'draft')]}" groups="account_payment_group.group_choose_payment_type"/>
             </field>
 
             <field name="payment_type" position="attributes">
                 <!-- comes from payment_group and from context on transfers -->
-                <attribute name="invisible">0</attribute>
+                <!--attribute name="invisible">1</attribute-->
                 <!-- <attribute name="invisible">context.get('payment_group')</attribute> -->
             </field>
 
             <field name="partner_type" position="attributes">
                 <!-- comes from payment_group and is not used on transfers -->
-                <attribute name="invisible">1</attribute>
+                <!--attribute name="invisible">1</attribute-->
                 <!-- <attribute name="invisible">context.get('payment_group')</attribute> -->
             </field>
             <field name="partner_id" position="attributes">
@@ -229,20 +230,6 @@
                 <filter name="currency_id" string="Currency" domain="[]" context="{'group_by': 'currency_id'}" groups="base.group_multi_currency"/>
                 <filter name="company_id" string="Company" domain="[]" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
             </search>
-        </field>
-    </record>
-
-    <record id="action_account_payments_transfer_form" model="ir.actions.act_window">
-        <field name="name">New Transfer</field>
-        <field name="res_model">account.payment</field>
-        <field name="view_mode">form</field>
-        <field name="search_view_id" ref="view_account_payment_transfer_search"/>
-        <field name="view_ids" eval="[(5, 0, 0),
-            (0, 0, {'view_mode': 'form', 'view_id': ref('view_account_payment_transfer_form')})]"/>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">
-              Click to register a transfer between liquidity journals
-            </p>
         </field>
     </record>
 

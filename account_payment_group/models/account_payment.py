@@ -59,16 +59,16 @@ class AccountPayment(models.Model):
     )
     exchange_rate = fields.Float(
         string='Tipo de Cambio',
-        #compute='_compute_exchange_rate',
-        # readonly=False,
+#        compute='_compute_exchange_rate',  si se computa deja de funcionar TC manual
+        readonly=False,
         # inverse='_inverse_exchange_rate',
-        digits=(16, 4),
+        digits=(16, 2),
     )
     company_currency_id = fields.Many2one(
         related='company_id.currency_id',
         string='Moneda de compañía',
     )
-
+    es_manual_rate= fields.Boolean(string="Es TC manual")
     def _seek_for_lines(self):
         ''' Helper used to dispatch the journal items between:
         - The lines using the temporary liquidity account.
@@ -168,6 +168,11 @@ class AccountPayment(models.Model):
                     'line_ids': line_ids_commands,
                 })
 
+    @api.onchange('exchange_rate')
+    def _compute_amount_other_currency(self):
+        for rec in self.filtered('other_currency'):
+          rec.amount_company_currency = rec.amount * rec.exchange_rate
+
     @api.depends('amount', 'payment_type', 'partner_type', 'amount_company_currency')
     def _compute_signed_amount(self):
         for rec in self:
@@ -206,15 +211,16 @@ class AccountPayment(models.Model):
     # rouding odoo believes amount has changed)
     @api.onchange('amount_company_currency')
     def _inverse_amount_company_currency(self):
-        for rec in self:
-            if rec.other_currency and rec.amount_company_currency != \
-                    rec.currency_id._convert(
-                        rec.amount, rec.company_id.currency_id,
-                        rec.company_id, rec.date):
-                force_amount_company_currency = rec.amount_company_currency
-            else:
-                force_amount_company_currency = False
-            rec.force_amount_company_currency = force_amount_company_currency
+        return
+        #for rec in self:
+        #    if rec.other_currency and rec.amount_company_currency != \
+        #            rec.currency_id._convert(
+        #                rec.amount, rec.company_id.currency_id,
+        #                rec.company_id, rec.date):
+        #        force_amount_company_currency = rec.amount_company_currency
+        #    else:
+        #        force_amount_company_currency = False
+        #    rec.force_amount_company_currency = force_amount_company_currency
 
     @api.depends('amount', 'other_currency', 'force_amount_company_currency')
     def _compute_amount_company_currency(self):
@@ -229,9 +235,12 @@ class AccountPayment(models.Model):
             elif rec.force_amount_company_currency:
                 amount_company_currency = rec.force_amount_company_currency
             else:
-                amount_company_currency = rec.currency_id._convert(
+                if not rec.es_manual_rate:
+                    amount_company_currency = rec.currency_id._convert(
                     rec.amount, rec.company_id.currency_id,
                     rec.company_id, rec.date)
+                else:
+                    amount_company_currency= rec.amount * rec.exchange_rate
             rec.amount_company_currency = amount_company_currency
 
     @api.onchange('payment_type_copy')
@@ -498,19 +507,24 @@ class AccountPayment(models.Model):
             liquidity_amount_currency = self.amount
         else:
             liquidity_amount_currency = write_off_amount_currency = 0.0
+        if self.exchange_rate == 0:
+            write_off_balance = self.currency_id._convert(
+                write_off_amount_currency,
+                self.company_id.currency_id,
+                self.company_id,
+                self.date,
+            )
+            liquidity_balance = self.currency_id._convert(
+                liquidity_amount_currency,
+                self.company_id.currency_id,
+                self.company_id,
+                self.date,
+            )
+        else:
 
-        write_off_balance = self.currency_id._convert(
-            write_off_amount_currency,
-            self.company_id.currency_id,
-            self.company_id,
-            self.date,
-        )
-        liquidity_balance = self.currency_id._convert(
-            liquidity_amount_currency,
-            self.company_id.currency_id,
-            self.company_id,
-            self.date,
-        )
+            write_off_balance = write_off_amount_currency * self.exchange_rate
+            liquidity_balance = liquidity_amount_currency * self.exchange_rate
+
         counterpart_amount_currency = -liquidity_amount_currency - write_off_amount_currency
         counterpart_balance = -liquidity_balance - write_off_balance
         currency_id = self.currency_id.id
