@@ -59,7 +59,6 @@
                                 <th><span>Referencia</span></th>
                                 <th class="text-right"><span>Monto Original</span></th>
                                 <th class="text-right"><span>Monto Pagado</span></th>
-                                <th class="text-right"><span>Balance</span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,7 +68,6 @@
                                 <td><span t-field="inv.move_id.ref"/></td>
                                 <td class="text-right"><span t-field="inv.move_id.amount_total"/></td>
                                 <td class="text-right"><span t-esc="inv.move_id.amount_total - inv.move_id.amount_residual" t-options="{'widget': 'monetary', 'display_currency': inv.move_id.currency_id}"/></td>
-                                <td class="text-right"><span t-field="inv.move_id.amount_residual"/></td>
                             </tr>
                         </tbody>
                     </table>
