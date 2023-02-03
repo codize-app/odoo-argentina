@@ -34,8 +34,12 @@ class WithholdingsReports(models.TransientModel):
                         _valsI.append(invoice.partner_id.name)#Cliente/Proveedor
                         _valsI.append(invoice.partner_id.vat)#CUIT
                         _valsI.append(invoice.partner_id.state_id.name)#Provincia
-                        _valsI.append(tax['tax_group_amount'])#Total
-                        _valsI.append(tax['tax_group_base_amount'])#Monto imponible
+                        if invoice.currency_id.name != 'ARS': #Multimoneda
+                            _valsI.append(tax['tax_group_amount'] * invoice.l10n_ar_currency_rate)#Total
+                            _valsI.append(tax['tax_group_base_amount'] * invoice.l10n_ar_currency_rate)#Monto imponible
+                        else:
+                            _valsI.append(tax['tax_group_amount'])#Total
+                            _valsI.append(tax['tax_group_base_amount'])#Monto imponible
                         _valsI.append(invoice.partner_id.iibb_number)#Ingresos Brutos       
 #
                         invoices_whit_perceptions.append(_valsI)
