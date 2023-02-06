@@ -104,7 +104,7 @@
 	              <td><span t-if="p.payment_type_copy" t-field="p.payment_type_copy"/></td>
 	              <!-- <td><span t-if="p.journal_id" t-field="p.journal_id"/></td> -->
 				  <!-- DIARIO + TIPO DE PAGO -->
-				  <td><span t-if="p.journal_id" t-field="p.journal_id"/> (<span t-if="p.payment_method_description" t-field="p.payment_method_description"/></td>
+				  <td><span t-if="p.journal_id" t-field="p.journal_id"/> (<span t-if="p.payment_method_description" t-field="p.payment_method_description"/>)</td>
 	              <td><span t-if="p.date" t-field="p.date"/></td>
 	              <td><span t-if="p.state" t-field="p.state"/></td>
 	              <td class="text-right">

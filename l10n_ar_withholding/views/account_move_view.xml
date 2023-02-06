@@ -7,7 +7,9 @@
         <field name="inherit_id" ref="account.view_move_form" />
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button name="calculate_perceptions" string="Calcular Percepciones" class="oe_highlight" type="object" groups="account.group_account_invoice" attrs="{'invisible': [('move_type', 'not in', ['out_invoice', 'out_refund'])]}"/>
+                <!-- Oculto el botón ya que no hace nada por ahora -->
+                <!-- <button name="calculate_perceptions" string="Calcular Percepciones" class="oe_highlight" type="object" groups="account.group_account_invoice" attrs="{'invisible': [('move_type', 'not in', ['out_invoice', 'out_refund'])]}"/> -->
+                <button name="calculate_perceptions" string="Calcular Percepciones" class="oe_highlight" type="object" groups="account.group_account_invoice" attrs="{'invisible': 1}"/>
             </xpath>
         </field>
     </record>
