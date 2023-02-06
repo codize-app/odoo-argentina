@@ -10,6 +10,9 @@
                         type="action" class="btn-primary" groups="purchase.group_purchase_manager"
                         attrs="{'invisible': [('invoice_status', '!=', 'to invoice')]}"/>
                 </xpath>
+				 <xpath expr="//field[@name='currency_id']" position="after">
+          			<field name="tipo_cambio_othercurrency" />
+        		</xpath>
             </field>
         	</record>
 </odoo>
