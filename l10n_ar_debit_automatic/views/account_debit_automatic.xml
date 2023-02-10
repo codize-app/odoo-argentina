@@ -61,5 +61,18 @@
         </record>
 
         <menuitem id="menu_account_debit_automatic" action="action_account_debit_automatic" parent="account.menu_finance_receivables" sequence="21" />
+
+                <!-- RES COMPANY -->
+
+        <record id="view_automatic_debit_res_company_form" model="ir.ui.view">
+        <field name="name">automatic.debit.res.company.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <field name="currency_id" position="after">
+                <field name="debit_number" />
+            </field>
+            </field>
+        </record>
     </data>
 </odoo>
