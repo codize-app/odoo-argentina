@@ -688,7 +688,7 @@ class AccountPaymentGroup(models.Model):
         if self._context.get('from_invoice') == 'yes':
             invoice = self.env['account.move'].browse(self._context.get('invoice_id'))
             rec['related_invoice'] = invoice.id
-            
+
             if self.env['ir.config_parameter'].sudo().get_param('account_payment_group.journal_def'):
 
                 payment_type = ''
@@ -758,7 +758,7 @@ class AccountPaymentGroup(models.Model):
                 # if rec.to_pay_move_line_ids:
                 #     move.line_ids.remove_move_reconcile()
             rec.payment_ids.action_cancel()
-            rec.payment_ids.write({'invoice_line_ids': [(5, 0, 0)]})
+            rec.payment_ids.with_context(skip_account_move_synchronization=True).write({'invoice_line_ids': [(5, 0, 0)]})
         self.write({'state': 'cancel'})
 
     def action_draft(self):
@@ -798,7 +798,7 @@ class AccountPaymentGroup(models.Model):
                     'receiptbook_id': False,
                 })
                 continue
-            
+
             _logger.warning("2")
             if not rec.document_number:
                 if not rec.receiptbook_id.sequence_id:
