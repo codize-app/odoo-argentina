@@ -281,6 +281,8 @@ class AccountPaymentGroup(models.Model):
     )
     amount_letters = fields.Char('Monto en letras', compute="_compute_amount_in_letters", store=True)
 
+    num_op = fields.Char('Nº OP Cliente')
+    branch_op = fields.Char('Sucursal OP Cliente')
 
 
     _sql_constraints = [

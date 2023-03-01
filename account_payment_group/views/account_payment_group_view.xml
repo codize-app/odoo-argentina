@@ -122,6 +122,8 @@
                         <field name="document_number" attrs="{'invisible': ['|', ('document_sequence_id', '!=', False), ('localization', '=', False)], 'required': [('document_sequence_id', '=', False), ('localization', '!=', False)]}"/>
                         <field name="payment_date"/>
                         <field name="communication" attrs="{'invisible': [('state', '!=', 'draft'), ('communication', '=', False)]}"/>
+                        <field name="num_op" attrs="{'readonly': [('state', 'not in', ['draft', 'confirmed'])], 'invisible': [('partner_type', '=', 'supplier')]}"/>
+                        <field name="branch_op" attrs="{'readonly': [('state', 'not in', ['draft', 'confirmed'])], 'invisible': [('partner_type', '=', 'supplier')]}"/>
                     </group>
                 <!-- </group> -->
                 <!-- <group attrs="{'invisible': [('payment_subtype', '!=', 'double_validation')]}"> -->
