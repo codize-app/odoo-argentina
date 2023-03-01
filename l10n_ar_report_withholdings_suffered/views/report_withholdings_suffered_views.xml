@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="report_withholdings_suffered_view_form" model="ir.ui.view">
+        <field name="name">report.withholdings.suffered.view.form</field>
+        <field name="model">report.withholdings.suffered</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                    <button name="get_payment_invoice" string="Computar Pagos/Facturas" states="draft" type="object" class="oe_highlight"/>
+                    <button name="action_present" string="Presentar" states="draft" type="object" class="oe_highlight"/>
+                    <button name="action_cancel" string="Cancelar" states="draft,presented" type="object"/>
+                    <button name="action_to_draft" string="Volver a Borrador" states="cancel" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,presented"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group >
+                            <field name="country_id" invisible="1"/>
+                            <field name="name" />
+                            <field name="country_state" domain="[('country_id', '=', country_id)]" attrs="{'readonly': [('state', '=', 'presented')]}"/>
+                            <field name="date_from" />
+                            <field name="date_to" />
+                        </group>
+                        <group >
+                            <field name="reference" attrs="{'readonly': [('state', '=', 'presented')]}"/>
+                            <field name="journal_withholdings_suffered" attrs="{'readonly': [('state', '=', 'presented')]}"/>
+                            <field name="tax_withholdings_suffered" attrs="{'readonly': [('state', '=', 'presented')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="invoices" string="Facturas Proveedores">
+                            <field name="invoice_ids" readonly="1">
+                                <tree default_order="invoice_date">
+                                    <field name="invoice"/>
+                                    <field name="supplier"/>
+                                    <field name="invoice_date"/>
+                                    <field name="total_withholdings_suffered" sum="Total Percepcion"/>
+                                    <field name="amount_total_signed" sum="Total"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="payments" string="Pagos Clientes">
+                            <field name="payment_ids" readonly="1">
+                                <tree default_order="payment">
+                                    <field name="payment"/>
+                                    <field name="client"/>
+                                    <field name="payment_ref"/>
+                                    <field name="payment_date"/>
+                                    <field name="total_withholdings_suffered" sum="Total Retencion"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="sifere" string="SIFERE">
+                            <group>
+                                <group>
+                                    <field name="sifere_file_ret" widget="binary" filename="sifere_filename_ret"/>
+                                    <field name="sifere_data_ret" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="sifere_file_per" widget="binary" filename="sifere_filename_per"/>
+                                    <field name="sifere_data_per" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="esicol" string="e-SICOL">
+                            <group>
+                                <field name="esicol_file_per" widget="binary" filename="esicol_filename_per"/>
+                                <field name="esicol_data_per" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+	<record model="ir.actions.act_window" id="action_report_withholdings_suffered">
+		<field name="name">Retenciones Sufridas</field>
+		<field name="res_model">report.withholdings.suffered</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+    <menuitem
+        id="report_withholdings_suffered_menu"
+        name="Retenciones Sufridas"
+        action="action_report_withholdings_suffered"
+        parent="l10n_ar.account_reports_ar_statements_menu"
+        sequence="10"/>
+
+</odoo>
