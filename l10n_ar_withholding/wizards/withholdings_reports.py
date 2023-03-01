@@ -7,9 +7,16 @@ class WithholdingsReports(models.TransientModel):
     _name="ar.withholdings.reports"
     _description="Withholdings Reports"
 
-    type_report = fields.Selection([('withholdings', 'Retenciones')], string="Reporte", default='withholdings')
+    type_report = fields.Selection([('withholdings', 'Retenciones y Percepciones')], string="Reporte", default='withholdings')
     date_from = fields.Date (string="Fecha Inicio")
     date_to = fields.Date (string="Fecha Fin")
+
+    def download_xls(self):
+        return {
+            'type': 'ir.actions.act_url',
+            'url': '/withholding/report/%s' % (self.id),
+            'target': 'new',
+        }
 
     def print_report(self):
         if self.type_report == 'withholdings':
