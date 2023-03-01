@@ -32,6 +32,10 @@ class AccountMove(models.Model):
             # Ver como resolver esto
             rec.payment_group_ids = rec.payment_move_line_ids.mapped(
                 'payment_id.payment_group_id')
+             
+            #CAMBIO POR MARITO - tira un error porque no tiene el campo payment_move_line_ids, pero no en todos los casos...
+            """ rec.payment_group_ids = rec.payment_id.mapped(
+                'payment_id.payment_group_id') """
 
     def _get_tax_factor(self):
         self.ensure_one()
