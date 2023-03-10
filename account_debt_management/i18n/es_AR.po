@@ -89,7 +89,7 @@ msgstr ""
 #. module: account_debt_management
 #: model:ir.model.fields,field_description:account_debt_management.field_account_debt_report_wizard__company_id
 msgid "Company"
-msgstr ""
+msgstr "Compañía"
 
 #. module: account_debt_management
 #: model:ir.model.fields,field_description:account_debt_management.field_account_debt_report_wizard__company_type
