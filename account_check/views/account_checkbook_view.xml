@@ -8,6 +8,7 @@
             <tree string="Checkbooks" editable="bottom">
                 <field name="issue_check_subtype"/>
                 <field name="name"/>
+                <field name="account_id"/>
                 <field name="next_number"/>
                 <field name="range_to"/>
                 <field name="numerate_on_printing"/>
@@ -28,6 +29,7 @@
                     <group>
                         <field name="name" invisible="1"/>
                         <field name="sequence_id" groups="base.group_no_one"/>
+                        <field name="account_id"/>
                         <field name="next_number"/>
                         <field name="issue_check_subtype"/>
                         <field name="range_to"/>

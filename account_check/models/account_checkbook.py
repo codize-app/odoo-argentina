@@ -99,6 +99,8 @@ class AccountCheckbook(models.Model):
         help='Report to use when printing checks. If not report selected, '
         'report with name "check_report" will be used',
     )
+    #Cuenta para cheques propios
+    account_id = fields.Many2one("account.account","Cuenta", required=True)
 
     @api.depends('sequence_id.number_next_actual')
     def _compute_next_number(self):
