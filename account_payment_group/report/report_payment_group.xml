@@ -92,6 +92,7 @@
 	                <th>Tipo</th>
 	                <th>Diario</th>
 	                <th>Fecha Cobro</th>
+	                <th>Tipo de pago</th>
 	                <th>Estado</th>
 	                <th class="text-right">Monto</th>
 	            </tr>
@@ -101,7 +102,13 @@
 				  <td></td>
 	              <td><span t-if="p.payment_type_copy" t-field="p.payment_type_copy"/></td>
 	              <td><span t-if="p.journal_id" t-field="p.journal_id"/></td>
+	              <td><span t-if="p.journal_id" t-field="p.journal_id"/></td>
 	              <td><span t-if="p.date" t-field="p.date"/></td>
+	              <td><span t-if="p.payment_method_line_id" t-field="p.payment_method_line_id"/>
+					<t t-foreach="p.check_ids" t-as="c">
+						(<span t-field="c.name"/> - <span t-field="c.payment_date"/>)|
+					</t>
+	              </td>
 	              <td><span t-if="p.state" t-field="p.state"/></td>
 	              <td class="text-right">
 	                  <span t-field="p.amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
@@ -110,7 +117,7 @@
 	        </tbody>
 	        <tfoot>
 	          <tr class="border-black">
-	            <td colspan="5"><strong>Total</strong></td>
+	            <td colspan="6"><strong>Total</strong></td>
 	            <td class="text-right">
 	                 <span t-field="o.payments_amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
 	            </td>
