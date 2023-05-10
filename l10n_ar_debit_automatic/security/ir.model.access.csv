@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_account_debit_automatic,account.debit.automatic,model_account_debit_automatic,account.group_account_invoice,1,1,1,1

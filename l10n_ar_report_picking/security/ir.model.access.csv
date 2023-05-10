@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_account_journal_picking_user,account.journal.picking.user,model_account_journal_picking,base.group_user,1,1,1,1

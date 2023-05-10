@@ -38,12 +38,12 @@ class AccountMove(models.Model):
         return (self.amount_total and (
             self.amount_untaxed / self.amount_total) or 1.0)
 
-    @api.depends('line_ids.account_id.internal_type', 'line_ids.reconciled')
+    @api.depends('line_ids.account_id.account_type', 'line_ids.reconciled')
     def _compute_open_move_lines(self):
         for rec in self:
             rec.open_move_line_ids = rec.line_ids.filtered(
-                lambda r: not r.reconciled and r.account_id.internal_type in (
-                    'payable', 'receivable'))
+                lambda r: not r.reconciled and r.account_id.account_type in (
+                    'liability_payable', 'asset_receivable'))
 
     def action_account_invoice_payment_group(self):
         self.ensure_one()

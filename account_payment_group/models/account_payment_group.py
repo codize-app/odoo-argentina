@@ -5,14 +5,13 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-
 MAP_PARTNER_TYPE_ACCOUNT_TYPE = {
-    'customer': 'receivable',
-    'supplier': 'payable',
+    'customer': 'asset_receivable',
+    'supplier': 'liability_payable',
 }
 MAP_ACCOUNT_TYPE_PARTNER_TYPE = {
-    'receivable': 'customer',
-    'payable': 'supplier',
+    'asset_receivable': 'customer',
+    'liability_payable': 'supplier',
 }
 
 
@@ -636,7 +635,7 @@ class AccountPaymentGroup(models.Model):
         return [
             ('partner_id.commercial_partner_id', '=',
                 self.commercial_partner_id.id),
-            ('account_id.internal_type', '=',
+            ('account_id.account_type', '=',
                 self.account_internal_type),
             ('account_id.reconcile', '=', True),
             ('move_id.move_type', 'in', ['out_invoice','out_refund','in_invoice','in_refund']),
