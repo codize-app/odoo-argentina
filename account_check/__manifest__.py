@@ -27,6 +27,7 @@
     'images': [
     ],
     'depends': [
+        'account',
         'account_payment_fix',
         'base'
     ],

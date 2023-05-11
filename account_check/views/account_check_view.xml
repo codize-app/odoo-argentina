@@ -30,18 +30,18 @@
     <record model="ir.ui.view" id="view_account_check_create_tree">
         <field name="name">account.check.create.tree</field>
         <field name="model">account.check</field>
-        <field name="groups_id" eval="[(4, ref('account.group_account_manager'))]"/>
         <field name="inherit_id" ref="view_account_check_tree"/>
         <field name="arch" type="xml">
                 <tree position="attributes">
-                <attribute name="create">true</attribute>
-            </tree>
+                    <attribute name="create">true</attribute>
+                </tree>
         </field>
     </record>
 
     <record model="ir.ui.view" id="view_account_check_form">
         <field name="name">account.check.form</field>
         <field name="model">account.check</field>
+        <field name="groups_id" eval="[(4, ref('account.group_account_manager'))]"/>
         <field name="arch" type="xml">
             <form string="Checks" create="false">
                 <field name="id" invisible="1"/>
@@ -119,7 +119,6 @@
         <field name="name">account.check.create.form</field>
         <field name="model">account.check</field>
         <field name="inherit_id" ref="view_account_check_form"/>
-        <field name="groups_id" eval="[(4, ref('account.group_account_manager'))]"/>
         <field name="arch" type="xml">
                 <form position="attributes">
                 <attribute name="create">true</attribute>

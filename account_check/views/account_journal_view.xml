@@ -10,7 +10,7 @@
                 <field name="checkbook_ids" attrs="{'invisible': [('type', '!=', 'bank')]}" context="{'company_id':company_id}"/>
             </page>
             <field name="suspense_account_id" position="attributes">
-                    <attribute name="domain">[('deprecated','=',False),('user_type_id','in',(3,9))]</attribute>
+                    <attribute name="domain">[('deprecated','=',False)]</attribute>
             </field>
         </field>
     </record>
