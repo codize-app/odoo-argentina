@@ -1,6 +1,6 @@
 {
-    "name": "Accounting Financial Amounts",
-    "version": "14.0.1.0.0",
+    "name": "Contabilidad - Montos Financieros",
+    "version": "16.0.1.0.0",
     "author": "ADHOC SA, Exemax, Codize",
     "license": "AGPL-3",
     "category": "Accounting",

@@ -1,6 +1,6 @@
 {
-    'name': 'Account Payment Fix',
-    'version': '15.0.1.0.0',
+    'name': 'Arreglos en Pagos',
+    'version': '16.0.1.0.0',
     'category': 'Account',
     'author': 'ADHOC SA, Exemax, Codize, Birtum',
     'license': 'AGPL-3',

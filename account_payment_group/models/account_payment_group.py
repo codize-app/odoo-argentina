@@ -33,7 +33,7 @@ class AccountPaymentGroup(models.Model):
     document_sequence_id = fields.Many2one(
         related='receiptbook_id.sequence_id',
     )
-    localization = fields.Char('Localizacion', default='argentina')
+    localization = fields.Char('Localización', default='argentina')
 
     receiptbook_id = fields.Many2one(
         'account.payment.receiptbook',
@@ -45,7 +45,7 @@ class AccountPaymentGroup(models.Model):
     )
     next_number = fields.Integer(
         related='receiptbook_id.sequence_id.number_next_actual',
-        string='Prox Numero',
+        string='Prox. Número',
     )
     name = fields.Char(
         compute='_compute_name',
@@ -64,7 +64,7 @@ class AccountPaymentGroup(models.Model):
         states={'draft': [('readonly', False)]},
     )
     payment_methods = fields.Char(
-        string='Metodos de Pago',
+        string='Métodos de Pago',
         compute='_compute_payment_methods',
         search='_search_payment_methods',
     )
@@ -159,8 +159,6 @@ class AccountPaymentGroup(models.Model):
         ('draft', 'Borrador'),
         ('confirmed', 'Confirmado'),
         ('posted', 'Publicado'),
-        # ('sent', 'Sent'),
-        # ('reconciled', 'Reconciled')
         ('cancel', 'Cancelada'),
     ],
         readonly=True,
@@ -170,13 +168,10 @@ class AccountPaymentGroup(models.Model):
         index=True,
     )
     move_lines_domain = [
-        #('move_id.partner_id.id', '=', partner_id.id),
-        # ('account_id.internal_type', '=', account_internal_type),
         ('move_id.state', '=', 'posted'),
         ('account_id.reconcile', '=', True),
         ('reconciled', '=', False),
         ('full_reconcile_id', '=', False),
-        # ('company_id', '=', company_id),
     ]
     debt_move_line_ids = fields.Many2many(
         'account.move.line',
@@ -771,14 +766,15 @@ class AccountPaymentGroup(models.Model):
         create_from_expense = self._context.get('create_from_expense', False)
         self = self.with_context({})
         for rec in self:
-            _logger.warning("entro")
             if not rec.receiptbook_id:
                 rec.payment_ids.write({
                     'receiptbook_id': False,
                 })
-                continue
-            
-            _logger.warning("2")
+                raise UserError(_(
+                        'Error!. Please define a receiptbook.'
+                        ' You need be at multicompany group '
+                        'for that.'))
+
             if not rec.document_number:
                 if not rec.receiptbook_id.sequence_id:
                     raise UserError(_(
@@ -794,7 +790,6 @@ class AccountPaymentGroup(models.Model):
             #    'receiptbook_id': rec.receiptbook_id.id,
             #})
 
-            _logger.warning("3")
             # TODO if we want to allow writeoff then we can disable this
             # constrain and send writeoff_journal_id and writeoff_acc_id
             if not rec.payment_ids:
