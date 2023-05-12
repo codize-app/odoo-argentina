@@ -179,7 +179,7 @@ class AccountMove(models.Model):
                         rec.afip_auth_code_due or '') if c.isdigit()])
                 barcode = ''.join(
                     [str(rec.company_id.vat),
-                        "%03d" % int(rec.l10n_latam_document_type_id.code),
+                        "%03d" % int(rec.l10n_latam_document_type_id),
                         "%05d" % int(rec.journal_id.l10n_ar_afip_pos_number),
                         str(rec.afip_auth_code), cae_due])
                 rec.l10n_ar_afip_barcode = barcode
@@ -731,7 +731,7 @@ print "Observaciones:", wscdc.Obs
                 invoice_date = str(CbteAsoc.invoice_date).replace('-','')
                 if afip_ws == 'wsfex':
                     ws.AgregarCmpAsoc(
-                        CbteAsoc.l10n_latam_document_type_id.document_type_id.code,
+                        CbteAsoc.l10n_latam_document_type_id.code,
                         CbteAsoc.journal_id.l10n_ar_afip_pos_number,
                         doc_number,
                         self.company_id.vat,
