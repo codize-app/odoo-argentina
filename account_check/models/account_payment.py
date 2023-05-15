@@ -317,7 +317,7 @@ class AccountPayment(models.Model):
         check_method = self.env.ref('account_check.account_payment_method_issue_check')
         if (not check_method):
             return res
-        if (not res.hide_payment_method_line and res.move_id and res.payment_method_id_line == check_method):
+        if (not res.hide_payment_method_line and res.move_id and res.payment_method_id == check_method):
             for move in res.move_id.line_ids:
                 if(move.credit>0):
                     move.update({'account_id':res.checkbook_id.account_id.id,'name': ""})
