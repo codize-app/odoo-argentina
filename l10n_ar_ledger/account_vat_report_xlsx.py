@@ -31,7 +31,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             sheet.set_column('A:F', 30)
 
             for i,obj in enumerate(vat_ledger.invoice_ids):
-                sheet.write(row + index, 0, obj.invoice_date.strftime("%Y-%m-%d")) # Fecha
+                if obj.invoice_date:
+                    sheet.write(row + index, 0, obj.invoice_date.strftime("%Y-%m-%d")) # Fecha
+                else:
+                    sheet.write(row + index, 0, 'Error: Fecha no disponible')
                 sheet.write(row + index, 1, obj.partner_id.name) # Razón Social
                 if obj.partner_id.vat: # CUIT
                     sheet.write(row + index, 2, obj.partner_id.vat)
