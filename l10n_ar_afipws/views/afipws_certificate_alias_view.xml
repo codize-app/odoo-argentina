@@ -38,8 +38,8 @@
                             <field name="company_id" groups="base.group_multi_company" string="Compañía" />
                             <field name="type" string="Tipo" />
                             <field name="service_type" groups="base.group_no_one" string="Tipo de Servicio" />
-                            <field name="service_provider_cuit" attrs="{'invisible':[('service_type','!=','outsourced')],'required':[('service_type','=','outsourced')]}" />
-                            <field name="company_cuit" attrs="{'invisible':[('service_type','!=','in_house')],'required':[('service_type','=','in_house')]}" string="CUIT de la Compañía" />
+                            <field name="service_provider_cuit" attrs="{'invisible':[('service_type','!=','outsourced')],'required':[('service_type','=','outsourced')]}" groups="base.group_no_one" />
+                            <field name="company_cuit" attrs="{'invisible':[('service_type','!=','in_house')],'required':[('service_type','=','in_house')]}" groups="base.group_no_one" string="CUIT de la Compañía" />
                         </group>
                         <group>
                             <field name="common_name" string="Nombre Común"/>

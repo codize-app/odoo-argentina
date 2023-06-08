@@ -12,7 +12,7 @@
         'uom',
         'l10n_latam_invoice_document',
         'l10n_ar',
-        'account_move_tax',
+        'l10n_ar_bank',
         'account_debit_note',
     ],
     'external_dependencies': {

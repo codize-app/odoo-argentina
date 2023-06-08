@@ -461,6 +461,7 @@ print "Observaciones:", wscdc.Obs
             journal = inv.journal_id
             pos_number = journal.l10n_ar_afip_pos_number
             doc_afip_code = inv.l10n_latam_document_type_id.code
+            amounts = inv._l10n_ar_get_amounts()
 
             # authenticate against AFIP:
             ws = inv.company_id.get_connection(afip_ws).connect()
@@ -480,20 +481,9 @@ print "Observaciones:", wscdc.Obs
                         'For WS "%s" country afip code is mandatory'
                         'Country: %s' % (
                             afip_ws, country.name)))
-            #ws_next_invoice_number = int(
-            #    inv.journal_document_type_id.get_pyafipws_last_invoice(
-            #    )['result']) + 1
+
             ws_next_invoice_number = int(
                 inv.l10n_latam_document_type_id.get_pyafipws_last_invoice(inv)['result']) + 1
-            # verify that the invoice is the next one to be registered in AFIP
-            #if inv.invoice_number != ws_next_invoice_number:
-            #    raise UserError(_(
-            #        'Error!'
-            #        'Invoice id: %i'
-            #        'Next invoice number should be %i and not %i' % (
-            #            inv.id,
-            #            ws_next_invoice_number,
-            #            inv.invoice_number)))
 
             partner_id_code = commercial_partner.l10n_latam_identification_type_id.l10n_ar_afip_code
             tipo_doc = partner_id_code or '99'
@@ -527,14 +517,11 @@ print "Observaciones:", wscdc.Obs
                 fecha_serv_desde = fecha_serv_hasta = None
 
             # invoice amount totals:
-            amount_total = inv.amount_untaxed
-            for move_tax in inv.move_tax_ids:
-                amount_total += move_tax.tax_amount
+            amount_total = amounts["vat_untaxed_base_amount"] + amounts["vat_amount"]
 
             imp_total = str("%.2f" % amount_total)
             # ImpTotConc es el iva no gravado
-            imp_tot_conc = str("%.2f" % inv.vat_untaxed_base_amount)
-            # imp_tot_conc = str("%.2f" % inv.amount_untaxed)
+            imp_tot_conc = str("%.2f" % amounts["vat_untaxed_base_amount"])
             # tal vez haya una mejor forma, la idea es que para facturas c
             # no se pasa iva. Probamos hacer que vat_taxable_amount
             # incorpore a los imp cod 0, pero en ese caso termina reportando
@@ -543,18 +530,16 @@ print "Observaciones:", wscdc.Obs
                 imp_neto = str("%.2f" % inv.amount_untaxed)
             else:
                 #imp_neto = str("%.2f" % inv.vat_taxable_amount)
-                imp_neto = str("%.2f" % inv.vat_taxable_amount)
-            imp_trib = str("%.2f" % inv.other_taxes_amount)
+                imp_neto = str("%.2f" % amounts["vat_taxable_amount"])
+            imp_trib = str("%.2f" % amounts["other_taxes_amount"])
             # imp_iva = str("%.2f" % (inv.amount_total - (inv.amount_untaxed + inv.other_taxes_amount)))
-            imp_iva = str("%.2f" % (inv.vat_amount))
+            imp_iva = str("%.2f" % (amounts["vat_amount"]))
             # se usaba para wsca..
-            # imp_subtotal = str("%.2f" % inv.amount_untaxed)
-            imp_op_ex = str("%.2f" % inv.vat_exempt_base_amount)
+            imp_op_ex = str("%.2f" % amounts["vat_exempt_base_amount"])
             moneda_id = inv.currency_id.l10n_ar_afip_code
             moneda_ctz = round(1/inv.currency_id.rate,2)
             if not moneda_id:
                 raise ValidationError('No esta definido el codigo AFIP en la moneda')
-
 
             CbteAsoc = inv.get_related_invoices_data()
 
@@ -569,27 +554,10 @@ print "Observaciones:", wscdc.Obs
                     fecha_serv_desde, fecha_serv_hasta,
                     moneda_id, round(moneda_ctz,2)
                 )
-                if inv.other_taxes_amount > 0:
-                    for move_tax in inv.move_tax_ids:
-                        if move_tax.tax_id.tax_group_id.tax_type != 'vat':
-                            tributo_id = move_tax.tax_id.tax_group_id.l10n_ar_tribute_afip_code
-                            base_imp = str("%.2f" % move_tax.base_amount)
-                            desc = move_tax.tax_id.name
-                            importe = str("%.2f" % move_tax.tax_amount)
-                            alic = None
-                            ws.AgregarTributo(tributo_id, desc, base_imp, alic, importe)
+                if amounts["other_taxes_amount"] > 0:
+                    for other_tax in self._build_afip_wsfe_other_taxes():
+                        ws.AgregarTributo(**other_tax)
 
-            # elif afip_ws == 'wsmtxca':
-            #     obs_generales = inv.coment
-            #     ws.CrearFactura(
-            #         concepto, tipo_doc, nro_doc, doc_afip_code, pos_number,
-            #         cbt_desde, cbt_hasta, imp_total, imp_tot_conc, imp_neto,
-            #         imp_subtotal,   # difference with wsfe
-            #         imp_trib, imp_op_ex, fecha_cbte, fecha_venc_pago,
-            #         fecha_serv_desde, fecha_serv_hasta,
-            #         moneda_id, moneda_ctz,
-            #         obs_generales   # difference with wsfe
-            #     )
             elif afip_ws == 'wsfex':
                 # # foreign trade data: export permit, country code, etc.:
                 if inv.invoice_incoterm_id:
@@ -696,34 +664,9 @@ print "Observaciones:", wscdc.Obs
                         opcional_id=22,
                         valor=valor)
 
-            # TODO ver si en realidad tenemos que usar un vat pero no lo
-            # subimos
             if afip_ws not in ['wsfex', 'wsbfe']:
-                #for vat in inv.move_tax_ids:vat_taxable_ids:
-                for vat in inv.move_tax_ids:
-                    if vat.tax_id.tax_group_id.tax_type == 'vat' and vat.tax_id.tax_group_id.l10n_ar_vat_afip_code != '2':
-                            _logger.info('Adding VAT %s' % vat.tax_id.tax_group_id.name)
-                            ws.AgregarIva(
-                                vat.tax_id.tax_group_id.l10n_ar_vat_afip_code,
-                                "%.2f" % vat.base_amount,
-                                # "%.2f" % abs(vat.base_amount),
-                                "%.2f" % vat.tax_amount,
-                            )
-
-                #for tax in inv.not_vat_tax_ids:
-                #    _logger.info(
-                #        'Adding TAX %s' % tax.tax_id.tax_group_id.name)
-                #    ws.AgregarTributo(
-                #        tax.tax_id.tax_group_id.application_code,
-                #        tax.tax_id.tax_group_id.name,
-                #        "%.2f" % tax.base,
-                #        # "%.2f" % abs(tax.base_amount),
-                #        # TODO pasar la alicuota
-                #        # como no tenemos la alicuota pasamos cero, en v9
-                #        # podremos pasar la alicuota
-                #        0,
-                #        "%.2f" % tax.amount,
-                #    )
+                for vat_tax in self._build_afip_wsfe_vat_taxes():
+                    ws.AgregarIva(**vat_tax)
 
             if CbteAsoc:
                 # fex no acepta fecha
@@ -867,3 +810,60 @@ print "Observaciones:", wscdc.Obs
             # solicitar. Lo mismo podriamos usar para grabar los mensajes de
             # afip de respuesta
             inv._cr.commit()
+
+    def _build_afip_wsfe_vat_taxes(self):
+        vat_taxes = []
+        vat_taxable = self.env["account.move.line"]
+        for line in self.line_ids:
+            if (
+                any(
+                    tax.tax_group_id.l10n_ar_vat_afip_code
+                    and tax.tax_group_id.l10n_ar_vat_afip_code not in ["0", "1", "2"]
+                    for tax in line.tax_line_id
+                )
+                and line.price_subtotal
+            ):
+                vat_taxable |= line
+        for vat in vat_taxable:
+            vat_taxes.append(
+                {
+                    "iva_id": vat.tax_line_id.tax_group_id.l10n_ar_vat_afip_code,
+                    "base_imp": "%.2f"
+                    % sum(
+                        self.invoice_line_ids.filtered(
+                            lambda x: x.tax_ids.filtered(
+                                lambda y: y.tax_group_id.l10n_ar_vat_afip_code
+                                == vat.tax_line_id.tax_group_id.l10n_ar_vat_afip_code
+                            )
+                        ).mapped("price_subtotal")
+                    ),
+                    "importe": "%.2f" % vat.price_subtotal,
+                }
+            )
+        return vat_taxes
+
+    def _build_afip_wsfe_other_taxes(self):
+        other_taxes = []
+        not_vat_taxes = self.line_ids.filtered(
+            lambda x: x.tax_line_id
+            and x.tax_line_id.tax_group_id.l10n_ar_tribute_afip_code
+        )
+        for tax in not_vat_taxes:
+            other_taxes.append(
+                {
+                    "tributo_id": tax.tax_line_id.tax_group_id.l10n_ar_tribute_afip_code,
+                    "ds": tax.tax_line_id.tax_group_id.name,
+                    "base_imp": "%.2f"
+                    % sum(
+                        self.invoice_line_ids.filtered(
+                            lambda x: x.tax_ids.filtered(
+                                lambda y: y.tax_group_id.l10n_ar_tribute_afip_code
+                                == tax.tax_line_id.tax_group_id.l10n_ar_tribute_afip_code
+                            )
+                        ).mapped("price_subtotal")
+                    ),
+                    "alic": 0.00,
+                    "importe": "%.2f" % tax.price_subtotal,
+                }
+            )
+        return other_taxes
