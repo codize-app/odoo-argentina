@@ -8,10 +8,10 @@ Argentine Location for Odoo 15 Community. Original based on Location by Moldeo I
 
 First, install Odoo Community module l10n_ar
 
-Clone this repository with branch 15.0
+Clone this repository with branch 16.0
 
 ```
-git clone https://github.com/codize-app/odoo-argentina -b 15.0
+git clone https://github.com/codize-app/odoo-argentina -b 16.0
 ```
 
 Verify dependencies:
@@ -105,6 +105,7 @@ For reports install `l10n_ar_report_fe`
 
 ## l10n_ar extras
 
+* `l10n_ar_ledger`: VAT Ledger for Sales and Purchases
 * `l10n_ar_withholding`: Withholding on Invoices and Payments. Premium package (`odoo-argentina-withholding`) support on exports for ARBA, AGIP, SIRCAR Neuquén and SIRCAR Río Negro
 * `l10n_ar_bank`: Install Argentina Bank's List
 
