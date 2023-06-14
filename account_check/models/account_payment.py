@@ -12,7 +12,10 @@ _logger = logging.getLogger(__name__)
 class AccountPayment(models.Model):
 
     _inherit = 'account.payment'
-
+    
+    effective_date = fields.Char()
+    bank_reference = fields.Char()
+    cheque_reference = fields.Char()
     check_ids = fields.Many2many(
         'account.check',
         string='Checks',
