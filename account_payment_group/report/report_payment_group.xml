@@ -124,7 +124,60 @@
 	          </tr>
 	        </tfoot>
 	      </table>
+		  
+	      <h5>Facturas Relacionadas</h5>
+              <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width:50%;padding:5px">Factura</th>
+                        <th style="width:50%;padding:5px">Monto de Facturas</th>
+                        <th>Monto Pagado</th>
+                    </tr>
+                </thead>
+                <tbody class="invoice_tbody">
+                    <tr t-foreach="o.matched_move_line_ids" t-as="f" style="font-size:12px">
+                      <td style="padding:0.50rem"><span t-if="f.move_id" t-field="f.move_id"/></td>
+                      <td style="padding:0.50rem"><span t-if="f.balance" t-field="f.balance"/></td>
+                      <td style="padding:0.50rem">
+			<t t-set="payments" t-value="[]"/>
+			<t t-foreach="o.payment_ids" t-as="p">
+				<t t-foreach="p.invoice_line_ids.ids" t-as="i">
+					<t t-set="payments" t-value="payments + [i]"/>
+				</t>
+			</t>
 
+                        <t t-set="credit_move" t-value="request.env['account.partial.reconcile'].sudo().search([('credit_move_id', 'in', payments),('debit_move_id', '=', f.id)])"/>
+                        <t t-set="debit_move" t-value="request.env['account.partial.reconcile'].sudo().search([('debit_move_id', 'in', payments),('credit_move_id', '=', f.id)])"/>
+                        <t t-set="credit" t-value="0"/>
+			<t t-set="debit" t-value="0"/>
+			<t t-foreach="credit_move" t-as="c">
+				<t t-set="credit" t-value="credit + c.amount"/>
+			</t>
+			 <t t-foreach="debit_move" t-as="d">
+                                <t t-set="debit" t-value="debit + d.amount"/>
+                        </t>
+
+			<t t-if="credit - debit != 0">
+                                <span t-esc="credit - debit" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                        </t>
+                        <t t-if="credit - debit == 0">
+                                <t t-set="credit" t-value="request.env['account.partial.reconcile'].sudo().search([('debit_move_id', '=', f.id)], limit=1)"/>
+                                <t t-set="debit" t-value="request.env['account.partial.reconcile'].sudo().search([('credit_move_id', '=', f.id)], limit=1)"/>
+                                <span t-esc="credit.amount - debit.amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                        </t>
+                      </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td/>
+                    <td><strong>Total</strong></td>
+                    <td class="text-left">
+                        <span t-field="o.matched_amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
 
 	  </div>
 
