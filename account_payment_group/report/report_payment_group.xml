@@ -98,7 +98,7 @@
 	        </thead>
 	        <tbody class="invoice_tbody">
 	            <tr t-foreach="o.payment_ids" t-as="p">
-	              <td><td/>
+	              <td></td>
 	              <td><span t-if="p.journal_id" t-field="p.journal_id"/></td>
 	              <td><span t-if="p.create_date" t-field="p.create_date"/></td>
 	              <td><span t-if="p.date" t-field="p.date"/></td>
