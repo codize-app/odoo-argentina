@@ -23,7 +23,7 @@
     </field>
 </record>
 
-<record id="view_account_payment_group_search" model="ir.ui.view">
+<!--record id="view_account_payment_group_search" model="ir.ui.view">
     <field name="name">account.payment.group.search</field>
     <field name="model">account.payment.group</field>
     <field name="arch" type="xml">
@@ -33,14 +33,10 @@
             <field name="payment_methods"/>
             <field name="partner_id" />
             <field name="company_id" groups="base.group_multi_company" />
-            <!-- <filter string="Payable" domain="[('payment_type','=','outbound')]"/> -->
-            <!-- <filter string="Receivable" domain="[('payment_type','=','inbound')]"/> -->
             <separator/>
             <filter string="Draft" domain="[('state','=','draft')]" name='state_draft'/>
             <filter string="Posted" domain="[('state','=','posted')]" name='state_posted'/>
             <filter string="Not Cancelled" domain="[('state','!=','cancel')]" name='not_cancelled'/>
-            <!-- <filter string="Sent" domain="[('state','=','sent')]" name='state_sent'/> -->
-            <!-- <filter string="Reconciled" domain="[('state','=','reconciled')]"/> -->
             <separator/>
             <filter name="partner_id" string="Partner" domain="[]" context="{'group_by': 'partner_id'}"/>
             <filter name="state" string="State" domain="[]" context="{'group_by': 'state'}"/>
@@ -48,7 +44,7 @@
             <filter name="company_id" string="Company" domain="[]" context="{'group_by': 'company_id'}" groups="base.group_multi_company"/>
         </search>
     </field>
-</record>
+</record-->
 
 <record id="view_account_payment_group_form" model="ir.ui.view">
     <field name="name">Payment Multi</field>

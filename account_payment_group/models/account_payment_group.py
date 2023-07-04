@@ -657,7 +657,7 @@ class AccountPaymentGroup(models.Model):
         to_pay_move_lines = self.env['account.move.line'].browse(
             to_pay_move_line_ids).filtered(lambda x: (
                 x.account_id.reconcile and
-                x.account_id.internal_type in ('receivable', 'payable')))
+                x.account_id.account_type in ('asset_receivable', 'liability_payable')))
 
         if self._context.get('from_invoice') == 'yes':
             invoice = self.env['account.move'].browse(self._context.get('invoice_id'))
@@ -688,7 +688,7 @@ class AccountPaymentGroup(models.Model):
                     'No se pueden mandar líneas de pagos a diferentes Contactos'))
 
             internal_type = to_pay_move_lines.mapped(
-                'account_id.internal_type')
+                'account_id.account_type')
             if len(internal_type) != 1:
                 raise ValidationError(_(
                     'No se pueden mandar líneas de pagos desde diferentes Contactos'))
