@@ -17,6 +17,9 @@ class AccountJournal(models.Model):
         auto_join=True,
     )
 
+    account_third = fields.Many2one('account.account', 'Cuenta para Cheques de Terceros')
+    account_holding = fields.Many2one('account.account', 'Cuenta para Cheques Propios')
+
     @api.model
     def create(self, vals):
         rec = super(AccountJournal, self).create(vals)

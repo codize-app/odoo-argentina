@@ -15,16 +15,9 @@ class AccountCheckOperation(models.Model):
     _description = 'account.check.operation'
     _rec_name = 'operation'
     _order = 'date desc, id desc'
-    # _order = 'create_date desc'
 
-    # al final usamos solo date y no datetime porque el otro dato ya lo tenemos
-    # en create_date. ademas el orden es una mezcla de la fecha el id
-    # y entonces la fecha la solemos computar con el payment date para que
-    # sea igual a la fecha contable (payment date va al asiento)
-    # date = fields.Datetime(
     date = fields.Date(
         default=fields.Date.context_today,
-        # default=lambda self: fields.Datetime.now(),
         required=True,
         index=True,
     )
@@ -272,8 +265,12 @@ class AccountCheck(models.Model):
             # self.journal_id.default_debit_account_id.id, al debitar
             # tenemos que usar esa misma
             credit_account = journal.default_account_id
-            # la contrapartida es la cuenta que reemplazamos en el pago
-            debit_account = self.company_id._get_check_account('deferred')
+            if self.type == 'third_check':
+                if journal.account_third:
+                    debit_account = journal.account_third
+            else:
+                if journal.account_holding:
+                    debit_account = journal.account_holding
             name = _('Check "%s" debit') % (self.name)
         elif action == 'bank_reject':
             # al transferir a un banco se usa esta. al volver tiene que volver
@@ -290,6 +287,12 @@ class AccountCheck(models.Model):
             if action == 'bank_deposit':
                   debit_account = journal.default_account_id
                   credit_account = self.company_id._get_check_account('holding')
+                  if self.type == 'third_check':
+                      if journal.account_third:
+                          debit_account = journal.account_third
+                  else:
+                      if journal.account_holding:
+                          debit_account = journal.account_holding
             if action == 'bank_sell' and not self.company_id.negotiated_check_account_id:
                   raise ValidationError('No esta definida la cuenta de cheques negociados a nivel empresa')
             if action == 'bank_sell':
@@ -483,8 +486,8 @@ class AccountCheck(models.Model):
     )
     def _compute_state(self):
         for rec in self:
-            if rec.operation_ids:
-                operation = rec.operation_ids[0].operation
+            if rec.operation_ids.sorted():
+                operation = rec.operation_ids.sorted()[0].operation
                 rec.state = operation
             else:
                 rec.state = 'draft'
