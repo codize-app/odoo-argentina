@@ -16,6 +16,8 @@ class AccountJournal(models.Model):
         'Checkbooks',
         auto_join=True,
     )
+    account_third = fields.Many2one('account.account', 'Cuenta para Cheques de Terceros')
+    account_holding = fields.Many2one('account.account', 'Cuenta para Cheques Propios')
 
     @api.model
     def create(self, vals):
