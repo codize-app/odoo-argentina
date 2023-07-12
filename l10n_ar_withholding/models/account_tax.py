@@ -149,37 +149,6 @@ class AccountTax(models.Model):
 
         accumulated_amount = previous_withholding_amount = 0.0
 
-        #if self.withholding_accumulated_payments:
-        #    previos_payment_groups_domain, previos_payments_domain = (
-        #        self.get_period_payments_domain(payment_group))
-        #    #raise ValidationError('%s %s'%(previos_payment_groups_domain, previos_payments_domain))
-        #    same_period_payments = self.env['account.payment.group'].search(
-        #        previos_payment_groups_domain)
-        #    for same_period_payment_group in same_period_payments:
-        #        same_period_amounts = \
-        #            same_period_payment_group._get_withholdable_amounts(
-        #                withholding_amount_type, self.withholding_advances)
-        #        accumulated_amount += \
-        #            same_period_amounts[0] + same_period_amounts[1]
-        #    if self.withholding_type != 'tabla_ganancias':
-        #        previous_withholding_amount = sum(
-        #            self.env['account.payment'].search(
-        #                previos_payments_domain).mapped('amount'))
-        #    else:
-        #        previous_withholding_amount = 0
-        #        #Se cambia el dominio de busqueda payment_date a date ya que Odoo 14 descontinuo este campo en account.payment
-        #        for x in range(len(previos_payments_domain)):
-        #            if previos_payments_domain[x][0] == 'payment_date':
-        #                l = list(previos_payments_domain[x])
-        #                l[0] = 'date'
-        #                previos_payments_domain[x] = tuple(l)
-        #        prev_payments = self.env['account.payment'].search(previos_payments_domain)
-        #        for prev_payment in prev_payments:
-        #            if prev_payment.payment_group_id.payment_date.year == payment_group.payment_date.year and prev_payment.payment_group_id.payment_date.month == payment_group.payment_date.month and \
-        #                    prev_payment.payment_group_id.payment_date.day <= payment_group.payment_date.day:
-        #                        previous_withholding_amount += prev_payment.amount
-
-            #raise ValidationError('%s %s'%(previous_withholding_amount,previos_payments_domain))
         total_amount = (
             accumulated_amount +
             withholdable_advanced_amount +
@@ -377,20 +346,6 @@ class AccountTax(models.Model):
                 regimen.codigo_de_regimen, regimen.concepto_referencia)
         return vals
 
-    #def get_period_payments_domain(self, payment_group):
-    #    previos_payment_groups_domain, previos_payments_domain = super(
-    #        AccountTax, self).get_period_payments_domain(payment_group)
-    #    if self.withholding_type == 'tabla_ganancias':
-    #        previos_payment_groups_domain += [
-    #            ('regimen_ganancias_id', '=',
-    #                payment_group.regimen_ganancias_id.id)]
-    #        previos_payments_domain += [
-    #            ('payment_group_id.regimen_ganancias_id', '=',
-    #                payment_group.regimen_ganancias_id.id)]
-    #    return (
-    #        previos_payment_groups_domain,
-    #        previos_payments_domain)
-
     @api.model
     def create(self, vals):
         tax = super(AccountTax, self).create(vals)
@@ -550,25 +505,7 @@ class AccountTax(models.Model):
                 ('partner_id', '=', payment_group.partner_id.id)]
         return (previous_payment_groups_domain, previous_payments_domain)
 
-    #def get_partner_alicuota_percepcion(self, partner, date):
-    #    if partner and date:
-    #        arba = self.get_partner_alicuot(partner, date)
-    #        return arba.alicuota_percepcion / 100.0
-    #    return 0.0
-#
-    #def get_partner_alicuot(self, partner, date):
-    #    self.ensure_one()
-    #    commercial_partner = partner.commercial_partner_id
-    #    company = self.company_id
-    #    alicuot = 0
-    #    for alicuot_id in commercial_partner.arba_alicuot_ids:
-    #        if alicuot_id.tax_id.id == self.id:
-    #            alicuot = alicuot_id.percent
-    #    return alicuot
-
-    def _compute_amount(
-            self, base_amount, price_unit, quantity=1.0, product=None,
-            partner=None):
+    def _compute_amount(self, base_amount, price_unit, quantity=1.0, product=None, partner=None, fixed_multiplicator=1):
         if self.amount_type == 'partner_tax':
             # TODO obtener fecha de otra manera?
             try:
