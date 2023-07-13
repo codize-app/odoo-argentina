@@ -237,24 +237,7 @@ class AccountPayment(models.Model):
 
     @api.constrains('payment_group_id', 'payment_type')
     def check_payment_group(self):
-        # odoo tests don't create payments with payment gorups
-        if self.env.registry.in_test_mode():
-            return True
-        for rec in self:
-            receivable_payable = all([
-                x['move_line'].account_id.internal_type in [
-                    'receivable', 'payable']
-                for x in self._context.get('counterpart_aml_dicts', [])])
-            if rec.partner_type and rec.partner_id and receivable_payable and \
-               not rec.payment_group_id:
-                raise ValidationError(_(
-                    'Payments with partners must be created from '
-                    'payments groups'))
-            # transfers or payments from bank reconciliation without partners
-            elif not rec.partner_type and rec.payment_group_id:
-                raise ValidationError(_(
-                    "Payments without partners (usually transfers) cant't "
-                    "have a related payment group"))
+        return True
 
     @api.model
     def get_amls(self):
