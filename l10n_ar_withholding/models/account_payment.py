@@ -157,7 +157,7 @@ class AccountPayment(models.Model):
         for line in self.move_id.line_ids:
             if line.account_id in self._get_valid_liquidity_accounts():
                 liquidity_lines += line
-            elif line.account_id.internal_type in ('receivable', 'payable') or line.partner_id == line.company_id.partner_id:
+            elif line.account_id.account_type in ('liability_payable', 'asset_receivable') or line.partner_id == line.company_id.partner_id:
                 counterpart_lines += line
             #Modificación hecha para múltiples pagos de retención en un mismo grupo de pagos
             elif self.tax_withholding_id:

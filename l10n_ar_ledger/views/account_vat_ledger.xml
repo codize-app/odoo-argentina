@@ -53,6 +53,7 @@
                                 <field
                                     name="journal_ids"
                                     domain="[('type','in',['purchase', 'sale', 'purchase_refund', 'sale_refund']),('company_id', 'child_of', company_id)]"
+                                    groups="base.group_multi_company"
                                 />
                             </page>
                             <page string="Invoices" name="invoices">

@@ -815,8 +815,8 @@ class AccountPaymentGroup(models.Model):
 
             #counterpart_aml = rec.payment_ids.mapped('move_line_ids').filtered(
             counterpart_aml = rec.payment_ids.mapped('invoice_line_ids').filtered(
-                lambda r: not r.reconciled and r.account_id.internal_type in (
-                    'payable', 'receivable'))
+                lambda r: not r.reconciled and r.account_id.account_type in (
+                    'liability_payable', 'asset_receivable'))
 
             # porque la cuenta podria ser no recivible y ni conciliable
             # (por ejemplo en sipreco)

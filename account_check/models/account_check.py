@@ -559,7 +559,7 @@ class AccountCheck(models.Model):
             else:
                 vals['date'] = str(date)
             move = self.env['account.move'].create(vals)
-            move.post()
+            move.action_post()
             self._add_operation('deposited', move, date=vals['date'])
             self.write({'state': 'deposited'})
 
@@ -593,7 +593,7 @@ class AccountCheck(models.Model):
             else:
                 vals['date'] = str(action_date)
             move = self.env['account.move'].create(vals)
-            move.post()
+            move.action_post()
             #self._add_operation('deposited', move, date=vals['date'])
             #self.handed_reconcile(payment.move_line_ids.mapped('move_id'))
             self._add_operation('debited', move, date=move.date)

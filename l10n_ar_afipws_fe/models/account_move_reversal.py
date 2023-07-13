@@ -30,7 +30,7 @@ class AccountMoveReversal(models.TransientModel):
                 'invoice_origin': move.document_number,
                 'move_type': move_type,
                 'l10n_latam_document_type_id': doc_type,
-                'auto_post': True if self.date > fields.Date.context_today(self) else False,
+                'auto_post': True if self.date > fields.Date.context_today(self) else 'no',
             })
 
         # Handle reverse method.
