@@ -134,7 +134,7 @@ class AccountVatLedger(models.Model):
         if self.type == "sale":
             invoices_domain = [
                 ("state", "not in", ["draft", "cancel"]),
-                ("document_number", "!=", False),
+                #("document_number", "!=", False),
                 ("journal_id", "in", self.journal_ids.ids),
                 ("date", ">=", self.date_from),
                 ("date", "<=", self.date_to),
@@ -629,3 +629,10 @@ class AccountVatLedger(models.Model):
                 ]
             res.append("".join(row))
         self.REGDIGITAL_CV_CBTE = "\r\n".join(res)
+
+    def get_vat_import(self, vat, code):
+        import_vat = 0
+        for v in vat:
+            if v['Id'] == code:
+                import_vat = import_vat + v['Importe']
+        return import_vat
