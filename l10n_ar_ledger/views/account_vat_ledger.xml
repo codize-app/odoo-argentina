@@ -62,10 +62,11 @@
                                         <field name="name" />
                                         <field name="invoice_date" />
                                         <field name="partner_id" />
-                                        <field name="amount_untaxed" />
-                                        <field name="amount_tax" />
-                                        <field name="amount_total" />
-                                        <field name="state" widget="badge" />
+                                        <field name="amount_untaxed" sum="Total Untaxed" />
+                                        <field name="amount_tax" sum="Total Tax" />
+                                        <field name="amount_total" sum="Total Amount" />
+                                        <field name="currency_id" invisible="1" />
+                                        <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'posted'" />
                                     </tree>
                                 </field>
                             </page>
