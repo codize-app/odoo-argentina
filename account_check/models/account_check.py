@@ -66,8 +66,7 @@ class AccountCheckOperation(models.Model):
         'res.partner',
         string='Cliente/Proveedor',
     )
-    notes = fields.Text(
-    )
+    notes = fields.Text()
 
     def unlink(self):
         for rec in self:
@@ -108,12 +107,10 @@ class AccountCheckOperation(models.Model):
         return [
             ('account.payment', 'Pago'),
             ('account.check', 'Cheque'),
-            ('account.invoice', 'Factura'),
             ('account.move', 'Asiento Contable'),
             ('account.move.line', 'Apunte Contable'),
             ('account.bank.statement.line', 'Línea de Declaración'),
         ]
-
 
 class AccountCheck(models.Model):
 
@@ -316,7 +313,7 @@ class AccountCheck(models.Model):
         else:
             currency_id = self.currency_id
             amount = self.amount
-            amount_currency = 0
+            amount_currency = self.amount_company_currency
         debit_line_vals = {
             'name': name,
             'account_id': debit_account.id,
@@ -331,21 +328,19 @@ class AccountCheck(models.Model):
             'account_id': credit_account.id,
             # 'partner_id': partner,
             'credit': amount,
-            'amount_currency': amount_currency,
+            'amount_currency': amount_currency * -1,
             #'currency_id': currency_id.id,
             # 'ref': ref,
             }
+
         return {
                'ref': name,
                'journal_id': journal.id,
                'date': fields.Date.today(),
                'line_ids': [
-                                (0, False, debit_line_vals),
-                                (0, False, credit_line_vals)],
+                   (0, False, debit_line_vals),
+                   (0, False, credit_line_vals)],
                }
-
-
-
 
     @api.depends('operation_ids.partner_id')
     def _compute_first_partner(self):

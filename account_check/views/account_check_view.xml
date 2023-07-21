@@ -55,7 +55,7 @@
                 <button context="{'default_action_type': 'claim'}" name="%(action_account_check_action_wizard)d" type="action" string="Reclamar a Cliente" attrs="{'invisible': ['|', ('state', '!=', 'rejected'), ('type', '!=', 'third_check')]}" help="Creará un borrador de nota de débito para el cliente y cambiará el estado del cheque."/>
                 <button context="{'default_action_type': 'customer_return'}" name="%(action_account_check_action_wizard)d" type="action" string="Devolver a Cliente" attrs="{'invisible': ['|', ('state', '!=', 'holding'), ('type', '!=', 'third_check')]}" help="Creará un borrador de nota de débito para el cliente y cambiará el estado del cheque ."/>
                 <button context="{'default_action_type': 'bank_debit'}" name="%(action_account_check_action_wizard)d" type="action" string="Debitar" states="handed" help="Creará una entrada de diario de la cuenta de cheques diferida a la cuenta bancaria y cambiará el estado del cheque."/>
-                !--button context="{'default_action_type': 'reject'}" name="%(action_account_check_action_wizard)d" type="action" string="Retorno de Proveedor/Rechazo" states="handed" help="It will create a draft debit note from supplier and change check state"/-->
+                <!--button context="{'default_action_type': 'reject'}" name="%(action_account_check_action_wizard)d" type="action" string="Retorno de Proveedor/Rechazo" states="handed" help="It will create a draft debit note from supplier and change check state"/-->
                 <button context="{'default_action_type': 'reject'}" name="%(action_account_check_action_wizard)d" type="action" string="Rechazo del Proveedor" states="delivered" help="Creará una nota de débito del proveedor en estado de borrador y cambiará el estado del cheque."/>
                 <button context="{'default_action_type': 'reject'}" name="%(action_account_check_action_wizard)d" type="action" string="Rechazo Bancario" states="deposited" help="Creará una entrada de cuenta desde la cuenta bancaria a la cuenta de rechazo de la empresa y cambiará el estado del cheque."/>
                 <button context="{'default_action_type': 'reject'}" name="%(action_account_check_action_wizard)d" type="action" string="Rechazo de la Venta" states="selled" help="Creará una entrada de cuenta desde la cuenta de efectivo a la cuenta de rechazo de la empresa y cambiará el estado del cheque."/>
@@ -86,25 +86,29 @@
                         <field name="company_id" groups="base.group_multi_company" widget="selection" string="Compañía"/>
                     </group>
                 </group>
-                <group string="Operaciones">
+                <notebook string="Operaciones">
+                  <page string="Operaciones">
                     <field name="operation_ids" nolabel="1" readonly="1">
                         <tree>
                             <field name="date" string="Fecha"/>
                             <field name="operation" string="Operación" />
-                            <field name="origin" string="Origen"/>
+                            <field name="origin" string="Origen" />
                             <field name="partner_id" string="Contacto" />
                         </tree>
                         <form>
+                          <sheet>
                             <group>
-                                <field name="date" string="Fecha"/>
-                                <field name="operation" string="Operación"/>
-                                <field name="origin" string="Origen"/>
-                                <field name="partner_id" string="Contacto"/>
-                                <field name="notes" string="Notas"/>
+                                   <field name="date" string="Fecha"/>
+                                   <field name="operation" string="Operación"/>
+                                   <field name="origin" string="Origen" options="{'no_quick_create': True}" context="{'default_model': 'account.move'}" readonly="1" />
+                                   <field name="partner_id" string="Contacto"/>
+                                   <field name="notes" string="Notas"/>
                             </group>
+                           </sheet>
                         </form>
                     </field>
-                </group>
+                  </page>
+                </notebook>
             </sheet>    
             <div class="oe_chatter">
                 <field name="message_follower_ids" widget="mail_followers"/>
