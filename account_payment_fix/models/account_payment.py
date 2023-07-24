@@ -37,9 +37,6 @@ class AccountPayment(models.Model):
     )
     exchange_rate = fields.Float(
         string='Tipo de Cambio',
-        #compute='_compute_exchange_rate',
-        # readonly=False,
-        # inverse='_inverse_exchange_rate',
         digits=(16, 4),
     )
 
@@ -60,6 +57,11 @@ class AccountPayment(models.Model):
             else:
                 force_amount_company_currency = False
             rec.force_amount_company_currency = force_amount_company_currency
+
+    @api.onchange('currency_id')
+    def _get_currency_rate(self):
+        if self.currency_id:
+            self.exchange_rate = self.currency_id.inverse_rate
 
     @api.depends('amount', 'payment_type', 'partner_type', 'amount_company_currency')
     def _compute_signed_amount(self):
@@ -167,9 +169,7 @@ class AccountPayment(models.Model):
         #    domain.append(('at_least_one_outbound', '=', True))
         return domain
 
-    @api.depends(
-        'payment_type',
-    )
+    @api.depends('payment_type')
     def _compute_journals(self):
         for rec in self:
             rec.journal_ids = rec.journal_ids.search(rec.get_journals_domain())
@@ -187,13 +187,13 @@ class AccountPayment(models.Model):
                 methods = rec.journal_id.inbound_payment_method_ids
             rec.payment_method_ids = methods
 
-    @api.onchange('currency_id')
-    def _onchange_currency(self):
-        """ Anulamos metodo nativo que pisa el monto remanente que pasamos
-        por contexto TODO ver si podemos re-incorporar esto y hasta extender
-        _compute_payment_amount para que el monto se calcule bien aun usando
-        el save and new"""
-        return False
+    #@api.onchange('currency_id')
+    #def _onchange_currency(self):
+    #    """ Anulamos metodo nativo que pisa el monto remanente que pasamos
+    #    por contexto TODO ver si podemos re-incorporar esto y hasta extender
+    #    _compute_payment_amount para que el monto se calcule bien aun usando
+    #    el save and new"""
+    #    return False
 
     @api.onchange('payment_type')
     def _onchange_payment_type(self):
@@ -209,20 +209,7 @@ class AccountPayment(models.Model):
                 self.partner_type = 'supplier'
             else:
                 self.partner_type = False
-            # limpiamos journal ya que podria no estar disponible para la nueva
-            # operacion y ademas para que se limpien los payment methods
-            self.journal_id = False
-        # # Set payment method domain
-        # res = self._onchange_journal()
-        # if not res.get('domain', {}):
-        #     res['domain'] = {}
-        # res['domain']['journal_id'] = self.payment_type == 'inbound' and [
-        #     ('at_least_one_inbound', '=', True)] or [
-        #     ('at_least_one_outbound', '=', True)]
-        # res['domain']['journal_id'].append(('type', 'in', ('bank', 'cash')))
-        # return res
 
-    # @api.onchange('partner_type')
     def _onchange_partner_type(self):
         """
         Agregasmos dominio en vista ya que se pierde si se vuelve a entrar
@@ -260,9 +247,11 @@ class AccountPayment(models.Model):
                 self.move_id._set_next_sequence()
                 self.name =self.move_id.name
 
+            #_logger.info('>>>>>')
+            #_logger.info(self.journal_id.currency_id.id or self.company_id.currency_id.id)
 
-            self.currency_id = (
-                self.journal_id.currency_id or self.company_id.currency_id)
+            #self.currency_id = (self.journal_id.currency_id.id or self.company_id.currency_id.id)
+            #_logger.info(self.currency_id)
             # Set default payment method
             # (we consider the first to be the default one)
             payment_methods = (

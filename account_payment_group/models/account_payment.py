@@ -164,12 +164,6 @@ class AccountPayment(models.Model):
                rec.company_currency_id != rec.currency_id:
                 rec.other_currency = True
 
-    @api.depends('amount', 'other_currency', 'amount_company_currency')
-    def _compute_exchange_rate(self):
-        for rec in self.filtered('other_currency'):
-            rec.exchange_rate = rec.amount and (
-                rec.amount_company_currency / rec.amount) or 0.0
-
     # this onchange is necesary because odoo, sometimes, re-compute
     # and overwrites amount_company_currency. That happends due to an issue
     # with rounding of amount field (amount field is not change but due to

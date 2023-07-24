@@ -56,14 +56,6 @@
                     </group>
                 </div>
             </field>
-            <label for="amount" position="before">
-                <label for="amount" attrs="{'invisible': [('payment_method_code', '!=', 'delivered_third_check')]}"/>
-                <div name="readonly_amount_div" class="o_row" attrs="{'invisible': [('payment_method_code', '!=', 'delivered_third_check')]}">
-                    <field name="amount" readonly="True"/>
-                    <field name="other_currency" />
-                    <field name="currency_id" readonly="True" groups="base.group_multi_currency" attrs="{'invisible': [('other_currency', '=', False)]}"/>
-                </div>
-            </label>
             <label for="amount" position="attributes">
                 <attribute name="attrs">{'invisible': [('payment_method_code', '=', 'delivered_third_check')]}</attribute>
             </label>
