@@ -245,10 +245,7 @@ class AccountPayment(models.Model):
                 self.move_id.journal_id = self.journal_id.id
                 self.name.replace('False', self.journal_id.code)
                 self.move_id._set_next_sequence()
-                self.name =self.move_id.name
-
-            #_logger.info('>>>>>')
-            #_logger.info(self.journal_id.currency_id.id or self.company_id.currency_id.id)
+                self.name = self.move_id.name
 
             #self.currency_id = (self.journal_id.currency_id.id or self.company_id.currency_id.id)
             #_logger.info(self.currency_id)
@@ -265,20 +262,6 @@ class AccountPayment(models.Model):
                     'account.account_payment_method_manual_out')
             self.payment_method_id = (
                 payment_methods and payment_methods[0] or False)
-            # si se eligió de origen el mismo diario de destino, lo resetiamos
-            #if self.journal_id == self.destination_journal_id:
-            #    self.destination_journal_id = False
-        #     # Set payment method domain
-        #     # (restrict to methods enabled for the journal and to selected
-        #     # payment type)
-        #     payment_type = self.payment_type in (
-        #         'outbound', 'transfer') and 'outbound' or 'inbound'
-        #     return {
-        #         'domain': {
-        #             'payment_method_id': [
-        #                 ('payment_type', '=', payment_type),
-        #                 ('id', 'in', payment_methods.ids)]}}
-        # return {}
 
     @api.depends('invoice_line_ids', 'payment_type', 'partner_type', 'partner_id')
     def _compute_destination_account_id(self):
@@ -300,29 +283,3 @@ class AccountPayment(models.Model):
                 self.destination_account_id = (
                     partner.property_account_payable_id.id)
         return res
-
-    def action_post(self):
-        #rehago la numeración acá porque get_last_secuence trae el último grabado y siempre trae el mismo si hay mas de un
-        #movimiento para un journal
-        for rec in self:
-            if rec.journal_id:
-                if not rec.reconciled_bill_ids:
-                    rec.move_id.journal_id = rec.journal_id.id
-                    last_sequence = rec.move_id._get_last_sequence()
-                    new = not last_sequence
-                    if new:
-                        last_sequence = rec.move_id._get_last_sequence(
-                            relaxed=True) or rec.move_id._get_starting_sequence()
-                    # Modificación de BIRTUM ya que cuando en los pagos
-                    # vienen retenciones el name es '/' por lo que al tratar
-                    # de hacer el typecast a int salta un error.
-                    last_num = rec.move_id.name[-4:]
-                    try:
-                        nro_move = int(last_num)
-                    except:
-                        nro_move = False
-                    last_secuence_number = int(last_sequence[-4:])
-                    if isinstance(nro_move, int) and last_secuence_number >= nro_move:
-                        rec.move_id._set_next_sequence()
-                    rec.name = rec.move_id.name
-            super(AccountPayment, rec).action_post()
