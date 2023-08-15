@@ -112,7 +112,7 @@ class AccountJournal(models.Model):
         else:
             return False
         actions = self.env.ref(action_name)
-        action_read = actions.read()[0]
+        action_read = actions.sudo().read()[0]
         context = literal_eval(action_read['context'])
         context['search_default_journal_id'] = self.id
         action_read['context'] = context
