@@ -369,6 +369,8 @@ class InvoiceSufferedLine(models.Model):
             for group in taxes:
                 if group[0] == self.withholdings_suffered_id.tax_withholdings_suffered.tax_group_id.name:
                     per_tmp = per_tmp + group[1]
+            if rec.invoice.currency_id.name != 'ARS':
+                per_tmp = per_tmp * rec.invoice.currency_rate
             rec.total_withholdings_suffered = per_tmp
 
     invoice = fields.Many2one('account.move','Factura')
