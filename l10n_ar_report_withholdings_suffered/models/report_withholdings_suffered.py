@@ -365,6 +365,8 @@ class InvoiceSufferedLine(models.Model):
                         per_tmp = (per_tmp + tax['tax_group_amount']) * rec.invoice.l10n_ar_currency_rate
                     else:
                         per_tmp = per_tmp + tax['tax_group_amount']
+            if rec.invoice.currency_id.name != 'ARS':
+                per_tmp = per_tmp * rec.invoice.currency_rate
             rec.total_withholdings_suffered = per_tmp
 
     invoice = fields.Many2one('account.move','Factura')
