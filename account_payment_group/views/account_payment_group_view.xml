@@ -9,9 +9,8 @@
     <field name="model">account.payment.group</field>
     <field name="arch" type="xml">
         <tree decoration-info="state=='draft'" decoration-muted="state in ['reconciled', 'cancel']">
-	    <field name="payment_date"/>
-	    <field name="display_name"/>
-            <!-- <field name="name"/> -->
+            <field name="payment_date"/>
+            <field name="display_name"/>
             <field name="partner_id"/>
             <field name="payment_methods"/>
             <field name="payments_amount" sum="Total" string="Monto"/>
@@ -98,20 +97,8 @@
                     <group>
                         <field name="company_id" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_company" invisible="context.get('pop_up')"/>
                         <field name="currency_id" invisible="1"/>
-                        <!-- <field name="payment_type" widget="radio"/> -->
-                        <!-- <b><field name="partner_type" nolabel="1" widget="selection" string="" attrs="{'required': [('payment_type', 'in', ('inbound', 'outbound'))], 'readonly': [('state', '!=', 'draft')]}"/></b> -->
-			<!-- field name="partner_id" context="{'default_is_company': True, 'default_supplier': partner_type == 'supplier', 'default_customer': partner_type == 'customer'}" 
-				domain="[(partner_type, '=', True)]"  
-				invisible="context.get('pop_up')"/ -->
 			<field name="partner_id" context="{'default_is_company': True, 'default_supplier': partner_type == 'supplier', 'default_customer': partner_type == 'customer'}" 
 				invisible="context.get('pop_up')"/>
-                        <!-- <field name="partner_id" attrs="{'required': [('payment_type', 'in', ('inbound', 'outbound'))]}" context="{'default_is_company': True, 'default_supplier': payment_type == 'outbound', 'default_customer': payment_type == 'inbound'}" domain="[(partner_type, '=', True)]"/> -->
-                        <!-- <field name="partner_id" nolabel="1" attrs="{'required': [('payment_type', 'in', ('inbound', 'outbound'))], 'invisible': [('payment_type', 'not in', ('inbound', 'outbound'))], 'readonly': [('state', '!=', 'draft')]}" context="{'default_is_company': True, 'default_supplier': payment_type == 'outbound', 'default_customer': payment_type == 'inbound'}"/> -->
-                        <!-- <label for="amount"/>
-                        <div name="amount_div" class="o_row">
-                            <field name="amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="currency_id" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_currency" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                        </div> -->
                     </group>
 		    <group>
 		        <field name="receiptbook_id" attrs="{'invisible': [('localization', '=', False)], 'required':[('localization', '!=', False), ('state', '=', 'draft')]}" domain="[('partner_type', '=', partner_type), ('company_id', '=', company_id)]" groups="base.group_multi_company" />
@@ -121,8 +108,6 @@
                         <field name="num_op" attrs="{'readonly': [('state', 'not in', ['draft', 'confirmed'])], 'invisible': [('partner_type', '=', 'supplier')]}"/>
                         <field name="branch_op" attrs="{'readonly': [('state', 'not in', ['draft', 'confirmed'])], 'invisible': [('partner_type', '=', 'supplier')]}"/>
                     </group>
-                <!-- </group> -->
-                <!-- <group attrs="{'invisible': [('payment_subtype', '!=', 'double_validation')]}"> -->
                     <group>
                         <field name="selected_debt" options="{'currency_field': 'currency_id'}" states="draft,confirmed"/>
                         <field name="related_invoice" attrs="{'invisible': [('related_invoice', '==', False)]}"/>
@@ -136,33 +121,21 @@
                     <group>
                         <field name="payments_amount" string="Monto pago" options="{'currency_field': 'currency_id'}"/>
                         <field name="payment_difference" options="{'currency_field': 'currency_id'}" states="draft,confirmed"/>
-<!--                         <label for="payments_amount" string="Payments Amount"/>
-                        <div class="oe_inline">
-                            <field name="payments_amount" options="{'currency_field': 'currency_id'}" class="oe_inline"/> (<field name="payment_difference" class="oe_inline"/>)
-                        </div> -->
-                        <!-- <label for="payment_difference" attrs="{'invisible': [('payment_difference', '=', 0.0)]}"/> -->
-                        <!-- <div attrs="{'invisible': [('payment_difference', '=', 0.0)]}"> -->
-                            <!-- <field name="payment_difference_handling" widget="radio" nolabel="1"/> -->
-                        <!-- </div> -->
-                        <!-- <field name="writeoff_account_id" string="Post Difference In"
-                            attrs="{'invisible': [('payment_difference_handling','=','open')], 'required': [('payment_difference_handling', '=', 'reconcile')]}"/> -->
                     </group>
                 </group>
                 <notebook>
-                    <page string="Lineas a pagar" attrs="{'invisible': ['|', '|', ('pop_up', '=', True), ('payment_subtype', '!=', 'double_validation'), ('state', 'not in', ['draft', 'confirmed'])]}">
+                    <page string="Lineas a pagar" attrs="{'invisible': ['|', '|', ('pop_up', '=', True), ('payment_subtype', '!=', 'double_validation'), ('state', 'not in', ['draft', 'confirmed'])]}" autofocus="autofocus">
                         <button name="add_all" string="Agregar Todos / Refrescar" states="draft" type="object"/>
                         <button name="remove_all" string="Remover Todos" states="draft" type="object"/>
-                        <button name="%(action_account_payment_group_invoice_wizard)d" string="+ Debit Note" states="draft" type="action" invisible="1"/>
-                        <button name="%(action_account_payment_group_invoice_wizard)d" string="+ Credit Note" states="draft" context="{'refund': True}" type="action" invisible="1"/>
-                        <field name="to_pay_move_line_ids" context="{'tree_view_ref': 'account_payment_group.view_move_line_tree'}" domain="[('partner_id.commercial_partner_id', '=', commercial_partner_id),('account_id.account_type', '=', account_internal_type),('account_id.reconcile', '=', True),('reconciled', '=', False),('full_reconcile_id', '=', False),('company_id', '=', company_id)]" groups="base.group_multi_company" />
+                        <button name="345" string="+ Debit Note" states="draft" type="action" invisible="1"/>
+                        <button name="345" string="+ Credit Note" states="draft" context="{'refund': True}" type="action" invisible="1"/>
+                        <field name="to_pay_move_line_ids" domain="[('partner_id.commercial_partner_id', '=', commercial_partner_id),('account_id.account_type', '=', account_internal_type),('account_id.reconcile', '=', True),('reconciled', '=', False),('full_reconcile_id', '=', False),('company_id', '=', company_id)]" groups="base.group_multi_company" />
                     </page>
-                    <!-- no las pudimos hacer invisibles porque nos da error al venir de una factura y querer hacer las to pay lines tmb invisibles. lo bueno de hacerlas invisibles era que al confirmar se pasaba a las payment lines automaticamente -->
+                   
                     <page string="Lineas de pagos" attrs="{'invisible': [('payment_subtype', '=', 'double_validation'), ('state', '=', 'draft')]}">
-                    <!-- <page string="Payment Lines" autofocus="autofocus"> -->
-                        <!-- no pudimos hacer que payment_difference se actualice cuando ponemos save and new. La unica que se me ocurre es si está guardado, podemos mandar el active_id y que sea un default en payments el que obtiene el valor -->
-                        <field name="payment_ids" context="{'default_payment_group_company_id': company_id, 'default_payment_type': partner_type == 'supplier' and 'outbound' or 'inbound', 'default_payment_date': payment_date, 'default_partner_id': partner_id, 'default_partner_type': partner_type, 'payment_group': True, 'default_amount': payment_difference, 'tree_view_ref': 'account_payment_group.view_account_payment_from_group_tree'}" attrs="{'readonly': [('state', 'not in', ['draft', 'confirmed'])]}" groups="base.group_multi_company" />
-                        <!-- <field name="payment_ids" context="{'default_payment_type': partner_type == 'supplier' and 'outbound' or 'inbound', 'default_payment_date': payment_date, 'default_partner_id': partner_id, 'default_partner_type': partner_type, 'payment_group': True, 'default_amount': payment_difference, 'tree_view_ref': 'account_payment_group.view_account_payment_tree'}" attrs="{'readonly': ['|', ('state', 'not in', ['draft', 'confirmed']), ('payment_subtype', '=', 'double_validation'), ('state', '=', 'draft')]}"/> -->
-                        <!-- <field name="payment_ids" context="{'default_payment_type': payment_type, 'default_payment_date': payment_date, 'default_partner_id': partner_id, 'default_partner_type': partner_type, 'payment_group': True, 'default_amount': payment_difference, 'tree_view_ref': 'account_payment_group.view_account_payment_tree'}"/> -->
+                    
+                        <field name="payment_ids" context="{'default_payment_group_company_id': company_id, 'default_payment_type': partner_type == 'supplier' and 'outbound' or 'inbound', 'default_payment_date': payment_date, 'default_partner_id': partner_id, 'default_partner_type': partner_type, 'payment_group': True, 'default_amount': payment_difference}" attrs="{'readonly': [('state', 'not in', ['draft', 'confirmed'])]}" groups="base.group_multi_company"/>
+                        
                     </page>
                     <page string="Deudas" attrs="{'invisible': ['|', '|', ('pop_up', '=', True), ('payment_subtype', '!=', 'simple'), ('state', '!=', 'draft')]}">
                         <p>
@@ -170,12 +143,30 @@
                         </p>
                         <button name="add_all" string="Agregar Todos / Refrescar" states="draft" type="object"/>
                         <button name="remove_all" string="Remover Todos" states="draft" type="object"/>
-                        <button name="%(action_account_payment_group_invoice_wizard)d" string="+ Debit Note" states="draft" type="action" context="{'internal_type': 'debit_note'}" invisible="1"/>
-                        <button name="%(action_account_payment_group_invoice_wizard)d" string="+ Credit Note" states="draft" context="{'refund': True}" type="action" invisible="1"/>
-                        <field name="debt_move_line_ids" context="{'tree_view_ref': 'account_payment_group.view_move_line_tree'}" domain="[('partner_id.commercial_partner_id', '=', commercial_partner_id),('account_id.account_type', '=', account_internal_type),('account_id.reconcile', '=', True),('reconciled', '=', False), ('full_reconcile_id', '=', False),('company_id', '=', company_id)]" groups="base.group_multi_company" />
+                        <button name="345" string="+ Debit Note" states="draft" type="action" context="{'internal_type': 'debit_note'}" invisible="1"/>
+                        <button name="345" string="+ Credit Note" states="draft" context="{'refund': True}" type="action" invisible="1"/>
+                        <field name="debt_move_line_ids" domain="[('partner_id.commercial_partner_id', '=', commercial_partner_id),('account_id.account_type', '=', account_internal_type),('account_id.reconcile', '=', True),('reconciled', '=', False), ('full_reconcile_id', '=', False),('company_id', '=', company_id)]" groups="base.group_multi_company">
+                          <tree string="Journal Items" edit="0">
+                              <field name="date"/>
+                              <field name="date_maturity"/>
+                              <field name="move_id" required="0"/>
+                              <field name="journal_id" options="{&quot;no_open&quot;:True}"/>
+                              <field name="name"/>
+                              <field name="ref"/>
+                              <field name="statement_id" invisible="1"/>
+                              <field name="account_id" options="{&quot;no_open&quot;:True}" domain="[('company_id', '=', company_id)]"/>
+                              <field name="balance" string="Amount"/>
+                              <field name="amount_residual" sum="Total"/>
+                              <field name="amount_currency" groups="base.group_multi_currency"/>
+                              <field name="amount_residual_currency" groups="base.group_multi_currency"/>
+                              <field name="currency_id" invisible="1"/>
+                              <field name="company_currency_id" invisible="1"/>
+                              <field name="company_id" invisible="1"/>
+                          </tree>
+                        </field>
                     </page>
                     <page string="Pagado" states="posted">
-                        <field name="matched_move_line_ids" context="{'payment_group_id': id, 'tree_view_ref': 'account_payment_group.view_move_line_with_matched_tree'}"/>
+                        <field name="matched_move_line_ids"/>
                     </page>
                     <page string="Notes">
                         <field name="notes"/>
@@ -221,15 +212,6 @@
         </p>
     </field>
 </record>
-
-<!-- action to be called from invoice -->
-<!-- <record id="action_account_invoice_payment_group" model="ir.actions.act_window">
-    <field name="name">Register Payment</field>
-    <field name="res_model">account.payment.group</field>
-    <field name="view_mode">form</field>
-    <field name="context">{'default_invoice_ids': [(4, active_id, None)]}</field>
-    <field name="target">new</field>
-</record> -->
 
 <record id="action_account_payments_group_payable" model="ir.actions.act_window">
     <field name="name">Supplier Payments</field>
