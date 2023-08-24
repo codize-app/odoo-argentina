@@ -1,0 +1,455 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_ar_reports
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-04 00:38+0000\n"
+"PO-Revision-Date: 2019-08-04 00:38+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__afip_responsibility_type_id
+msgid "AFIP Responsibility Type"
+msgstr "Tipo de Responsabilidad AFIP"
+
+#. module: l10n_ar_reports
+#: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_search
+msgid "AFIP responsibility"
+msgstr "Responsabilidad AFIP"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "ALIQUOTS TXT"
+msgstr "ALICUOTAS TXT"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__afip_responsibility_type_name
+msgid "Afip Responsibility Type Name"
+msgstr "Nombre Responsabilidad AFIP"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "Aliquots"
+msgstr "Alícuotas"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "Aliquots (TXT)"
+msgstr "Alícuotas (TXT)"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,help:l10n_ar_reports.field_account_ar_vat_line__other_taxes
+msgid ""
+"All the taxes tat ar not VAT taxes or iibb perceptions and that are realted "
+"to documents that have VAT"
+msgstr ""
+"Todos los impuestos que no son IVA a percepción IIBB y que estan "
+"relacionados  a comprobantes que tienen IVA"
+
+#. module: l10n_ar_reports
+#: model:ir.model,name:l10n_ar_reports.model_l10n_ar_vat_book
+msgid "Argentinian VAT Book"
+msgstr "Libro de IVA Argentino"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid ""
+"Can only generate TXT files using posted entries. Please remove Include "
+"unposted entries filter and try again"
+msgstr ""
+"Solo puede generar archivos TXT usando asientos publicados. Por favor "
+"remueva el filtro Incluir asientos no publicados e intente de nuevo"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__company_id
+#: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_search
+msgid "Company"
+msgstr "Compañía"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__cuit
+msgid "Cuit"
+msgstr ""
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__company_currency_id
+msgid "Currency"
+msgstr "Moneda"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__type__out_refund
+msgid "Customer Credit Note"
+msgstr "Nota de Crédito de Cliente"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__type__out_invoice
+msgid "Customer Invoice"
+msgstr "Factura de Cliente"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__date
+#: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_search
+#, python-format
+msgid "Date"
+msgstr "Fecha"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__display_name
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_l10n_ar_vat_book__display_name
+msgid "Display Name"
+msgstr "Nombre a mostrar"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "Document"
+msgstr "Comprobante"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__document_type_id
+#: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_search
+msgid "Document Type"
+msgstr "Tipo de Comprobante"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__move_id
+#: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_search
+msgid "Entry"
+msgstr "Asiento"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__base_10
+msgid "Grav. 10,5%"
+msgstr ""
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__base_25
+msgid "Grav. 2,5%"
+msgstr ""
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__base_21
+msgid "Grav. 21%"
+msgstr ""
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__base_27
+msgid "Grav. 27%"
+msgstr ""
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__base_5
+msgid "Grav. 5%"
+msgstr ""
+
+#. module: l10n_ar_reports
+#: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_search
+msgid "Group By..."
+msgstr "Agrupar por..."
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__id
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_l10n_ar_vat_book__id
+msgid "ID"
+msgstr ""
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "IMPORTATION ALIQUOTS TXT"
+msgstr "ALICUOTAS DE IMPORTACION TXT"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "Importation_Aliquots"
+msgstr "Alicuotas_de_Importacion"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "Importation Aliquots (TXT)"
+msgstr "Alícuotas de Importación (TXT)"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__invoice_date
+msgid "Invoice Date"
+msgstr "Fecha factura"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__journal_id
+msgid "Journal"
+msgstr "Diario"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__type__entry
+msgid "Journal Entry"
+msgstr "Asiento Manual"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line____last_update
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_l10n_ar_vat_book____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__move_name
+msgid "Move Name"
+msgstr "Nombre de Asiento"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "Name"
+msgstr "Nombre"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "Not Taxed"
+msgstr "No Gravado"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,help:l10n_ar_reports.field_account_ar_vat_line__not_taxed
+msgid ""
+"Not Taxed / Exempt.\\All lines that have VAT 0, Exempt, Not Taxed or Not "
+"Applicable"
+msgstr ""
+"No Gravado / Exento.\\Todas las lineas que tienen VAT 0, Exento, No Gravado "
+"o No Corresponde"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__not_taxed
+msgid "Not taxed/ex"
+msgstr "No grav/ex"
+
+#. module: l10n_ar_reports
+#: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_tree
+msgid "Open"
+msgstr "Abierto"
+
+#. module: l10n_ar_reports
+#: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_tree
+msgid "Open journal entry"
+msgstr "Abrir asiento"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__other_taxes
+#, python-format
+msgid "Other Taxes"
+msgstr "Otros Impuestos"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__partner_id
+#: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_search
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__partner_name
+msgid "Partner Name"
+msgstr "Nombre de la empresa"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__state__posted
+#: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_search
+msgid "Posted"
+msgstr "Publicado"
+
+#. module: l10n_ar_reports
+#: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_search
+msgid "Posted Journal Items"
+msgstr "Apuntes contables publicados"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__type__in_receipt
+msgid "Purchase Receipt"
+msgstr "Recibo de compra"
+
+#. module: l10n_ar_reports
+#: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_search
+msgid "Purchase VAT"
+msgstr "IVA Compras"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#: model:ir.actions.client,name:l10n_ar_reports.action_l10n_ar_purchases_vat_book
+#: model:ir.ui.menu,name:l10n_ar_reports.menu_l10n_ar_purchases_vat_book
+#, python-format
+msgid "Purchases VAT book"
+msgstr "Libro IVA de Compras"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__type__out_receipt
+msgid "Sales Receipt"
+msgstr "Recibo de ventas"
+
+#. module: l10n_ar_reports
+#: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_search
+msgid "Sales VAT"
+msgstr "IVA Ventas"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#: model:ir.actions.client,name:l10n_ar_reports.action_l10n_ar_sales_vat_book
+#: model:ir.ui.menu,name:l10n_ar_reports.menu_l10n_ar_sales_vat_book
+#, python-format
+msgid "Sales VAT book"
+msgstr "Libro IVA de Ventas"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__state
+msgid "Status"
+msgstr "Estado"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "Taxed"
+msgstr "Gravado"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__total
+#: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_tree
+#, python-format
+msgid "Total"
+msgstr ""
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__type
+#: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_search
+msgid "Type"
+msgstr "Tipo"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__state__draft
+msgid "Unposted"
+msgstr "Sin asentar"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "VAT"
+msgstr "CUIT"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__vat_10
+#, python-format
+msgid "VAT 10,5%"
+msgstr "IVA 10,5%"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__vat_25
+#, python-format
+msgid "VAT 2,5%"
+msgstr "IVA 2.5%"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__vat_21
+#, python-format
+msgid "VAT 21%"
+msgstr "IVA 21%"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__vat_27
+#, python-format
+msgid "VAT 27%"
+msgstr "IVA 27%"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__vat_5
+#, python-format
+msgid "VAT 5%"
+msgstr "IVA 5%"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "VAT Perc"
+msgstr "Perc. IVA"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,field_description:l10n_ar_reports.field_account_ar_vat_line__vat_per
+msgid "VAT Perc."
+msgstr "Perc. IVA"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields,help:l10n_ar_reports.field_account_ar_vat_line__vat_per
+msgid "VAT Perception"
+msgstr "Percepción de IVA"
+
+#. module: l10n_ar_reports
+#: model:ir.actions.act_window,name:l10n_ar_reports.action_account_ar_vat_line
+#: model:ir.ui.menu,name:l10n_ar_reports.menu_current_account
+msgid "VAT Summary"
+msgstr "Resumen IVA"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "VAT book"
+msgstr "Libro de IVA"
+
+#. module: l10n_ar_reports
+#: model:ir.model,name:l10n_ar_reports.model_account_ar_vat_line
+msgid "VAT line for Analysis in Argentinian Localization"
+msgstr "Línea de IVA para análisis en localización argentina"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "VOUCHER TXT"
+msgstr "CBTE TXT"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "Vat Cond."
+msgstr "Cond. IVA"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__type__in_invoice
+msgid "Vendor Bill"
+msgstr "Factura de Proveedor"
+
+#. module: l10n_ar_reports
+#: model:ir.model.fields.selection,name:l10n_ar_reports.selection__account_ar_vat_line__type__in_refund
+msgid "Vendor Credit Note"
+msgstr "Nota de Crédito de Proveedor"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "Vouchers"
+msgstr "Comprobantes"
+
+#. module: l10n_ar_reports
+#: code:addons/l10n_ar_reports/models/l10n_ar_vat_book.py:0
+#, python-format
+msgid "Vouchers (TXT)"
+msgstr "Comprobantes (TXT)"
+
+#. module: l10n_ar_reports
+#: model_terms:ir.ui.view,arch_db:l10n_ar_reports.view_account_ar_vat_line_search
+msgid "With Document Type"
+msgstr "Con Tipo de Documento"

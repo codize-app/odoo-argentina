@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_l10n_ar_sales_vat_book" model="ir.actions.client">
+        <field name="name">Sales VAT book</field>
+        <field name="tag">account_report</field>
+        <field name="context" eval="{'model': 'l10n_ar.vat.book', 'journal_type': 'sale'}"/>
+    </record>
+
+    <menuitem
+        id="menu_l10n_ar_sales_vat_book"
+        action="action_l10n_ar_sales_vat_book"
+        parent="l10n_ar.account_reports_ar_statements_menu"/>
+
+    <record id="action_l10n_ar_purchases_vat_book" model="ir.actions.client">
+        <field name="name">Purchases VAT book</field>
+        <field name="tag">account_report</field>
+        <field name="context" eval="{'model': 'l10n_ar.vat.book', 'journal_type': 'purchase'}"/>
+    </record>
+
+    <menuitem
+        id="menu_l10n_ar_purchases_vat_book"
+        action="action_l10n_ar_purchases_vat_book"
+        parent="l10n_ar.account_reports_ar_statements_menu"/>
+
+</odoo>
