@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- © 2016 ADHOC SA
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
-
 <odoo>
+<data>
 
 <record id="view_account_payment_group_tree" model="ir.ui.view">
     <field name="name">account.payment.group.tree</field>
@@ -127,8 +125,8 @@
                     <page string="Lineas a pagar" attrs="{'invisible': ['|', '|', ('pop_up', '=', True), ('payment_subtype', '!=', 'double_validation'), ('state', 'not in', ['draft', 'confirmed'])]}" autofocus="autofocus">
                         <button name="add_all" string="Agregar Todos / Refrescar" states="draft" type="object"/>
                         <button name="remove_all" string="Remover Todos" states="draft" type="object"/>
-                        <button name="345" string="+ Debit Note" states="draft" type="action" invisible="1"/>
-                        <button name="345" string="+ Credit Note" states="draft" context="{'refund': True}" type="action" invisible="1"/>
+                        <!--button name="345" string="+ Debit Note" states="draft" type="action" invisible="1"/>
+                        <button name="345" string="+ Credit Note" states="draft" context="{'refund': True}" type="action" invisible="1"/-->
                         <field name="to_pay_move_line_ids" domain="[('partner_id.commercial_partner_id', '=', commercial_partner_id),('account_id.account_type', '=', account_internal_type),('account_id.reconcile', '=', True),('reconciled', '=', False),('full_reconcile_id', '=', False),('company_id', '=', company_id)]" groups="base.group_multi_company" />
                     </page>
                    
@@ -143,8 +141,8 @@
                         </p>
                         <button name="add_all" string="Agregar Todos / Refrescar" states="draft" type="object"/>
                         <button name="remove_all" string="Remover Todos" states="draft" type="object"/>
-                        <button name="345" string="+ Debit Note" states="draft" type="action" context="{'internal_type': 'debit_note'}" invisible="1"/>
-                        <button name="345" string="+ Credit Note" states="draft" context="{'refund': True}" type="action" invisible="1"/>
+                        <!--button name="345" string="+ Debit Note" states="draft" type="action" context="{'internal_type': 'debit_note'}" invisible="1"/>
+                        <button name="345" string="+ Credit Note" states="draft" context="{'refund': True}" type="action" invisible="1"/-->
                         <field name="debt_move_line_ids" domain="[('partner_id.commercial_partner_id', '=', commercial_partner_id),('account_id.account_type', '=', account_internal_type),('account_id.reconcile', '=', True),('reconciled', '=', False), ('full_reconcile_id', '=', False),('company_id', '=', company_id)]" groups="base.group_multi_company">
                           <tree string="Journal Items" edit="0">
                               <field name="date"/>
@@ -236,4 +234,5 @@
 <menuitem action="action_account_payments_group" id="menu_action_account_payments_group_receivable" parent="account.menu_finance_receivables" sequence="20"/>
 <menuitem action="action_account_payments_group_payable" id="menu_action_account_payments_group_payable" parent="account.menu_finance_payables" sequence="20"/>
 
+</data>
 </odoo>
