@@ -1,0 +1,2327 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_payment_group
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-02 18:24+0000\n"
+"PO-Revision-Date: 2023-03-02 18:24+0000\n"
+"Last-Translator: Sergio Ariel Ameghino <ariel.ameghino@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_payment_group
+#: model:mail.template,body_html:account_payment_group.email_template_edi_payment_group
+msgid ""
+"\n"
+"<div style=\"font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: #222222; background-color: #FFF; \">\n"
+"    <p style=\"margin:0px 0 12px 0;box-sizing:border-box;\">Hola <t t-out=\"object.partner_id.name or ''\" data-oe-t-inline=\"true\" contenteditable=\"false\">Exemax-Codize</t>,</p>\n"
+"    <p style=\"margin:0px 0 12px 0;box-sizing:border-box;\">Aquí está su recibo de <t t-out=\"object.company_id.name or ''\" data-oe-t-inline=\"true\" contenteditable=\"false\">Exemax-Codize</t>: </p>\n"
+"    <p style=\"border-style:none none none solid;box-sizing:border-box;border-left-width:1px;border-left-color:#8e0000;border-left: 1px solid #8e0000; margin-left: 30px;\">\n"
+"       &nbsp;&nbsp;<strong style=\"box-sizing:border-box;font-weight:500;\">REFERENCIAS</strong><br>\n"
+"       &nbsp;&nbsp;Número de recibo: <strong style=\"box-sizing:border-box;font-weight:500;\"><t t-out=\"object.display_name or ''\" data-oe-t-inline=\"true\" contenteditable=\"false\">Nº 000000</t>:</strong><br>\n"
+"       &nbsp;&nbsp;Referencia del recibo: <strong style=\"box-sizing:border-box;font-weight:500;\"><t t-out=\"object.communication or ''\" data-oe-t-inline=\"true\" contenteditable=\"false\"></t></strong><br>\n"
+"       &nbsp;&nbsp;Recibo total: <strong style=\"box-sizing:border-box;font-weight:500;\"><t t-out=\"object.payments_amount or ''\" data-oe-t-inline=\"true\" contenteditable=\"false\">$---</t></strong><br>\n"
+"    </p>\n"
+"    <p style=\"margin:0px 0 12px 0;box-sizing:border-box;\">Si tiene alguna pregunta, no dude en ponerse en contacto con nosotros.</p>\n"
+"    <p style=\"margin:0px 0 12px 0;box-sizing:border-box;\">¡Gracias por elegir<t t-out=\" object.company_id.name or ''\" data-oe-t-inline=\"true\" contenteditable=\"false\">nos</t>!</p>\n"
+"    <br>\n"
+"    <br>\n"
+"    <div style=\"width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;\">\n"
+"        <h3 style=\"box-sizing:border-box;line-height:1.2;font-weight:500;margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;\">\n"
+"            <strong style=\"box-sizing:border-box;font-weight:500;text-transform:uppercase;\"><t t-out=\"object.company_id.name or ''\" data-oe-t-inline=\"true\" contenteditable=\"false\">Exemax-Codize</t></strong></h3>\n"
+"    </div>\n"
+"    <div style=\"width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;\">\n"
+"        <span style=\"color: #222; margin-bottom: 5px; display: block; \">\n"
+"        <t t-out=\"object.company_id.street or ''\" data-oe-t-inline=\"true\" contenteditable=\"false\"></t><br>\n"
+"        <t t-out=\"object.company_id.street2 or ''\" data-oe-t-inline=\"true\" contenteditable=\"false\"></t><br>\n"
+"        <t t-out=\"object.company_id.zip or ''\" data-oe-t-inline=\"true\" contenteditable=\"false\"></t><t t-out=\"object.company_id.city or ''\" data-oe-t-inline=\"true\" contenteditable=\"false\"></t><br>\n"
+"        <t t-out=\"object.company_id.state_id.name or ''\" data-oe-t-inline=\"true\" contenteditable=\"false\"></t> - <t t-out=\"object.company_id.country_id.name or ''\" data-oe-t-inline=\"true\" contenteditable=\"false\"></t><br>\n"
+"        </span>\n"
+"            <div style=\"margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; \">\n"
+"        <t t-out=\"object.company_id.phone or ''\" data-oe-t-inline=\"true\" contenteditable=\"false\"></t>\n"
+"            </div>\n"
+"        <p style=\"margin:0px 0 12px 0;box-sizing:border-box;\"></p>\n"
+"    </div>\n"
+"</div>\n"
+"            "
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_form
+msgid "(on company currency)"
+msgstr "(en la moneda de la companía)"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "+ Credit Note"
+msgstr "+ Nota de crédito"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "+ Debit Note"
+msgstr "+ Nota de débito"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "- Next Number:"
+msgstr "- Siguiente número"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.report_payment_group_document
+msgid "<br/> <strong>Inicio de actividades:</strong>"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Los valores establecidos aquí "
+"son específicos de la compañía.\" groups=\"base.group_multi_company\"/>"
+
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.res_config_settings_view_form
+msgid "<span class=\"o_form_label\">Diario de pagos directos</span>"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.report_payment_group_document
+msgid "<strong><span>Cliente</span></strong>"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.report_payment_group_document
+msgid "<strong>CUIT: </strong>"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.report_payment_group_document
+msgid "<strong>CUIT</strong>"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.report_payment_group_document
+msgid "<strong>Condicion de IVA </strong>"
+msgstr "<strong>Condición de IVA </strong>"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.report_payment_group_document
+msgid "<strong>Ingresos Brutos:</strong>"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.report_payment_group_document
+msgid "<strong>Total</strong>"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__l10n_ar_afip_concept
+msgid ""
+"A concept is suggested regarding the type of the products on the invoice but"
+" it is allowed to force a different type if required."
+msgstr ""
+"Un concepto es sugerido tomando en cuenta el tipo de productos en la "
+"factura, pero es permitido forzar un concepto diferente si es requerido."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__partner_credit_limit
+msgid ""
+"A limit of zero means no limit. A limit of -1 will use the default (company)"
+" limit."
+msgstr ""
+"Un límite de cero significa que no hay límite. Un límite de -1 utilizará el "
+"límite predeterminado (compañía)."
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__afip_barcode
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__l10n_ar_afip_barcode
+msgid "AFIP Barcode"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__afip_barcode_img
+msgid "AFIP Barcode Image"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__l10n_ar_afip_concept
+msgid "AFIP Concept"
+msgstr "Concepto AFIP"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__afip_message
+msgid "AFIP Message"
+msgstr "Mensaje AFIP"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__l10n_ar_afip_responsibility_type_id
+msgid "AFIP Responsibility Type"
+msgstr "Tipo de responsabilidad AFIP"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__l10n_ar_afip_service_end
+msgid "AFIP Service End Date"
+msgstr "Fecha fin del servicio AFIP"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__l10n_ar_afip_service_start
+msgid "AFIP Service Start Date"
+msgstr "Fecha inicio del servicio AFIP"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__afip_xml_request
+msgid "AFIP XML Request"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__afip_xml_response
+msgid "AFIP XML Response"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__afip_auth_mode
+msgid "AFIP authorization mode"
+msgstr "Modo autorización AFIP"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__afip_auth_verify_type
+msgid "AFIP authorization verification"
+msgstr "Verificación autorización AFIP"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__afip_auth_verify_observation
+msgid "AFIP authorization verification observation"
+msgstr "Observación de verificación autorización AFIP"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__afip_auth_verify_result
+msgid "AFIP authorization verification result"
+msgstr "Resultado de verificación autorización AFIP"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__afip_result
+msgid "AFIP request result"
+msgstr "Resultado solicitud AFIP"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__access_warning
+msgid "Access warning"
+msgstr "Alerta de acceso"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__account_internal_type
+msgid "Account Internal Type"
+msgstr "Tipo de cuenta interna"
+
+#. module: account_payment_group
+#: model:ir.model,name:account_payment_group.model_account_payment_receiptbook
+msgid "Account payment Receiptbook"
+msgstr "Cuenta de recibos de pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__date
+msgid "Accounting Date"
+msgstr "Fecha contable"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__message_needaction
+msgid "Action Needed"
+msgstr "Acción requerida"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook__active
+msgid "Active"
+msgstr "Activo"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook__next_number
+msgid "Actual Next Number"
+msgstr "Siguiente número actual"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Agregar Todos / Refrescar"
+msgstr "Agregar Todos/Refrescar"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__unreconciled_amount
+msgid "Ajuste / Adelanto"
+msgstr "Ajuste/Adelanto"
+
+#. module: account_payment_group
+#: model:res.groups,name:account_payment_group.group_pay_now_customer_invoices
+msgid "Allow pay now on customer invoices"
+msgstr "Permitir pago directo en facturas de cliente"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_res_config_settings__group_pay_now_customer_invoices
+msgid "Allow pay now on customer invoices?"
+msgstr "¿Permitir pago directo en facturas de cliente?"
+
+#. module: account_payment_group
+#: model:res.groups,name:account_payment_group.group_pay_now_vendor_invoices
+msgid "Allow pay now on vendor invoices"
+msgstr "Permitir pago directo en facturas de proveedor"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_res_config_settings__group_pay_now_vendor_invoices
+msgid "Allow pay now on vendor invoices?"
+msgstr "¿Permitir pago directo en facturas de proveedor?"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.res_config_settings_view_form
+msgid "Allow to choose inbound/outbound on payment lines."
+msgstr "Permitir elegir entrada/salida en las líneas de pago."
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.res_config_settings_view_form
+msgid "Allow to pay customer invoices automatically on invoice validation."
+msgstr "Permitir pagar facturas de cliente automáticamente en la validación de facturas."
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.res_config_settings_view_form
+msgid "Allow to pay vendor invoices automatically on invoice validation."
+msgstr "Permitir pagar facturas de proveedor automáticamente en la validación de facturas."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_res_config_settings__group_pay_now_vendor_invoices
+#: model_terms:ir.ui.view,arch_db:account_payment_group.res_config_settings_view_form
+msgid ""
+"Allow users to choose a payment journal on invoices so that invoice is "
+"automatically paid after invoice validation. A payment will be created using"
+" choosen journal"
+msgstr ""
+"Permitir que los usuarios elijan un diario de pago en las facturas para "
+"que la factura se pague automáticamente después de la validación. Se creará "
+"un pago utilizando el diario elegido"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__always_tax_exigible
+msgid "Always Tax Exigible"
+msgstr "Impuesto siempre exigible"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_move_line_tree
+msgid "Amount"
+msgstr "Importe"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__amount_residual
+msgid "Amount Due"
+msgstr "Importe adeudado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__amount_residual_signed
+msgid "Amount Due Signed"
+msgstr "Importe adeudado signado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__amount_paid
+msgid "Amount paid"
+msgstr "Importe pagado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__account_analytic_id
+msgid "Analytic Account"
+msgstr "Cuenta analítica"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__asset_ids
+msgid "Assets"
+msgstr "Activos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__asset_depreciation_ids
+msgid "Assets Depreciation Lines"
+msgstr "Líneas de depreciación de activos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__message_attachment_count
+msgid "Attachment Count"
+msgstr "Cantidad de adjuntos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__authorized_transaction_ids
+msgid "Authorized Transactions"
+msgstr "Transacciones autorizadas"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__purchase_vendor_bill_id
+msgid "Auto-complete"
+msgstr "Auto-completar"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__purchase_vendor_bill_id
+msgid "Auto-complete from a past bill / purchase order."
+msgstr "Auto-completar de una factura anterior/pedido de compra."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__invoice_vendor_bill_id
+msgid "Auto-complete from a past bill."
+msgstr "Auto-completar de una factura anterior."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__purchase_id
+msgid "Auto-complete from a past purchase order."
+msgstr "Auto-completar de un pedido de compra anterior."
+
+#. module: account_payment_group
+#: model:ir.model.fields.selection,name:account_payment_group.selection__account_payment_receiptbook__sequence_type__automatic
+msgid "Automatic"
+msgstr "Automático"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__bank_partner_id
+msgid "Bank Partner"
+msgstr "Contacto bancario"
+
+#. module: account_payment_group
+#: model:ir.model,name:account_payment_group.model_account_bank_statement_line
+msgid "Bank Statement Line"
+msgstr "Línea de extracto bancario"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__vat_taxable_amount
+msgid "Base imponible de IVA"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__afip_batch_number
+msgid "Batch Number"
+msgstr "Número de lote"
+
+#. module: account_payment_group
+#: model:ir.model.fields.selection,name:account_payment_group.selection__account_payment_group__state__draft
+msgid "Borrador"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__afip_cae
+msgid "CAE (only for backward compatibility)"
+msgstr "CAE (solo por compatibilidad con versiones anteriores)"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__afip_cae_due
+msgid "CAE due date (only for backward compatibility)"
+msgstr "Fecha de vencimiento de CAE (solo para compatibilidad con versiones anteriores)"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__afip_auth_code
+msgid "CAE/CAI/CAEA Code"
+msgstr "Código CAE/CAI/CAEA"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__afip_auth_code_due
+msgid "CAE/CAI/CAEA due Date"
+msgstr "Fecha de vencimiento CAE/CAI/CAEA"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__campaign_id
+msgid "Campaign"
+msgstr "Campaña"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_invoice_wizard
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: account_payment_group
+#: model:ir.model.fields.selection,name:account_payment_group.selection__account_payment_group__state__cancel
+msgid "Cancelada"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Cancelar"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__tax_cash_basis_created_move_ids
+msgid "Cash Basis Entries"
+msgstr "Entrada de base de efectivo"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__tax_cash_basis_origin_move_id
+msgid "Cash Basis Origin"
+msgstr "Origen de base de efectivo"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__invoice_cash_rounding_id
+msgid "Cash Rounding Method"
+msgstr "Método de redondeo de efectivo"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_res_config_settings__group_choose_payment_type
+#: model:res.groups,name:account_payment_group.group_choose_payment_type
+msgid "Choose Payment Type on Payments"
+msgstr "Elegir tipo de pago en pagos"
+
+#. module: account_payment_group
+#: model_terms:ir.actions.act_window,help:account_payment_group.action_account_payments_group
+#: model_terms:ir.actions.act_window,help:account_payment_group.action_account_payments_group_payable
+msgid "Click para registrar un pago"
+msgstr "Haga clic para registrar un pago"
+
+#. module: account_payment_group
+#: model_terms:ir.actions.act_window,help:account_payment_group.action_account_payments_transfer
+msgid "Click to register a transfer between liquidity journals"
+msgstr "Haga clic para registrar una transferencia entre diarios de liquidez"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__partner_id
+msgid "Cliente/Proveedor"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__l10n_latam_document_type_id_code
+msgid "Code used by different localizations"
+msgstr "Código utilizado por diferentes localizaciones"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__commercial_partner_id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__commercial_partner_id
+msgid "Commercial Entity"
+msgstr "Entidad comercial"
+
+#. module: account_payment_group
+#: model:ir.model,name:account_payment_group.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__company_id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook__company_id
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_search
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "Company"
+msgstr "Compañía"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__company_id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__company_id
+msgid "Compañía"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model,name:account_payment_group.model_res_config_settings
+msgid "Config Settings"
+msgstr "Configurar ajustes"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_invoice_wizard
+msgid "Confirm"
+msgstr "Confirmar"
+
+#. module: account_payment_group
+#: model:res.groups,name:account_payment_group.account_confirm_payment
+msgid "Confirm payments (only if double validation is enabled)"
+msgstr "Confirmar pagos (solo si está habilitada la doble validación)"
+
+#. module: account_payment_group
+#: model:ir.model.fields.selection,name:account_payment_group.selection__account_payment_group__state__confirmed
+msgid "Confirmado"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Confirmar"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__create_uid
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__create_uid
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__create_date
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__create_date
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: account_payment_group
+#: model:ir.actions.act_window,name:account_payment_group.action_account_payment_group_invoice_wizard
+msgid "Credit / Debit Note"
+msgstr "Nota de Débito/Crédito"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__partner_credit_limit
+msgid "Credit Limit "
+msgstr "Límite de crédito"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__credit_limit_type
+msgid "Credit Limit Type"
+msgstr "Tipo de límite de crédito"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_invoice_wizard
+msgid "Credit Note"
+msgstr "Nota de crédito"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_search
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "Currency"
+msgstr "Moneda"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__l10n_ar_currency_rate
+msgid "Currency Rate"
+msgstr "Tasa de la moneda"
+
+#. module: account_payment_group
+#: model:ir.model.fields.selection,name:account_payment_group.selection__account_payment_group__partner_type__customer
+#: model:ir.model.fields.selection,name:account_payment_group.selection__account_payment_receiptbook__partner_type__customer
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__access_url
+msgid "Customer Portal URL"
+msgstr "URL del portal de cliente"
+
+#. module: account_payment_group
+#: model:ir.actions.act_window,name:account_payment_group.action_account_payments_group
+#: model:ir.ui.menu,name:account_payment_group.menu_action_account_payments_group_receivable
+msgid "Customer Receipts"
+msgstr "Recibos de cliente"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__date
+msgid "Date"
+msgstr "Fecha"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__debit_note_ids
+msgid "Debit Notes"
+msgstr "Notas de débito"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__l10n_ar_afip_responsibility_type_id
+msgid ""
+"Defined by AFIP to identify the type of responsibilities that a person or a "
+"legal entity could have and that impacts in the type of operations and "
+"requirements they need."
+msgstr ""
+"Definido por AFIP para identificar el tipo de responsabilidad que puede "
+"tener una persona física o jurídica y que impacta en el tipo de operaciones "
+"y requerimientos que dicha persona necesita."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__invoice_cash_rounding_id
+msgid ""
+"Defines the smallest coinage of the currency that can be used to pay by "
+"cash."
+msgstr ""
+"Define la acuñación más pequeña de la moneda que se puede usar para pagar en"
+" efectivo."
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__partner_shipping_id
+msgid "Delivery Address"
+msgstr "Dirección de entrega"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__partner_shipping_id
+msgid "Delivery address for current invoice."
+msgstr "Dirección de entrega de la factura actual."
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_search
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "Description"
+msgstr "Descripción"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_from_group_tree
+msgid "Detalles"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__selected_debt
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__selected_finacial_debt
+msgid "Deuda Seleccionada"
+msgstr "Deuda seleccionada"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__selected_debt_untaxed
+msgid "Deuda Seleccionada sin Impuestos"
+msgstr "Deuda seleccionada sin impuestos"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Deudas"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.report_payment_group_document
+msgid "Diario"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_res_config_settings__journal_id_def
+msgid "Diario por defecto para pagos directos de factura"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.res_config_settings_view_form
+msgid "Diario por defecto para pagos directos en facturas"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__payment_difference
+msgid "Diferencia en los Pagos"
+msgstr "Diferencia en los pagos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group__payment_difference
+msgid ""
+"Difference between selected debt (or to pay amount) and payments amount"
+msgstr ""
+"Diferencia entre la deuda seleccionada (o el importe a pagar) y el importe de los pagos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__display_inactive_currency_warning
+msgid "Display Inactive Currency Warning"
+msgstr "Mostrar advertencia en monedas inactivas"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__display_name
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__display_name
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook__display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__display_qr_code
+msgid "Display QR-code"
+msgstr "Mostrar código QR"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__l10n_latam_document_type_id_code
+msgid "Doc Type"
+msgstr "Tipo de documento"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__document_number
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__l10n_latam_document_number
+msgid "Document Number"
+msgstr "Número del documento"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__l10n_latam_document_type_id
+msgid "Document Type"
+msgstr "Tipo de documento"
+
+#. module: account_payment_group
+#: model:ir.model.constraint,message:account_payment_group.constraint_account_payment_group_name_uniq
+msgid "Document number must be unique per receiptbook!"
+msgstr "¡El número del documento debe der único por talonario!"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_search
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__invoice_date_due
+msgid "Due Date"
+msgstr "Fecha de vencimiento"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__edi_blocking_level
+msgid "Edi Blocking Level"
+msgstr "Nivel de bloqueo de EDI"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__edi_document_ids
+msgid "Edi Document"
+msgstr "Documento EDI"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__edi_error_count
+msgid "Edi Error Count"
+msgstr "Conteo de errores en EDI"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__edi_error_message
+msgid "Edi Error Message"
+msgstr "Mensaje de error de EDI"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__edi_show_abandon_cancel_button
+msgid "Edi Show Abandon Cancel Button"
+msgstr "Muestra el botón de abandonar la cancelación de EDI"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__edi_show_cancel_button
+msgid "Edi Show Cancel Button"
+msgstr "Mostrar botón de cancelación de EDI"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__edi_web_services_to_process
+msgid "Edi Web Services To Process"
+msgstr "Servicios de web EDI para procesar"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__tax_totals_json
+msgid "Edit Tax amounts if you encounter rounding issues."
+msgstr "Edita los importes de impuestos si tiene problemas de redondeo."
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid ""
+"El pago se comparará automáticamente con las líneas más antiguas de esta "
+"lista (por fecha de vencimiento). Puede eliminar cualquier línea que no "
+"desee que coincida."
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__edi_state
+msgid "Electronic invoicing"
+msgstr "Facturación electrónica"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook__mail_template_id
+msgid "Email Template"
+msgstr "Plantilla de email"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__document_sequence_id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook__sequence_id
+msgid "Entry Sequence"
+msgstr "Secuencia de asiento"
+
+#. module: account_payment_group
+#: model:ir.model.fields.selection,name:account_payment_group.selection__account_payment__payment_type_copy__outbound
+msgid "Enviar Dinero"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Enviar por Email"
+msgstr "Enviar por email"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.report_payment_group_document
+msgid "Estado"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__afip_fce_es_anulacion
+msgid "FCE: Es anulacion?"
+msgstr "FCE: ¿Es anulación?"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__related_invoice
+msgid "Factura Relacionada"
+msgstr "Factura relacionada"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.report_payment_group_document
+msgid "Fecha Cobro"
+msgstr "Fecha de cobro"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__payment_date
+msgid "Fecha de Pago"
+msgstr "Fecha de pago"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.report_payment_group_document
+msgid "Fecha:"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__fiscal_position_id
+msgid "Fiscal Position"
+msgstr "Posición fiscal"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__fiscal_position_id
+msgid ""
+"Fiscal positions are used to adapt taxes and accounts for particular "
+"customers or sales orders/invoices. The default value comes from the "
+"customer."
+msgstr ""
+"Las posiciones fiscales se utilizan para adaptar impuestos y cuentas para "
+"determinados clientes u ordenes de venta/facturas. El valor por defecto "
+"viene del cliente."
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__message_follower_ids
+msgid "Followers"
+msgstr "Seguidores"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "Seguidores (Empresas)"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_move_line__payment_group_ids
+msgid "Grupos de Pago"
+msgstr "Grupos de pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__has_message
+msgid "Has Message"
+msgstr "Tiene un mensaje"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__has_outstanding
+msgid "Has Outstanding"
+msgstr "Tiene un pago pendiente"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__has_reconciled_entries
+msgid "Has Reconciled Entries"
+msgstr "Tiene apuntes conciliados"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid ""
+"Hay <b>créditos pendientes</b> de imputar en la deuda seleccionada, se "
+"intentará imputar dichos créditos a otros comprobantes seleccionados pero "
+"dicha información <b>no quedará registrada en el pago</b>. Si no desea que "
+"se imputen automáticamente puede borrarlos de la lista."
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__highest_name
+msgid "Highest Name"
+msgstr "Nombre más alto"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__edi_error_count
+msgid "How many EDIs are in error for this move ?"
+msgstr "¿Cuántos errores de EDI hay en este movimiento?"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook__id
+msgid "ID"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_form
+msgid ""
+"IMPORTANTE: La validación de la línea de pago se debe hacer desde el recibo."
+" La cancelación manual de una línea de pago se usa solo para correcciones y "
+"usos avanzados. Seguro desea continuar?"
+msgstr ""
+"IMPORTANTE: La validación de la línea de pago se debe hacer desde el recibo."
+" La cancelación manual de una línea de pago se usa solo para correcciones y "
+"usos avanzados. ¿Seguro desea continuar?"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_form
+msgid ""
+"IMPORTANTE: La validación de la línea de pago se debe hacer desde el recibo."
+" La validación manual de una línea de pago se usa solo para correcciones y "
+"usos avanzados. Seguro desea continuar?"
+msgstr ""
+"IMPORTANTE: La validación de la línea de pago se debe hacer desde el recibo."
+" La validación manual de una línea de pago se usa solo para correcciones y "
+"usos avanzados. ¿Seguro desea continuar?"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__l10n_latam_use_documents
+msgid ""
+"If active: will be using for legal invoicing (invoices, debit/credit notes)."
+" If not set means that will be used to register accounting entries not "
+"related to invoicing legal documents. For Example: Receipts, Tax Payments, "
+"Register journal entries"
+msgstr ""
+"Si está activo: se utilizará para la facturación legal (facturas, notas de débito/crédito. "
+"Si no se establece, significa que se utilizará para registrar asientos contables no "
+"relacionados con la facturación de documentos legales. Por ejemplo: recibos, pago de "
+"impuestos, registro de asientos de diario"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group__message_needaction
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group__message_unread
+msgid "If checked, new messages require your attention."
+msgstr "Si está marcado, nuevos mensajes requieren su atención"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group__message_has_error
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr "Si está marcado, algunos mensajes tienen un error de entrega"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_receiptbook__mail_template_id
+msgid ""
+"If set an email will be sent to the customer when the related "
+"account.payment.group has been posted."
+msgstr ""
+"Si se establece, se enviará un email al cliente cuando se haya publicado el account.payment.group relacionado."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__to_check
+msgid ""
+"If this checkbox is ticked, it means that the user was not sure of all the "
+"related information at the time of the creation of the move and that the "
+"move needs to be checked again."
+msgstr ""
+"Si esta casilla está marcada, significa que el usuario no estaba seguro de "
+"toda la información relacionada al momento de la creación del movimiento y "
+"que el movimiento necesita ser revisado de nuevo."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__auto_post
+msgid ""
+"If this checkbox is ticked, this entry will be automatically posted at its "
+"date."
+msgstr ""
+"Si esta casilla está marcada, este asiento se validará automáticamente en su"
+" fecha."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__restrict_mode_hash_table
+msgid ""
+"If ticked, the accounting entry or invoice receives a hash as soon as it is "
+"posted and cannot be modified anymore."
+msgstr ""
+"Si se marca, el asiento contable o la factura recibe un hash tan pronto como"
+" se contabiliza y ya no se puede modificar."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_bank_statement_line__pay_now_journal_id
+#: model:ir.model.fields,help:account_payment_group.field_account_move__pay_now_journal_id
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__pay_now_journal_id
+msgid ""
+"If you set a journal here, after invoice validation, the invoice will be "
+"automatically paid with this journal. As manual paymentmethod is used, only "
+"journals with manual method are shown."
+msgstr ""
+"Si establece un diario aquí, después de la validación de la factura, la factura "
+"se pagará automáticamente con este diario. Como se utiliza el método de pago manual, "
+"solo se muestran los diarios com método manual."
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Imprimir"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__move_tax_ids
+msgid "Impuestos"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__inalterable_hash
+msgid "Inalterability Hash"
+msgstr "Hash de inalterabilidad"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__secure_sequence_number
+msgid "Inalteralbility No Gap Sequence #"
+msgstr "Secuencia inalterable sin espacios #"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__invoice_incoterm_id
+msgid "Incoterm"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__invoice_incoterm_id
+msgid ""
+"International Commercial Terms are a series of predefined commercial terms "
+"used in international transactions."
+msgstr ""
+"Los términos de comercio internacional son una serie de condiciones "
+"comerciales usadas en las transacciones internacionales."
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__invoice_filter_type_domain
+msgid "Invoice Filter Type Domain"
+msgstr "Dominio del tipo de filtro para factura"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__invoice_has_matching_suspense_amount
+msgid "Invoice Has Matching Suspense Amount"
+msgstr "La factura tiene un importe de suspenso correspondiente"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__invoice_has_outstanding
+msgid "Invoice Has Outstanding"
+msgstr "La factura tiene pendientes de pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__invoice_outstanding_credits_debits_widget
+msgid "Invoice Outstanding Credits Debits Widget"
+msgstr "Widget de créditos y débitos de factura pendientes"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__invoice_partner_display_name
+msgid "Invoice Partner Display Name"
+msgstr "Nombre de la empresa a mostrar en la factura."
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__invoice_payments_widget
+msgid "Invoice Payments Widget"
+msgstr "Widget pagos de facturas"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__tax_totals_json
+msgid "Invoice Totals JSON"
+msgstr "JSON de totales de facturas"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__invoice_line_ids
+msgid "Invoice lines"
+msgstr "Líneas de factura"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__invoice_date
+msgid "Invoice/Bill Date"
+msgstr "Fecha de Factura/Recibo"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__message_is_follower
+msgid "Is Follower"
+msgstr "Es seguidor"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__is_move_sent
+msgid "Is Move Sent"
+msgstr "Movimiento es enviado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__afip_auth_verify_type
+msgid ""
+"It adds an option on invoices to verify the afip authorization data (for documents with CAE, CAI or CAEA).\n"
+"If you choose required, then on supplier invoices, verification is mandatory before invoice validation"
+msgstr ""
+"Agrega una opción en las facturas para verificar los datos de autorización de la AFIP (para documentos con\n"
+" CAE, CAI o CAEA). Si elige requerido, entonces en la factura de proveedor, la verificación es obligatoria "
+"antes de la validación de la factura."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__is_move_sent
+msgid "It indicates that the invoice/payment has been sent."
+msgstr "Indica que se ha enviado la factura/pago."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group__sent
+msgid "It indicates that the receipt has been sent."
+msgstr "Indica que el recibo ha sido enviado."
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__json_qr
+msgid "JSON QR AFIP"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model,name:account_payment_group.model_account_journal
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__journal_id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__journal_id
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "Journal"
+msgstr "Diario"
+
+#. module: account_payment_group
+#: model:ir.model,name:account_payment_group.model_account_move
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__move_id
+msgid "Journal Entry"
+msgstr "Asiento contable"
+
+#. module: account_payment_group
+#: model:ir.model,name:account_payment_group.model_account_move_line
+msgid "Journal Item"
+msgstr "Apunte contable"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__line_ids
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_move_line_tree
+msgid "Journal Items"
+msgstr "Apuntes contables"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__l10n_latam_available_document_type_ids
+msgid "L10N Latam Available Document Type"
+msgstr "Tipo de documento disponible L10N Latam"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group____last_update
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard____last_update
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__write_uid
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__write_uid
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__write_date
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__write_date
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__to_pay_move_line_ids
+msgid "Lineas a Pagar"
+msgstr "Líneas a pagar"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Lineas a pagar"
+msgstr "Líneas a pagar"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__payment_ids
+msgid "Lineas de Pago"
+msgstr "Líneas de pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__debt_move_line_ids
+msgid "Lineas de deuda"
+msgstr "Líneas de deuda"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Lineas de pagos"
+msgstr "Líneas de pagos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__matched_move_line_ids
+msgid "Lineas pagadas"
+msgstr "Líneas pagadas"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group__matched_move_line_ids
+msgid ""
+"Lines that has been matched to payments, only available after payment "
+"validation"
+msgstr ""
+"Líneas que se han emparejado con pagos, solo disponibles después de la "
+"validación del pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__localization
+msgid "Localizacion"
+msgstr "Localización"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__restrict_mode_hash_table
+msgid "Lock Posted Entries with Hash"
+msgstr "Bloquear asientos validados con hash"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.report_payment_group_document
+msgid "Logo"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.actions.act_window,help:account_payment_group.action_account_payments_group
+#: model_terms:ir.actions.act_window,help:account_payment_group.action_account_payments_group_payable
+msgid ""
+"Los pagos se utilizan para registrar movimientos de liquidez (enviar o cobrar).\n"
+"          A continuación, puede procesar esos pagos por sus propios medios o utilizando las medios instalados."
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "Adjunto principal"
+
+#. module: account_payment_group
+#: model:ir.model.fields.selection,name:account_payment_group.selection__account_payment_receiptbook__sequence_type__manual
+msgid "Manual"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__l10n_latam_manual_document_number
+msgid "Manual Number"
+msgstr "Número manual"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__matched_amount
+msgid "Matched Amount"
+msgstr "Importe emparejado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__matched_amount_untaxed
+msgid "Matched Amount Untaxed"
+msgstr "Importe emparejado no gravado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__medium_id
+msgid "Medium"
+msgstr "Medio"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__communication
+msgid "Memo"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__message_has_error
+msgid "Message Delivery error"
+msgstr "Error de entrega de mensaje"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__message_ids
+msgid "Messages"
+msgstr "Mensajes"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__payment_methods
+msgid "Metodos de Pago"
+msgstr "Métodos de pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__currency_id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__currency_id
+msgid "Moneda"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__company_currency_id
+msgid "Moneda de compañía"
+msgstr "Moneda de la compañía"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__signed_amount
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__payments_amount
+#: model_terms:ir.ui.view,arch_db:account_payment_group.report_payment_group_document
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_tree
+msgid "Monto"
+msgstr "Importe"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__related_invoice_amount
+msgid "Monto Factura"
+msgstr "Importe factura"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__force_amount_company_currency
+msgid "Monto Forzado en la Moneda de la Empresa"
+msgstr "Importe forzado en la moneda de la compañía"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__to_pay_amount
+msgid "Monto a Pagar"
+msgstr "Importe a pagar"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Monto a conciliar"
+msgstr "Importe a conciliar"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__vat_amount
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__vat_exempt_base_amount
+msgid "Monto de IVA"
+msgstr "Importe de IVA"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__vat_untaxed_base_amount
+msgid "Monto de IVA no gravado"
+msgstr "Importe de IVA no gravado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__other_taxes_amount
+msgid "Monto de Otros Impuestos"
+msgstr "Importe de otros impuestos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__signed_amount_company_currency
+msgid "Monto del Pago en la Moneda de la Empresa"
+msgstr "Importe del pago en la moneda de la compañía"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__amount_company_currency
+msgid "Monto en la Moneda de la Empresa"
+msgstr "Importe en la moneda de la compañía"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Monto pago"
+msgstr "Importe pago"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Monto sin conciliar"
+msgstr "Importe sin conciliar"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__move_line_ids
+msgid "Move Line"
+msgstr "Línea de movimiento"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group__next_number
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_receiptbook__next_number
+msgid ""
+"Next number that will be used. This number can be incremented frequently so "
+"the displayed value might already be obsolete"
+msgstr ""
+"Próximo número que se utilizará. Este número se puede incrementar con frecuencia, "
+"por lo que es posible que el valor mostrado ya esté obsoleto"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.report_payment_group_document
+msgid "No liquida"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_search
+msgid "Not Cancelled"
+msgstr "No cancelado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__notes
+msgid "Notas"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Notes"
+msgstr "Notas"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__document_number
+msgid "Nro Documento"
+msgstr "Número de documento"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__name
+msgid "Number"
+msgstr "Número"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook__padding
+msgid "Number Padding"
+msgstr "Relleno numérico"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__message_needaction_counter
+msgid "Number of Actions"
+msgstr "Número de acciones"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__debit_note_count
+msgid "Number of Debit Notes"
+msgstr "Número de notas débito"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__message_has_error_counter
+msgid "Number of errors"
+msgstr "Número de errores"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr "Número de mensajes que requieren una acción"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "Número de mensajes con error de entrega"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group__message_unread_counter
+msgid "Number of unread messages"
+msgstr "Número de mensajes no leídos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__num_op
+msgid "Nº OP Cliente"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_bank_statement_line__open_move_line_ids
+#: model:ir.model.fields,field_description:account_payment_group.field_account_move__open_move_line_ids
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__open_move_line_ids
+msgid "Open Move Line"
+msgstr "Abrir línea de movimiento"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__invoice_origin
+msgid "Origin"
+msgstr "Origen"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__debit_origin_id
+msgid "Original Invoice Debited"
+msgstr "Factura original debitada"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__other_currency
+msgid "Other Currency"
+msgstr "Otra moneda"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Pagado"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_move_line_with_matched_tree
+msgid "Paid Amount"
+msgstr "Importe pagado"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_search
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__partner_type
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook__partner_type
+msgid "Partner Type"
+msgstr "Tipo de empresa"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_bank_statement_line__pay_now_journal_id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_move__pay_now_journal_id
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__pay_now_journal_id
+msgid "Pay now Journal"
+msgstr "Diario de pago directo"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__payment_id
+msgid "Payment"
+msgstr "Pago"
+
+#. module: account_payment_group
+#: model:ir.model,name:account_payment_group.model_account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__payment_group_id
+msgid "Payment Group"
+msgstr "Grupo de pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__payment_group_company_id
+msgid "Payment Group Company"
+msgstr "Compañía del grupo de pagos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_move_line__payment_group_matched_amount
+msgid "Payment Group Matched Amount"
+msgstr "Importe emparejado del grupo de pagos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_bank_statement_line__payment_group_ids
+#: model:ir.model.fields,field_description:account_payment_group.field_account_move__payment_group_ids
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__payment_group_ids
+msgid "Payment Groups"
+msgstr "Grupos de pagos"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "Payment Method"
+msgstr "Método de pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__qr_code_method
+msgid "Payment QR-code"
+msgstr "Código QR de pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__payment_state
+msgid "Payment Status"
+msgstr "Estado de pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__payment_subtype
+msgid "Payment Subtype"
+msgstr "Subtipo de pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__invoice_payment_term_id
+msgid "Payment Terms"
+msgstr "Plazos de pago"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_form
+msgid "Payment Type"
+msgstr "Tipo de pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group__debt_move_line_ids
+msgid ""
+"Payment will be automatically matched with the oldest lines of this list (by"
+" maturity date). You can remove any line you dont want to be matched."
+msgstr ""
+"El pago coincidirá automáticamente con las líneas más antiguas de esta lista "
+"(por fecha de vencimiento). Puede eliminar cualquier línea que no desee que "
+"coincida." 
+
+#. module: account_payment_group
+#: model:ir.model,name:account_payment_group.model_account_payment
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_graph
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_search
+msgid "Payments"
+msgstr "Pagos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__pop_up
+msgid "Pop Up"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__access_url
+msgid "Portal Access URL"
+msgstr "URL de acceso al portal"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__auto_post
+msgid "Post Automatically"
+msgstr "Publicar automáticamente"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_search
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "Posted"
+msgstr "Publicado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__posted_before
+msgid "Posted Before"
+msgstr "Publicado antes"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook__prefix
+msgid "Prefix"
+msgstr "Prefijo"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__product_id
+msgid "Product"
+msgstr "Producto"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__next_number
+msgid "Prox Numero"
+msgstr "Próximo número"
+
+#. module: account_payment_group
+#: model:ir.model.fields.selection,name:account_payment_group.selection__account_payment_group__state__posted
+msgid "Publicado"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__purchase_id
+msgid "Purchase Order"
+msgstr "Pedido de compra"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.report_payment_group_document
+msgid "REC"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.report_payment_group_document
+msgid "RECIBO"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__description
+msgid "Reason"
+msgstr "Razón"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_receipt_receiptbook_form
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_receipt_receiptbook_search
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_receipt_receiptbook_tree
+msgid "Receipt Books"
+msgstr "Talonario de recibos"
+
+#. module: account_payment_group
+#: model:mail.template,report_name:account_payment_group.email_template_edi_payment_group
+msgid "Receipt_{{(object.display_name or '').replace('/','_')}}"
+msgstr "Recibo_{{(object.display_name or '').replace('/','_')}}"
+
+#. module: account_payment_group
+#: model:ir.actions.act_window,name:account_payment_group.action_receiptbook_form
+#: model:ir.ui.menu,name:account_payment_group.menu_receiptbook_form
+msgid "Receiptbooks"
+msgstr "Talonarios"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.account_journal_dashboard_kanban_view
+msgid "Received Money"
+msgstr "Dinero recibido"
+
+#. module: account_payment_group
+#: model:ir.model.fields.selection,name:account_payment_group.selection__account_payment__payment_type_copy__inbound
+msgid "Recibir Dinero"
+msgstr "Recibir dinero"
+
+#. module: account_payment_group
+#: model:ir.actions.report,name:account_payment_group.account_payment_group_report
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__payment_group_id
+msgid "Recibo"
+msgstr ""
+
+#. module: account_payment_group
+#: model:mail.template,name:account_payment_group.email_template_edi_payment_group
+msgid "Recibo de Cliente - Enviar por Email"
+msgstr "Recibo de cliente - Enviar por email"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "Reconciled"
+msgstr "Conciliado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__ref
+msgid "Reference"
+msgstr "Referencia"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__name
+msgid "Referencia"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__date_invoice
+msgid "Refund Date"
+msgstr "Fecha de devolución"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Registrar Pago"
+msgstr "Registrar pago"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__rejected_check_id
+msgid "Rejected Check"
+msgstr "Cheque rechazado"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Remover Todos"
+msgstr "Remover todos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__afip_result
+msgid "Resultado"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__reversal_move_id
+msgid "Reversal Move"
+msgstr "Movimiento de reversión"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__reversed_entry_id
+msgid "Reversal of"
+msgstr "Reversión de"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__afip_mypyme_sca_adc
+msgid "SCA o ADC"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "Error de entrega de SMS"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__team_id
+msgid "Sales Team"
+msgstr "Equipo de ventas"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__invoice_user_id
+msgid "Salesperson"
+msgstr "Comercial"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__access_token
+msgid "Security Token"
+msgstr "Token de seguridad"
+
+#. module: account_payment_group
+#: model:res.groups,name:account_payment_group.account_see_payment_menu
+msgid "See Payments Menu"
+msgstr "Ver menú de pagos"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.account_journal_dashboard_kanban_view
+msgid "Sended Money"
+msgstr "Dinero enviado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__sent
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "Sent"
+msgstr "Enviado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook__sequence
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__sequence_number
+msgid "Sequence Number"
+msgstr "Número de secuencia"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__sequence_prefix
+msgid "Sequence Prefix"
+msgstr "Prefijo de secuencia"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_receiptbook__sequence_type
+msgid "Sequence Type"
+msgstr "Tipo de secuencia"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__show_name_warning
+msgid "Show Name Warning"
+msgstr "Mostrar advertencia de nombre"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__show_partner_credit_warning
+msgid "Show Partner Credit Warning"
+msgstr "Mostrar advertencia de crédito para empresa"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__show_reset_to_draft_button
+msgid "Show Reset To Draft Button"
+msgstr "Mostrar el botón restablecer a borrador"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__afip_fce_es_anulacion
+msgid ""
+"Solo utilizado en comprobantes MiPyMEs (FCE) del tipo débito o crédito. Debe informar:\n"
+"- SI: sí el comprobante asociado (original) se encuentra rechazado por el comprador\n"
+"- NO: sí el comprobante asociado (original) NO se encuentra rechazado por el comprador"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__source_id
+msgid "Source"
+msgstr "Origen"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__invoice_source_email
+msgid "Source Email"
+msgstr "Email de origen"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_search
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "State"
+msgstr "Provincia"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__statement_id
+msgid "Statement"
+msgstr "Extracto"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__statement_line_id
+msgid "Statement Line"
+msgstr "Línea de extracto"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__state
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__state
+msgid "Status"
+msgstr "Estado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__stock_move_id
+msgid "Stock Move"
+msgstr "Movimiento de existencias"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__stock_valuation_layer_ids
+msgid "Stock Valuation Layer"
+msgstr "Capa de valoración de stock"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__string_to_hash
+msgid "String To Hash"
+msgstr "Cadena de texto para Hash"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__branch_op
+msgid "Sucursal OP Cliente"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__suitable_journal_ids
+msgid "Suitable Journal"
+msgstr "Diario adecuado"
+
+#. module: account_payment_group
+#: model:ir.actions.act_window,name:account_payment_group.action_account_payments_group_payable
+#: model:ir.ui.menu,name:account_payment_group.menu_action_account_payments_group_payable
+msgid "Supplier Payments"
+msgstr "Pagos de proveedor"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__receiptbook_id
+msgid "Talonario de Recibos"
+msgstr "Talonario de recibos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__amount_tax
+msgid "Tax"
+msgstr "Impuesto"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__tax_cash_basis_rec_id
+msgid "Tax Cash Basis Entry of"
+msgstr "Asiento de base de impuesto en efectivo de"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__tax_country_id
+msgid "Tax Country"
+msgstr "Impuesto del país"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__tax_country_code
+msgid "Tax Country Code"
+msgstr "Código del país del impuesto"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__tax_lock_date_message
+msgid "Tax Lock Date Message"
+msgstr "Mensaje de fecha de bloqueo de impuestos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__amount_tax_signed
+msgid "Tax Signed"
+msgstr "Impuesto signado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__tax_ids
+msgid "Taxes"
+msgstr "Impuestos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__posted_before
+msgid "Technical field for knowing if the move has been posted before"
+msgstr "Campo técnico para saber si el movimiento se ha publicado antes"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__edi_web_services_to_process
+msgid ""
+"Technical field to display the documents that will be processed by the CRON"
+msgstr ""
+"El campo técnico para mostrar los documentos que serán procesados por CRON"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__tax_country_id
+msgid ""
+"Technical field to filter the available taxes depending on the fiscal "
+"country and fiscal position."
+msgstr ""
+"Campo técnico para filtrar los impuestos disponibles que dependen del país "
+"fiscal y la posición fiscal."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__bank_partner_id
+msgid "Technical field to get the domain on the bank"
+msgstr "Campo técnico para obtener el dominio del banco"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__always_tax_exigible
+msgid ""
+"Technical field used by cash basis taxes, telling the lines of the move are "
+"always exigible. This happens if the move contains no payable or receivable "
+"line."
+msgstr ""
+"Campo técnico utilizado por los impuestos de base de efectivo, que indica "
+"que las líneas del movimiento son siempre exigibles. Esto sucede si el "
+"movimiento no contiene ninguna línea por pagar o por cobrar."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__display_inactive_currency_warning
+msgid "Technical field used for tracking the status of the currency"
+msgstr "Campo técnico utilizado para rastrear el estado de la moneda"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__tax_lock_date_message
+msgid ""
+"Technical field used to display a message when the invoice's accounting date"
+" is prior of the tax lock date."
+msgstr ""
+"Campo técnico utilizado para mostrar un mensaje cuando la fecha contable de "
+"la factura es anterior a la fecha de bloqueo de impuestos."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__invoice_has_matching_suspense_amount
+msgid ""
+"Technical field used to display an alert on invoices if there is at least a "
+"matching amount in any supsense account."
+msgstr ""
+"Campo técnico utilizado para mostrar una alerta en las facturas si hay al "
+"menos un importe equivalente en cualquier cuenta de suspenso."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__user_id
+msgid "Technical field used to fit the generic behavior in mail templates."
+msgstr ""
+"Campo técnico utilizado para ajustar el comportamiento genérico en "
+"plantillas de correo"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__invoice_filter_type_domain
+msgid ""
+"Technical field used to have a dynamic domain on journal / taxes in the form"
+" view."
+msgstr ""
+"Campo técnico utilizado para tener un dominio dinámico de diarios/"
+"impuestos en la vista de formulario."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__tax_cash_basis_rec_id
+msgid ""
+"Technical field used to keep track of the tax cash basis reconciliation. "
+"This is needed when cancelling the source: it will post the inverse journal "
+"entry to cancel that part too."
+msgstr ""
+"Campo técnico utilizado para llevar un seguimiento de la conciliación base "
+"de efectivo de impuestos. Esto es necesario cuando se cancela el origen: se "
+"publicará la entrada de diario inversa para cancelar esa parte también."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__statement_id
+msgid ""
+"Technical field used to open the linked bank statement from the edit button "
+"in a group by view, or via the smart button on journal entries."
+msgstr ""
+"Campo técnico utilizado para abrir el estado de cuenta bancario vinculado "
+"desde el botón de edición en una vista agrupada, o a través del botón "
+"inteligente en los asientos de diario."
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__narration
+msgid "Terms and Conditions"
+msgstr "Términos y condiciones"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__texto_modificado_qr
+msgid "Texto Modificado QR"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__edi_state
+msgid "The aggregated state of all the EDIs with web-service of this move"
+msgstr ""
+"El estado agregado de todos los EDIs con el servicio de internet de este "
+"movimiento"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__amount_paid
+msgid "The amount already paid for this invoice."
+msgstr "El importe ya pagado de esta factura."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__tax_cash_basis_created_move_ids
+msgid ""
+"The cash basis entries created from the taxes on this entry, when "
+"reconciling its lines."
+msgstr ""
+"Asientos de criterio de caja creados desde los impuestos en este asiento, al"
+" conciliar sus líneas."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__debit_note_ids
+msgid "The debit notes created for this invoice"
+msgstr "Notas de débito creadas para esta factura"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__invoice_origin
+msgid "The document(s) that generated the invoice."
+msgstr "El documento o documentos que generaron esta factura"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__tax_cash_basis_origin_move_id
+msgid ""
+"The journal entry from which this tax cash basis journal entry has been "
+"created."
+msgstr ""
+"El asiento contable a partir del cual se ha creado este asiento contable de "
+"base fiscal."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group__document_sequence_id
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_receiptbook__sequence_id
+msgid ""
+"This field contains the information related to the numbering of the receipt "
+"entries of this receiptbook."
+msgstr ""
+"Este campo contiene la información relativa a la numeración de los asientos "
+"de recibo de este talonario."
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__campaign_id
+msgid ""
+"This is a name that helps you keep track of your different campaign efforts,"
+" e.g. Fall_Drive, Christmas_Special"
+msgstr ""
+"Este es un nombre que lo ayuda a realizar un seguimiento de sus diferentes "
+"esfuerzos de campaña, por ejempo: Fall_Drive, Christmas_Special"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__medium_id
+msgid "This is the method of delivery, e.g. Postcard, Email, or Banner Ad"
+msgstr "Este es el método de entrega, por ejemplo: correo, email o anuncio publicitario"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__source_id
+msgid ""
+"This is the source of the link, e.g. Search Engine, another domain, or name "
+"of email list"
+msgstr ""
+"Esta es la fuente del enlace, por ejemplo, el motor de búsqueda, otro dominio "
+"o el nombre de la lista de email"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group__to_pay_move_line_ids
+msgid "This lines are the ones the user has selected to be paid."
+msgstr "Estas líneas son las que el usuario ha seleccionado para ser pagadas."
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.report_payment_group_document
+msgid "Tipo"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__exchange_rate
+msgid "Tipo de Cambio"
+msgstr "Tipo de cambio"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__payment_type_copy
+msgid "Tipo de Pago (sin transferencia)"
+msgstr "Tipo de pago (sin transferencia)"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_from_group_tree
+msgid "Tipo de pago"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__to_check
+msgid "To Check"
+msgstr "Para revisar"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__amount_total
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_from_group_tree
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_tree
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_move_line_tree
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_move_line_with_matched_tree
+msgid "Total"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__amount_total
+msgid "Total Amount"
+msgstr "Importe total"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__partner_credit
+msgid "Total Receivable"
+msgstr "Total cuenta por cobrar"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__amount_total_signed
+msgid "Total Signed"
+msgstr "Total signado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__partner_credit
+msgid "Total amount this customer owes you."
+msgstr "Importe total que este cliente debe."
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__amount_total_in_currency_signed
+msgid "Total in Currency Signed"
+msgstr "Total en divisa signado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__transaction_ids
+msgid "Transactions"
+msgstr "Transacciones"
+
+#. module: account_payment_group
+#: model:ir.actions.act_window,name:account_payment_group.action_account_payments_transfer
+#: model:ir.ui.menu,name:account_payment_group.menu_action_account_payments_transfer
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_transfer_search
+msgid "Transfers"
+msgstr "Transferencias"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__move_type
+msgid "Type"
+msgstr "Tipo"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__type_name
+msgid "Type Name"
+msgstr "Nombre del tipo"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment__qr_code_method
+msgid ""
+"Type of QR-code to be generated for the payment of this invoice, when "
+"printing it. If left blank, the first available and usable method will be "
+"used."
+msgstr ""
+"Tipo de código QR a generar para el pago de esta factura, al imprimirla. Si "
+"se deja en blanco, se utilizará el primer método disponible y utilizable."
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__unmatched_amount
+msgid "Unmatched Amount"
+msgstr "Importe no emparejado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__message_unread
+msgid "Unread Messages"
+msgstr "Mensajes no leídos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr "Contador de mensajes no leídos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__amount_untaxed
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group_invoice_wizard__amount_untaxed
+msgid "Untaxed Amount"
+msgstr "Importe no gravado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__amount_untaxed_signed
+msgid "Untaxed Amount Signed"
+msgstr "Importe no gravado signado"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__l10n_latam_use_documents
+msgid "Use Documents?"
+msgstr "¿Usar documentos?"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.res_config_settings_view_form
+msgid "Use two steps validation on payments to suppliers."
+msgstr "Use la validación de dos pasos en los pagos a proveedores."
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.res_config_settings_view_form
+msgid ""
+"Used if you want let user choose payment type (inbound or outbound) when "
+"registering a payment from a payment group"
+msgstr ""
+"Se usa si desea que el usuario elija el tipo de pago (entrante o saliente) "
+"al registrar un pago de un grupo de pagos"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_receiptbook__sequence
+msgid "Used to order the receiptbooks"
+msgstr "Se usa para ordenar los talonarios"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__user_id
+msgid "User"
+msgstr "Usuario"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_res_company__double_validation
+#: model:ir.model.fields,help:account_payment_group.field_res_config_settings__double_validation
+msgid "Utilizar validación en dos pasos para pagos a proveedores"
+msgstr ""
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Validar"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__validation_type
+msgid "Validation Type"
+msgstr "Tipo de validación"
+
+#. module: account_payment_group
+#: model:ir.model.fields.selection,name:account_payment_group.selection__account_payment_group__partner_type__supplier
+#: model:ir.model.fields.selection,name:account_payment_group.selection__account_payment_receiptbook__partner_type__supplier
+msgid "Vendor"
+msgstr "Proveedor"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__invoice_vendor_bill_id
+msgid "Vendor Bill"
+msgstr "Factura de proveedor"
+
+#. module: account_payment_group
+#: model_terms:ir.ui.view,arch_db:account_payment_group.view_account_payment_group_form
+msgid "Volver a borrdor"
+msgstr "Volver a borrador"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment_group__website_message_ids
+msgid "Website Messages"
+msgstr "Mensajes del sitio web"
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_group__website_message_ids
+msgid "Website communication history"
+msgstr "Historial de comunicación del sitio web"
+
+#. module: account_payment_group
+#: model:ir.model,name:account_payment_group.model_account_payment_group_invoice_wizard
+msgid "account.payment.group.invoice.wizard"
+msgstr ""
+
+#. module: account_payment_group
+#: model:ir.model.fields,help:account_payment_group.field_account_payment_receiptbook__padding
+msgid ""
+"automatically adds some '0' on the left of the 'Number' to get the required "
+"padding size."
+msgstr ""
+"agrega automáticamente un '0' a la izquierda del 'Número' para obtener el "
+"tamaño de relleno requerido."
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_account_payment__show_credit_button
+msgid "show_credit_button"
+msgstr ""
+
+#. module: account_payment_group
+#: model:mail.template,subject:account_payment_group.email_template_edi_payment_group
+msgid "{{object.company_id.name}} Receipt {{object.display_name or 'n/a'}}"
+msgstr "{{object.company_id.name}} Recibo {{object.display_name or 'n/a'}}"
+
+#. module: account_payment_group
+#: model:ir.model.fields,field_description:account_payment_group.field_res_company__double_validation
+#: model:ir.model.fields,field_description:account_payment_group.field_res_config_settings__double_validation
+msgid "¿Doble validación en los pagos?"
+msgstr ""
