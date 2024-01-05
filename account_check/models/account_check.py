@@ -262,12 +262,14 @@ class AccountCheck(models.Model):
             # self.journal_id.default_debit_account_id.id, al debitar
             # tenemos que usar esa misma
             credit_account = journal.default_account_id
+            debit_account = self.company_id._get_check_account('deferred')
             if self.type == 'third_check':
                 if journal.account_third:
                     debit_account = journal.account_third
             else:
                 if journal.account_holding:
-                    debit_account = journal.account_holding
+                    credit_account = journal.account_holding
+                    debit_account = self.company_id._get_check_account('deferred')
             name = _('Check "%s" debit') % (self.name)
         elif action == 'bank_reject':
             # al transferir a un banco se usa esta. al volver tiene que volver
