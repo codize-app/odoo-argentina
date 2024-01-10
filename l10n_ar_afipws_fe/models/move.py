@@ -517,7 +517,7 @@ print "Observaciones:", wscdc.Obs
                 fecha_serv_desde = fecha_serv_hasta = None
 
             # invoice amount totals:
-            amount_total = amounts["vat_untaxed_base_amount"] + amounts["vat_amount"]
+            amount_total = amounts["vat_taxable_amount"] + amounts["vat_amount"] + amounts["other_taxes_amount"] + amounts['iibb_perc_amount'] + amounts["vat_perc_amount"] + amounts["profits_perc_amount"] + amounts["other_perc_amount"] + amounts['mun_perc_amount']
 
             imp_total = str("%.2f" % amount_total)
             # ImpTotConc es el iva no gravado
@@ -531,7 +531,7 @@ print "Observaciones:", wscdc.Obs
             else:
                 #imp_neto = str("%.2f" % inv.vat_taxable_amount)
                 imp_neto = str("%.2f" % amounts["vat_taxable_amount"])
-            imp_trib = str("%.2f" % amounts["other_taxes_amount"])
+            imp_trib = str("%.2f" % (amounts["other_taxes_amount"] + amounts['iibb_perc_amount'] + amounts["vat_perc_amount"] + amounts["profits_perc_amount"] + amounts["other_perc_amount"] + amounts['mun_perc_amount']))
             # imp_iva = str("%.2f" % (inv.amount_total - (inv.amount_untaxed + inv.other_taxes_amount)))
             imp_iva = str("%.2f" % (amounts["vat_amount"]))
             # se usaba para wsca..
@@ -554,7 +554,7 @@ print "Observaciones:", wscdc.Obs
                     fecha_serv_desde, fecha_serv_hasta,
                     moneda_id, round(moneda_ctz,2)
                 )
-                if amounts["other_taxes_amount"] > 0:
+                if amounts["other_taxes_amount"] > 0 or amounts['iibb_perc_amount'] > 0 or amounts["vat_perc_amount"] > 0 or amounts["profits_perc_amount"] > 0 or amounts["other_perc_amount"] > 0 or amounts['mun_perc_amount'] > 0:
                     for other_tax in self._build_afip_wsfe_other_taxes():
                         ws.AgregarTributo(**other_tax)
 
@@ -624,22 +624,10 @@ print "Observaciones:", wscdc.Obs
                 zona = 1  # Nacional (la unica devuelta por afip)
                 # los responsables no inscriptos no se usan mas
                 impto_liq_rni = 0.0
-                imp_iibb = sum(inv.tax_line_ids.filtered(lambda r: (
-                    r.tax_id.tax_group_id.type == 'perception' and
-                    r.tax_id.tax_group_id.application == 'provincial_taxes')
-                ).mapped('amount'))
-                imp_perc_mun = sum(inv.tax_line_ids.filtered(lambda r: (
-                    r.tax_id.tax_group_id.type == 'perception' and
-                    r.tax_id.tax_group_id.application == 'municipal_taxes')
-                ).mapped('amount'))
-                imp_internos = sum(inv.tax_line_ids.filtered(
-                    lambda r: r.tax_id.tax_group_id.application == 'others'
-                ).mapped('amount'))
-                imp_perc = sum(inv.tax_line_ids.filtered(lambda r: (
-                    r.tax_id.tax_group_id.type == 'perception' and
-                    # r.tax_id.tax_group_id.tax != 'vat' and
-                    r.tax_id.tax_group_id.application == 'national_taxes')
-                ).mapped('amount'))
+                imp_iibb = amount['iibb_perc_amount']
+                imp_perc_mun = amount['mun_perc_amount']
+                imp_internos = amount['intern_tax_amount']
+                imp_perc = (amounts["vat_perc_amount"] + amounts["profits_perc_amount"] + amounts["other_perc_amount"])
 
                 ws.CrearFactura(
                     tipo_doc, nro_doc, zona, doc_afip_code, pos_number,
@@ -714,14 +702,6 @@ print "Observaciones:", wscdc.Obs
                     bonif = line.discount and str(
                         "%.2f" % (precio * qty - importe)) or None
                     if afip_ws in ['wsmtxca', 'wsbfe']:
-                        # TODO No lo estamos usando. Borrar?
-                        # if not line.product_id.uom_id.afip_code:
-                        #     raise UserError(_(
-                        #         'Not afip code con producto UOM %s' % (
-                        #             line.product_id.uom_id.name)))
-                        # u_mtx = (
-                        #     line.product_id.uom_id.afip_code or
-                        #     line.uom_id.afip_code)
                         iva_id = line.vat_tax_id.tax_group_id.afip_code
                         vat_taxes_amounts = line.vat_tax_id.compute_all(
                             line.price_unit, inv.currency_id, line.quantity,
@@ -732,10 +712,6 @@ print "Observaciones:", wscdc.Obs
                         if afip_ws == 'wsmtxca':
                             raise UserError(
                                 _('WS wsmtxca Not implemented yet'))
-                            # ws.AgregarItem(
-                            #     u_mtx, cod_mtx, codigo, ds, qty, umed,
-                            #     precio, bonif, iva_id, imp_iva,
-                            #     importe + imp_iva)
                         elif afip_ws == 'wsbfe':
                             sec = ""  # Código de la Secretaría (TODO usar)
                             ws.AgregarItem(
@@ -821,12 +797,22 @@ print "Observaciones:", wscdc.Obs
                     and tax.tax_group_id.l10n_ar_vat_afip_code not in ["0", "1", "2"]
                     for tax in line.tax_line_id
                 )
-                and line.price_subtotal
+                and line.credit
+            ):
+                vat_taxable |= line
+            elif (
+                any(
+                    tax.tax_group_id.l10n_ar_vat_afip_code
+                    and tax.tax_group_id.l10n_ar_vat_afip_code not in ["0", "1", "2"]
+                    for tax in line.tax_line_id
+                )
+                and line.debit
             ):
                 vat_taxable |= line
         for vat in vat_taxable:
-            vat_taxes.append(
-                {
+            if vat.credit > 0:
+                vat_taxes.append(
+                    {
                     "iva_id": vat.tax_line_id.tax_group_id.l10n_ar_vat_afip_code,
                     "base_imp": "%.2f"
                     % sum(
@@ -837,9 +823,25 @@ print "Observaciones:", wscdc.Obs
                             )
                         ).mapped("price_subtotal")
                     ),
-                    "importe": "%.2f" % vat.price_subtotal,
-                }
-            )
+                    "importe": "%.2f" % vat.credit,
+                    }
+                )
+            elif vat.debit > 0:
+                vat_taxes.append(
+                    {
+                    "iva_id": vat.tax_line_id.tax_group_id.l10n_ar_vat_afip_code,
+                    "base_imp": "%.2f"
+                    % sum(
+                        self.invoice_line_ids.filtered(
+                            lambda x: x.tax_ids.filtered(
+                                lambda y: y.tax_group_id.l10n_ar_vat_afip_code
+                                == vat.tax_line_id.tax_group_id.l10n_ar_vat_afip_code
+                            )
+                        ).mapped("price_subtotal")
+                    ),
+                    "importe": "%.2f" % vat.debit,
+                    }
+                )
         return vat_taxes
 
     def _build_afip_wsfe_other_taxes(self):
@@ -849,10 +851,11 @@ print "Observaciones:", wscdc.Obs
             and x.tax_line_id.tax_group_id.l10n_ar_tribute_afip_code
         )
         for tax in not_vat_taxes:
-            other_taxes.append(
+            if tax.credit > 0:
+                other_taxes.append(
                 {
                     "tributo_id": tax.tax_line_id.tax_group_id.l10n_ar_tribute_afip_code,
-                    "ds": tax.tax_line_id.tax_group_id.name,
+                    "desc": tax.tax_line_id.tax_group_id.name,
                     "base_imp": "%.2f"
                     % sum(
                         self.invoice_line_ids.filtered(
@@ -862,8 +865,24 @@ print "Observaciones:", wscdc.Obs
                             )
                         ).mapped("price_subtotal")
                     ),
-                    "alic": 0.00,
-                    "importe": "%.2f" % tax.price_subtotal,
+                    "importe": "%.2f" % tax.credit,
                 }
-            )
+                )
+            elif tax.debit > 0:
+                other_taxes.append(
+                {
+                    "tributo_id": tax.tax_line_id.tax_group_id.l10n_ar_tribute_afip_code,
+                    "desc": tax.tax_line_id.tax_group_id.name,
+                    "base_imp": "%.2f"
+                    % sum(
+                        self.invoice_line_ids.filtered(
+                            lambda x: x.tax_ids.filtered(
+                                lambda y: y.tax_group_id.l10n_ar_tribute_afip_code
+                                == tax.tax_line_id.tax_group_id.l10n_ar_tribute_afip_code
+                            )
+                        ).mapped("price_subtotal")
+                    ),
+                    "importe": "%.2f" % tax.debit,
+                }
+                )
         return other_taxes
