@@ -252,8 +252,13 @@ class AccountCheck(models.Model):
         string='Moneda de la empresa',
     )
 
+    def back_to_draft(self):
+        for rec in self:
+            rec.state = 'draft'
 
-
+    def op_clean(self):
+        for rec in self:
+            rec.operation_ids = False
 
     def get_bank_vals(self, action, journal):
         self.ensure_one()
