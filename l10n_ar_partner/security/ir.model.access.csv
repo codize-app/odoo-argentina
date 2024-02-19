@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_partido,l10n_ar_partner.departamento,model_res_departamento,base.group_user,1,1,1,1
+access_localidad,l10n_ar_partner.localidad,model_res_localidad,base.group_user,1,1,1,1

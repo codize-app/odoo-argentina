@@ -13,6 +13,11 @@ Datos Extras para Contacto de Argentina
     'author': 'Codize, Exemax',
     'website': 'http://www.codize.ar',
     'depends': ['base'],
-    'data': ['partner_view.xml'],
+    'data': [
+        'views/partner_view.xml',
+        'security/ir.model.access.csv',
+        'data/depart_data.xml', 
+        'data/localidad_data.xml',
+    ],
     'installable': True,
 }
