@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-<!--  Checks -->
+    <!--  Checks -->
+    <record id="action_back_to_draft" model="ir.actions.server">
+            <field name="name">Volver a Borrador</field>
+            <field name="model_id" ref="account_check.model_account_check"/>
+            <field name="binding_model_id" ref="account_check.model_account_check"/>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                    records.back_to_draft()
+            </field>
+    </record>
+
+    <record id="action_op_clean" model="ir.actions.server">
+            <field name="name">Op. Clean</field>
+            <field name="model_id" ref="account_check.model_account_check"/>
+            <field name="binding_model_id" ref="account_check.model_account_check"/>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                    records.op_clean()
+            </field>
+    </record>
+    
     <record model="ir.ui.view" id="view_account_check_tree">
         <field name="name">account.check.tree</field>
         <field name="model">account.check</field>
