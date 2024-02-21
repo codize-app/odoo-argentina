@@ -20,7 +20,7 @@
 		<record id="view_add_state_dept_loc_pac" model="ir.ui.view">
 			<field name="name">add.state.loca.tree</field>
 			<field name="model">res.partner</field>
-			<field name="inherit_id" ref="coordinacion.view_coordinacion_paciente_form"/>
+			<field name="inherit_id" ref="base.view_partner_form"/>
 			<field name="arch" type="xml">
 				<xpath  expr="//group/field[@name='direccion_barrio']" position="after">
 					<field name="prov_id" options="{'no_create': True, 'no_create_edit': True}"/>
