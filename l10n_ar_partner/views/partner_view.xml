@@ -22,23 +22,11 @@
 			<field name="model">res.partner</field>
 			<field name="inherit_id" ref="base.view_partner_form"/>
 			<field name="arch" type="xml">
-				<xpath  expr="//group/field[@name='direccion_barrio']" position="after">
-					<field name="prov_id" options="{'no_create': True, 'no_create_edit': True}"/>
-					<field name="dept_id" options="{'no_create': True, 'no_create_edit': True}"/>
-					<field name="loc_id" options="{'no_create': True, 'no_create_edit': True}"/>
-				</xpath>
-			</field>
-		</record>
-
-		<record id="view_add_state_dept_loc_pac" model="ir.ui.view">
-			<field name="name">add.state.loca.tree</field>
-			<field name="model">res.partner</field>
-			<field name="inherit_id" ref="base.view_partner_form"/>
-			<field name="arch" type="xml">
 				<field name="vat" position="before">
 					<field name="prov_id" options="{'no_create': True, 'no_create_edit': True}"/>
 					<field name="dept_id" options="{'no_create': True, 'no_create_edit': True}"/>
-					<field name="loc_id" options="{'no_create': True, 'no_create_edit': True}"/></field>
+					<field name="loc_id" options="{'no_create': True, 'no_create_edit': True}"/>
+				</field>
 				<field name="state_id" position="attributes">
 					<attribute name="invisible">True</attribute>
 				</field>
