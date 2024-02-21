@@ -1,7 +1,7 @@
 **English** | [Spanish](https://github.com/codize-app/odoo-argentina/blob/15.0/README_es.md)
 
 # Odoo Argentina
-Argentine Location for Odoo 15 Community. Original based on Location by Moldeo Interactive [and original based on Location by AdHoc]
+Argentine Location for Odoo 16 Community. Original based on Location by Moldeo Interactive [and original based on Location by AdHoc]
 
 ## Installation
 ### Install l10n_ar base
