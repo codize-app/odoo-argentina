@@ -12,8 +12,8 @@
     'external_dependencies': {
     },
     'data': [
-        'data/res_bank.xml',
-        'l10n_ar_bank.xml',
+        'views/data/res_bank.xml',
+        'views/l10n_ar_bank.xml',
     ],
     'demo': [
     ],
