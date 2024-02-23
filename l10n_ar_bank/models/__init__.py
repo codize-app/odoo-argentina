@@ -1,1 +1,1 @@
-from . import res.partner.bank
+from . import res_partner_bank
