@@ -18,115 +18,225 @@
 
   <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id">
     <!--HEADER-->
-    <div class="header"  style="margin-bottom: 0px !important;">
-		<div class="row" style="border: 1px solid black; border-radius: 10px; margin-bottom: 0px !important;">
+	<div class="header" style="margin-bottom: 0px !important;">
+		<div class="row" style="height:363px; border: 1px solid black; border-radius: 10px; margin-bottom: 0px !important;">
 			<!--COMPANY LOGO-->
 			<div class="col-3 text-left">
-				<!--<img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="display: block !important; float: left !important; position: absolute !important; margin-top: 0px !important; margin-bottom: 0px !important; top: 10px !important; left: 10px !important; bottom: auto !important; max-height: 95px;"/>-->
-				<img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-width: 230px; max-height: 60px; margin-top: 30px;" alt="Logo"/>
+				<!--<img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="display: block !important; float: left !important;
+				position: absolute !important; margin-top: 0px !important; margin-bottom: 0px !important;
+				top: 10px !important; left: 10px !important; bottom: auto !important; max-height: 95px;"/>-->
+			<img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-width: 230px; max-height: 90px; margin-left:75px; margin-top: 35px;" alt="Logo"/>
 			</div><!--END COMPANY LOGO-->
 			<!--FE-->
 			<div class="col-2 text-center" style="margin-top: 42px !important;">
-			  <span style="font-size: 11px; font-weight: bold;"><br/></span>
+				<span style="font-size: 11px; font-weight: bold;"><br/></span>
 			</div>
 			<!--END FE-->
 			<!--DOCUMENT LETTER-->
 			<div class="col-2 text-center">
-			  <div class="card" style="margin:0px;">
+			<div class="card" style="margin:0px;">
+				<t t-if="o.receiptbook_id.partner_type == 'supplier'">
+				<div class="card-header" style="font-size: 48px;padding:0px;">OP</div>
+				</t>
+				<t t-else="">
 				<div class="card-header" style="font-size: 48px;padding:0px;">REC</div>
+				</t>
 				<div class="card-body" style="height: 20px;padding:0px;"><br/></div>
-			  </div>
+			</div>
 			</div><!--END DOCUMENT LETTER-->
 			<!--TIPO,NRO Y FECHA FACTURA-->
-			<div class="col-5 text-left" name="company_address" style="padding-left: 80px !important;">
-			  <h3>
-					RECIBO
-			  </h3>
-			  <span t-if="o.state == 'confirmed' or o.state == 'posted' or o.state == 'draft'">
-					  Fecha: <span t-field="o.payment_date"/><br/>
-			  </span>
-			  <span t-if="o.state == 'confirmed' or o.state == 'posted' or o.state == 'draft'">
+			<div class="col-5 text-left" name="company_address" style="margin-top:45px;padding-left: 80px; !important;">
+			<!---cambios para realizar si es cliente o proveedor-->
+			<h3>
+			<t t-if="o.receiptbook_id.partner_type == 'supplier'">
+				ORDEN DE PAGO
+				</t>
+				<t t-else="">
+				RECIBO
+				</t>								
+			</h3>						
+			<!--Agregado de numero de recibo-->
+			<span t-if="o.state == 'confirmed' or o.state == 'posted' or o.state == 'draft'">
+			<t t-if="o.receiptbook_id.partner_type == 'supplier'">
+				N°: <span t-esc="o.display_name.replace('REC','OP', '')"/><br/>
+				</t>
+				<t t-else="">
+				N°: <span t-esc="o.display_name.replace('REC', '')"/><br/>
+				</t>							
+			</span>
+			<span t-if="o.state == 'confirmed' or o.state == 'posted' or o.state == 'draft'">
+				Fecha: <span t-field="o.payment_date"/><br/>
+			</span>
+			<span t-if="o.state == 'confirmed' or o.state == 'posted' or o.state == 'draft'">
 						<!--<span t-field="o.display_name"/>-->
-			  </span>
+			</span>
 			</div>
 			<!--END DATOS FACTURA-->
 		</div>
 
-  	</div>
+	</div>				
 	 <!--FIN HEADER-->
-
-	  <div class="page" style="margin-top: 0px !important;">
-		  <!--MY COMPANY-->
-  		 <div class="row" style="border: 1px solid black; border-radius: 10px; margin-top: 0px !important;">
-  			 <div class="col-6" style="margin-top: 8px !important;">
-  			   <span t-field="o.company_id.name" style="font-size: 18px; font-weight: bold;"/>
-  			   <div t-field="company.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"/>
-  			 </div>
-  			 <div class="col-6">
-  			   <p><br/></p>
-  			   <p><strong>CUIT</strong> <span t-field="o.company_id.vat"/> - <span t-field="o.company_id.partner_id.l10n_ar_afip_responsibility_type_id.name"/></p>
-  				<p><strong>Ingresos Brutos:</strong> <span t-if="o.company_id.l10n_ar_gross_income_type == 'exempt'">No liquida</span> <span t-if="o.company_id.l10n_ar_gross_income_type != 'exempt'" t-field="o.company_id.l10n_ar_gross_income_number"/> <br/> <strong>Inicio de actividades:</strong> <span t-field="o.company_id.l10n_ar_afip_start_date"/></p>
-  			 </div>
-  		 </div>
-  		 <!--END MY COMPANY-->
-  		 <br/>
-  		 <!-- CLIENTE  -->
-  		 <div class="row" style="border: 1px solid black; border-radius: 10px;">
-  		   <div class="col-2">
-  			 <strong><span>Cliente</span></strong>
-  		   </div>
-  		   <div name="invoice_address" class="col-4">
-  			 <address t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
-  		   </div>
-  		   <div name="invoice_address" class="col-4">
-  			 <strong>CUIT: </strong><span t-field="o.partner_id.vat"/>
-  			 <p><strong>Condicion de IVA </strong><span t-field="o.partner_id.l10n_ar_afip_responsibility_type_id.name"/></p>
-  		   </div>
-  		 </div>
-  		 <!-- END CLIENTE  -->
-
-	    <table class="table">
-	        <thead>
-	            <tr class="border-black">
-					<th></th>
-	                <th>Tipo</th>
-	                <th>Diario</th>
-	                <th>Fecha Cobro</th>
-	                <th>Tipo de pago</th>
-	                <th>Estado</th>
-	                <th class="text-right">Monto</th>
-	            </tr>
-	        </thead>
-	        <tbody class="invoice_tbody">
-	            <tr t-foreach="o.payment_ids" t-as="p">
-				  <td></td>
-	              <td><span t-if="p.payment_type_copy" t-field="p.payment_type_copy"/></td>
-	              <td><span t-if="p.journal_id" t-field="p.journal_id"/></td>
-	              <td><span t-if="p.journal_id" t-field="p.journal_id"/></td>
-	              <td><span t-if="p.date" t-field="p.date"/></td>
-	              <td><span t-if="p.payment_method_line_id" t-field="p.payment_method_line_id"/>
+	<div class="page" style="margin-top: 0px !important;">
+		<!--MY COMPANY-->
+		<div class="row" style="border: 1px; solid black; border-radius: 10px; padding:20px; margin-top: 0px !important;">
+			<div class="col-6" style="margin-left: 30px; !important;">
+				<span t-field="o.company_id.name" style="font-size: 18px; font-weight: bold;"/>
+				<div t-field="company.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: true}"/>
+			</div>
+			<div class="col-6">				
+				<p><strong>CUIT: </strong><span t-field="o.company_id.vat"/> - <span t-field="o.company_id.partner_id.l10n_ar_afip_responsibility_type_id.name"/></p>
+				<p><strong>Ingresos Brutos: </strong><span t-if="o.company_id.l10n_ar_gross_income_type == 'exempt'">No liquida</span> <span t-if="o.company_id.l10n_ar_gross_income_type != 'exempt'" t-field="o.company_id.l10n_ar_gross_income_number"/> <br/> <strong>Inicio de actividades:</strong> <span t-field="o.company_id.l10n_ar_afip_start_date"/></p>
+			</div>
+		</div>
+		<!--END MY COMPANY-->
+		<br/>	
+		<!-- CLIENTE  -->
+		<div class="row" style="border: 1px solid black; border-radius: 10px; padding:0px;margin-top: 0px !important;">
+			<div class="col-6" style="margin-left: 30px; !important;">
+				<t t-if="o.partner_type == 'supplier' ">
+					<strong><span>Proveedor: </span></strong><span t-field="o.partner_id"/>
+				</t>  
+				<t t-if="o.partner_type == 'customer' ">
+					<strong><span>Cliente: </span></strong><span t-field="o.partner_id"/>
+				</t>  
+			</div>
+			<!--div name="invoice_address" class="col-4">
+				<address t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
+			</div-->
+			<div name="invoice_address" class="col-6">
+				<strong>CUIT: </strong><span t-field="o.partner_id.vat"/>
+				<p><strong>Condicion de IVA: </strong><span t-field="o.partner_id.l10n_ar_afip_responsibility_type_id.name"/></p>
+			</div>
+		</div><br/>
+		<!-- END CLIENTE  -->
+			<br/><br/>
+		<table class="table">
+			<thead>
+				<tr class="border-black">	
+					<th>Diario</th>								
+					<th>Memo</th>
+					<t t-if="o.receiptbook_id.name == 'Recibo de pagos'">
+						<th>N° Retención</th>
+					</t>
+					<th>Estado</th>
+					<th>Monto</th>
+					<th class="text-right">Monto en Pesos</th>								
+				</tr>
+			</thead>
+			<tbody class="invoice_tbody">
+				<tr t-foreach="o.payment_ids" t-as="p">	
+				<td><span t-if="p.journal_id" t-field="p.journal_id"/></td>							
+				<!--agregado de memo-->
+				<td><span t-if="p.ref" t-field="p.ref"/></td>
+				<t t-if="o.receiptbook_id.name == 'Recibo de pagos'">									
+						<td><span t-field="p.withholding_number"/></td>
+				</t>
+				<td><span t-if="p.payment_method_line_id" t-field="p.payment_method_line_id"/>
 					<t t-foreach="p.check_ids" t-as="c">
 						(<span t-field="c.name"/> - <span t-field="c.payment_date"/>)|
 					</t>
-	              </td>
-	              <td><span t-if="p.state" t-field="p.state"/></td>
-	              <td class="text-right">
-	                  <span t-field="p.amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
-	              </td>
-	            </tr>
-	        </tbody>
-	        <tfoot>
-	          <tr class="border-black">
-	            <td colspan="6"><strong>Total</strong></td>
-	            <td class="text-right">
-	                 <span t-field="o.payments_amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
-	            </td>
-	          </tr>
-	        </tfoot>
-	      </table>
+				</td>								
+				<!--Agregado-->							
+				<td class="text-right">
+					<span t-field="p.amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: p.currency_id}"/>
+				</td>
+				<td>
+					<span t-if="p.amount_company_currency" t-field="p.amount_company_currency"/>
+				</td>						
+				</tr>
+			</tbody>						
+			<tfoot>
+			<tr class="border-black">
+				<td colspan="4"><strong>Total</strong></td>							
+				<td class="text-right">
+					<span t-field="o.payments_amount"/>
+				</td>							
+			</tr>
+			</tfoot>
+		</table>				
 
-
-	  </div>
+		<!-- Aca arranca lo nuevo -->
+		<table class="table">
+			<thead>
+				<div style="text-align: center; vertical-align: middle;">
+					<h5 style="display: inline-block;"><strong>Facturas Relacionadas</strong></h5>
+				</div>
+				<tr>
+					<th style="width:33%;padding:5px">Factura</th>
+					<th style="width:33%;padding:5px">Monto en Dolares</th>
+					<th style="width:33%;padding:5px">Monto en Pesos</th>
+					<th>Monto Pagado</th>
+				</tr>
+			</thead> 					
+			<tbody class="invoice_tbody">
+				<t t-set="facturas" t-value="0"/>
+					<tr t-foreach="o.matched_move_line_ids" t-as="f" style="font-size:12px">
+					<td style="padding:0.50rem"><span t-if="f.move_id" t-field="f.move_id"/></td>
+					<td style="padding:0.50rem"><span t-if="f.amount_currency and f.is_same_currency != True" t-field="f.amount_currency"/></td>
+					<t t-set="facturas" t-value="facturas + f.balance" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+					<td style="padding:0.50rem"><span t-if="f.balance" t-esc="f.balance" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
+					<td style="padding:0.50rem">
+						<t t-set="payments" t-value="[]"/>
+						<t t-foreach="o.payment_ids" t-as="p">
+							<t t-foreach="p.invoice_line_ids.ids" t-as="i">
+								<t t-set="payments" t-value="payments + [i]"/>
+							</t>
+						</t>
+						<t t-set="credit_move" t-value="request.env['account.partial.reconcile'].sudo().search([('credit_move_id', 'in', payments),('debit_move_id', '=', f.id)])"/>
+						<t t-set="debit_move" t-value="request.env['account.partial.reconcile'].sudo().search([('debit_move_id', 'in', payments),('credit_move_id', '=', f.id)])"/>
+						<t t-set="credit" t-value="0"/>
+						<t t-set="debit" t-value="0"/>
+						<t t-foreach="credit_move" t-as="c">
+							<t t-set="credit" t-value="credit + c.amount"/>
+						</t>
+						<t t-foreach="debit_move" t-as="d">
+							<t t-set="debit" t-value="debit + d.amount"/>
+						</t>
+						<t t-if="credit - debit != 0">
+							<span t-esc="credit - debit" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+						</t>
+						<!--tiene que mostrar el total de las facturas campo debit-->
+						<t t-if="credit - debit == 0">
+							<t t-set="credit" t-value="request.env['account.partial.reconcile'].sudo().search([('debit_move_id', '=', f.id)], limit=1)"/>
+							<t t-set="debit" t-value="request.env['account.partial.reconcile'].sudo().search([('credit_move_id', '=', f.id)], limit=1)"/>
+							<span t-esc="credit.amount - debit.amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+						</t>
+					</td>	
+					</tr>
+						<t t-if="o.partner_type == 'supplier' ">
+							<t t-set="monto_total" t-value="facturas + o.payments_amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+						</t>									
+						<t t-if="o.partner_type == 'customer' ">
+							<t t-set="monto_total" t-value="facturas - o.payments_amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+						</t>								
+				</tbody>
+			
+		<tfoot>
+			<tr class="border-black">
+				<td colspan="1"><strong>Total</strong></td>
+				<td class="text-right">
+					<span t-set="total_dolars" t-value="0.0" />
+					<span t-foreach="o.matched_move_line_ids" t-as="f" t-if="f.amount_currency and f.is_same_currency != True">
+						<span t-set="total_dolars" t-value="total_dolars + f.amount_currency" />
+					</span>
+					u$s <span t-esc="total_dolars" /> <!-- t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"-->
+				</td>	
+				<td class="text-right">
+						<span t-set="total_pesos" t-value="0.0" />
+					<span t-foreach="o.matched_move_line_ids" t-as="f" t-if="f.balance">
+						<span t-set="total_pesos" t-value="total_pesos + f.balance" />
+					</span>
+					<span t-esc="total_pesos" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}" />
+				</td>												
+				<td class="text-right">
+					<span t-field="o.payments_amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/> 
+				</td>		
+			</tr> 
+			</tfoot>
+		</table>
+	</div>
+	<!--END PAGE-->
+		
 
 	</div>
   <!--<t t-call="report.external_layout_footer"/>-->
