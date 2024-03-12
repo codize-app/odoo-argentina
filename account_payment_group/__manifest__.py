@@ -9,6 +9,7 @@
     "depends": [
         "account_financial_amount",
         "account_payment_fix",
+        "account_check"
     ],
     "data": [
         'security/security.xml',
