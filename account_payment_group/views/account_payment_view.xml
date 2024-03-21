@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- © 2016 ADHOC SA
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 
 <odoo>
-
-<!-- hide default payments menus -->
-<!-- record id="account.menu_action_account_payments_receivable" model="ir.ui.menu">
-    <field eval="[(6, 0, [ref('account_see_payment_menu')])]" name="groups_id"/>
-</record>
-
-<record id="account.menu_action_account_payments_payable" model="ir.ui.menu">
-    <field eval="[(6, 0, [ref('account_see_payment_menu')])]" name="groups_id"/>
-</record -->
-<!-- delete model="ir.ui.menu" id="account.menu_action_account_payments_receivable" />
-<delete model="ir.ui.menu" id="account.menu_action_account_payments_payable" />
-<delete model="ir.ui.menu" id="account.menu_action_move_out_receipt_type" />
-<delete model="ir.ui.menu" id="account.menu_action_move_in_invoice_type" / -->
 
 <!-- we dont want to use supplier tree view because is the same as default tree view -->
 <record id="account.view_account_supplier_payment_tree" model="ir.ui.view">
@@ -41,7 +26,7 @@
             <field name="amount" invisible="1"/>
             <field name="signed_amount"/>
             <field name="signed_amount_company_currency" sum="Total"/>
-            <field name="state"/>
+            <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'posted'"/>
             <field name="currency_id" invisible="1"/>
             <field name="company_currency_id" invisible="1"/>
             <field name="partner_type" invisible="1"/>
