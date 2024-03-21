@@ -58,7 +58,7 @@
 			<!--Agregado de numero de recibo-->
 			<span t-if="o.state == 'confirmed' or o.state == 'posted' or o.state == 'draft'">
 			<t t-if="o.receiptbook_id.partner_type == 'supplier'">
-				N°: <span t-esc="o.display_name.replace('REC','OP', '')"/><br/>
+				N°: <span t-esc="o.display_name.replace('REC', 'OP')"/><br/>
 				</t>
 				<t t-else="">
 				N°: <span t-esc="o.display_name.replace('REC', '')"/><br/>
