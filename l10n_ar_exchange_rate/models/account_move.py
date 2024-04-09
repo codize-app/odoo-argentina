@@ -36,7 +36,7 @@ class AccountMove(models.Model):
             rec.sudo().with_context(check_move_validity=False, check_amount_currency_balance_sign=False).l10n_ar_manual_rate()
         return res
 
-    def manual_rate(self):
+    def l10n_ar_manual_rate(self):
         for line in self.line_ids:
             if self.l10n_ar_is_manual_rate == True:
                 if line.debit > 0:
