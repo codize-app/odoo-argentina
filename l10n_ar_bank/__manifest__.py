@@ -12,7 +12,7 @@
     'external_dependencies': {
     },
     'data': [
-        'views/data/res_bank.xml',
+        'data/res_bank.xml',
         'views/l10n_ar_bank.xml',
     ],
     'demo': [
