@@ -230,21 +230,8 @@ class AccountMove(models.Model):
         List related invoice information to fill CbtesAsoc.
         """
         self.ensure_one()
-        # for now we only get related document for debit and credit notes
-        # because, for eg, an invoice can not be related to an invocie and
-        # that happens if you choose the modify option of the credit note
-        # wizard. A mapping of which documents can be reported as related
-        # documents would be a better solution
         if self.l10n_latam_document_type_id.internal_type == 'credit_note' and self.invoice_origin:
-            return self.search([
-                ('commercial_partner_id', '=', self.commercial_partner_id.id),
-                ('company_id', '=', self.company_id.id),
-                ('document_number', '=', self.invoice_origin),
-                ('id', '!=', self.id),
-                ('l10n_latam_document_type_id.l10n_ar_letter', '=', self.l10n_latam_document_type_id.l10n_ar_letter),
-                ('l10n_latam_document_type_id', '!=', self.l10n_latam_document_type_id.id),
-                ('state', 'not in', ['draft', 'cancel'])],
-                limit=1)
+            return self.reversed_entry_id
         elif self.l10n_latam_document_type_id.internal_type == 'debit_note':
             return self.debit_origin_id
         else:
