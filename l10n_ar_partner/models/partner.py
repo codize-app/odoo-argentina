@@ -6,6 +6,33 @@ import json
 import logging
 _logger = logging.getLogger(__name__)
 
+STATES = {
+    0: "Ciudad Autónoma de Buenos Aires",
+    1: "Buenos Aires",
+    2: "Catamarca",
+    3: "Córdoba",
+    4: "Corrientes",
+    5: "Entre Ríos",
+    6: "Jujuy",
+    7: "Mendoza",
+    8: "La Rioja",
+    9: "Salta",
+    10: "San Juan",
+    11: "San Luis",
+    12: "Santa Fe",
+    13: "Santiago del Estero",
+    14: "Tucumán",
+    16: "Chaco",
+    17: "Chubut",
+    18: "Formosa",
+    19: "Misiones",
+    20: "Neuquén",
+    21: "La Pampa",
+    22: "Río Negro",
+    23: "Santa Cruz",
+    24: "Tierra del Fuego"
+}
+
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
@@ -44,9 +71,9 @@ class ResPartner(models.Model):
                     result.append((record.id, str(record.name)))
         return result
     
-    def update_from_padron(self): # Version API Tango
+    def update_from_padron(self):
         if self.l10n_latam_identification_type_id.name == 'CUIT':
-            x = requests.get('https://afip.tangofactura.com/Rest/GetContribuyenteFull?cuit=' + self.vat)
+            x = requests.get('https://www.tangofactura.com/Rest/GetContribuyente?cuit=' + self.vat)
 
             ws_sr_padron = json.loads(x.text)
 
@@ -60,7 +87,6 @@ class ResPartner(models.Model):
             EsRI = ws_sr_padron['Contribuyente']['EsRI']
             EsMonotributo = ws_sr_padron['Contribuyente']['EsMonotributo']
             EsExento = ws_sr_padron['Contribuyente']['EsExento']
-            EsConsumidorFinal = ws_sr_padron['Contribuyente']['EsConsumidorFinal']
             l10n_ar_type = ""
 
             if EsRI == True:
@@ -69,8 +95,6 @@ class ResPartner(models.Model):
                 l10n_ar_type = "Responsable Monotributo"
             elif EsExento == True:
                 l10n_ar_type = "IVA Sujeto Exento"
-            elif EsConsumidorFinal == True:
-                l10n_ar_type = "Consumidor Final"
 
             if l10n_ar_type != "":
                 iva_afip = self.env["l10n_ar.afip.responsibility.type"].search([("name", "=", l10n_ar_type)], limit=1)
@@ -83,76 +107,16 @@ class ResPartner(models.Model):
             if ws_sr_padron['Contribuyente']['domicilioFiscal']['codPostal']:
                 self.zip = ws_sr_padron['Contribuyente']['domicilioFiscal']['codPostal']
 
-            if ws_sr_padron['Contribuyente']['domicilioFiscal']['nombreProvincia']:
+            if ws_sr_padron['Contribuyente']['domicilioFiscal']['idProvincia']:
                 country_id = self.env['res.country'].search([('name', '=', 'Argentina')], limit=1)
                 if country_id:
                     self.country_id = country_id.id
 
-                provincia = ''
+                provincia = STATES.get(ws_sr_padron['Contribuyente']['domicilioFiscal']['idProvincia'])
 
-                if ws_sr_padron['Contribuyente']['domicilioFiscal']['nombreProvincia'] == 'NEUQUEN':
-                    provincia = 'Neuquén'
-                elif ws_sr_padron['Contribuyente']['domicilioFiscal']['nombreProvincia'] == 'CORDOBA':
-                    provincia = 'Córdoba'
-                else:
-                    provincia = ws_sr_padron['Contribuyente']['domicilioFiscal']['nombreProvincia']
-
-                state_id = self.env['res.country.state'].search([('name', 'like', provincia), ('country_id', '=', country_id.id)], limit=1)
+                state_id = self.env['res.country.state'].search([('name', 'ilike', provincia), ('country_id', '=', country_id.id)], limit=1)
                 if state_id:
                     self.state_id = state_id.id
-
-    """def update_from_padron(self): # Version Constancia de Inscripción
-        company_id = self.env.company
-        if self.l10n_latam_identification_type_id.name == 'CUIT':
-            ws_sr_padron_a5 = company_id.get_connection('ws_sr_padron_a5').connect()
-            connect = ws_sr_padron_a5.Consultar(self.vat)
-            self.name = ws_sr_padron_a5.denominacion
-            self.street = ws_sr_padron_a5.direccion.capitalize()
-            self.city = ws_sr_padron_a5.localidad.capitalize()
-            self.zip = ws_sr_padron_a5.cod_postal
-            if ws_sr_padron_a5.tipo_persona == 'FISICA':
-                self.company_type = 'person'
-            else:
-                self.company_type = 'company'
-
-            iva = ws_sr_padron_a5.imp_iva
-            l10n_ar_type = ''
-
-            if iva == 'N' or iva == 'NI':
-                l10n_ar_type = 'Responsable Monotributo'
-            elif iva == 'AC' or iva == 'S':
-                l10n_ar_type = 'IVA Responsable Inscripto'
-            elif iva == 'XN' or iva == 'AN' or iva == 'NA':
-                l10n_ar_type = 'IVA No Alcanzado'
-            elif iva == 'EX':
-                l10n_ar_type = 'IVA Sujeto Exento'
-            else:
-                l10n_ar_type = 'Consumidor Final'
-
-            if l10n_ar_type != '':
-                iva_afip = self.env['l10n_ar.afip.responsibility.type'].search([('name', '=', l10n_ar_type)], limit=1)
-                self.l10n_ar_afip_responsibility_type_id = iva_afip.id
-
-            if ws_sr_padron_a5.provincia:
-                country_id = self.env['res.country'].search([('name', '=', 'Argentina')], limit=1)
-                if country_id:
-                    self.country_id = country_id.id
-
-                provincia = ''
-
-                if ws_sr_padron_a5.provincia == 'NEUQUEN':
-                    provincia = 'Neuquén'
-                elif ws_sr_padron_a5.provincia == 'CORDOBA':
-                    provincia = 'Córdoba'
-                else:
-                    provincia = ws_sr_padron_a5.provincia
-
-                state_id = self.env['res.country.state'].search([('name', 'like', provincia), ('country_id', '=', country_id.id)], limit=1)
-                if state_id:
-                    self.state_id = state_id.id
-        else:
-            iva_afip = self.env['l10n_ar.afip.responsibility.type'].search([('name', '=', 'Consumidor Final')], limit=1)
-            self.l10n_ar_afip_responsibility_type_id = iva_afip.id"""
 
 class ResDepartament(models.Model):
     _name = "res.departamento"
