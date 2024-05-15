@@ -24,7 +24,8 @@ class WithholdingsReports(models.TransientModel):
 
             #Percepciones en Facturas
             for invoice in invoices_ids:
-                taxes = json.loads(invoice.tax_totals_json)['groups_by_subtotal']['Importe libre de impuestos']
+                tax_totals_binary = invoice.tax_totals
+                taxes = dict(tax_totals_binary['groups_by_subtotal'])['Importe neto']
                 for tax in taxes:
                     if 'Per' in tax['tax_group_name']  or 'PER' in tax['tax_group_name'] or 'per' in tax['tax_group_name']:
                         _valsI = []     
