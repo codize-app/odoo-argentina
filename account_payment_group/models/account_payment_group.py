@@ -59,7 +59,7 @@ class AccountPaymentGroup(models.Model):
         required=True,
         index=True,
         change_default=True,
-        default=lambda self: self.env.user.company_id,
+        default=lambda self: self.env.company,
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
