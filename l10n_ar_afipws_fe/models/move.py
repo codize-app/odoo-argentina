@@ -504,7 +504,7 @@ print "Observaciones:", wscdc.Obs
                 fecha_serv_desde = fecha_serv_hasta = None
 
             # invoice amount totals:
-            amount_total = amounts["vat_taxable_amount"] + amounts["vat_amount"] + amounts["other_taxes_amount"] + amounts['iibb_perc_amount'] + amounts["vat_perc_amount"] + amounts["profits_perc_amount"] + amounts["other_perc_amount"] + amounts['mun_perc_amount']
+            amount_total = amounts["vat_taxable_amount"] + amounts["vat_amount"] + amounts["vat_exempt_base_amount"] + amounts["other_taxes_amount"] + amounts['iibb_perc_amount'] + amounts["vat_perc_amount"] + amounts["profits_perc_amount"] + amounts["other_perc_amount"] + amounts['mun_perc_amount']
 
             imp_total = str("%.2f" % amount_total)
             # ImpTotConc es el iva no gravado
