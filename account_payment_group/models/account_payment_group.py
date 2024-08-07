@@ -724,16 +724,9 @@ class AccountPaymentGroup(models.Model):
         self.write({'state': 'posted'})
 
     def cancel(self):
-        for rec in self:
-            # because child payments dont have invoices we remove reconcile
-            for move in rec.move_line_ids.mapped('move_id'):
-                rec.matched_move_line_ids.remove_move_reconcile()
-                # TODO borrar esto si con el de arriba va bien
-                # if rec.to_pay_move_line_ids:
-                #     move.line_ids.remove_move_reconcile()
-            rec.payment_ids.action_cancel()
-            rec.payment_ids.write({'invoice_line_ids': [(5, 0, 0)]})
+        self.mapped('payment_ids').action_cancel()
         self.write({'state': 'cancel'})
+        return True
 
     def action_draft(self):
         self.mapped('payment_ids').action_draft()
