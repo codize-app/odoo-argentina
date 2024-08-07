@@ -1,17 +1,17 @@
 [English](https://github.com/codize-app/odoo-argentina/blob/15.0/README.md) | **Spanish**
 
 # Odoo Argentina
-Localización Argentina para Odoo 15 Community. Basada en la Localización de Moldeo Interactive [y a su vez basada en la Localización de AdHoc]
+Localización Argentina para Odoo 17 Community. Basada en la Localización de Moldeo Interactive [y a su vez basada en la Localización de AdHoc]
 
 ## Instalación
 ### Instalar módulo base l10n_ar
 
 Primero, instalr el módulo de Odoo Community l10n_ar
 
-Clonar este repositorio con la branch 15.0:
+Clonar este repositorio con la branch 17.0:
 
 ```
-git clone https://github.com/codize-app/odoo-argentina -b 15.0
+git clone https://github.com/codize-app/odoo-argentina -b 17.0
 ```
 
 Dentro del directorio, instalar las dependencias:
@@ -62,7 +62,7 @@ Buscar la siguiente línea: `CipherString = DEFAULT@SECLEVEL=2` y reemplazarla p
 Instalar PyAfipWS:
 
 ```
-git clone https://github.com/pyar/pyafipws.git -b py3k
+git clone https://github.com/pyar/pyafipws.git
 cd pyafipws
 sudo pip3 install -r requirements.txt
 sudo python setup.py install
