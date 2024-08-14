@@ -9,8 +9,8 @@
                 <label for="l10n_ar_afip_code" />
                 <div>
                     <field name="l10n_ar_afip_code" />
-                    <button name="action_get_pyafipws_currency_rate" string="⇒ Obtener Tasa" type="object" attrs="{'invisible':['|', ('l10n_ar_afip_code','=',False), ('l10n_ar_afip_code', '=', 'PES')]}" class="oe_link"/>
-                    <button name="action_get_pyafipws_currencies" string="⇒ Obtener Información de Monedas" type="object" attrs="{'invisible':[('l10n_ar_afip_code','!=',False)]}" class="oe_link"/>
+                    <button name="action_get_pyafipws_currency_rate" string="⇒ Obtener Tasa" type="object" invisible = "not l10n_ar_afip_code or l10n_ar_afip_code == 'PES'" class="oe_link"/>
+                    <button name="action_get_pyafipws_currencies" string="⇒ Obtener Información de Monedas" type="object" invisible = "l10n_ar_afip_code != False" class="oe_link"/>
                 </div>
             </field>
         </field>

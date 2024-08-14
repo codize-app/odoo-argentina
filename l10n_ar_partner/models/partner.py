@@ -36,6 +36,13 @@ STATES = {
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
+    _super_send = requests.Session.send
+
+    @classmethod
+    def _request_handler(cls, s, r, **kwargs):
+        """Don't block external requests."""
+        return cls._super_send(s, r, **kwargs)
+
     internal_reference = fields.Char('Nombre de Fantasía')
     prov_id = fields.Many2one('res.country.state', string='Provincia (n)',domain="[('country_id.code', '=', 'AR')]")
     dept_id = fields.Many2one('res.departamento', string='Partido (n)', domain="[('provincia_id', '=', prov_id)]")
