@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<record id="view_account_payment_group_tree" model="ir.ui.view">
+    <field name="name">account.payment.group.tree</field>
+    <field name="model">account.payment.group</field>
+    <field name="arch" type="xml">
+        <tree decoration-info="state=='draft'" decoration-muted="state in ['reconciled', 'cancel']">
+            <field name="payment_date"/>
+            <field name="display_name"/>
+            <field name="partner_id"/>
+            <field name="payment_methods"/>
+            <field name="payments_amount" sum="Total" string="Monto"/>
+            <field name="state"/>
+            <field name="company_id" groups="base.group_multi_company"/>
+            <field name="currency_id" invisible="1"/>
+            <field name="partner_type" invisible="1"/>
+        </tree>
+    </field>
+</record>
+
+
+<record id="view_account_payment_group_form" model="ir.ui.view">
+    <field name="name">Payment Multi</field>
+    <field name="model">account.payment.group</field>
+    <field name="arch" type="xml">
+    	<form string="Registrar Pago">
+            <field name="document_sequence_id" invisible="1"/>
+            <field name="localization" invisible="1"/>
+            <field name="account_internal_type" invisible="1"/>
+            <field name="id" invisible="1"/>
+            <field name="commercial_partner_id" invisible="1"/>
+            <field name="partner_type" invisible="1"/>
+            <field name="payment_subtype" invisible="1"/>
+            <field name="pop_up" invisible="1"/>
+            <field name="has_outstanding" invisible="1"/> 
+            <header>
+                <button name="action_payment_sent" type="object" string="Enviar por Email" 
+                        class="oe_highlight" groups="base.group_user" 
+                        invisible="sent or state != 'posted'"/>
+                <field name="sent" invisible="1"/>
+                <button name="action_payment_sent" type="object" string="Enviar por Email" 
+                        groups="base.group_user" 
+                        invisible="not sent or state != 'posted'"/>
+                <button name="payment_print" string="Imprimir" type="object" 
+                        class="oe_highlight" groups="base.group_user" 
+                        invisible="sent or state != 'posted'"/>
+                <button name="payment_print" string="Imprimir" type="object" 
+                        groups="base.group_user" 
+                        invisible="not sent or state != 'posted'"/>
+                <button name="post" class="oe_highlight" string="Validar" type="object" 
+                        invisible="(payment_subtype == 'simple' and state != 'draft') or (payment_subtype == 'double_validation' and state != 'confirmed')"/>
+                <button name="action_draft" invisible="state != 'cancel'" string="Volver a borrador" type="object"/>
+                <button name="confirm" class="oe_highlight" string="Confirmar" type="object" 
+                        groups="account_payment_group.account_confirm_payment" 
+                        invisible="payment_subtype != 'double_validation' or state != 'draft'"/>
+                <button name="cancel" string="Cancelar" type="object" 
+                        invisible="state == 'cancel'"/>
+                <field name="state" widget="statusbar" statusbar_visible="posted"/>
+            </header>
+            
+            
+           <div class="alert alert-info" role="alert" style="margin-bottom:0px;" invisible = "has_outstanding == 'False'">
+                Hay <b>créditos pendientes</b> de imputar en la deuda seleccionada, se intentará imputar dichos créditos a otros comprobantes seleccionados pero dicha información <b>no quedará registrada en el pago</b>. Si no desea que se imputen automáticamente puede borrarlos de la lista.
+            </div>  
+            
+            <sheet>
+                <div class="oe_button_box" name="button_box">
+                    <button class="oe_stat_button" name="button_journal_entries"
+                            string="Journal Items" type="object"
+                            groups="account.group_account_manager"
+                            invisible="not move_line_ids" icon="fa-bars"/>
+                    <field name="move_line_ids" invisible="1"/>
+                </div>
+                <field name="id" invisible="1"/>
+                <div class="oe_title">
+	            <h1>
+                    <field name="display_name" class="oe_inline" invisible="not display_name"/>
+                    <label for="next_number" string="- Next Number: " class="oe_inline" invisible="next_number in (0, False)"/>
+                    <field name="next_number" class="oe_inline" invisible="next_number in (0, False)"/>
+                    
+	            </h1>
+                </div>
+                    <group>
+                        <field name="company_id" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_company" invisible="context.get('pop_up')"/>
+                        <field name="currency_id" invisible="1"/>
+			<field name="partner_id" context="{'default_is_company': True, 'default_supplier': partner_type == 'supplier', 'default_customer': partner_type == 'customer'}" 
+				invisible="context.get('pop_up')"/>
+                    </group>
+                    <group>
+                        <field name="receiptbook_id" 
+                               invisible="localization == False"
+                               required="localization != False and state == 'draft'"
+                               domain="[('partner_type', '=', partner_type), ('company_id', '=', company_id)]" 
+                               groups="base.group_multi_company" />
+                        <field name="document_number" 
+                               invisible="document_sequence_id != False or localization == False"
+                               required="document_sequence_id == False and localization != False" />
+                        <field name="payment_date"/>
+                        <field name="communication" 
+                               invisible="state != 'draft' or communication == False" />
+                        <field name="num_op" 
+                               readonly="state not in ['draft', 'confirmed']" 
+                               invisible="partner_type == 'supplier'" />
+                        <field name="branch_op" 
+                               readonly="state not in ['draft', 'confirmed']" 
+                               invisible="partner_type == 'supplier'" />
+                    </group>
+                    <group>
+                        <field name="selected_debt" 
+                               options="{'currency_field': 'currency_id'}" 
+                               invisible="state not in ['draft', 'confirmed']"/>
+                        <field name="related_invoice" 
+                               invisible="related_invoice == False" />
+                        <field name="related_invoice_amount" 
+                               invisible="related_invoice == False" />
+                        <field name="selected_finacial_debt" 
+                               options="{'currency_field': 'currency_id'}" 
+                               invisible="state not in ['draft', 'confirmed']"
+                               groups="account_financial_amount.account_use_financial_amounts"/>
+                        <field name="matched_amount" 
+                               options="{'currency_field': 'currency_id'}" 
+                               invisible="state != 'posted'"
+                               string="Monto a conciliar"/>
+                        <field name="unmatched_amount" 
+                               options="{'currency_field': 'currency_id'}" 
+                               invisible="state != 'posted'"
+                               string="Monto sin conciliar"/>
+                        <field name="unreconciled_amount" 
+                               options="{'currency_field': 'currency_id'}" 
+                               invisible="payment_subtype != 'double_validation' or state not in ['draft', 'confirmed']"/>
+                        <field name="to_pay_amount" 
+                               options="{'currency_field': 'currency_id'}" 
+                               invisible="payment_subtype != 'double_validation' or state not in ['draft', 'confirmed']"/>
+                    </group>
+                    <group>
+                        <field name="payments_amount" 
+                               string="Monto pago" 
+                               options="{'currency_field': 'currency_id'}"/>
+                        <field name="payment_difference" 
+                               options="{'currency_field': 'currency_id'}" 
+                               invisible="state not in ['draft', 'confirmed']"/>
+                    </group>
+                    <notebook>
+                        <page string="Lineas a pagar"
+                              invisible="pop_up == True or payment_subtype != 'double_validation' or state not in ['draft', 'confirmed']">
+                            <button name="add_all" 
+                                    string="Agregar Todos / Refrescar" 
+                                    invisible="state != 'draft'"
+                                    type="object"/>
+                            <button name="remove_all" 
+                                    string="Remover Todos" 
+                                    invisible="state != 'draft'" 
+                                    type="object"/>
+                            
+                            <field name="to_pay_move_line_ids" 
+                                   domain="[('partner_id.commercial_partner_id', '=', commercial_partner_id),('account_id.account_type', '=', account_internal_type),('account_id.reconcile', '=', True),('reconciled', '=', False),('full_reconcile_id', '=', False),('company_id', '=', company_id)]" 
+                                   groups="base.group_multi_company" />
+                        </page>
+                        <page string="Lineas de pagos" 
+                              invisible="payment_subtype == 'double_validation' or state == 'draft'">
+                            <field name="payment_ids" 
+                                   context="{'default_payment_group_company_id': company_id, 'default_payment_type': partner_type == 'supplier' and 'outbound' or 'inbound', 'default_payment_date': payment_date, 'default_partner_id': partner_id, 'default_partner_type': partner_type, 'payment_group': True, 'default_amount': payment_difference, 'tree_view_ref': 'account_payment_group.view_account_payment_from_group_tree'}" 
+                                   readonly="state not in ['draft', 'confirmed']" 
+                                   groups="base.group_multi_company"/>
+                        </page>
+                        <page string="Deudas" 
+                              invisible="pop_up == True or payment_subtype != 'simple' or state != 'draft'">
+                            <p>
+                                El pago se comparará automáticamente con las líneas más antiguas de esta lista (por fecha de vencimiento). Puede eliminar cualquier línea que no desee que coincida.
+                            </p>
+                            <button name="add_all" 
+                                    string="Agregar Todos / Refrescar" 
+                                    invisible="state != 'draft'"
+                                    type="object"/>
+                            <button name="remove_all" 
+                                    string="Remover Todos" 
+                                    invisible="state != 'draft'"
+                                    type="object"/>
+                                    
+                            <field name="debt_move_line_ids" 
+                                   domain="[('partner_id.commercial_partner_id', '=', commercial_partner_id),('account_id.account_type', '=', account_internal_type),('account_id.reconcile', '=', True),('reconciled', '=', False), ('full_reconcile_id', '=', False),('company_id', '=', company_id)]" 
+                                   groups="base.group_multi_company">
+                                <tree string="Journal Items" edit="0">
+                                    <field name="date"/>
+                                    <field name="date_maturity"/>
+                                    <field name="move_id" required="0"/>
+                                    <field name="journal_id" options="{&quot;no_open&quot;:True}"/>
+                                    <field name="name"/>
+                                    <field name="ref"/>
+                                    <field name="statement_id" invisible="1"/>
+                                    <field name="account_id" options="{&quot;no_open&quot;:True}" domain="[('company_id', '=', company_id)]"/>
+                                    <field name="balance" string="Amount"/>
+                                    <field name="amount_residual" sum="Total"/>
+                                    <field name="amount_currency" groups="base.group_multi_currency"/>
+                                    <field name="amount_residual_currency" groups="base.group_multi_currency"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="company_currency_id" invisible="1"/>
+                                    <field name="company_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Pagado" 
+                              invisible="state != 'posted'">
+                            <field name="matched_move_line_ids"/>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                                        
+            </sheet>
+        <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+            <field name="message_ids" widget="mail_thread"/>
+        </div>
+        </form>
+    </field>
+</record>
+
+<record id="view_account_payment_group_graph" model="ir.ui.view">
+    <field name="name">account.payment.group.graph</field>
+    <field name="model">account.payment.group</field>
+    <field name="arch" type="xml">
+        <graph string="Payments" type="bar" stacked="1">
+            <!-- <field name="payment_type"/> -->
+            <field name="partner_id"/>
+            <field name="payments_amount" type="measure"/>
+        </graph>
+    </field>
+</record>
+
+<record id="action_account_payments_group" model="ir.actions.act_window">
+    <field name="name">Customer Receipts</field>
+    <field name="res_model">account.payment.group</field>
+    <field name="view_mode">tree,form,graph</field>
+    <!-- <field name="context">{'default_payment_type': 'inbound'}</field> -->
+    <field name="context">{'default_partner_type': 'customer', 'search_default_not_cancelled': 1}</field>
+    <!-- <field name="context">{'default_payment_type': 'inbound', 'default_partner_type': 'customer'}</field> -->
+    <field name="domain">[('partner_type', '=', 'customer')]</field>
+    <!-- <field name="view_id" ref="view_account_payment_group_tree"/> -->
+    <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Click para registrar un pago
+        </p>
+        <p>
+          Los pagos se utilizan para registrar movimientos de liquidez (enviar o cobrar).
+          A continuación, puede procesar esos pagos por sus propios medios o utilizando las medios instalados.
+        </p>
+    </field>
+</record>
+
+<record id="action_account_payments_group_payable" model="ir.actions.act_window">
+    <field name="name">Supplier Payments</field>
+    <field name="res_model">account.payment.group</field>
+    <field name="view_mode">tree,form,graph</field>
+    <field name="context">{'default_partner_type': 'supplier', 'search_default_not_cancelled': 1}</field>
+    <!-- <field name="context">{'default_payment_type': 'outbound', 'default_partner_type': 'supplier'}</field> -->
+    <!-- <field name="context">{'default_payment_type': 'outbound'}</field> -->
+    <field name="domain">[('partner_type', '=', 'supplier')]</field>
+    <!-- <field name="view_id" ref="view_account_supplier_payment_group_tree"/> -->
+    <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Click para registrar un pago
+        </p>
+        <p>
+          Los pagos se utilizan para registrar movimientos de liquidez (enviar o cobrar).
+          A continuación, puede procesar esos pagos por sus propios medios o utilizando las medios instalados.
+        </p>
+    </field>
+</record>
+
+<menuitem action="action_account_payments_group" id="menu_action_account_payments_group_receivable" parent="account.menu_finance_receivables" sequence="20"/>
+<menuitem action="action_account_payments_group_payable" id="menu_action_account_payments_group_payable" parent="account.menu_finance_payables" sequence="20"/>
+
+</data>
+</odoo>
