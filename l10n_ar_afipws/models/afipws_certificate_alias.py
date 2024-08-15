@@ -84,8 +84,7 @@ class AfipwsCertificateAlias(models.Model):
     company_cuit = fields.Char(
         'Company CUIT',
         size=16,
-        states={'draft': [('readonly', False)]},
-        readonly=True,
+        states={'draft': [('readonly', False)], 'confirmed': [('readonly', True)], 'cancel': [('readonly', True)]},
     )
     service_provider_cuit = fields.Char(
         'Service Provider CUIT',

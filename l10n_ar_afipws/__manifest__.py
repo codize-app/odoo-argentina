@@ -7,9 +7,11 @@
     'license': 'AGPL-3',
     'summary': '',
     'depends': [
+        'account',
+        'l10n_ar'
     ],
     'external_dependencies': {
-        'python': ['OpenSSL'] #se borra pyafipws 'pysimplesoap'
+        'python': ['OpenSSL', 'pyafipws', 'pysimplesoap']
     },
     'data': [
         'wizard/upload_certificate_view.xml',

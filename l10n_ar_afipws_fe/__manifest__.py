@@ -7,13 +7,13 @@
     'license': 'AGPL-3',
     'summary': '',
     'depends': [
-        'l10n_ar_afipws',
         'base',
         'uom',
         'l10n_latam_invoice_document',
-       'l10n_ar',
+        'l10n_ar',
+        'l10n_ar_afipws',
         'l10n_ar_bank',
-      'account_debit_note',
+        'account_debit_note',
     ],
     'external_dependencies': {
     },

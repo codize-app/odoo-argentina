@@ -114,14 +114,14 @@ class ResPartner(models.Model):
             if ws_sr_padron['Contribuyente']['domicilioFiscal']['codPostal']:
                 self.zip = ws_sr_padron['Contribuyente']['domicilioFiscal']['codPostal']
 
-            if ws_sr_padron['Contribuyente']['domicilioFiscal']['idProvincia']:
+            if ws_sr_padron['Contribuyente']['domicilioFiscal']:
                 country_id = self.env['res.country'].search([('name', '=', 'Argentina')], limit=1)
                 if country_id:
                     self.country_id = country_id.id
 
                 provincia = STATES.get(ws_sr_padron['Contribuyente']['domicilioFiscal']['idProvincia'])
 
-                state_id = self.env['res.country.state'].search([('name', 'ilike', provincia), ('country_id', '=', country_id.id)], limit=1)
+                state_id = self.env['res.country.state'].search([('name', '=', provincia), ('country_id', '=', country_id.id)], limit=1)
                 if state_id:
                     self.state_id = state_id.id
 
