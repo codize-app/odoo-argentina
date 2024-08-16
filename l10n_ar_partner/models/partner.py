@@ -44,9 +44,8 @@ class ResPartner(models.Model):
         return cls._super_send(s, r, **kwargs)
 
     internal_reference = fields.Char('Nombre de Fantasía')
-    prov_id = fields.Many2one('res.country.state', string='Provincia (n)',domain="[('country_id.code', '=', 'AR')]")
-    dept_id = fields.Many2one('res.departamento', string='Partido (n)', domain="[('provincia_id', '=', prov_id)]")
-    loc_id = fields.Many2one('res.localidad', string='Localidad (n)', domain="[('partido_id', '=', dept_id)]")
+    dept_id = fields.Many2one('res.departamento', string='Partido', ondelete='restrict', domain="[('provincia_id', '=', state_id)]")
+    loc_id = fields.Many2one('res.localidad', string='Localidad', ondelete='restrict', domain="[('partido_id', '=', dept_id)]")
 
     def write(self, values):
         res = super(ResPartner, self).write(values)
@@ -127,12 +126,14 @@ class ResPartner(models.Model):
 
 class ResDepartament(models.Model):
     _name = "res.departamento"
-    
-    name = fields.Char(string="Nombre Departamento", required=True)
+    _description = "Departamento-Partido"
+
+    name = fields.Char(string="Nombre Partido", required=True)
     provincia_id = fields.Many2one('res.country.state', string='Provincia', required=True)
 
 class ResLocation(models.Model):
     _name = "res.localidad"
-    
+    _description = "Localidad"
+
     name = fields.Char(string='Nombre Localidad', required=True)
-    partido_id = fields.Many2one('res.departamento', string="Departamento", required=True)
+    partido_id = fields.Many2one('res.departamento', string="Partido", required=True)

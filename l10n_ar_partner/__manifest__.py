@@ -6,9 +6,10 @@
     'summary': "Datos Extras para Contacto de Argentina",
     'description': """
 Datos Extras para Contacto de Argentina
-======================
 
 * Agrega nombre de Fantasía
+* Agrega Localidades y Departamentos
+* Agrega Actualizar con Datos de AFIP (Contribuyente)
     """,
     'author': 'Codize, Exemax',
     'website': 'http://www.codize.ar',
