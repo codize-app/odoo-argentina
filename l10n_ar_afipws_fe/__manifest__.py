@@ -1,8 +1,9 @@
 {
     "name": "Factura Electrónica Argentina",
     'version': '17.0.1.3.0',
+    'icon': '/account/static/description/l10n.png',
+    'countries': ['ar'],
     'category': 'Accounting/Localizations',
-    'sequence': 14,
     'author': 'ADHOC SA, Moldeo Interactive, Exemax, Codize, Odoo Community Association (OCA)',
     'license': 'AGPL-3',
     'summary': '',
@@ -13,6 +14,7 @@
         'l10n_ar',
         'l10n_ar_afipws',
         'l10n_ar_bank',
+        'account',
         'account_debit_note',
     ],
     'external_dependencies': {

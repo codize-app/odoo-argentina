@@ -1,5 +1,7 @@
 {
     'name': 'Modulo Base para los Web Services de AFIP',
+    'icon': '/account/static/description/l10n.png',
+    'countries': ['ar'],
     'version': '17.0.1.0.0',
     'category': 'Accounting/Localizations',
     'sequence': 14,
