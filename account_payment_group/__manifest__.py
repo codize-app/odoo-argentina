@@ -2,6 +2,7 @@
     "name": "Grupos de Pago con Múltiples Métodos",
     "version": "17.0.1.0.0",
     "category": "Accounting",
+    "icon": '/account/static/description/icon.png',
     "author": "ADHOC SA, Exemax, Codize, Birtum",
     "license": "AGPL-3",
     "application": False,

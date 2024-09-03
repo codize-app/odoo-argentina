@@ -5,7 +5,7 @@
         <field name="name">account.payment.receiptbook.search</field>
         <field name="model">account.payment.receiptbook</field>
         <field name="arch" type="xml">
-            <search string="Receipt Books">
+            <search string="Talonarios">
                 <field name="name"/>
                 <field name="sequence_type"/>
                 <field name="partner_type"/>
@@ -18,7 +18,7 @@
         <field name="name">account.payment.receiptbook.tree</field>
         <field name="model">account.payment.receiptbook</field>
         <field name="arch" type="xml">
-            <tree string="Receipt Books">
+            <tree string="Talonarios">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="sequence_type"/>
@@ -32,8 +32,8 @@
         <field name="name">account.payment.receiptbook.form</field>
         <field name="model">account.payment.receiptbook</field>
         <field name="arch" type="xml">
-            <form string="Receipt Books"> 
-                <sheet string="Receipt Books">
+            <form string="Talonarios"> 
+                <sheet string="Talonarios">
                     <group>
                         <group>
                             <field name="name"/>

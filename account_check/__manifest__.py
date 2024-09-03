@@ -23,9 +23,8 @@
     'category': 'Accounting',
     'summary': 'Accounting, Payment, Check, Third, Issue',
     'author': 'ADHOC SA, Codize, Exemax',
+    "icon": '/account/static/description/icon.png',
     'license': 'AGPL-3',
-    'images': [
-    ],
     'depends': [
         'account_payment_fix',
         'base'
@@ -46,7 +45,6 @@
         'security/ir.model.access.csv',
         'security/account_check_security.xml',
     ],
-    'demo': [],
     'installable': True,
     'auto_install': False,
     'application': True,

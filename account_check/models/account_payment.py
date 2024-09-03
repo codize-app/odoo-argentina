@@ -18,15 +18,12 @@ class AccountPayment(models.Model):
     cheque_reference = fields.Char()
     check_ids = fields.Many2many(
         'account.check',
-        string='Checks',
+        string='Cheques',
         copy=False,
         readonly=True,
         states={'draft': [('readonly', False)]},
         auto_join=True,
     )
-    # we add this field for better usability on issue checks and received
-    # checks. We keep m2m field for backward compatibility where we allow to
-    # use more than one check per payment
     check_id = fields.Many2one(
         'account.check',
         compute='_compute_check',
@@ -34,8 +31,8 @@ class AccountPayment(models.Model):
         string='Cheque',
     )
     check_deposit_type = fields.Selection(
-        [('consolidated', 'Consolidated'),
-         ('detailed', 'Detailed')],
+        [('consolidated', 'Consolidado'),
+         ('detailed', 'Detallado')],
         default='detailed',
         help="This option is relevant if you use bank statements. Detailed is"
         " used when the bank credits one by one the checks, consolidated is"
