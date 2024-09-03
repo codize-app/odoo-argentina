@@ -21,8 +21,16 @@ class AccountPaymentGroup(models.Model):
     _order = "payment_date desc"
     _inherit = 'mail.thread'
     has_outstanding = fields.Boolean(string="Has Outstanding Payments")
-    related_invoice = fields.Many2one(comodel_name='account.move',string="Factura Relacionada", readonly=1)
-    related_invoice_amount = fields.Monetary(string="Monto Factura", related="related_invoice.amount_total", readonly=1)
+    related_invoice = fields.Many2one(
+        'account.move',
+        string="Factura Relacionada",
+        readonly=True
+    )
+    related_invoice_amount = fields.Monetary(
+        string="Monto Factura",
+        related="related_invoice.amount_total",
+        readonly=True
+    )
     document_number = fields.Char(
         string='Nro Documento',
         copy=False,
@@ -31,10 +39,13 @@ class AccountPaymentGroup(models.Model):
         index=True,
     )
     document_sequence_id = fields.Many2one(
+        string="Secuencia del Documento",
         related='receiptbook_id.sequence_id',
     )
-    localization = fields.Char('Localización', default='argentina')
-
+    localization = fields.Char(
+        'Localización',
+        default='argentina'
+    )
     receiptbook_id = fields.Many2one(
         'account.payment.receiptbook',
         'Talonario de Recibos',
@@ -70,11 +81,12 @@ class AccountPaymentGroup(models.Model):
     )
     partner_type = fields.Selection(
         [('customer', 'Customer'), ('supplier', 'Vendor')],
+        string="Tipo de Contacto",
         change_default=True,
     )
     partner_id = fields.Many2one(
         'res.partner',
-        string='Cliente/Proveedor',
+        string='Cliente / Proveedor',
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
@@ -82,6 +94,7 @@ class AccountPaymentGroup(models.Model):
         index=True,
     )
     commercial_partner_id = fields.Many2one(
+        string="Contacto",
         related='partner_id.commercial_partner_id',
     )
     currency_id = fields.Many2one(
@@ -126,15 +139,11 @@ class AccountPaymentGroup(models.Model):
         compute='_compute_selected_debt',
     )
     selected_debt = fields.Monetary(
-        # string='To Pay lines Amount',
         string='Deuda Seleccionada',
         compute='_compute_selected_debt',
     )
-    # this field is to be used by others
     selected_debt_untaxed = fields.Monetary(
-        # string='To Pay lines Amount',
         string='Deuda Seleccionada sin Impuestos',
-        #string='Selected Debt Untaxed',
         compute='_compute_selected_debt',
     )
     unreconciled_amount = fields.Monetary(
@@ -142,12 +151,10 @@ class AccountPaymentGroup(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
-    # reconciled_amount = fields.Monetary(compute='_compute_amounts')
     to_pay_amount = fields.Monetary(
         compute='_compute_to_pay_amount',
         #inverse='_inverse_to_pay_amount',
         string='Monto a Pagar',
-        # string='Total To Pay Amount',
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
@@ -164,7 +171,7 @@ class AccountPaymentGroup(models.Model):
         readonly=True,
         default='draft',
         copy=False,
-        string="Status",
+        string="Estado",
         index=True,
     )
     move_lines_domain = [
@@ -175,17 +182,13 @@ class AccountPaymentGroup(models.Model):
     ]
     debt_move_line_ids = fields.Many2many(
         'account.move.line',
-        # por alguna razon el related no funciona bien ni con states ni
-        # actualiza bien con el onchange, hacemos computado mejor
         compute='_compute_debt_move_line_ids',
         inverse='_inverse_debt_move_line_ids',
-        string="Lineas de deuda",
-        # no podemos ordenar por due date porque esta hardecodeado en
-        # funcion _get_pair_to_reconcile
-        help="Payment will be automatically matched with the oldest lines of "
-        "this list (by maturity date). You can remove any line you"
-        " dont want to be matched.",
-        domain=move_lines_domain,
+        string="Líneas de Deuda",
+        help="Los Pagos serán automáticamente conciliados con las líneas más viejas de esta"
+        "lista (por fecha). Puede eliminar cualquier línea"
+        " que no quiera conciliar.",
+        domain='move_lines_domain',
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
@@ -196,41 +199,32 @@ class AccountPaymentGroup(models.Model):
         'payment_group_id',
         'to_pay_line_id',
         string="Lineas a Pagar",
-        help='This lines are the ones the user has selected to be paid.',
+        help='Estas líneas son las que el usuario seleccionó para pagar.',
         copy=False,
-        domain=move_lines_domain,
-        # lo hacemos readonly por vista y no por aca porque el relatd si no
-        # no funcionaba bien
+        domain='move_lines_domain',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        # auto_join not yet implemented for m2m. TODO enable when implemented
-        # https://github.com/odoo/odoo/blob/master/odoo/osv/expression.py#L899
-        # auto_join=True,
+        auto_join=True,
     )
     matched_move_line_ids = fields.Many2many(
         'account.move.line',
         compute='_compute_matched_move_line_ids',
-        string='Lineas pagadas',
-        help='Lines that has been matched to payments, only available after '
-        'payment validation',
+        string='Líneas pagadas',
+        help='Líneas a conciliar con los pagos, solo disponible después de la validación de pagos.',
     )
     payment_subtype = fields.Char(
         compute='_compute_payment_subtype'
     )
     pop_up = fields.Boolean(
-        # campo que agregamos porque el  invisible="context.get('pop_up')"
-        # en las pages no se comportaba bien con los attrs
         compute='_compute_payment_pop_up',
         default=lambda x: x._context.get('pop_up', False),
     )
     payment_difference = fields.Monetary(
         compute='_compute_payment_difference',
-        # TODO rename field or remove string
-        # string='Remaining Residual',
         readonly=True,
         string="Diferencia en los Pagos",
-        help="Difference between selected debt (or to pay amount) and "
-        "payments amount"
+        help="Diferencia entre la deuda seleccionada (o monto a pagar) y "
+        "el monto de los pagos"
     )
     payment_ids = fields.One2many(
         'account.payment',
@@ -248,9 +242,6 @@ class AccountPaymentGroup(models.Model):
     )
     move_line_ids = fields.Many2many(
         'account.move.line',
-        # related o2m a o2m solo toma el primer o2m y le hace o2m, por eso
-        # hacemos computed
-        # related='payment_ids.move_line_ids',
         compute='_compute_move_lines',
         readonly=True,
         copy=False,
@@ -259,12 +250,9 @@ class AccountPaymentGroup(models.Model):
         readonly=True,
         default=False,
         copy=False,
-        help="It indicates that the receipt has been sent."
+        string="Enviado",
+        help="Indica que el recibo fue enviado."
     )
-
-    num_op = fields.Char('Nº OP Cliente')
-    branch_op = fields.Char('Sucursal OP Cliente')
-
 
     _sql_constraints = [
         ('document_number_uniq', 'unique(document_number, receiptbook_id)',
@@ -292,18 +280,9 @@ class AccountPaymentGroup(models.Model):
                 payment.next_number = seq_date.number_next_actual
 
 
-    @api.depends(
-        # 'move_name',
-        'state',
-        'document_number',
-    )
+    @api.depends('state', 'document_number')
     def _compute_name(self):
-        """
-        * If document number and document type, we show them
-        * Else, we show name
-        """
         for rec in self:
-            _logger.info('Getting name for payment group %s' % rec.id)
             if rec.state == 'posted':
                 if rec.document_number:
                     name = ("%s%s" % ('REC',rec.document_number))
@@ -312,7 +291,7 @@ class AccountPaymentGroup(models.Model):
                 else:
                     name = ', '.join(rec.payment_ids.mapped('name'))
             else:
-                name = _('Draft Payment')
+                name = 'Recibo Borrador'
             rec.name = name
 
     _sql_constraints = [
@@ -375,7 +354,6 @@ class AccountPaymentGroup(models.Model):
             if res != rec.document_number:
                 rec.document_number = res
 
-
     @api.depends(
         'state',
         'payments_amount',
@@ -386,9 +364,6 @@ class AccountPaymentGroup(models.Model):
                 continue
             if not rec.partner_id:
                 continue
-            # damos vuelta signo porque el payments_amount tmb lo da vuelta,
-            # en realidad porque siempre es positivo y se define en funcion
-            # a si es pago entrante o saliente
             sign = rec.partner_type == 'supplier' and -1.0 or 1.0
             rec.matched_amount = sign * sum(
                 rec.matched_move_line_ids.with_context(
@@ -409,7 +384,6 @@ class AccountPaymentGroup(models.Model):
             sign = rec.partner_type == 'supplier' and -1.0 or 1.0
             for line in rec.matched_move_line_ids.with_context(
                     payment_group_id=rec.id):
-                #invoice = line.invoice_id
                 invoice = line.move_id
                 factor = invoice and invoice._get_tax_factor() or 1.0
                 matched_amount_untaxed += \
@@ -474,7 +448,7 @@ class AccountPaymentGroup(models.Model):
             mark_payment_as_sent=True,
         )
         return {
-            'name': _('Compose Email'),
+            'name': 'Componer Email',
             'type': 'ir.actions.act_window',
             'view_type': 'form',
             'view_mode': 'form',
@@ -557,8 +531,6 @@ class AccountPaymentGroup(models.Model):
 
     def _compute_payment_difference(self):
         for rec in self:
-            # if rec.payment_subtype != 'double_validation':
-            #     continue
             rec.payment_difference = rec.to_pay_amount - rec.payments_amount
 
     @api.depends('payment_ids.signed_amount_company_currency')

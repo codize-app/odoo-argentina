@@ -100,12 +100,6 @@
                         <field name="payment_date"/>
                         <field name="communication" 
                                invisible="state != 'draft' or communication == False" />
-                        <field name="num_op" 
-                               readonly="state not in ['draft', 'confirmed']" 
-                               invisible="partner_type == 'supplier'" />
-                        <field name="branch_op" 
-                               readonly="state not in ['draft', 'confirmed']" 
-                               invisible="partner_type == 'supplier'" />
                     </group>
                     <group>
                         <field name="selected_debt" 

@@ -10,7 +10,7 @@
     "depends": [
         "account_financial_amount",
         "account_payment_fix",
-        "account_check"
+        "l10n_latam_check"
     ],
     "data": [
         'security/security.xml',
