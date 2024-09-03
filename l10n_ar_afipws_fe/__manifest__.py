@@ -26,11 +26,8 @@
         'views/product_uom_view.xml',
         'views/res_currency_view.xml',
         'views/ir_sequence.xml',
+        'views/report_invoice_fe.xml',
         'security/ir.model.access.csv',
-    ],
-    'demo': [
-    ],
-    'images': [
     ],
     'installable': True,
     'auto_install': False,

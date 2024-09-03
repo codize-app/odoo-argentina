@@ -2,7 +2,6 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
-from .pyi25 import PyI25
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError,ValidationError
 import base64
@@ -10,7 +9,8 @@ from io import BytesIO
 import logging
 import sys
 import traceback
-from datetime import datetime, date
+import datetime
+from datetime import datetime, timedelta, date
 _logger = logging.getLogger(__name__)
 
 try:
@@ -18,24 +18,83 @@ try:
 except ImportError:
     _logger.debug('Can not `from pyafipws.soap import SoapFault`.')
 
+from odoo.tools import float_repr
+import json
+import base64
+try:
+    from base64 import encodebytes
+except ImportError:  # 3+
+    from base64 import encodestring as encodebytes
+
 class AccountJournal(models.Model):
     _inherit = 'account.journal'
+
+    def _get_journal_letter(self, counterpart_partner=False):
+        """ Regarding the AFIP responsibility of the company and the type of journal (sale/purchase), get the allowed
+        letters. Optionally, receive the counterpart partner (customer/supplier) and get the allowed letters to work
+        with him. This method is used to populate document types on journals and also to filter document types on
+        specific invoices to/from customer/supplier"""
+
+        self.ensure_one()
+        letters_data = {
+            'issued': {
+                '1': ['A', 'B', 'E', 'M'],
+                '3': [],
+                '4': ['C'],
+                '5': [],
+                '6': ['A','C', 'E'],
+                '9': ['I'],
+                '10': [],
+                '13': ['C', 'E'],
+            },
+            'received': {
+                '1': ['A', 'B', 'C', 'M', 'I'],
+                '3': ['B', 'C', 'I'],
+                '4': ['B', 'C', 'I'],
+                '5': ['B', 'C', 'I'],
+                '6': ['A', 'C', 'I'],
+                '9': ['E'],
+                '10': ['E'],
+                '13': ['B', 'C', 'I'],
+            },
+        }
+        if not self.company_id.l10n_ar_afip_responsibility_type_id:
+            action = self.env.ref('base.action_res_company_form')
+            msg = _('Can not create chart of account until you configure your company AFIP Responsibility and VAT.')
+            raise RedirectWarning(msg, action.id, _('Go to Companies'))
+
+        letters = letters_data['issued' if self.type == 'sale' else 'received'][
+            self.company_id.l10n_ar_afip_responsibility_type_id.code]
+        if not counterpart_partner:
+            return letters
+
+        if not counterpart_partner.l10n_ar_afip_responsibility_type_id:
+            letters = []
+        else:
+            counterpart_letters = letters_data['issued' if self.type == 'purchase' else 'received'][
+                counterpart_partner.l10n_ar_afip_responsibility_type_id.code]
+            letters = list(set(letters) & set(counterpart_letters))
+        return letters
 
 class IrSequence(models.Model):
     _inherit = 'ir.sequence'
 
-    journal_id = fields.Many2one('account.journal','Diario facturacion')
+    journal_id = fields.Many2one('account.journal', 'Diario facturacion')
 
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    afip_mypyme_sca_adc = fields.Selection(selection=[('SCA','Sistema Circulacion Abierta'),('ADC','Agente Deposito Colectivo')],string='SCA o ADC',default='SCA')
+    afip_mypyme_sca_adc = fields.Selection(
+        selection=[('SCA','Sistema Circulacion Abierta'),('ADC','Agente Deposito Colectivo')],
+        string='SCA o ADC',
+        default='SCA'
+    )
     afip_auth_verify_type = fields.Selection(
         related='company_id.afip_auth_verify_type',
     )
     document_number = fields.Char(
         copy=False,
-        string='Document Number',
+        string='Número de Documento',
         readonly=True
     )
     afip_batch_number = fields.Integer(
@@ -45,25 +104,25 @@ class AccountMove(models.Model):
     )
     afip_auth_verify_result = fields.Selection([
         ('A', 'Aprobado'), ('O', 'Observado'), ('R', 'Rechazado')],
-        string='AFIP authorization verification result',
+        string='Resultado de verificación de AFIP',
         copy=False,
         readonly=True,
     )
     afip_auth_verify_observation = fields.Char(
-        string='AFIP authorization verification observation',
+        string='Observación de verificación AFIP',
         copy=False,
         readonly=True,
     )
     afip_auth_mode = fields.Selection([
         ('CAE', 'CAE'), ('CAI', 'CAI'), ('CAEA', 'CAEA')],
-        string='AFIP authorization mode',
+        string='Modo de autorización de AFIP',
         copy=False,
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
     afip_auth_code = fields.Char(
         copy=False,
-        string='CAE/CAI/CAEA Code',
+        string='Código CAE/CAI/CAEA',
         readonly=True,
         size=24,
         states={'draft': [('readonly', False)]},
@@ -71,46 +130,39 @@ class AccountMove(models.Model):
     afip_auth_code_due = fields.Date(
         copy=False,
         readonly=True,
-        string='CAE/CAI/CAEA due Date',
+        string='Fecha de Vencimiento CAE/CAI/CAEA',
         states={'draft': [('readonly', False)]},
     )
-    # for compatibility
     afip_cae = fields.Char(
         related='afip_auth_code',
         readonly=False,
-        string='CAE (only for backward compatibility)'
+        string='CAE (modo compatibilidad)'
     )
     afip_cae_due = fields.Date(
         related='afip_auth_code_due',
         readonly=False,
-        string='CAE due date (only for backward compatibility)'
+        string='Fecha de Vencimiento CAE (modo compatibilidad)'
     )
-
-    afip_barcode = fields.Char(
-        compute='_compute_barcode',
-        string='AFIP Barcode',
-        #store=True
+    json_qr = fields.Char(
+        'JSON QR AFIP',
+        compute='_compute_json_qr'
     )
-    l10n_ar_afip_barcode = fields.Char(
-        compute='_compute_barcode',
-        string='AFIP Barcode',
-    )
-    afip_barcode_img = fields.Binary(
-        compute='_compute_barcode',
-        string='AFIP Barcode Image',
+    texto_modificado_qr = fields.Char(
+        'Texto Modificado QR',
+        compute='_compute_json_qr'
     )
     afip_message = fields.Text(
-        string='AFIP Message',
+        string='AFIP - Mensaje',
         copy=False,
         readonly=True
     )
     afip_xml_request = fields.Text(
-        string='AFIP XML Request',
+        string='AFIP - Solicitud XML',
         copy=False,
         readonly=True
     )
     afip_xml_response = fields.Text(
-        string='AFIP XML Response',
+        string='AFIP - Respuesta XML',
         copy=False,
         readonly=True
     )
@@ -126,12 +178,12 @@ class AccountMove(models.Model):
         help="AFIP request result"
     )
     validation_type = fields.Char(
-        'Validation Type',
+        'Tipo de Validación',
         compute='_compute_validation_type',
         store=True
     )
     afip_fce_es_anulacion = fields.Boolean(
-        string='FCE: Es anulacion?',
+        string='FCE - ¿Es anulacion?',
         help='Solo utilizado en comprobantes MiPyMEs (FCE) del tipo débito o crédito. Debe informar:\n'
         '- SI: sí el comprobante asociado (original) se encuentra rechazado por el comprador\n'
         '- NO: sí el comprobante asociado (original) NO se encuentra rechazado por el comprador'
@@ -169,61 +221,46 @@ class AccountMove(models.Model):
                         validation_type = False
                 rec.validation_type = validation_type
 
-    #@api.depends('afip_auth_code')
-    def _compute_barcode(self):
+    def _compute_json_qr(self):
+        # Faster QR generation - based on AdHoc
         for rec in self:
-            barcode = False
-            if rec.afip_auth_code:
-                cae_due = ''.join(
-                    [c for c in str(
-                        rec.afip_auth_code_due or '') if c.isdigit()])
-                barcode = ''.join(
-                    [str(rec.company_id.vat),
-                        "%03d" % int(rec.l10n_latam_document_type_id),
-                        "%05d" % int(rec.journal_id.l10n_ar_afip_pos_number),
-                        str(rec.afip_auth_code), cae_due])
-                rec.l10n_ar_afip_barcode = barcode
-                barcode = barcode + rec.verification_digit_modulo10(barcode)
-            rec.afip_barcode = barcode
-            rec.afip_barcode_img = rec._make_image_I25(barcode)
+            if rec.afip_auth_mode in ["CAE", "CAEA"] and rec.afip_auth_code:
+                number_parts = self._l10n_ar_get_document_number_parts(
+                    rec.l10n_latam_document_number, rec.l10n_latam_document_type_id.code
+                )
 
-    @api.model
-    def _make_image_I25(self, barcode):
-        "Generate the required barcode Interleaved of 7 image using PIL"
-        image = False
-        if barcode:
-            # create the helper:
-            pyi25 = PyI25()
-            output = BytesIO()
-            # call the helper:
-            bars = ''.join([c for c in barcode if c.isdigit()])
-            if not bars:
-                bars = "00"
-            pyi25.GenerarImagen(bars, output, extension="PNG")
-            # get the result and encode it for openerp binary field:
-            image = base64.b64encode(output.getvalue())
-            output.close()
-        return image
-
-    @api.model
-    def verification_digit_modulo10(self, code):
-        "Calculate the verification digit 'modulo 10'"
-        # Step 1: sum all digits in odd positions, left to right
-        code = code.strip()
-        if not code or not code.isdigit():
-            return ''
-        etapa1 = sum([int(c) for i, c in enumerate(code) if not i % 2])
-        # Step 2: multiply the step 1 sum by 3
-        etapa2 = etapa1 * 3
-        # Step 3: start from the left, sum all the digits in even positions
-        etapa3 = sum([int(c) for i, c in enumerate(code) if i % 2])
-        # Step 4: sum the results of step 2 and 3
-        etapa4 = etapa2 + etapa3
-        # Step 5: the minimun value that summed to step 4 is a multiple of 10
-        digito = 10 - (etapa4 - (int(etapa4 // 10) * 10))
-        if digito == 10:
-            digito = 0
-        return str(digito)
+                qr_dict = {
+                    "ver": 1,
+                    "fecha": str(rec.invoice_date),
+                    "cuit": int(rec.company_id.partner_id.l10n_ar_vat),
+                    "ptoVta": number_parts["point_of_sale"],
+                    "tipoCmp": int(rec.l10n_latam_document_type_id.code),
+                    "nroCmp": number_parts["invoice_number"],
+                    "importe": float(float_repr(rec.amount_total, 2)),
+                    "moneda": rec.currency_id.l10n_ar_afip_code,
+                    "ctz": float(float_repr(rec.l10n_ar_currency_rate, 2)),
+                    "tipoCodAut": "E" if rec.afip_auth_mode == "CAE" else "A",
+                    "codAut": int(rec.afip_auth_code),
+                }
+                if (
+                    len(rec.commercial_partner_id.l10n_latam_identification_type_id)
+                    and rec.commercial_partner_id.vat
+                ):
+                    qr_dict["tipoDocRec"] = int(
+                        rec.commercial_partner_id.l10n_latam_identification_type_id.l10n_ar_afip_code
+                    )
+                    qr_dict["nroDocRec"] = int(
+                        rec.commercial_partner_id.vat.replace("-", "").replace(".", "")
+                    )
+                qr_data = base64.encodestring(
+                    json.dumps(qr_dict, indent=None).encode("ascii")
+                ).decode("ascii")
+                qr_data = str(qr_data).replace("\n", "")
+                rec.json_qr = str(qr_dict)
+                rec.texto_modificado_qr = "https://www.afip.gob.ar/fe/qr/?p=%s" % qr_data
+            else:
+                rec.json_qr = False
+                rec.texto_modificado_qr = False
 
     def get_related_invoices_data(self):
         """
