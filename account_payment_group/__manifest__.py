@@ -8,8 +8,7 @@
     "application": False,
     'installable': True,
     "depends": [
-        "account_financial_amount",
-        "account_payment_fix",
+        "account",
         "l10n_latam_check"
     ],
     "data": [
