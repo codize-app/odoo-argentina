@@ -29,13 +29,12 @@ class AccountPaymentGroup(models.Model):
     related_invoice_amount = fields.Monetary(
         string="Monto Factura",
         related="related_invoice.amount_total",
-        readonly=True
+        readonly=False
     )
     document_number = fields.Char(
         string='Nro Documento',
         copy=False,
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        readonly=False,
         index=True,
     )
     document_sequence_id = fields.Many2one(
@@ -49,8 +48,7 @@ class AccountPaymentGroup(models.Model):
     receiptbook_id = fields.Many2one(
         'account.payment.receiptbook',
         'Talonario de Recibos',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        readonly=False,
         ondelete='restrict',
         auto_join=True,
     )
@@ -71,8 +69,7 @@ class AccountPaymentGroup(models.Model):
         index=True,
         change_default=True,
         default=lambda self: self.env.company,
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        readonly=False
     )
     payment_methods = fields.Char(
         string='Métodos de Pago',
@@ -88,8 +85,7 @@ class AccountPaymentGroup(models.Model):
         'res.partner',
         string='Cliente / Proveedor',
         required=True,
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        readonly=False,
         change_default=True,
         index=True,
     )
@@ -102,22 +98,19 @@ class AccountPaymentGroup(models.Model):
         string='Moneda',
         required=True,
         default=lambda self: self.env.user.company_id.currency_id,
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        readonly=False
     )
     payment_date = fields.Date(
         string='Fecha de Pago',
         default=fields.Date.context_today,
         required=True,
         copy=False,
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        readonly=False,
         index=True,
     )
     communication = fields.Char(
         string='Memo',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        readonly=False,
     )
     notes = fields.Text(
         string='Notas'
@@ -148,15 +141,12 @@ class AccountPaymentGroup(models.Model):
     )
     unreconciled_amount = fields.Monetary(
         string='Ajuste / Adelanto',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        readonly=False,
     )
     to_pay_amount = fields.Monetary(
         compute='_compute_to_pay_amount',
-        #inverse='_inverse_to_pay_amount',
         string='Monto a Pagar',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        readonly=False,
     )
     payments_amount = fields.Monetary(
         compute='_compute_payments_amount',
@@ -189,8 +179,7 @@ class AccountPaymentGroup(models.Model):
         "lista (por fecha). Puede eliminar cualquier línea"
         " que no quiera conciliar.",
         domain='move_lines_domain',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        readonly=False,
     )
     has_outstandin = fields.Boolean('Has Outstanding')
     to_pay_move_line_ids = fields.Many2many(
@@ -202,8 +191,7 @@ class AccountPaymentGroup(models.Model):
         help='Estas líneas son las que el usuario seleccionó para pagar.',
         copy=False,
         domain='move_lines_domain',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        readonly=False,
         auto_join=True,
     )
     matched_move_line_ids = fields.Many2many(
@@ -231,10 +219,7 @@ class AccountPaymentGroup(models.Model):
         'payment_group_id',
         string='Lineas de Pago',
         copy=False,
-        readonly=True,
-        states={
-            'draft': [('readonly', False)],
-            'confirmed': [('readonly', False)]},
+        readonly=False,
         auto_join=True,
     )
     account_internal_type = fields.Char(

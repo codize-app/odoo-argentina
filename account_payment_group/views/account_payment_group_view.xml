@@ -8,7 +8,7 @@
     <field name="arch" type="xml">
         <tree decoration-info="state=='draft'" decoration-muted="state in ['reconciled', 'cancel']">
             <field name="payment_date"/>
-            <field name="display_name"/>
+            <field name="name"/>
             <field name="partner_id"/>
             <field name="payment_methods"/>
             <field name="payments_amount" sum="Total" string="Monto"/>
@@ -61,7 +61,7 @@
             </header>
             
             
-           <div class="alert alert-info" role="alert" style="margin-bottom:0px;" invisible = "has_outstanding == 'False'">
+           <div class="alert alert-info" role="alert" style="margin-bottom:0px;" invisible="has_outstanding == 'False'">
                 Hay <b>créditos pendientes</b> de imputar en la deuda seleccionada, se intentará imputar dichos créditos a otros comprobantes seleccionados pero dicha información <b>no quedará registrada en el pago</b>. Si no desea que se imputen automáticamente puede borrarlos de la lista.
             </div>  
             
@@ -79,26 +79,30 @@
                     <field name="display_name" class="oe_inline" invisible="not display_name"/>
                     <label for="next_number" string="- Siguiente Número: " class="oe_inline" invisible="next_number in (0, False)"/>
                     <field name="next_number" class="oe_inline" invisible="next_number in (0, False)"/>
-                    
 	            </h1>
                 </div>
                     <group>
                         <field name="company_id" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_company" invisible="context.get('pop_up')"/>
                         <field name="currency_id" invisible="1"/>
 			<field name="partner_id" context="{'default_is_company': True, 'default_supplier': partner_type == 'supplier', 'default_customer': partner_type == 'customer'}" 
-				invisible="context.get('pop_up')"/>
+				invisible="context.get('pop_up')"
+                         readonly="state in ['posted', 'confirmed', 'cancel']" />
                     </group>
                     <group>
                         <field name="receiptbook_id" 
                                invisible="localization == False"
                                required="localization != False and state == 'draft'"
-                               domain="[('partner_type', '=', partner_type), ('company_id', '=', company_id)]" 
+                               domain="[('partner_type', '=', partner_type), ('company_id', '=', company_id)]"
+                               readonly="state in ['posted', 'confirmed', 'cancel']"
                                groups="base.group_multi_company" />
                         <field name="document_number" 
                                invisible="document_sequence_id != False or localization == False"
-                               required="document_sequence_id == False and localization != False" />
-                        <field name="payment_date"/>
+                               required="document_sequence_id == False and localization != False"
+                               readonly="state in ['posted', 'confirmed', 'cancel']" />
+                        <field name="payment_date"
+                               readonly="state in ['posted', 'confirmed', 'cancel']" />
                         <field name="communication" 
+                               readonly="state in ['posted', 'confirmed', 'cancel']"
                                invisible="state != 'draft' or communication == False" />
                     </group>
                     <group>
@@ -200,7 +204,8 @@
                             <field name="matched_move_line_ids"/>
                         </page>
                         <page string="Notas">
-                            <field name="notes"/>
+                            <field name="notes"
+                            readonly="state in ['posted', 'confirmed', 'cancel']"/>
                         </page>
                     </notebook>
                                         
