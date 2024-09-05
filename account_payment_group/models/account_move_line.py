@@ -4,8 +4,6 @@ from odoo.exceptions import UserError, ValidationError
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
-    # inverse field of the one created on payment groups, used by other modules
-    # like sipreco
     payment_group_ids = fields.Many2many(
         'account.payment.group',
         'account_move_line_payment_group_to_pay_rel',
@@ -13,10 +11,41 @@ class AccountMoveLine(models.Model):
         'payment_group_id',
         string="Grupos de Pago",
         readonly=True,
-        # auto_join not yet implemented for m2m. TODO enable when implemented
-        # https://github.com/odoo/odoo/blob/master/odoo/osv/expression.py#L899
-        # auto_join=True,
+        auto_join=True,
     )
+    payment_group_matched_amount = fields.Monetary(
+        compute='_compute_payment_group_matched_amount',
+        currency_field='company_currency_id',
+    )
+    financial_amount_residual = fields.Monetary(
+        compute='_compute_financial_amounts',
+        string='Residual Financial Amount',
+        currency_field='company_currency_id',
+    )
+    financial_amount = fields.Monetary(
+        compute='_compute_financial_amounts',
+        string='Financial Amount',
+        currency_field='company_currency_id',
+    )
+
+    @api.depends('debit', 'credit')
+    def _compute_financial_amounts(self):
+        date = fields.Date.today()
+        for line in self:
+            financial_amount = (
+                line.currency_id and line.currency_id._convert(
+                    line.amount_currency,
+                    line.company_id.currency_id,
+                    line.company_id, date) or (
+                    line.balance))
+            financial_amount_residual = (
+                line.currency_id and line.currency_id._convert(
+                    line.amount_residual_currency,
+                    line.company_id.currency_id,
+                    line.company_id, date) or
+                line.amount_residual)
+            line.financial_amount = financial_amount
+            line.financial_amount_residual = financial_amount_residual
 
     def _compute_payment_group_matched_amount(self):
         """
@@ -43,8 +72,3 @@ class AccountMoveLine(models.Model):
                 ('credit_move_id', '=', rec.id)])
             matched_amount -= sum(reconciles.mapped('amount'))
             rec.payment_group_matched_amount = matched_amount
-
-    payment_group_matched_amount = fields.Monetary(
-        compute='_compute_payment_group_matched_amount',
-        currency_field='company_currency_id',
-    )

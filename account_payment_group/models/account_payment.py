@@ -12,6 +12,11 @@ class AccountPayment(models.Model):
         comodel_name='account.move',
         string='Journal Entry', required=True, readonly=False, ondelete='cascade',
         check_company=True)
+    
+    payment_method_description = fields.Char(
+        compute='_compute_payment_method_description',
+        string='Método de Pago',
+    )
 
     payment_group_id = fields.Many2one(
         'account.payment.group',
@@ -19,14 +24,10 @@ class AccountPayment(models.Model):
         ondelete='cascade',
         readonly=True,
     )
-    # we add this field so company can be send in context when adding payments
-    # before payment group is saved
     payment_group_company_id = fields.Many2one(
         related='payment_group_id.company_id',
         string='Payment Group Company',
     )
-    # we make a copy without transfer option, we try with related but it
-    # does not works
     payment_type_copy = fields.Selection(
         selection=[('outbound', 'Enviar Dinero'), ('inbound', 'Recibir Dinero')],
         compute='_compute_payment_type_copy',
@@ -58,14 +59,25 @@ class AccountPayment(models.Model):
     )
     exchange_rate = fields.Float(
         string='Tipo de Cambio',
-        #compute='_compute_exchange_rate',
-        # readonly=False,
-        # inverse='_inverse_exchange_rate',
         digits=(16, 4),
     )
     company_currency_id = fields.Many2one(
         related='company_id.currency_id',
         string='Moneda de compañía',
+    )
+
+    payment_method_ids = fields.Many2many(
+        'account.payment.method',
+        compute='_compute_payment_methods',
+        string='Available payment methods',
+    )
+    journal_ids = fields.Many2many(
+        'account.journal',
+        compute='_compute_journals'
+    )
+    destination_journal_ids = fields.Many2many(
+        'account.journal',
+        compute='_compute_destination_journals'
     )
 
     def _synchronize_to_moves(self, changed_fields):
@@ -85,17 +97,11 @@ class AccountPayment(models.Model):
             if not pay.payment_group_id:
                 liquidity_lines, counterpart_lines, writeoff_lines = pay._seek_for_lines()
 
-                # Make sure to preserve the write-off amount.
-                # This allows to create a new payment with custom 'line_ids'.
-
                 if liquidity_lines and counterpart_lines and writeoff_lines:
 
                     counterpart_amount = sum(counterpart_lines.mapped('amount_currency'))
                     writeoff_amount = sum(writeoff_lines.mapped('amount_currency'))
 
-                    # To be consistent with the payment_difference made in account.payment.register,
-                    # 'writeoff_amount' needs to be signed regarding the 'amount' field before the write.
-                    # Since the write is already done at this point, we need to base the computation on accounting values.
                     if (counterpart_amount > 0.0) == (writeoff_amount > 0.0):
                         sign = -1
                     else:
@@ -128,15 +134,36 @@ class AccountPayment(models.Model):
                 for extra_line_vals in line_vals_list[2:]:
                     line_ids_commands.append((0, 0, extra_line_vals))
 
-                # Update the existing journal items.
-                # If dealing with multiple write-off lines, they are dropped and a new one is generated.
-
                 pay.move_id.write({
                     'partner_id': pay.partner_id.id,
                     'currency_id': pay.currency_id.id,
                     'partner_bank_id': pay.partner_bank_id.id,
                     'line_ids': line_ids_commands,
                 })
+
+    @api.depends('journal_id')
+    def _compute_destination_journals(self):
+        for rec in self:
+            domain = [
+                ('type', 'in', ('bank', 'cash')),
+                ('company_id', '=', rec.journal_id.company_id.id),
+                ('id', '!=', rec.journal_id.id),
+            ]
+            rec.destination_journal_ids = rec.journal_ids.search(domain)
+
+    @api.onchange('currency_id')
+    def _onchange_currency(self):
+        """ Anulamos metodo nativo que pisa el monto remanente que pasamos
+        por contexto TODO ver si podemos re-incorporar esto y hasta extender
+        _compute_payment_amount para que el monto se calcule bien aun usando
+        el save and new"""
+        return False
+
+    @api.depends('amount', 'other_currency', 'amount_company_currency')
+    def _compute_exchange_rate(self):
+        for rec in self.filtered('other_currency'):
+            rec.exchange_rate = rec.amount and (
+                rec.amount_company_currency / rec.amount) or 0.0
 
     @api.depends('amount', 'payment_type', 'partner_type', 'amount_company_currency')
     def _compute_signed_amount(self):
@@ -153,9 +180,6 @@ class AccountPayment(models.Model):
                 rec.amount_company_currency and
                 rec.amount_company_currency * sign)
 
-    # TODO check why we get error with depend on company_id and fix it
-    # (recursive dependency?). The error is on paymentrs tree/form view
-    # @api.depends('currency_id', 'company_id')
     @api.depends('currency_id')
     def _compute_other_currency(self):
         for rec in self:
@@ -164,10 +188,6 @@ class AccountPayment(models.Model):
                rec.company_currency_id != rec.currency_id:
                 rec.other_currency = True
 
-    # this onchange is necesary because odoo, sometimes, re-compute
-    # and overwrites amount_company_currency. That happends due to an issue
-    # with rounding of amount field (amount field is not change but due to
-    # rouding odoo believes amount has changed)
     @api.onchange('amount_company_currency')
     def _inverse_amount_company_currency(self):
         for rec in self:
@@ -198,6 +218,10 @@ class AccountPayment(models.Model):
                     rec.company_id, rec.date)
             rec.amount_company_currency = amount_company_currency
 
+    def _compute_payment_method_description(self):
+        for rec in self:
+            rec.payment_method_description = rec.payment_method_id.display_name
+
     @api.onchange('payment_type_copy')
     def _inverse_payment_type_copy(self):
         for rec in self:
@@ -213,11 +237,20 @@ class AccountPayment(models.Model):
             rec.payment_type_copy = rec.payment_type
 
     def get_journals_domain(self):
-        domain = super(AccountPayment, self).get_journals_domain()
+        """
+        We get domain here so it can be inherited
+        """
+        self.ensure_one()
+        domain = [('type', 'in', ('bank', 'cash'))]
         if self.payment_group_company_id:
             domain.append(
                 ('company_id', '=', self.payment_group_company_id.id))
         return domain
+    
+    @api.depends('payment_type')
+    def _compute_journals(self):
+        for rec in self:
+            rec.journal_ids = rec.journal_ids.search(rec.get_journals_domain())
 
     @api.onchange('payment_type')
     def _onchange_payment_type(self):
@@ -228,6 +261,68 @@ class AccountPayment(models.Model):
         if not self._context.get('payment_group'):
             return super(AccountPayment, self)._onchange_payment_type()
         self.journal_id = False
+
+    @api.depends(
+        'journal_id.outbound_payment_method_ids',
+        'journal_id.inbound_payment_method_ids',
+        'payment_type',
+    )
+    def _compute_payment_methods(self):
+        for rec in self:
+            if rec.payment_type in ('outbound', 'transfer'):
+                methods = rec.journal_id.outbound_payment_method_ids
+            else:
+                methods = rec.journal_id.inbound_payment_method_ids
+            rec.payment_method_ids = methods
+
+    @api.onchange('journal_id')
+    def _onchange_journal(self):
+        """
+        Sobre escribimos y desactivamos la parte del dominio de la funcion
+        original ya que se pierde si se vuelve a entrar
+        TODO: ver que odoo con este onchange llama a
+        _compute_journal_domain_and_types quien devolveria un journal generico
+        cuando el importe sea cero, imagino que para hacer ajustes por
+        diferencias de cambio
+        """
+        if self.journal_id:
+            if not self.reconciled_bill_ids:
+                self.move_id.journal_id = self.journal_id.id
+                self.name.replace('False', self.journal_id.code)
+                self.move_id._set_next_sequence()
+                self.name =self.move_id.name
+
+            self.currency_id = (
+                self.journal_id.currency_id or self.company_id.currency_id)
+
+            payment_methods = (
+                self.payment_type == 'inbound' and
+                self.journal_id.inbound_payment_method_ids or
+                self.journal_id.outbound_payment_method_ids)
+
+            if not payment_methods and self.payment_type == 'transfer':
+                payment_methods = self.env.ref(
+                    'account.account_payment_method_manual_out')
+            self.payment_method_id = (
+                payment_methods and payment_methods[0] or False)
+
+    def _onchange_partner_type(self):
+        """
+        Agregasmos dominio en vista ya que se pierde si se vuelve a entrar
+        Anulamos funcion original porque no haria falta
+        """
+        return False
+
+    def _onchange_amount(self):
+        """
+        Anulamos este onchange que termina cambiando el domain de journals
+        y no es compatible con multicia y se pierde al guardar.
+        TODO: ver que odoo con este onchange llama a
+        _compute_journal_domain_and_types quien devolveria un journal generico
+        cuando el importe sea cero, imagino que para hacer ajustes por
+        diferencias de cambio
+        """
+        return True
 
     @api.constrains('payment_group_id', 'payment_type')
     def check_payment_group(self):
@@ -337,19 +432,33 @@ class AccountPayment(models.Model):
     @api.depends('invoice_line_ids', 'payment_type', 'partner_type', 'partner_id')
     def _compute_destination_account_id(self):
         """
-        If we are paying a payment gorup with paylines, we use account
-        of lines that are going to be paid
+        We send with_company on context so payments can be created from parent
+        companies. We try to send force_company on self but it doesnt works, it
+        only works sending it on partner
         """
+        res = super(AccountPayment, self)._compute_destination_account_id()
+        for rec in self.filtered(
+                lambda x: not x.invoice_line_ids and x.payment_type != 'transfer'):
+            partner = self.partner_id.with_context(
+                with_company=self.company_id.id)
+            partner = self.partner_id
+            if self.partner_type == 'customer':
+                self.destination_account_id = (
+                    partner.property_account_receivable_id.id)
+            else:
+                self.destination_account_id = (
+                    partner.property_account_payable_id.id)
+                
         for rec in self:
             to_pay_account = rec.payment_group_id.to_pay_move_line_ids.mapped(
                 'account_id')
             if len(to_pay_account) > 1:
-                raise ValidationError(_(
-                    'To Pay Lines must be of the same account!'))
+                raise ValidationError('¡Las líneas a pagar deben tener la misma cuenta!')
             elif len(to_pay_account) == 1:
                 rec.destination_account_id = to_pay_account[0]
             else:
                 super(AccountPayment, rec)._compute_destination_account_id()
+        return res
 
     def show_details(self):
         """
@@ -396,18 +505,35 @@ class AccountPayment(models.Model):
 
     def _prepare_payment_moves(self):
         res = super(AccountPayment, self)._prepare_payment_moves()
-        #for i,rec in enumerate(self):
-        #    if rec.signed_amount_company_currency != line.credit:
         for i,rec in enumerate(self):
             if rec.currency_id.id != rec.company_id.currency_id.id and rec.payment_type == 'inbound':
                 amount_debit = res[i]['line_ids'][0][2]['debit']
                 amount_credit = res[i]['line_ids'][0][2]['credit']
                 if amount_credit > 0 and rec.signed_amount_company_currency != amount_credit:
-                    #raise ValidationError('estamos aca %s %s'%(amount_credit,res[0]['line_ids'][0][2]))
                     res[i]['line_ids'][0][2]['credit'] = rec.signed_amount_company_currency
                 amount_debit = res[i]['line_ids'][1][2]['debit']
                 amount_credit = res[i]['line_ids'][1][2]['credit']
                 if amount_debit > 0 and rec.signed_amount_company_currency != amount_debit:
-                    #raise ValidationError('estamos aca %s %s'%(amount_credit,res[0]['line_ids'][0][2]))
                     res[i]['line_ids'][1][2]['debit'] = rec.signed_amount_company_currency
         return res
+    
+    def action_post(self):
+        # Fix for sequence
+        for rec in self:
+            if rec.journal_id:
+                if not rec.reconciled_bill_ids:
+                    rec.move_id.journal_id = rec.journal_id.id
+                    last_sequence = rec.move_id._get_last_sequence()
+                    new = not last_sequence
+                    if new:
+                        last_sequence = rec.move_id._get_last_sequence(relaxed=True) or rec.move_id._get_starting_sequence()
+                    last_num = rec.move_id.name[-4:]
+                    try:
+                        nro_move = int(last_num)
+                    except:
+                        nro_move = False
+                    last_secuence_number = int(last_sequence[-4:])
+                    if isinstance(nro_move, int) and last_secuence_number >= nro_move:
+                        rec.move_id._set_next_sequence()
+                    rec.name = rec.move_id.name
+            super(AccountPayment, rec).action_post()

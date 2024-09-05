@@ -66,6 +66,16 @@
                 </div>
 
                 <form>
+                    <style>
+                        .btn-primary:nth-child(2){
+                            display:none !important;
+                        }
+                    </style>
+                    <field name="payment_method_ids" invisible="1"/>
+                    <field name="journal_ids" invisible="1"/>
+                    <field name="destination_journal_ids" invisible="1"/>
+                    <field name="company_id" invisible="1"/>
+
                     <field name="payment_group_company_id" invisible="1" />
                     <field name="signed_amount_company_currency" invisible="1" />
                     <field name="signed_amount" invisible="1" />
@@ -83,6 +93,12 @@
                         hacer desde el recibo. La cancelación manual de una línea de pago se usa
                         solo para correcciones y usos avanzados. ¿Seguro desea continuar?</attribute>
                 </button>
+
+                <field name="journal_id" position="attributes">
+                    <attribute name="domain">[('id', 'in', journal_ids)]</attribute>
+                    <attribute name="widget">many2one</attribute>
+                    <attribute name="options">{'no_create': True, 'no_open': True}</attribute>
+                </field>
 
                 <field name="payment_type" position="after">
                     <field name="payment_type_copy" string="Tipo de Pago" widget="radio"
@@ -110,6 +126,13 @@
                 <attribute name="create">true</attribute>
             </tree>
         </field>
+    </record>
+
+    <record id="account.menu_finance_entries" model="ir.ui.menu">
+        <field name="sequence" eval="5"/>
+    </record>
+    <record id="account.menu_finance_reports" model="ir.ui.menu">
+        <field name="sequence" eval="6"/>
     </record>
 
 </odoo>

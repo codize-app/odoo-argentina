@@ -3,17 +3,19 @@
     'name': "Account Bimonetary",
 
     'summary': """
-        Account Bimonetary for Odoo""",
+        Account Bimonetary Reports for Odoo""",
 
     'description': """
         Account Bimonetary for Odoo
     """,
 
+    "icon": '/account/static/description/icon.png',
+
     'author': "Exemax, Codize",
     'website': "https://www.exemax.com.ar",
 
     'category': 'Account',
-    'version': '0.1',
+    'version': '17.0.0.0.1',
 
     'depends': ['base', 'account'],
 
