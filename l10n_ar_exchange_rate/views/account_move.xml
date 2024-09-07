@@ -1,13 +1,17 @@
 <odoo>
   <data>
-    <record model="ir.ui.view" id="account_move_form_customtc">
+    <record model="ir.ui.view" id="account_move_form_custom_tc">
       <field name="name">account.move.form.customtc</field>
       <field name="model">account.move</field>
       <field name="inherit_id" ref="account.view_move_form"/>
       <field name="arch" type="xml">
-        <xpath expr="//div[@name='journal_div']"  position="after">
-          <field name="l10n_ar_is_manual_rate" attrs="{'invisible': ['|',('move_type', 'in', ('out_invoice', 'out_refund')),('currency_id.name', '=', 'ARS')]}"/>
-          <field name="l10n_ar_manual_currency_rate"  attrs="{'invisible': [('l10n_ar_is_manual_rate', '=', False)]}"/>
+        <xpath expr="//div[@name='journal_div']" position="after">
+          <field name="l10n_ar_is_manual_rate" invisible="move_type in ['out_invoice', 'out_refund'] or currency_id.name != 'ARS'" />
+          <label for="l10n_ar_manual_currency_rate" invisible="not l10n_ar_is_manual_rate"/>
+          <div class="o_row" invisible="not l10n_ar_is_manual_rate">
+               <field name="l10n_ar_manual_currency_rate" invisible="not l10n_ar_is_manual_rate"/>
+               <button name="l10n_ar_manual_rate" string="Recalcular Tasa Manual" type="object" class="btn-link mb-1 px-0" icon="fa-refresh" invisible="not l10n_ar_is_manual_rate"/>
+           </div>
         </xpath>
       </field>
     </record>
