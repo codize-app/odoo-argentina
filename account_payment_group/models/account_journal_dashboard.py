@@ -45,22 +45,6 @@ class AccountJournal(models.Model):
     at_least_one_inbound = fields.Boolean(compute='_methods_compute', store=True)
     at_least_one_outbound = fields.Boolean(compute='_methods_compute', store=True)
 
-    @api.depends('type')
-    def _compute_default_account_type(self):
-        default_account_id_types = {
-            'bank': 'account.data_account_type_liquidity',
-            'cash': 'account.data_account_type_liquidity',
-            'sale': 'account.data_account_type_revenue',
-            'purchase': 'account.data_account_type_expenses'
-        }
-
-        for journal in self:
-            if journal.type in default_account_id_types:
-                journal.default_account_type = self.env.ref(
-                    default_account_id_types[journal.type]).id
-            else:
-                journal.default_account_type = False
-
     @api.depends('type', 'currency_id')
     def _compute_inbound_payment_method_line_ids(self):
         for journal in self:

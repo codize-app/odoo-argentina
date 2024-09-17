@@ -80,10 +80,13 @@ class AccountPayment(models.Model):
         compute='_compute_destination_journals'
     )
 
+
     def _synchronize_to_moves(self, changed_fields):
         ''' Update the account.move regarding the modified account.payment.
         :param changed_fields: A list containing all modified fields on account.payment.
         '''
+        return
+        # TODO RESOLVER ESTO!!!
         if self._context.get('skip_account_move_synchronization'):
             return
 
@@ -259,7 +262,13 @@ class AccountPayment(models.Model):
         but we still reset the journal
         """
         if not self._context.get('payment_group'):
-            return super(AccountPayment, self)._onchange_payment_type()
+            if not self.invoice_line_ids:
+                if self.payment_type == 'inbound':
+                    self.partner_type = 'customer'
+                elif self.payment_type == 'outbound':
+                    self.partner_type = 'supplier'
+                else:
+                    self.partner_type = False
         self.journal_id = False
 
     @api.depends(

@@ -141,8 +141,7 @@
                                invisible="state not in ['draft', 'confirmed']"/>
                     </group>
                     <notebook>
-                        <page string="Líneas a pagar"
-                              invisible="pop_up == True or payment_subtype != 'double_validation' or state not in ['draft', 'confirmed']">
+                        <page string="Líneas a pagar">
                             <button name="add_all" 
                                     string="Agregar Todos / Refrescar" 
                                     invisible="state != 'draft'"
@@ -156,8 +155,7 @@
                                    domain="[('partner_id.commercial_partner_id', '=', commercial_partner_id),('account_id.account_type', '=', account_internal_type),('account_id.reconcile', '=', True),('reconciled', '=', False),('full_reconcile_id', '=', False),('company_id', '=', company_id)]" 
                                    groups="base.group_multi_company" />
                         </page>
-                        <page string="Lineas de pagos" 
-                              invisible="payment_subtype == 'double_validation' or state == 'draft'">
+                        <page string="Lineas de pagos">
                             <field name="payment_ids" 
                                    context="{'default_payment_group_company_id': company_id, 'default_payment_type': partner_type == 'supplier' and 'outbound' or 'inbound', 'default_payment_date': payment_date, 'default_partner_id': partner_id, 'default_partner_type': partner_type, 'payment_group': True, 'default_amount': payment_difference, 'tree_view_ref': 'account_payment_group.view_account_payment_from_group_tree'}" 
                                    readonly="state not in ['draft', 'confirmed']" 
