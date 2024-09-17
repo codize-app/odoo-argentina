@@ -81,8 +81,6 @@ class AccountVatLedger(models.Model):
         "res.company",
         string="Company",
         required=True,
-        readonly=True,
-        states={"draft": [("readonly", False)]},
         default=lambda self: self.env["res.company"]._company_default_get(
             "account.vat.ledger"
         ),
@@ -93,14 +91,10 @@ class AccountVatLedger(models.Model):
     date_from = fields.Date(
         string="Date From",
         required=True,
-        readonly=True,
-        states={"draft": [("readonly", False)]},
     )
     date_to = fields.Date(
         string="Date To",
         required=True,
-        readonly=True,
-        states={"draft": [("readonly", False)]},
     )
     journal_ids = fields.Many2many(
         "account.journal",
@@ -109,13 +103,9 @@ class AccountVatLedger(models.Model):
         "journal_id",
         string="Journals",
         required=True,
-        readonly=True,
-        states={"draft": [("readonly", False)]},
     )
     presented_ledger = fields.Binary(
         "Presented Ledger",
-        readonly=True,
-        states={"draft": [("readonly", False)]},
     )
     presented_ledger_name = fields.Char("Presented Ledger Name")
     state = fields.Selection(
@@ -427,7 +417,7 @@ class AccountVatLedger(models.Model):
         if inv.l10n_latam_document_type_id.code not in ["11", "12", "13"]:
             for invl in inv.invoice_line_ids:
                 for tax in invl.tax_ids:
-                    if tax.tax_group_id.l10n_ar_vat_afip_code not in ["1", "2"]:
+                    if tax.tax_group_id.l10n_ar_vat_afip_code and tax.tax_group_id.l10n_ar_vat_afip_code not in ["1", "2"]:
                         if tax.id not in vat_taxes:
                             vat_taxes.append(tax.id)
                     if self.type == "purchase":
@@ -591,7 +581,6 @@ class AccountVatLedger(models.Model):
                         # en cada comprobante y complete cuando es en
                         # credito fiscal computable
                         raise ValidationError(
-                            _(
                                 "Para utilizar el prorrateo por comprobante:\n"
                                 '1) Exporte los archivos sin la opción "Proratear '
                                 'Crédito de Impuestos"\n2) Importe los mismos '
@@ -599,7 +588,6 @@ class AccountVatLedger(models.Model):
                                 "comprobante por comprobante, indique el valor "
                                 'correspondiente en el campo "Crédito Fiscal '
                                 'Computable"'
-                            )
                         )
                 else:
                     imp_neto = 0

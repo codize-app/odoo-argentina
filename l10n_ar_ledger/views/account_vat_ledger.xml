@@ -190,10 +190,13 @@
             <field name="arch" type="xml">
                 <tree>
                     <field
-                        string="Export to Digital"
+                        string="Exportar a Digital"
                         name="export_to_digital"
                         widget="boolean_toggle"
                     />
+                </tree>
+                <tree position="attributes">
+                    <attribute name="edit">true</attribute>
                 </tree>
             </field>
         </record>

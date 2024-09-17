@@ -9,6 +9,6 @@ class L10nLatamDocumentType(models.Model):
     _inherit = "l10n_latam.document.type"
 
     export_to_digital = fields.Boolean(
-        "Export to Digital",
+        "Exportar a Digital",
         help="Set this to export this document on Digital VAT Ledger",
     )

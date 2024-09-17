@@ -167,16 +167,16 @@
             <field name="dpi">95</field>
         </record>
 
-        <report
-            id="l10n_ar_action_report_ledger"
-            model="account.vat.ledger"
-            string="Libro IVA"
-            report_type="qweb-pdf"
-            paperformat="l10n_ar_ledger.paperformat_landscape"
-            name="l10n_ar_ledger.ledger_report"
-            file="l10n_ar_ledger.ledger_report"
-            print_report_name="'Libro IVA ' + ('Compras' if object.type == 'purchase' else 'Ventas') + '_' + (object.date_to.strftime('%d-%m-%Y')) + '.pdf'"
-        />
+        <record id="l10n_ar_action_report_ledger" model="ir.actions.report">
+            <field name="name">Libro IVA (PDF)</field>
+            <field name="model">account.vat.ledger</field>
+            <field name="binding_model_id" ref="model_account_vat_ledger"/>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">l10n_ar_ledger.ledger_report</field>
+            <field name="report_file">l10n_ar_ledger.ledger_report</field>
+            <field name="attachment">'Libro IVA ' + ('Compras' if object.type == 'purchase' else 'Ventas') + '_' + (object.date_to.strftime('%d-%m-%Y')) + '.pdf'</field>
+            <field name="attachment_use">True</field>
+        </record>
 
     </data>
 </odoo>
