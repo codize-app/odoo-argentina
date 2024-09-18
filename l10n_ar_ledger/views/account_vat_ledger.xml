@@ -18,10 +18,10 @@
 
         <!-- Form view definition -->
         <record model='ir.ui.view' id='account_vat_ledger_form'>
-            <field name='name'>Account VAT Ledger</field>
+            <field name='name'>Libros de IVA</field>
             <field name="model">account.vat.ledger</field>
             <field name='arch' type='xml'>
-                <form string="VAT Ledger">
+                <form string="Libro IVA">
                     <!-- Include the 'type' field in the form to be able to use it in visibility conditions -->
                     <field name="type" invisible="1" />
                     <header>
@@ -78,8 +78,8 @@
                                 <button
                                     name="compute_digital_data"
                                     type="object"
-                                    string="Generate VAT Digital Information"
-                                    help="Create TXT files with invoices information in the present period, on AFIP VAT Digital Ledger format."
+                                    string="Generar Información de IVA Digital"
+                                    help="Crea los archivos TXT con la información de las facturas presentadas en el período elegido, en formato de los Libros IVA Digital de AFIP."
                                 />
                                 <group>
                                     <field
@@ -172,8 +172,8 @@
             <field name="arch" type="xml">
                 <group>
                     <field
-                        string="Export to Digital"
-                        help="If set, document type will export to digital."
+                        string="Exportar a Digital"
+                        help="Configure esto para exportar este tipo de documento en el Libro IVA Digital."
                         name="export_to_digital"
                         widget="boolean_toggle"
                     />

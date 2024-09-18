@@ -18,23 +18,22 @@ from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
-
 class AccountVatLedger(models.Model):
 
     _name = "account.vat.ledger"
-    _description = "Account VAT Ledger"
+    _description = "Libro IVA"
     _inherit = ["mail.thread"]
     _order = "date_from desc"
 
     digital_skip_invoice_tests = fields.Boolean(
-        string="Skip invoice test?",
-        help="If you skip invoice tests probably you will have errors when "
-        "loading the files in digital.",
+        string="¿Saltear testeos?",
+        help="Si saltea los testeos de factura probablemente tenga errores cuando "
+        "se carguen los archivos digitales."
     )
     digital_skip_lines = fields.Char(
-        string="Lines list to skip with digital files",
-        help="Enter a list of lines, for eg '1, 2, 3'. If you skip some lines "
-        "you would need to enter them manually",
+        string="Lista de línea a saltear con archivos digitales",
+        help="Ingrese una lista de líneas, por ejemplo '1, 2, 3'. Si desea saltear algunas líneas "
+        "necesita ingresarlas manualmente"
     )
     REGDIGITAL_CV_ALICUOTAS = fields.Text(
         "REGDIGITAL_CV_ALICUOTAS",
@@ -53,47 +52,47 @@ class AccountVatLedger(models.Model):
         readonly=True,
     )
     digital_vouchers_file = fields.Binary(
-        "Digital Voucher File", compute="_compute_digital_files", readonly=True
+        "Archivo Digital de Comprobantes", compute="_compute_digital_files", readonly=True
     )
     digital_vouchers_filename = fields.Char(
-        "Digital Voucher Filename",
+        "Nombre del Archivo Digital de Comprobantes",
         compute="_compute_digital_files",
     )
     digital_aliquots_file = fields.Binary(
-        "Digital Aliquots File", compute="_compute_digital_files", readonly=True
+        "Archivo Digital de Alícuotas", compute="_compute_digital_files", readonly=True
     )
     digital_aliquots_filename = fields.Char(
-        "Digital Aliquots Filename",
+        "Nombre de Archivo Digital de Alícuotas",
         readonly=True,
         compute="_compute_digital_files",
     )
     digital_import_aliquots_file = fields.Binary(
-        "Digital Import Aliquots File", compute="_compute_digital_files", readonly=True
+        "Archivo Digital de Alícuotas de Importación", compute="_compute_digital_files", readonly=True
     )
     digital_import_aliquots_filename = fields.Char(
-        "Digital Import Aliquots File",
+        "Nombre de Archivo Digital de Alícuotas de Importación",
         readonly=True,
         compute="_compute_digital_files",
     )
-    prorate_tax_credit = fields.Boolean("Prorate Tax Credit")
+    prorate_tax_credit = fields.Boolean("Prorrateo de Crédito de Impuesto")
 
     company_id = fields.Many2one(
         "res.company",
-        string="Company",
+        string="Compañía",
         required=True,
         default=lambda self: self.env["res.company"]._company_default_get(
             "account.vat.ledger"
         ),
     )
     type = fields.Selection(
-        [("sale", "Sale"), ("purchase", "Purchase")], "Type", required=True
+        [("sale", "Venta"), ("purchase", "Compra")], "Tipo", required=True
     )
     date_from = fields.Date(
-        string="Date From",
+        string="Desde",
         required=True,
     )
     date_to = fields.Date(
-        string="Date To",
+        string="Hasta",
         required=True,
     )
     journal_ids = fields.Many2many(
@@ -101,32 +100,30 @@ class AccountVatLedger(models.Model):
         "account_vat_ledger_journal_rel",
         "vat_ledger_id",
         "journal_id",
-        string="Journals",
+        string="Diarios",
         required=True,
     )
     presented_ledger = fields.Binary(
-        "Presented Ledger",
+        "Libro Presentado",
     )
-    presented_ledger_name = fields.Char("Presented Ledger Name")
+    presented_ledger_name = fields.Char("Nombre del Libro Presentado")
     state = fields.Selection(
-        [("draft", "Draft"), ("presented", "Presented"), ("cancel", "Cancelled")],
+        [("draft", "Borrador"), ("presented", "Presentado"), ("cancel", "Cancelado")],
         "State",
         required=True,
         default="draft",
     )
-    note = fields.Html("Note")
-
-    name = fields.Char("Name", compute="_compute_name")
-    reference = fields.Char("Reference")
+    note = fields.Html("Notas")
+    name = fields.Char("Nombre", compute="_compute_name")
+    reference = fields.Char("Referencia")
     invoice_ids = fields.Many2many(
-        "account.move", string="Invoices", compute="_compute_data"
+        "account.move", string="Facturas", compute="_compute_data"
     )
 
     def _compute_data(self):
         if self.type == "sale":
             invoices_domain = [
                 ("state", "not in", ["draft", "cancel"]),
-                #("document_number", "!=", False),
                 ("journal_id", "in", self.journal_ids.ids),
                 ("date", ">=", self.date_from),
                 ("date", "<=", self.date_to),
@@ -168,11 +165,11 @@ class AccountVatLedger(models.Model):
     def _compute_name(self):
         for rec in self:
             if rec.type == "sale":
-                ledger_type = _("Sales")
+                ledger_type = _("Ventas")
             elif rec.type == "purchase":
-                ledger_type = _("Purchases")
+                ledger_type = _("Compras")
 
-            name = _("%s VAT Ledger %s - %s") % (
+            name = _("%s Libro IVA %s - %s") % (
                 ledger_type,
                 rec.date_from
                 and fields.Date.from_string(rec.date_from).strftime("%d-%m-%Y")
@@ -265,9 +262,9 @@ class AccountVatLedger(models.Model):
         else:
             raise ValidationError(
                 _(
-                    "Partner "
+                    "El Contacto "
                     + partner.name
-                    + " has not CUIT/CUIL or DNI. Required fro VAT Ledger Book."
+                    + " no tiene CUIT/CUIL o DNI. Es requerido para el Libro IVA."
                 )
             )
 
