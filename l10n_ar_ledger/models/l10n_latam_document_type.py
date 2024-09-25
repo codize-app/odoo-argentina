@@ -4,11 +4,10 @@
 ##############################################################################
 from odoo import fields, models
 
-
 class L10nLatamDocumentType(models.Model):
     _inherit = "l10n_latam.document.type"
 
     export_to_digital = fields.Boolean(
         "Exportar a Digital",
-        help="Set this to export this document on Digital VAT Ledger",
+        help="Configure esto para exportar este tipo de documento en el Libro IVA Digital",
     )

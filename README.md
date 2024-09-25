@@ -106,16 +106,17 @@ For reports install `l10n_ar_report_fe`
 ## l10n_ar extras
 
 * `l10n_ar_ledger`: VAT Ledger for Sales and Purchases
-* `l10n_ar_withholding`: Withholding on Invoices and Payments. Premium package (`odoo-argentina-withholding`) support on exports for ARBA, AGIP, SIRCAR Neuquén and SIRCAR Río Negro
+* `l10n_ar_withholding_automatic`: Automatic Withholding on Invoices and Payments. Premium package (`odoo-argentina-withholding`) support on exports for ARBA, AGIP and SIRCAR
 * `l10n_ar_bank`: Install Argentina Bank's List
 * `l10n_ar_partner`: Improve partners for Argentina PyMEs
 * `l10n_ar_sale`: Localized sales, like multi-currency management
 * `l10n_ar_purchase`: Localized purchases, like multi-currency management
+* `l10n_ar_exchange_rate`: Automatic Exchange Rate and Manual Rate for Purchases Invoices
 
 ## Extras
 
-* `account_debt_managment`: Get Debt of Customer / Supplier
-* `account_check`: Manager for Checks (rejected, deferred, holding)
+* `account_payment_group`: Payments Group
+* `account_bimonetary`: Account Bimonetary Reports
 
 ## Questions & Bugs
 

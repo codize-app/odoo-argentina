@@ -99,13 +99,18 @@ Para acceso a los reportes en PDF instalar `l10n_ar_report_fe`
 
 ## l10n_ar extras
 
-* `l10n_ar_withholding`: Percepciones/Retenciones en Pagos y Facturas. El paquete premium (`odoo-argentina-withholding`) soporta la exportación para ARBA, AGIP, SIRCAR Neuquén y SIRCAR Río Negro
+* `l10n_ar_ledger`: Libros de IVA, Libros de IVA Digital y Reportes de IVA para Ventas y Compras
+* `l10n_ar_withholding_automatic`: Percepciones/Retenciones Automáticas en Pagos y Facturas. El paquete premium (`odoo-argentina-withholding`) soporta la exportación para ARBA, AGIP y SIRCAR
 * `l10n_ar_bank`: Instala la Lista de Bancos Argentinos
+* `l10n_ar_partner`: Mejoras para datos de PyMEs Argentinas
+* `l10n_ar_sale`: Ventas Localizadas, gestión multimonedas
+* `l10n_ar_purchase`: Compras Localizadas, gestión multimonedas
+* `l10n_ar_exchange_rate`: Tasa de Cambio Automática, y Tasa Manual para Facturas de Compra
 
 ## Extras
 
-* `account_debt_managment`: Obtiene Deuda de Cliente / Proveedor
-* `account_check`: Gestion para Cheques (rechazados, diferidos, de terceros)
+* `account_payment_group`: Recibos de Pago
+* `account_bimonetary`: Reportes de Contabilidad Bimonetaria
 
 ## Preguntas y Bugs
 
