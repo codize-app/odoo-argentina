@@ -18,36 +18,31 @@ _logger = logging.getLogger(__name__)
 
 class AfipwsCertificate(models.Model):
     _name = "afipws.certificate"
-    _description = "afipws.certificate"
+    _description = "Certificado AFIP"
     _rec_name = "alias_id"
 
     alias_id = fields.Many2one(
         'afipws.certificate_alias',
         ondelete='cascade',
-        string='Certificate Alias',
+        string='Alias del Certificado',
         required=True,
         auto_join=True,
         index=True,
     )
     csr = fields.Text(
-        'Request Certificate',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
-        help='Certificate Request in PEM format.'
+        'Solicitud de Certificado (CSR)',
+        help='Solicitud de Certificado (CSR) en formato PEM.'
     )
     crt = fields.Text(
-        'Certificate',
-        readonly=True,
-        states={
-            'draft': [('readonly', False)]},
-        help='Certificate in PEM format.'
+        'Certificado (CRT)',
+        help='Certificado (CRT) en formato PEM.'
     )
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirmed', 'Confirmed'),
         ('cancel', 'Cancelled'),
     ],
-        'State',
+        'Estado',
         index=True,
         readonly=True,
         default='draft',
@@ -58,23 +53,21 @@ class AfipwsCertificate(models.Model):
         "cant use this key again."
     )
     request_file = fields.Binary(
-        'Download Signed Certificate Request',
+        'Descargar Solicitud de Certificado Firmada',
         compute='_compute_request_file',
         readonly=True,
         store=True
     )
     request_filename = fields.Char(
-        'Filename',
+        'Nombre de Archivo',
         readonly=True,
         compute='_compute_request_file',
         store=True
     )
     company_id = fields.Many2one(
         'res.company',
-        'Company',
+        'Compañía',
         required=True,
-        states={'draft': [('readonly', False)]},
-        readonly=True,
         default=lambda self: self.env.user.company_id,
         auto_join=True,
         index=True,

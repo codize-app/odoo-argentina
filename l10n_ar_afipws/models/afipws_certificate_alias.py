@@ -14,8 +14,7 @@ _logger = logging.getLogger(__name__)
 
 class AfipwsCertificateAlias(models.Model):
     _name = "afipws.certificate_alias"
-    _description = "AFIP Distingish Name / Alias"
-    _rec_name = "common_name"
+    _description = "AFIP Certificado / Alias"
 
     """
     Para poder acceder a un servicio, la aplicación a programar debe utilizar
@@ -29,12 +28,10 @@ class AfipwsCertificateAlias(models.Model):
     """
 
     common_name = fields.Char(
-        'Common Name',
+        'Nombre Común',
         size=64,
         default='AFIP WS',
-        help='Just a name, you can leave it this way',
-        states={'draft': [('readonly', False)]},
-        readonly=True,
+        help='Nombre dde referencia del WS de AFIP, lo puede dejar de esta manera.',
         required=True,
     )
     key = fields.Text(
@@ -44,36 +41,26 @@ class AfipwsCertificateAlias(models.Model):
     )
     company_id = fields.Many2one(
         'res.company',
-        'Company',
+        'Compañía',
         required=True,
-        states={'draft': [('readonly', False)]},
-        readonly=True,
         default=lambda self: self.env.user.company_id,
         auto_join=True,
         index=True,
     )
     country_id = fields.Many2one(
-        'res.country', 'Country',
-        states={'draft': [('readonly', False)]},
-        readonly=True,
+        'res.country', 'País',
         required=True,
     )
     state_id = fields.Many2one(
-        'res.country.state', 'State',
-        states={'draft': [('readonly', False)]},
-        readonly=True,
+        'res.country.state', 'Provincia'
     )
     city = fields.Char(
-        'City',
-        states={'draft': [('readonly', False)]},
-        readonly=True,
+        'Ciudad',
         required=True,
     )
     department = fields.Char(
-        'Department',
+        'Departamento',
         default='IT',
-        states={'draft': [('readonly', False)]},
-        readonly=True,
         required=True,
     )
     cuit = fields.Char(
@@ -82,36 +69,30 @@ class AfipwsCertificateAlias(models.Model):
         required=True,
     )
     company_cuit = fields.Char(
-        'Company CUIT',
+        'CUIT de la Compañía',
         size=16,
-        states={'draft': [('readonly', False)], 'confirmed': [('readonly', True)], 'cancel': [('readonly', True)]},
     )
     service_provider_cuit = fields.Char(
-        'Service Provider CUIT',
-        size=16,
-        states={'draft': [('readonly', False)]},
-        readonly=True,
+        'CUIT del Proveedor de Servicios',
+        size=16
     )
     certificate_ids = fields.One2many(
         'afipws.certificate',
         'alias_id',
-        'Certificates',
-        states={'cancel': [('readonly', True)]},
+        'Certificados',
         auto_join=True,
     )
     service_type = fields.Selection(
         [('in_house', 'En Casa'), ('outsourced', 'Subcontratado')],
-        'Service Type',
+        'Tipo de Servicio',
         default='in_house',
         required=True,
-        readonly=True,
-        states={'draft': [('readonly', False)]},
     )
     state = fields.Selection([
         ('draft', 'Borrador'),
         ('confirmed', 'Confirmado'),
         ('cancel', 'Cancelado'),
-    ], 'Status', index=True, readonly=True, default='draft',
+    ], 'Estad', index=True, readonly=True, default='draft',
         help="* The 'Draft' state is used when a user is creating a new pair "
         "key. Warning: everybody can see the key."
         "\n* The 'Confirmed' state is used when the key is completed with "
@@ -121,11 +102,9 @@ class AfipwsCertificateAlias(models.Model):
     )
     type = fields.Selection(
         [('production', 'Producción'), ('homologation', 'Homologación')],
-        'Type',
+        'Tipo',
         required=True,
         default='production',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
     )
 
     @api.onchange('company_id')
@@ -211,5 +190,4 @@ class AfipwsCertificateAlias(models.Model):
     @api.constrains('common_name')
     def check_common_name_len(self):
         if self.filtered(lambda x: x.common_name and len(x.common_name) > 50):
-            raise ValidationError(
-                _('The Common Name must be lower than 50 characters long'))
+            raise ValidationError('El Nombre Común debe tener menos de 50 Carácteres')
