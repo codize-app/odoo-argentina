@@ -35,25 +35,25 @@
                 <sheet string="AFIP Certificados">
                     <group>
                         <group>
-                            <field name="company_id" groups="base.group_multi_company" string="Compañía" />
-                            <field name="type" string="Tipo" />
-                            <field name="service_type" groups="base.group_no_one" string="Tipo de Servicio" />
+                            <field name="company_id" groups="base.group_multi_company" string="Compañía" readonly="state in ['confirmed', 'cancel']" />
+                            <field name="type" string="Tipo" readonly="state in ['confirmed', 'cancel']" />
+                            <field name="service_type" groups="base.group_no_one" string="Tipo de Servicio" readonly="state in ['confirmed', 'cancel']" />
                             <field name="service_provider_cuit" invisible = "service_type != 'outsourced'" required = "service_type == 'outsourced'" groups="base.group_no_one" />
                             <field name="company_cuit" invisible = "service_type !='in_house'" required = "service_type == 'in_house'" groups="base.group_no_one" string="CUIT de la Compañía" />
                         </group>
                         <group>
-                            <field name="common_name" string="Nombre Común"/>
-                            <field name="country_id" string="País" />
-                            <field name="state_id" string="Provincia" />
-                            <field name="city" string="Ciudad" />
+                            <field name="common_name" string="Nombre Común" readonly="state in ['confirmed', 'cancel']" />
+                            <field name="country_id" string="País" readonly="state in ['confirmed', 'cancel']" />
+                            <field name="state_id" string="Provincia" readonly="state in ['confirmed', 'cancel']" />
+                            <field name="city" string="Ciudad" readonly="state in ['confirmed', 'cancel']" />
                         </group>
                     </group>
                     <notebook>
                         <page string="Ceritificados">
-                            <field name="certificate_ids"/>
+                            <field name="certificate_ids" readonly="state in ['confirmed', 'cancel']" />
                         </page>
                         <page string="Key" groups="base.group_no_one">
-                            <field name="key"/>
+                            <field name="key" readonly="state in ['confirmed', 'cancel']" />
                         </page>
                     </notebook>
                 </sheet>

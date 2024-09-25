@@ -1,4 +1,5 @@
-pyOpenSSL
+pyopenssl==22.1.0
 httplib2>=0.7
 git+https://github.com/pysimplesoap/pysimplesoap@stable_py3k
-git+https://github.com/reingart/pyafipws@py3k
+git+https://github.com/reingart/pyafipws
+M2Crypto

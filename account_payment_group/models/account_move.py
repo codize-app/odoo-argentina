@@ -10,17 +10,15 @@ class AccountMove(models.Model):
     )
     pay_now_journal_id = fields.Many2one(
         'account.journal',
-        'Pay now Journal',
+        'Diario de Pagar Ahora',
         help='If you set a journal here, after invoice validation, the invoice'
         ' will be automatically paid with this journal. As manual payment'
-        'method is used, only journals with manual method are shown.',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        'method is used, only journals with manual method are shown.'
     )
     payment_group_ids = fields.Many2many(
         'account.payment.group',
         compute='_compute_payment_groups',
-        string='Payment Groups',
+        string='Grupos de Pago',
     )
 
     def _compute_payment_groups(self):
@@ -59,16 +57,9 @@ class AccountMove(models.Model):
             'target': 'current',
             'type': 'ir.actions.act_window',
             'context': {
-                # si bien el partner se puede adivinar desde los apuntes
-                # con el default de payment group, preferimos mandar por aca
-                # ya que puede ser un contacto y no el commercial partner (y
-                # en los apuntes solo hay commercial partner)
                 'default_partner_id': self.partner_id.id,
                 'to_pay_move_line_ids': self.open_move_line_ids.ids,
                 'pop_up': True,
-                # We set this because if became from other view and in the
-                # context has 'create=False' you can't crate payment lines
-                #  (for ej: subscription)
                 'create': True,
                 'default_company_id': self.company_id.id,
             },
@@ -83,11 +74,6 @@ class AccountMove(models.Model):
         for rec in self:
             pay_journal = rec.pay_now_journal_id
             if pay_journal and rec.state == 'open':
-                # si bien no hace falta mandar el partner_type al paygroup
-                # porque el defaults lo calcula solo en funcion al tipo de
-                # cuenta, es mas claro mandarlo y podria evitar error si
-                # estamos usando cuentas cruzadas (payable, receivable) con
-                # tipo de factura
                 if rec.type in ['in_invoice', 'in_refund']:
                     partner_type = 'supplier'
                 else:
@@ -104,12 +90,6 @@ class AccountMove(models.Model):
                         pay_context).create({
                             'payment_date': rec.date_invoice
                         })
-                # el difference es positivo para facturas (de cliente o
-                # proveedor) pero negativo para NC.
-                # para factura de proveedor o NC de cliente es outbound
-                # para factura de cliente o NC de proveedor es inbound
-                # igualmente lo hacemos con el difference y no con el type
-                # por las dudas de que facturas en negativo
                 if (
                         partner_type == 'supplier' and
                         payment_group.payment_difference >= 0.0 or

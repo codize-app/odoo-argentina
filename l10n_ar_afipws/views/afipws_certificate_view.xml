@@ -10,17 +10,17 @@
                         type="action"
                         invisible="state != 'confirmed'"
                         class="oe_highlight"
-                        string="Upload Certificate"
+                        string="Actualizar Certificado"
                     />
                     <button name="action_confirm"
                         type="object"
                         invisible="state != 'draft'"
-                        string="Confirm"
+                        string="Confirmar"
                     />
                     <button name="action_to_draft"
                         type="object"
                         invisible="state != 'cancel'"
-                        string="To draft"
+                        string="Volver a Borrador"
                     />
                         <button name="action_cancel"
                         type="object"
@@ -46,8 +46,8 @@
         <field name="model">afipws.certificate</field>
         <field name="arch" type="xml">
             <tree string="AFIP Certificates">
-                <field name="create_date"/>
-                <field name="state"/>
+                <field name="create_date" string="Fecha de Creación" />
+                <field name="state" string="Estado" />
             </tree>
         </field>
     </record>

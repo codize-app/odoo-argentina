@@ -35,9 +35,7 @@ class AfipwsCertificateAlias(models.Model):
         required=True,
     )
     key = fields.Text(
-        'Private Key',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        'Key Privada',
     )
     company_id = fields.Many2one(
         'res.company',

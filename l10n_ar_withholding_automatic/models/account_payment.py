@@ -20,19 +20,13 @@ class AccountPayment(models.Model):
     tax_withholding_id = fields.Many2one(
         'account.tax',
         string='Impuesto de retención',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
     )
     withholding_number = fields.Char(
-        readonly=True,
-        states={'draft': [('readonly', False)]},
-        help="If you don't set a number we will add a number automatically "
-        "from a sequence that should be configured on the Withholding Tax"
+        help="Si no configura un número agregaremos un número automáticamente "
+        "a partir de una secuencia que debe ser configurada en el Impuesto de Retención"
     )
     withholding_base_amount = fields.Monetary(
         string='Monto base de retención',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
     )
     communication = fields.Text('Notas')
     automatic = fields.Boolean(
@@ -103,8 +97,6 @@ class AccountPayment(models.Model):
         for payment in (without_number - without_sequence):
             payment.withholding_number = \
                 payment.tax_withholding_id.withholding_sequence_id.next_by_id()
-            #Si el pago de retencion no tiene nombre o es '/' lo seteamos con el mismo nombre que su numero para no tener problemas
-            # con account_payment_fix
             if payment.name == '/':
                 payment.write({'name': payment.withholding_number})
 
@@ -140,7 +132,7 @@ class AccountPayment(models.Model):
         return super(
             AccountPayment,
             (self - payments))._compute_payment_method_description()
-    
+
     def _seek_for_lines(self):
         ''' Helper used to dispatch the journal items between:
         - The lines using the temporary liquidity account.

@@ -15,8 +15,6 @@ class AccountPaymentGroup(models.Model):
     withholdable_advanced_amount = fields.Monetary(
         'Ajustes / Avance (sin impuestos)',
         help='A veces se utiliza para el cálculo de retenciones',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
     )
     withholdable_advanced_amount_calculation_type = fields.Selection([
         ('iva21', 'IVA 21%'),
@@ -29,20 +27,14 @@ class AccountPaymentGroup(models.Model):
     retencion_ganancias = fields.Selection([
         ('imposibilidad_retencion', 'Imposibilidad de Retención'),
         ('no_aplica', 'No Aplica'),
-        ('nro_regimen', 'Nro Regimen'),
+        ('nro_regimen', 'Nro de Régimen'),
     ],
         'Retención Ganancias',
-        readonly=True,
-        states={'draft': [('readonly', False)],
-                'confirmed': [('readonly', False)]}
     )
     regimen_ganancias_id = fields.Many2one(
         'afip.tabla_ganancias.alicuotasymontos',
-        'Regimen Ganancias',
-        readonly=True,
+        'Régimen Ganancias',
         ondelete='restrict',
-        states={'draft': [('readonly', False)],
-                'confirmed': [('readonly', False)]}
     )
     company_regimenes_ganancias_ids = fields.Many2many(
         'afip.tabla_ganancias.alicuotasymontos',
