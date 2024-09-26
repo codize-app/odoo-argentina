@@ -18,12 +18,6 @@ TYPE_TAX_USE = [
     ('none', 'Ninguno'),
 ]
 
-class AccountTaxTemplate(models.Model):
-    _inherit = "account.tax.template"
-
-    type_tax_use = fields.Selection(TYPE_TAX_USE, string='Tipo de Impuesto', required=True, default="sale",
-        help="Determina dónde se puede seleccionar el impuesto. Nota: 'Ninguno' significa que un impuesto no se puede usar solo, sin embargo, aún se puede usar en un grupo. 'Ajuste' se utiliza para realizar el ajuste de impuestos.")
-
 class AccountTax(models.Model):
     _inherit = "account.tax"
 
