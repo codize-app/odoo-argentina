@@ -1,48 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data> 
+    <data>
 
-        <!-- Supplier Receipt Form  -->
+        <!-- Supplier Receipt Form -->
         <record id="view_account_payment_group_form" model="ir.ui.view">
             <field name="name">account.payment.group.form</field>
             <field name="model">account.payment.group</field>
             <field name="inherit_id" ref="account_payment_group.view_account_payment_group_form"/>
             <field name="arch" type="xml">
+                <!-- Eliminación de attrs, uso directo de 'invisible' y otros atributos -->
                 <field name="unreconciled_amount" position="attributes">
                     <attribute name="invisible">partner_type != 'supplier' or state not in ['draft', 'confirmed']</attribute>
                 </field>
                 <field name="to_pay_amount" position="attributes">
                     <attribute name="invisible">partner_type != 'supplier' or state not in ['draft', 'confirmed']</attribute>
                 </field>
-                <field name="to_pay_amount" options="{'currency_field': 'currency_id'}" />
+                <field name="to_pay_amount" options="{'currency_field': 'currency_id'}"/>
+
                 <button position="before">
-                    <button name="compute_withholdings" string="Calcular Retenciones" type="object"
-                            invisible="partner_type != 'supplier' or state not in ['draft', 'confirmed']"
+                    <attribute name="name">compute_withholdings</attribute>
+                    <attribute name="string">Calcular Retenciones</attribute>
+                    <attribute name="type">object</attribute>
+                    <attribute name="invisible">partner_type != 'supplier' or state not in ['draft', 'confirmed']</attribute>
                 </button>
 
                 <field name="unreconciled_amount" position="after">
-                    <field name="withholdable_advanced_amount" options="{'currency_field': 'currency_id'}" invisible="unreconciled_amount &lt;= 0.0 or partner_type != 'supplier' or state not in ['draft', 'confirmed']"/>
+                    <field name="withholdable_advanced_amount" options="{'currency_field': 'currency_id'}"
+                        invisible="unreconciled_amount &lt;= 0.0 or partner_type != 'supplier' or state not in ['draft', 'confirmed']"/>
                 </field>
             </field>
         </record>
 
         <record id="view_account_payment_group_form_supplier" model="ir.ui.view">
-        <field name="name">account.payment.group.form.supplier</field>
-        <field name="model">account.payment.group</field>
-        <field name="inherit_id" ref="account_payment_group.view_account_payment_group_form"/>
-        <field name="arch" type="xml">
+            <field name="name">account.payment.group.form.supplier</field>
+            <field name="model">account.payment.group</field>
+            <field name="inherit_id" ref="account_payment_group.view_account_payment_group_form"/>
+            <field name="arch" type="xml">
                 <form>
                     <field name="company_regimenes_ganancias_ids" invisible="1"/>
                 </form>
+
                 <field name="communication" position="after">
                     <label for="retencion_ganancias" invisible="company_regimenes_ganancias_ids == []"/>
                     <div invisible="company_regimenes_ganancias_ids == []">
-                        <field name="retencion_ganancias" class="oe_inline" required="company_regimenes_ganancias_ids != [] and state in ['draft', 'confirmed']" />
-                        <field name="regimen_ganancias_id" class="oe_inline" invisible="retencion_ganancias != 'nro_regimen'" required="retencion_ganancias = 'nro_regimen' and company_regimenes_ganancias_ids != [] and state in ['draft', 'confirmed']" domain="[('id', 'in', company_regimenes_ganancias_ids)]" options='{"no_open": True, "no_create": True}'/>
+                        <field name="retencion_ganancias" class="oe_inline"
+                            required="company_regimenes_ganancias_ids != [] and state in ['draft', 'confirmed']"/>
+                        <field name="regimen_ganancias_id" class="oe_inline"
+                            invisible="retencion_ganancias != 'nro_regimen'"
+                            required="retencion_ganancias == 'nro_regimen' and company_regimenes_ganancias_ids != [] and state in ['draft', 'confirmed']"
+                            domain="[('id', 'in', company_regimenes_ganancias_ids)]" options="{'no_open': True, 'no_create': True}"/>
                     </div>
-                    <label for="withholdable_advanced_amount_calculation_type" invisible="company_regimenes_ganancias_ids == []" />
-                    <div attrs="{'invisible': [('company_regimenes_ganancias_ids', '=', [])]}">
-                        <field name="withholdable_advanced_amount_calculation_type" class="oe_inline" invisible="retencion_ganancias != 'nro_regimen'" />
+
+                    <label for="withholdable_advanced_amount_calculation_type" invisible="company_regimenes_ganancias_ids == []"/>
+                    <div invisible="company_regimenes_ganancias_ids == []">
+                        <field name="withholdable_advanced_amount_calculation_type" class="oe_inline" invisible="retencion_ganancias != 'nro_regimen'"/>
                     </div>
                 </field>
             </field>

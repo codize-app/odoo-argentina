@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <!-- Formulario de pagos, agregando datos de retención -->
     <record id="view_account_payment_form" model="ir.ui.view">
         <field name="name">account.payment.form.inherited</field>
         <field name="model">account.payment</field>
@@ -8,24 +9,25 @@
         <field name="arch" type="xml">
             <field name='ref' position="after">
                 <div colspan="2">
-                    <group string="Datos de retención" name="withholding_data" attrs="{'invisible': [('payment_method_code', '!=', 'withholding')]}">
-			    <field name="tax_withholding_id"  options="{'no_create': True, 'no_open': True}" string="Impuesto de retencion"
-				    domain="[('type_tax_use', '=', partner_type), ('company_id', '=', company_id)]" attrs="{'required': [('payment_method_code', '=', 'withholding')]}"/>
+                    <group string="Datos de retención" name="withholding_data" invisible="payment_method_code != 'withholding'">
+                        <field name="tax_withholding_id" options="{'no_create': True, 'no_open': True}" string="Impuesto de retención"
+                               domain="[('type_tax_use', '=', partner_type), ('company_id', '=', company_id)]" required="payment_method_code == 'withholding'"/>
                         <field name="withholding_number" string="Nro de retención"/>
-                        <field name="withholding_base_amount" attrs="{'required': [('payment_method_code', '=', 'withholding')]}" string="Monto base de retencion"/>
+                        <field name="withholding_base_amount" string="Monto base de retención" required="payment_method_code == 'withholding'"/>
                     </group>
                 </div>
             </field>
             <xpath expr="//sheet" position="inside">
-                  <notebook>
-                          <page string="Notas">
-                                  <field name="communication" />
-                          </page>
-                  </notebook>
-             </xpath>
-          </field>
+                <notebook>
+                    <page string="Notas">
+                        <field name="communication" />
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
     </record>
 
+    <!-- Formulario de pagos automáticos -->
     <record id="view_account_payment_form_automatic" model="ir.ui.view">
         <field name="name">account.payment.form.inherited.automatic</field>
         <field name="model">account.payment</field>
@@ -36,21 +38,21 @@
                 <field name="withholding_accumulated_payments" invisible="1"/>
             </form>
             <group name="withholding_data">
-                <field name="withholdable_invoiced_amount" attrs="{'invisible': [('automatic', '=', False)]}"/>
-                <field name="withholdable_advanced_amount" attrs="{'invisible': [('automatic', '=', False)]}"/>
-                <field name="accumulated_amount" attrs="{'invisible': [('withholding_accumulated_payments', '=', False)]}"/>
-                <field name="total_amount" attrs="{'invisible': [('automatic', '=', False)]}"/>
-                <field name="withholding_non_taxable_minimum" attrs="{'invisible': [('automatic', '=', False)]}"/>
-                <field name="withholding_non_taxable_amount" attrs="{'invisible': [('automatic', '=', False)]}"/>
-                <field name="withholdable_base_amount" attrs="{'invisible': [('automatic', '=', False)]}"/>
-                <field name="period_withholding_amount" readonly="1" attrs="{'invisible': [('withholding_accumulated_payments', '=', False)]}"/>
-                <field name="previous_withholding_amount" attrs="{'invisible': [('withholding_accumulated_payments', '=', False)]}"/>
-                <field name="computed_withholding_amount" readonly="1" attrs="{'invisible': [('automatic', '=', False)]}"/>
+                <field name="withholdable_invoiced_amount" invisible="automatic == False"/>
+                <field name="withholdable_advanced_amount" invisible="automatic == False"/>
+                <field name="accumulated_amount" invisible="withholding_accumulated_payments == False"/>
+                <field name="total_amount" invisible="automatic == False"/>
+                <field name="withholding_non_taxable_minimum" invisible="automatic == False"/>
+                <field name="withholding_non_taxable_amount" invisible="automatic == False"/>
+                <field name="withholdable_base_amount" invisible="automatic == False"/>
+                <field name="period_withholding_amount" readonly="1" invisible="withholding_accumulated_payments == False"/>
+                <field name="previous_withholding_amount" invisible="withholding_accumulated_payments == False"/>
+                <field name="computed_withholding_amount" readonly="1" invisible="automatic == False"/>
             </group>
          </field>
     </record>
 
-    <!-- tree of payments -->
+    <!-- Vista en árbol de pagos -->
     <record id="view_account_payment_tree" model="ir.ui.view">
         <field name="name">account.payment.tree</field>
         <field name="model">account.payment</field>
@@ -62,7 +64,7 @@
         </field>
     </record>
 
-    <!-- tree of payments on payment groups -->
+    <!-- Vista en árbol de pagos desde grupos de pago -->
     <record id="view_account_payment_from_group_tree" model="ir.ui.view">
         <field name="name">account.payment.tree</field>
         <field name="model">account.payment</field>

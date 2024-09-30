@@ -9,10 +9,9 @@
             <field name="partner_type" position="after">
                 <field name="print_withholding" invisible="1" />
                 <button name="btn_print_withholding" type="object" string="Imprimir Retención" 
-                    attrs="{'invisible': [('print_withholding','=',False)]}"/>
+                    invisible = "print_withholding == False"/>
             </field>
         </field>
     </record>
 
 </odoo>
-
