@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_report_withholdings_suffered,account_report_withholdings_suffered,model_report_withholdings_suffered,account.group_account_user,1,1,1,1
+access_payment_suffered_line,account_payment_suffered_line,model_payment_suffered_line,account.group_account_user,1,1,1,1
+access_invoice_suffered_line,account_invoice_suffered_line,model_invoice_suffered_line,account.group_account_user,1,1,1,1
