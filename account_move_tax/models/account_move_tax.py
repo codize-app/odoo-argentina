@@ -16,7 +16,7 @@ class AccountMove(models.Model):
         _inherit = 'account.move'
 
         def action_post(self):
-            if self.move_type in ['out_invoice','out_refund','in_invoice','in_refund']:
+            if self.company_id.country_code == 'AR' and self.move_type in ['out_invoice','out_refund','in_invoice','in_refund']:
                 self.compute_taxes()
             return super(AccountMove, self).action_post()
 
