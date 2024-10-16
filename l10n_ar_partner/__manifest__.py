@@ -15,12 +15,14 @@ Datos Extras para Contacto de Argentina
     """,
     'author': 'Codize, Exemax',
     'website': 'http://www.codize.ar',
-    'depends': ['base'],
+    'depends': ['base', 'account','l10n_ar_withholding_automatic','l10n_ar',],
     'data': [
         'data/depart_data.xml', 
         'data/localidad_data.xml',
         'views/partner_view.xml',
         'security/ir.model.access.csv',
+        'views/afip_activity_view.xml',
+        'views/afip_tax_view.xml',
     ],
     'installable': True,
 }

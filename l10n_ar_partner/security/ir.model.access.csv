@@ -1,3 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_partido,l10n_ar_partner.departamento,model_res_departamento,base.group_user,1,1,1,1
 access_localidad,l10n_ar_partner.localidad,model_res_localidad,base.group_user,1,1,1,1
+access_afip_activity,l10n_ar_afipws_fe.activity,model_afip_activity,base.group_user,1,1,1,1
+access_afip_concept,l10n_ar_afipws_fe.concept,model_afip_concept,base.group_user,1,1,1,1
+
+access_afip_tax,l10n_ar_afipws_fe.tax,model_afip_tax,base.group_user,1,1,1,1
