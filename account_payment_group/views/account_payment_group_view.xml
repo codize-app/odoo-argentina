@@ -156,10 +156,16 @@
                                    groups="base.group_multi_company" />
                         </page>
                         <page string="Lineas de pagos">
-                            <field name="payment_ids" 
-                                   context="{'default_payment_group_company_id': company_id, 'default_payment_type': partner_type == 'supplier' and 'outbound' or 'inbound', 'default_payment_date': payment_date, 'default_partner_id': partner_id, 'default_partner_type': partner_type, 'payment_group': True, 'default_amount': payment_difference, 'tree_view_ref': 'account_payment_group.view_account_payment_from_group_tree'}" 
-                                   readonly="state not in ['draft', 'confirmed']" 
-                                   groups="base.group_multi_company"/>
+                                   <field name="payment_ids"
+		                            context="{
+		                                'form_view_ref': 'account_payment_group.view_account_payment_from_group_form', 
+		                                'tree_view_ref': 'account_payment_group.view_account_payment_from_group_tree', 
+		                                'kanban_view_ref': 'account_payment_group.view_account_payment_kanban_mobile',
+		                                'default_move_journal_types': ('bank', 'cash'), 
+		                                'default_company_id': company_id
+		                            }"
+			                  readonly="state not in ['draft', 'confirmed']"
+					  groups="base.group_multi_company"/>
                         </page>
                         <page string="Deudas" 
                               invisible="pop_up == True or payment_subtype != 'simple' or state != 'draft'">

@@ -65,60 +65,45 @@ class AccountMove(models.Model):
             },
         }
 
-    def action_post(self):
-        res = super(AccountMove, self).action_post()
+    def _post(self, soft=False):
+        res = super()._post(soft=soft)
         self.pay_now()
         return res
 
     def pay_now(self):
-        for rec in self:
+        for rec in self.filtered(lambda x: x.pay_now_journal_id and x.state == 'posted' and
+                                 x.payment_state in ('not_paid', 'patial')):
             pay_journal = rec.pay_now_journal_id
-            if pay_journal and rec.state == 'open':
-                if rec.type in ['in_invoice', 'in_refund']:
-                    partner_type = 'supplier'
-                else:
-                    partner_type = 'customer'
+            if rec.move_type in ['in_invoice', 'in_refund']:
+                partner_type = 'supplier'
+            else:
+                partner_type = 'customer'
 
-                pay_context = {
-                    'to_pay_move_line_ids': (rec.open_move_line_ids.ids),
-                    'default_company_id': rec.company_id.id,
-                    'default_partner_type': partner_type,
-                }
+            payment_type = 'inbound'
+            payment_method = pay_journal._get_manual_payment_method_id(payment_type)
 
-                payment_group = rec.env[
-                    'account.payment.group'].with_context(
-                        pay_context).create({
-                            'payment_date': rec.date_invoice
-                        })
-                if (
-                        partner_type == 'supplier' and
-                        payment_group.payment_difference >= 0.0 or
-                        partner_type == 'customer' and
-                        payment_group.payment_difference < 0.0):
-                    payment_type = 'outbound'
-                    payment_methods = pay_journal.outbound_payment_method_ids
-                else:
-                    payment_type = 'inbound'
-                    payment_methods = pay_journal.inbound_payment_method_ids
+            payment = rec.env[
+                'account.payment'].with_context(pay_now=True).create({
+                        'date': rec.invoice_date,
+                        'partner_id': rec.commercial_partner_id.id,
+                        'partner_type': partner_type,
+                        'payment_type': payment_type,
+                        'company_id': rec.company_id.id,
+                        'journal_id': pay_journal.id,
+                        'payment_method_id': payment_method.id,
+                        'to_pay_move_line_ids': [Command.set(rec.open_move_line_ids.ids)],
+                    })
 
-                payment_method = payment_methods.filtered(
-                    lambda x: x.code == 'manual')
-                if not payment_method:
-                    raise ValidationError(_(
-                        'Pay now journal must have manual method!'))
-
-                payment_group.payment_ids.create({
-                    'payment_group_id': payment_group.id,
-                    'payment_type': payment_type,
-                    'partner_type': partner_type,
-                    'company_id': rec.company_id.id,
-                    'partner_id': payment_group.partner_id.id,
-                    'amount': abs(payment_group.payment_difference),
-                    'journal_id': pay_journal.id,
-                    'payment_method_id': payment_method.id,
-                    'payment_date': rec.date_invoice,
-                })
-                payment_group.post()
+            # el difference es positivo para facturas (de cliente o proveedor) pero negativo para NC.
+            # para factura de proveedor o NC de cliente es outbound
+            # para factura de cliente o NC de proveedor es inbound
+            # igualmente lo hacemos con el difference y no con el type por las dudas de que facturas en negativo
+            if (partner_type == 'supplier' and payment.payment_difference >= 0.0 or
+               partner_type == 'customer' and payment.payment_difference < 0.0):
+                payment.payment_type = 'outbound'
+                payment.payment_method_id = pay_journal._get_manual_payment_method_id(payment_type).id
+            payment.amount = abs(payment.payment_difference)
+            payment.action_post()
 
     def action_view_payment_groups(self):
         if self.type in ('in_invoice', 'in_refund'):

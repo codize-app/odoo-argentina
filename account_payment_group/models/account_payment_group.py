@@ -521,15 +521,9 @@ class AccountPaymentGroup(models.Model):
     @api.depends('payment_ids.signed_amount_company_currency')
     def _compute_payments_amount(self):
         for rec in self:
-            rec.payments_amount = sum(rec.payment_ids.mapped(
+            # this hac is to make it work when creating payment groups with payments without saving + saved records
+            rec.payments_amount = sum((rec._origin.payment_ids + rec.payment_ids.filtered(lambda x: not x.ids)).mapped(
                 'signed_amount_company_currency'))
-            # payments_amount = sum([
-            #     x.payment_type == 'inbound' and
-            #     x.amount_company_currency or -x.amount_company_currency for
-            #     x in rec.payment_ids])
-            # rec.payments_amount = (
-            #     rec.partner_type == 'supplier' and
-            #     -payments_amount or payments_amount)
 
     def _compute_selected_debt(self):
         for rec in self:
@@ -718,39 +712,18 @@ class AccountPaymentGroup(models.Model):
         create_from_expense = self._context.get('create_from_expense', False)
         self = self.with_context({})
         for rec in self:
-            if not rec.receiptbook_id:
-                rec.payment_ids.write({
-                    'receiptbook_id': False,
-                })
-                raise UserError(_(
-                        'Error!. Please define a receiptbook.'
-                        ' You need be at multicompany group '
-                        'for that.'))
-
             if not rec.document_number:
-                if not rec.receiptbook_id.sequence_id:
-                    raise UserError(_(
-                        'Error!. Please define sequence on the receiptbook'
-                        ' related documents to this payment or set the '
-                        'document number.'))
-                rec.document_number = (
-                    rec.receiptbook_id.with_context(
-                        ir_sequence_date=rec.payment_date
-                        ).sequence_id.next_by_id())
-            #rec.payment_ids.write({
-            #    'document_number': rec.document_number,
-            #    'receiptbook_id': rec.receiptbook_id.id,
-            #})
+                if rec.receiptbook_id.sequence_id:
+                    rec.document_number = (
+                        rec.receiptbook_id.with_context(
+                            ir_sequence_date=rec.payment_date
+                            ).sequence_id.next_by_id())
 
-            # TODO if we want to allow writeoff then we can disable this
-            # constrain and send writeoff_journal_id and writeoff_acc_id
             if not rec.payment_ids:
                 raise ValidationError(_(
                     'You can not confirm a payment group without payment '
                     'lines!'))
-            # si el pago se esta posteando desde statements y hay doble
-            # validacion no verificamos que haya deuda seleccionada
-            _logger.warning("4")
+
             if (rec.payment_subtype == 'double_validation' and
                     rec.payment_difference and (not create_from_statement and
                                                 not create_from_expense)):
@@ -760,8 +733,6 @@ class AccountPaymentGroup(models.Model):
             writeoff_acc_id = False
             writeoff_journal_id = False
 
-            # al crear desde website odoo crea primero el pago y lo postea
-            # y no debemos re-postearlo
             if not create_from_website and not create_from_expense:
                 rec.payment_ids.filtered(lambda x: x.state == 'draft').action_post()
 
