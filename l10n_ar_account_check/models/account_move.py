@@ -1,19 +1,11 @@
-##############################################################################
-# For copyright and license notices, see __manifest__.py file in module root
-# directory
-##############################################################################
 from odoo import models, fields, api
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    # we add this field so that when invoice is validated we can reconcile
-    # move lines between check and invoice lines
-    # igual se setea para todos los rechazos, tal vez mas adelante lo usamos
-    # para otra cosa
     rejected_check_id = fields.Many2one(
         'account.check',
-        'Rejected Check',
+        'Cheque Rechazado',
     )
 
     def action_cancel(self):
@@ -32,15 +24,3 @@ class AccountMove(models.Model):
                     lambda x: x.account_id == deferred_account)
                 deferred_account_line.remove_move_reconcile()
         return super(AccountMove, self).action_cancel()
-
-    def action_move_create(self):
-        """
-        Si al validar la factura, la misma tiene un cheque de rechazo asociado
-        intentamos concilarlo
-        """
-        res = super(AccountInvoice, self).action_move_create()
-        #for rec in self.filtered(lambda x: x.rejected_check_id):
-        #    check = rec.rejected_check_id
-        #    if check.state == 'rejected' and check.type == 'issue_check':
-        #        rec.rejected_check_id.handed_reconcile(rec.move_id)
-        return res

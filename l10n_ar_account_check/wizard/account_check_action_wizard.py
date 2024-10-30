@@ -5,18 +5,21 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
-
 class AccountCheckActionWizard(models.TransientModel):
     _name = 'account.check.action.wizard'
     _description = 'Account Check Action Wizard'
 
     date = fields.Date(
+        string="Fecha",
         default=fields.Date.context_today,
         required=True,
     )
-    journal_id = fields.Many2one('account.journal',string='Diario')
+    journal_id = fields.Many2one(
+        'account.journal',
+        string='Diario'
+    )
     action_type = fields.Char(
-        'Action type passed on the context',
+        'Tipo de acción pasada en el contexto',
         required=True,
     )
 
@@ -25,7 +28,7 @@ class AccountCheckActionWizard(models.TransientModel):
         if self.action_type not in [
                 'claim', 'bank_debit', 'bank_deposit','reject', 'customer_return']:
             raise ValidationError(_(
-                'Action %s not supported on checks') % self.action_type)
+                'La Acción %s no está soportada en cheques') % self.action_type)
         checks = self.env['account.check'].browse(
             self._context.get('active_ids'))
         for check in checks:

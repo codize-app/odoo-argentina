@@ -18,22 +18,20 @@ class AccountCheckbook(models.Model):
     )
     sequence_id = fields.Many2one(
         'ir.sequence',
-        'Sequence',
+        'Secuencia',
         copy=False,
         domain=[('code', '=', 'issue_check')],
         help="Checks numbering sequence.",
         context={'default_code': 'issue_check'},
     )
     next_number = fields.Integer(
-        'Next Number',
-        # usamos compute y no related para poder usar sudo cuando se setea
-        # secuencia sin necesidad de dar permiso en ir.sequence
+        'Siguiente Número',
         compute='_compute_next_number',
         inverse='_inverse_next_number',
     )
     issue_check_subtype = fields.Selection(
-        [('deferred', 'Deferred'), ('currents', 'Currents'), ('electronics','Electronics')],
-        string='Issue Check Subtype',
+        [('deferred', 'Diferidos'), ('currents', 'Corrientes'), ('electronics','Electrónicos')],
+        string='Subtipo de Cheques Propios',
         required=True,
         default='deferred',
         help='* Con cheques corrientes el asiento generado por el pago '
@@ -45,7 +43,7 @@ class AccountCheckbook(models.Model):
         ' o desde el cheque.',
     )
     journal_id = fields.Many2one(
-        'account.journal', 'Journal',
+        'account.journal', 'Diario',
         help='Journal where it is going to be used',
         readonly=True,
         required=True,
@@ -56,51 +54,41 @@ class AccountCheckbook(models.Model):
         auto_join=True,
     )
     range_to = fields.Integer(
-        'To Number',
-        # readonly=True,
-        # states={'draft': [('readonly', False)]},
-        help='If you set a number here, this checkbook will be automatically'
-        ' set as used when this number is raised.'
+        'Hasta el Número',
+        help='If you set a number here, this checkbook will be automatically set as used when this number is raised.'
     )
     issue_check_ids = fields.One2many(
         'account.check',
         'checkbook_id',
-        string='Issue Checks',
+        string='Cheques Propios',
         readonly=True,
     )
     state = fields.Selection(
-        [('draft', 'Draft'), ('active', 'In Use'), ('used', 'Used')],
+        [('draft', 'Borrador'), ('active', 'En Uso'), ('used', 'Usado')],
         string='State',
-        # readonly=True,
         default='draft',
         copy=False,
     )
-    # TODO depreciar esta funcionalidad que no estamos usando
-    block_manual_number = fields.Boolean(
-        default=True,
-        string='Block manual number?',
-        # readonly=True,
-        # states={'draft': [('readonly', False)]},
-        help='Block user to enter manually another number than the suggested'
-    )
     numerate_on_printing = fields.Boolean(
         default=False,
-        string='Numerate on printing?',
-        # readonly=True,
-        # states={'draft': [('readonly', False)]},
+        string='¿Numerar al imprimir?',
         help='No number will be assigne while creating payment, number will be'
         'assigned after printing check.'
     )
     report_template = fields.Many2one(
         'ir.actions.report',
-        'Report',
+        'Reporte',
         domain="[('model', '=', 'account.payment')]",
         context="{'default_model': 'account.payment'}",
         help='Report to use when printing checks. If not report selected, '
         'report with name "check_report" will be used',
     )
     #Cuenta para cheques propios
-    account_id = fields.Many2one("account.account","Cuenta", required=True)
+    account_id = fields.Many2one(
+        "account.account",
+        "Cuenta",
+        required=True
+    )
 
     @api.depends('sequence_id.number_next_actual')
     def _compute_next_number(self):

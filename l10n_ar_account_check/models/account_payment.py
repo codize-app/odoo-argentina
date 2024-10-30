@@ -1,11 +1,7 @@
-##############################################################################
-# For copyright and license notices, see __manifest__.py file in module root
-# directory
-##############################################################################
 from odoo import fields, models, _, api
 from odoo.exceptions import UserError, ValidationError
 import logging
-# import odoo.addons.decimal_precision as dp
+
 _logger = logging.getLogger(__name__)
 
 
@@ -18,7 +14,7 @@ class AccountPayment(models.Model):
     cheque_reference = fields.Char()
     check_ids = fields.Many2many(
         'account.check',
-        string='Checks',
+        string='Cheques',
         copy=False,
         auto_join=True,
     )
@@ -32,8 +28,8 @@ class AccountPayment(models.Model):
         string='Cheque',
     )
     check_deposit_type = fields.Selection(
-        [('consolidated', 'Consolidated'),
-         ('detailed', 'Detailed')],
+        [('consolidated', 'Consolidado'),
+         ('detailed', 'Detallado')],
         default='detailed',
         help="This option is relevant if you use bank statements. Detailed is"
         " used when the bank credits one by one the checks, consolidated is"

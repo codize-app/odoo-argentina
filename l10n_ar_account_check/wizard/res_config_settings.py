@@ -1,6 +1,4 @@
 from odoo import fields, models
-# from odoo.exceptions import UserError
-
 
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'

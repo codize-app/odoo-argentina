@@ -237,7 +237,7 @@
         <field name="name">account.check.calendar</field>
         <field name="model">account.check</field>
         <field name="arch" type="xml">
-            <calendar string="Checks"
+            <calendar string="Cheques"
                 mode="month"
                 date_start="payment_date"
                 color="bank_id">
@@ -248,7 +248,7 @@
 
     <!-- Third Check Menu -->
     <record model="ir.actions.act_window" id="action_third_check">
-        <field name="name">Third Checks</field>
+        <field name="name">Cheques de Terceros</field>
         <field name="res_model">account.check</field>
         <field name="view_mode">tree,form,calendar</field>
         <field name="domain">[('type','=','third_check')]</field>
@@ -263,7 +263,7 @@
 
     <!-- Issued Check Menu -->
     <record model="ir.actions.act_window" id="action_issue_check">
-        <field name="name">Issue Checks</field>
+        <field name="name">Cheques Propios</field>
         <field name="res_model">account.check</field>
         <field name="view_mode">tree,form,calendar</field>
         <field name="domain">[('type','=','issue_check')]</field>

@@ -1,11 +1,6 @@
-##############################################################################
-# For copyright and license notices, see __manifest__.py file in module root
-# directory
-##############################################################################
 from odoo import models, fields, api, _
 from odoo.tools.misc import formatLang
 from ast import literal_eval
-
 
 class AccountJournal(models.Model):
     _inherit = 'account.journal'
@@ -13,7 +8,7 @@ class AccountJournal(models.Model):
     checkbook_ids = fields.One2many(
         'account.checkbook',
         'journal_id',
-        'Checkbooks',
+        'Chequeras',
         auto_join=True,
     )
     account_third = fields.Many2one('account.account', 'Cuenta para Cheques de Terceros')

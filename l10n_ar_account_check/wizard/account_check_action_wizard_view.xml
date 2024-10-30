@@ -5,7 +5,7 @@
         <field name="name">account.check.action.wizard.form</field>
         <field name="model">account.check.action.wizard</field>
         <field name="arch" type="xml">
-            <form string="Check Action">
+            <form string="Acción de Cheque">
                 <field name="action_type" invisible="True"/>
                 <group >
                     <field name="date"/>
@@ -13,7 +13,7 @@
                 </group>
                 <footer>
                     <button string="Confirm" name="action_confirm" type="object" class="oe_highlight"/>
-                    or
+                    o
                     <button string="Cancel" class="oe_link" special="cancel"/>
                 </footer>     
             </form>
@@ -21,7 +21,7 @@
     </record>
 
     <record id="action_account_check_action_wizard" model="ir.actions.act_window">
-        <field name="name">Check Action</field>
+        <field name="name">Acción de Cheque</field>
         <field name="res_model">account.check.action.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>

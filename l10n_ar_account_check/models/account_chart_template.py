@@ -1,7 +1,3 @@
-##############################################################################
-# For copyright and license notices, see __manifest__.py file in module root
-# directory
-##############################################################################
 from odoo import models, api, fields
 import logging
 _logger = logging.getLogger(__name__)
@@ -13,22 +9,18 @@ class AccountChartTemplate(models.Model):
 
     rejected_check_account_id = fields.Many2one(
         'account.account.template',
-        'Rejected Check Account',
-        help='Rejection Checks account, for eg. "Rejected Checks"',
-        # domain=[('type', 'in', ['other'])],
+        'Cuenta de Cheques Rechazados',
+        help='Cuenta para Cheques Rechazados, por ejemplo "Cheques Rechazados"',
     )
     deferred_check_account_id = fields.Many2one(
         'account.account.template',
-        'Deferred Check Account',
-        help='Deferred Checks account, for eg. "Deferred Checks"',
-        # domain=[('type', 'in', ['other'])],
+        'Cuenta de Cheques Diferidos',
+        help='Cuenta para Cheques Diferidos, por ejemplo "Cheques Diferidos"',
     )
     holding_check_account_id = fields.Many2one(
         'account.account.template',
-        'Holding Check Account',
-        help='Holding Checks account for third checks, '
-        'for eg. "Holding Checks"',
-        # domain=[('type', 'in', ['other'])],
+        'Cuenta de Cheques Propios',
+        help='Cuenta para Cheques Propios, por ejemplo "Cheques Propios"',
     )
 
     def _load_template(
@@ -63,7 +55,6 @@ class AccountChartTemplate(models.Model):
             AccountChartTemplate, self)._create_bank_journals(
             company, acc_template_ref)
 
-        # creamos diario para cheques de terceros
         received_third_check = self.env.ref(
             'l10n_ar_account_check.account_payment_method_received_third_check')
         delivered_third_check = self.env.ref(

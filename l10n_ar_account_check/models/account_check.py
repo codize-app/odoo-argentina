@@ -1,7 +1,3 @@
-##############################################################################
-# For copyright and license notices, see __manifest__.py file in module root
-# directory
-##############################################################################
 from odoo import fields, models, _, api
 from odoo.exceptions import UserError, ValidationError
 import datetime
@@ -67,6 +63,7 @@ class AccountCheckOperation(models.Model):
         string='Cliente/Proveedor',
     )
     notes = fields.Text(
+        string="Notas"
     )
 
     def unlink(self):
@@ -79,26 +76,16 @@ class AccountCheckOperation(models.Model):
 
     @api.depends('origin')
     def _compute_origin_name(self):
-        """
-        We add this computed method because an error on tree view displaying
-        reference field when destiny record is deleted.
-        As said in this post (last answer) we should use name_get instead of
-        display_name
-        https://www.odoo.com/es_ES/forum/ayuda-1/question/
-        how-to-override-name-get-method-in-new-api-61228
-        """
         for rec in self:
             try:
                 if rec.origin:
                     _id, name = rec.origin.name_get()[0]
                     origin_name = name
-                    # origin_name = rec.origin.display_name
                 else:
                     origin_name = False
             except Exception as e:
                 _logger.exception(
                     "Compute origin on checks exception: %s" % e)
-                # if we can get origin we clean it
                 rec.write({'origin': False})
                 origin_name = False
             rec.origin_name = origin_name
@@ -125,14 +112,17 @@ class AccountCheck(models.Model):
     operation_ids = fields.One2many(
         'account.check.operation',
         'check_id',
+        string="Operaciones",
         auto_join=True,
     )
     name = fields.Char(
+        string="Nombre",
         required=True,
         copy=False,
         index=True,
     )
     number = fields.Integer(
+        string="Número",
         required=True,
         copy=False,
         index=True,
@@ -155,12 +145,12 @@ class AccountCheck(models.Model):
         related='operation_ids.partner_id',
         store=True,
         index=True,
-        string='Last operation partner',
+        string='Último contacto en hacer operación',
     )
     first_partner_id = fields.Many2one(
         'res.partner',
         compute='_compute_first_partner',
-        string='First operation partner',
+        string='Primer contacto en hacer operación',
         readonly=True,
     )
     state = fields.Selection([
@@ -187,7 +177,7 @@ class AccountCheck(models.Model):
         index=True,
     )
     issue_date = fields.Date(
-        'Fecha Emision',
+        'Fecha de Emision',
         required=True,
         default=fields.Date.context_today,
     )
