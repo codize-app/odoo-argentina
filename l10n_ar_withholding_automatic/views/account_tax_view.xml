@@ -31,7 +31,7 @@
             </xpath>
 
             <xpath expr="//page" position="inside">
-                <group invisible="True" modifiers="{'invisible': [('type_tax_use', '!=', 'supplier')]}">
+                <group invisible="type_tax_use != 'supplier'">
                     <group name="withholdings">
                         <label for="condicion_sicore"/>
                         <div>
@@ -51,7 +51,7 @@
                             </tree>
                         </field>
                     </group>
-                    <group invisible="True" modifiers="{'invisible':[('withholding_type', '=', 'none')]}">
+                    <group invisible="withholding_type == 'none'">
                         <field name="withholding_accumulated_payments"/>
                         <field name="withholding_advances"/>
                         <label for="withholding_amount_type" modifiers="{'required':[('withholding_type', '!=', 'none')]}"/>
