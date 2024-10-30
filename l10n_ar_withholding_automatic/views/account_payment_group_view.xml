@@ -18,10 +18,7 @@
                 <field name="to_pay_amount" options="{'currency_field': 'currency_id'}"/>
 
                 <button position="before">
-                    <attribute name="name">compute_withholdings</attribute>
-                    <attribute name="string">Calcular Retenciones</attribute>
-                    <attribute name="type">object</attribute>
-                    <attribute name="invisible">partner_type != 'supplier' or state not in ['draft', 'confirmed']</attribute>
+                    <button name="compute_withholdings" string="Calcular Retenciones" type="object" invisible="partner_type != 'supplier' or state not in ['draft', 'confirmed']" />
                 </button>
 
                 <field name="unreconciled_amount" position="after">
