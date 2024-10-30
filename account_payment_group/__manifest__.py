@@ -9,7 +9,7 @@
     'installable': True,
     "depends": [
         "account",
-        "l10n_latam_check"
+        "l10n_ar_account_check"
     ],
     "data": [
         'security/security.xml',

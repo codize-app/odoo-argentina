@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_check_res_company_form" model="ir.ui.view">
+        <field name="name">account_check.res.company.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+	<field name="arch" type="xml">
+		<notebook>
+			<page string="Cheques">
+				<group>
+					<field name="rejected_check_account_id" string="Cuenta de Cheques Rechazados" />
+					<field name="deferred_check_account_id" string="Cuenta de Cheques Diferidos" />
+					<field name="holding_check_account_id" string="Cuenta de Cheques en Tenencia"  />
+				</group>
+			</page>
+		</notebook>
+        </field>
+    </record>
+</odoo>
