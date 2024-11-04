@@ -48,29 +48,21 @@
                         <newline />
                         <field name="checkbook_id" options="{'no_create': True, 'no_open': True}"
                             invisible="payment_method_code not in ['issue_check']"
-                            required="payment_method_code in ['issue_check']"
                             domain="[('journal_id', '=', journal_id), ('state', '=', 'active')]" />
                         <field name="check_number"
-                            invisible="payment_method_code not in ['received_third_check', 'issue_check']"
-                            required="payment_method_code in ['received_third_check', 'issue_check'] and checkbook_numerate_on_printing == False" />
+                            invisible="payment_method_code not in ['received_third_check', 'issue_check']" />
                         <field name="check_name"
-                            invisible="payment_method_code not in ['received_third_check', 'issue_check']"
-                            required="payment_method_code in ['received_third_check', 'issue_check'] and checkbook_numerate_on_printing == False" />
+                            invisible="payment_method_code not in ['received_third_check', 'issue_check']" />
                         <field name="check_issue_date"
-                            invisible="payment_method_code not in ['received_third_check', 'issue_check']"
-                            required="payment_method_code in ['received_third_check', 'issue_check']" />
+                            invisible="payment_method_code not in ['received_third_check', 'issue_check']" />
                         <field name="check_payment_date"
-                            invisible="payment_method_code not in ['received_third_check', 'issue_check']"
-                            required="check_subtype == 'deferred'" />
+                            invisible="payment_method_code not in ['received_third_check', 'issue_check']" />
                         <field name="check_bank_id"
-                            invisible="payment_method_code not in ['received_third_check']"
-                            required="payment_method_code in ['received_third_check']" />
+                            invisible="payment_method_code not in ['received_third_check']" />
                         <field name="check_owner_vat"
-                            invisible="payment_method_code not in ['received_third_check']"
-                            required="payment_method_code in ['received_third_check']" />
+                            invisible="payment_method_code not in ['received_third_check']" />
                         <field name="check_owner_name"
-                            invisible="payment_method_code not in ['received_third_check']"
-                            required="payment_method_code in ['received_third_check']" />
+                            invisible="payment_method_code not in ['received_third_check']" />
                     </group>
                 </div>
             </field>
