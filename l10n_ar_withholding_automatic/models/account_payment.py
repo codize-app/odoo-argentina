@@ -70,7 +70,7 @@ class AccountPayment(models.Model):
 
     def btn_print_withholding(self):
             self.ensure_one()
-            return self.env.ref('l10n_ar_withholding.account_payment_withholdings').report_action(self)
+            return self.env.ref('l10n_ar_withholding_automatic.account_payment_withholdings').report_action(self)
 
     def _get_counterpart_move_line_vals(self, invoice=False):
         vals = super(AccountPayment, self)._get_counterpart_move_line_vals(

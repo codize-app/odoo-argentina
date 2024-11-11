@@ -91,4 +91,4 @@ class WithholdingsReports(models.TransientModel):
                 'retenciones_ids' : payments_whit_withholdings,
                 'retenciones_gan_ids' : payments_whit_profit_withholdings
             }
-            return self.env.ref('l10n_ar_withholding.action_withholdings_report_general').sudo().with_context(landscape=True).report_action(self, data=data)
+            return self.env.ref('l10n_ar_withholding_automatic.action_withholdings_report_general').sudo().with_context(landscape=True).report_action(self, data=data)
