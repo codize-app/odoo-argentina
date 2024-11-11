@@ -351,14 +351,15 @@ class AccountPayment(models.Model):
                 rec.check_ids.unlink()
                 return None
 
-            _logger.info('Receive Check')
-            check = self.create_check(
-                    'third_check', operation, self.check_bank_id)
-            if not vals:
-                vals = {}
-            vals['date_maturity'] = self.check_payment_date
-            vals['account_id'] = check.get_third_check_account().id
-            vals['name'] = _('Receive check %s') % check.name
+            # Ocultamos esto para destrabar, el cheque de tercero ya se crea en el pago, considerar sacarlo y reformularlo
+            #_logger.info('Receive Check')
+            #check = self.create_check(
+            #        'third_check', operation, self.check_bank_id)
+            #if not vals:
+            #    vals = {}
+            #vals['date_maturity'] = self.check_payment_date
+            #vals['account_id'] = check.get_third_check_account().id
+            #vals['name'] = _('Receive check %s') % check.name
         elif (
                 rec.payment_method_code == 'delivered_third_check' and
                 rec.payment_type == 'transfer'):
