@@ -2,13 +2,14 @@ from odoo import models, fields, api, _
 from odoo.tools.misc import formatLang
 from ast import literal_eval
 
+
 class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
     checkbook_ids = fields.One2many(
         'account.checkbook',
         'journal_id',
-        'Chequeras',
+        'Checkbooks',
         auto_join=True,
     )
     account_third = fields.Many2one('account.account', 'Cuenta para Cheques de Terceros')
@@ -18,7 +19,7 @@ class AccountJournal(models.Model):
     def create(self, vals):
         rec = super(AccountJournal, self).create(vals)
         issue_checks = self.env.ref(
-            'account_check.account_payment_method_issue_check')
+            'l10n_ar_account_check.account_payment_method_issue_check')
         if (issue_checks in rec.outbound_payment_method_ids and
                 not rec.checkbook_ids):
             rec._create_checkbook()
@@ -38,7 +39,7 @@ class AccountJournal(models.Model):
             Called upon module installation via data file.
         """
         issue_checks = self.env.ref(
-            'account_check.account_payment_method_issue_check')
+            'l10n_ar_account_check.account_payment_method_issue_check')
         domain = [('type', '=', 'bank')]
         force_company_id = self._context.get('force_company_id')
         if force_company_id:
@@ -103,9 +104,9 @@ class AccountJournal(models.Model):
     def open_action_checks(self):
         check_type = self.env.context.get('check_type', False)
         if check_type == 'third_check':
-            action_name = 'account_check.action_third_check'
+            action_name = 'l10n_ar_account_check.action_third_check'
         elif check_type == 'issue_check':
-            action_name = 'account_check.action_issue_check'
+            action_name = 'l10n_ar_account_check.action_issue_check'
         else:
             return False
         actions = self.env.ref(action_name)
@@ -129,6 +130,6 @@ class AccountJournal(models.Model):
                 default_journal_id=self.id,
                 default_payment_type='outbound',
                 default_payment_method_id=self.env.ref(
-                    'account_check.account_payment_method_issue_check').id,
+                    'l10n_ar_account_check.account_payment_method_issue_check').id,
             ),
         }
