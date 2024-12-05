@@ -28,9 +28,6 @@ class AccountTax(models.Model):
         'ir.sequence',
         'Secuencia de impuestos',
         domain=[('code', '=', 'account.tax.withholding')],
-        context=(
-            "{'default_code': 'account.tax.withholding',"
-            " 'default_name': name}"),
         help='Si no se proporciona una secuencia, se le pedirá que ingrese el número de retención al registrar un pago.',
         copy=False
     )
