@@ -252,15 +252,16 @@
 </template>
 
         <!-- QWeb Reports -->
-        <report
-            id="account_payment_group.account_payment_group_report"
-            model="account.payment.group"
-            string="Recibo"
-            report_type="qweb-pdf"
-            name="account_payment_group.report_payment_group"
-            file="account_payment_group.report_payment_group"
-        />
-<!--attachment="(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"-->
+        <record id="account_fe_invoices" model="ir.actions.report">
+            <field name="name">Recibo</field>
+            <field name="model">account.payment.group</field>
+            <field name="binding_model_id" ref="model_account_payment_group"/>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">account_payment_group.report_payment_group</field>
+            <field name="report_file">account_payment_group.report_payment_group</field>
+            <field name="attachment">(object.state in ('posted')) and ((object.name or '').replace('/','')+'.pdf')</field>
+            <field name="attachment_use">True</field>
+	</record>
 
 </data>
 </odoo>
