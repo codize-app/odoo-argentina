@@ -6,17 +6,17 @@ class ResCompany(models.Model):
     _inherit = 'res.company'
 
     rejected_check_account_id = fields.Many2one(
-        'account.account.template',
+        'account.account',
         'Cuenta de Cheques Rechazados',
         help='Cuenta para Cheques Rechazados, por ejemplo "Cheques Rechazados"',
     )
     deferred_check_account_id = fields.Many2one(
-        'account.account.template',
+        'account.account',
         'Cuenta de Cheques Diferidos',
         help='Cuenta para Cheques Diferidos, por ejemplo "Cheques Diferidos"',
     )
     holding_check_account_id = fields.Many2one(
-        'account.account.template',
+        'account.account',
         'Cuenta de Cheques Propios',
         help='Cuenta para Cheques Propios, por ejemplo "Cheques Propios"',
     )
