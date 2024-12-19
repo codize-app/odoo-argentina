@@ -8,9 +8,11 @@ class AccountMoveLine(models.Model):
 
     amount_currency_usd = fields.Monetary(
         string='Monto en USD',
-        group_operator=None,
-        compute='_compute_amount_currency_usd', readonly=False,
-        help="Monto expresado en Dólares USD")
+        compute='_compute_amount_currency_usd', readonly=False, store=True, precompute=True,
+        help="Monto expresado en Dólares USD",
+        currency_field='currency_usd',
+        tracking=True
+    )
     currency_usd = fields.Many2one(string='Moneda USD', 'res.currency', default=1, readonly=True)
 
     @api.depends('balance')
