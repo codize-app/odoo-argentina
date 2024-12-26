@@ -147,48 +147,7 @@ class ResPartner(models.Model):
        'partner_id', 'afip_tax_id',
        string='Impuestos',
     )
-    #last_update_padron = fields.Date(
-    #    'Última Actualización del Padrón',
-    #)
 
-    #def get_arba_alicuota_percepcion(self):
-    #    company = self._context.get('invoice_company')
-    #    date_invoice = self._context.get('date_invoice')
-    #    if date_invoice and company:
-    #        date = fields.Date.from_string(date_invoice)
-    #        arba = self.get_arba_data(company, date)
-    #        return arba.alicuota_percepcion / 100.0
-    #    return 0
-#
-    #def get_arba_alicuota_retencion(self, company, date):
-    #    arba = self.get_arba_data(company, date)
-    #    return arba.alicuota_retencion / 100.0
-#
-    #def get_arba_data(self, company, date):
-    #    self.ensure_one()
-    #    from_date = (date + relativedelta(day=1)).strftime('%Y%m%d')
-    #    to_date = (date + relativedelta(
-    #        day=1, days=-1, months=+1)).strftime('%Y%m%d')
-    #    commercial_partner = self.commercial_partner_id
-    #    arba = self.arba_alicuot_ids.search([
-    #        ('from_date', '=', from_date),
-    #        ('to_date', '=', to_date),
-    #        ('company_id', '=', company.id),
-    #        ('partner_id', '=', commercial_partner.id)], limit=1)
-    #    if not arba:
-    #        arba_data = company.get_arba_data(
-    #            commercial_partner,
-    #            from_date, to_date,
-    #        )
-    #        arba_data['partner_id'] = commercial_partner.id
-    #        arba_data['company_id'] = company.id
-    #        arba = self.arba_alicuot_ids.sudo().create(arba_data)
-    #    return arba
-#
-    #def update_constancia_from_padron_afip(self):
-    #    self.ensure_one()
-    #    return True
-#
     def get_data_from_padron_afip(self):
         self.ensure_one()
         cuit = self.cuit_required()
@@ -590,3 +549,50 @@ class AccountTax(models.Model):
    active = fields.Boolean(
        default=True,
    )
+
+class ArcaTablagananciasEscala(models.Model):
+    _name = 'afip.tabla_ganancias.escala'
+    _rec_name = 'importe_desde'
+
+    importe_desde = fields.Float(
+        'Mas de $',
+    )
+    importe_hasta = fields.Float(
+        'A $',
+    )
+    importe_fijo = fields.Float(
+        '$',
+    )
+    porcentaje = fields.Float(
+        'Más el %'
+    )
+    importe_excedente = fields.Float(
+        'S/ Exced. de $'
+    )
+
+
+class ArcaTablagananciasAlicuotasymontos(models.Model):
+    _name = 'afip.tabla_ganancias.alicuotasymontos'
+    _rec_name = 'codigo_de_regimen'
+
+    codigo_de_regimen = fields.Char(
+        'Codigo de regimen',
+        size=6,
+        required=True,
+        help='Codigo de regimen de inscripcion en impuesto a las ganancias.'
+    )
+    anexo_referencia = fields.Char(
+        required=True,
+    )
+    concepto_referencia = fields.Text(
+        required=True,
+    )
+    porcentaje_inscripto = fields.Float(
+        '% Inscripto',
+        help='Elija -1 si se debe calcular s/escala'
+    )
+    porcentaje_no_inscripto = fields.Float(
+        '% No Inscripto'
+    )
+    montos_no_sujetos_a_retencion = fields.Float(
+    )
