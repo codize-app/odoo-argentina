@@ -13,7 +13,7 @@ class AccountMoveLine(models.Model):
         currency_field='currency_usd',
         tracking=True
     )
-    currency_usd = fields.Many2one(string='Moneda USD', 'res.currency', default=1, readonly=True)
+    currency_usd = fields.Many2one('res.currency', string='Moneda USD', default=1, readonly=True)
 
     @api.depends('balance')
     def _compute_amount_currency_usd(self):
