@@ -12,13 +12,13 @@ _logger = logging.getLogger(__name__)
 class AfipwsConnection(models.Model):
 
     _name = "afipws.connection"
-    _description = "AFIP WS Connection"
+    _description = "ARCA Conexión WS"
     _rec_name = "afip_ws"
     _order = "expirationtime desc"
 
     company_id = fields.Many2one(
         'res.company',
-        'Company',
+        'Compañía',
         required=True,
         index=True,
         auto_join=True,
@@ -44,11 +44,11 @@ class AfipwsConnection(models.Model):
         readonly=True
     )
     afip_login_url = fields.Char(
-        'AFIP Login URL',
+        'ARCA Login URL',
         compute='_compute_afip_urls',
     )
     afip_ws_url = fields.Char(
-        'AFIP WS URL',
+        'ARCA WS URL',
         compute='_compute_afip_urls',
     )
     type = fields.Selection(
@@ -62,7 +62,7 @@ class AfipwsConnection(models.Model):
         ('ws_sr_padron_a10', 'Servicio de Consulta de Padrón Alcance 10'),
         ('ws_sr_padron_a100', 'Servicio de Consulta de Padrón Alcance 100'),
     ],
-        'AFIP WS',
+        'ARCA WS',
         required=True,
     )
 
@@ -91,7 +91,7 @@ class AfipwsConnection(models.Model):
         """
         Function to be inherited on each module that add a new webservice
         """
-        _logger.info('Getting URL for afip ws %s on %s' % (
+        _logger.info('Getting URL for ARCA ws %s on %s' % (
             afip_ws, environment_type))
         afip_ws_url = False
         if afip_ws == 'ws_sr_padron_a4':
@@ -142,7 +142,7 @@ class AfipwsConnection(models.Model):
             ws.HOMO = False
 
         if not ws:
-            raise UserError(_('AFIP Webservice %s not implemented yet' % (
+            raise UserError(_('ARCA Webservice %s not implemented yet' % (
                 self.afip_ws)))
         # TODO implementar cache y proxy
         # create the proxy and get the configuration system parameters:

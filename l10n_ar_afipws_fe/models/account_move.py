@@ -138,7 +138,7 @@ class AccountMove(models.Model):
         string='Fecha de Vencimiento CAE (modo compatibilidad)'
     )
     json_qr = fields.Char(
-        'JSON QR AFIP',
+        'JSON QR ARCA',
         compute='_compute_json_qr'
     )
     texto_modificado_qr = fields.Char(
@@ -146,17 +146,17 @@ class AccountMove(models.Model):
         compute='_compute_json_qr'
     )
     afip_message = fields.Text(
-        string='AFIP - Mensaje',
+        string='ARCA - Mensaje',
         copy=False,
         readonly=True
     )
     afip_xml_request = fields.Text(
-        string='AFIP - Solicitud XML',
+        string='ARCA - Solicitud XML',
         copy=False,
         readonly=True
     )
     afip_xml_response = fields.Text(
-        string='AFIP - Respuesta XML',
+        string='ARCA - Respuesta XML',
         copy=False,
         readonly=True
     )
@@ -167,7 +167,7 @@ class AccountMove(models.Model):
         ('O', 'Observado')],
         'Resultado',
         copy=False,
-        help="AFIP request result"
+        help="Resultado de la respuesta de ARCA"
     )
     validation_type = fields.Char(
         'Tipo de Validación',

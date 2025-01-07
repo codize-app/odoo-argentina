@@ -42,7 +42,7 @@
             <page name="accounting" position="after">
                 <page string="Datos Fiscales" name="fiscal_data" 
                       invisible="is_company == False or parent_id != False">
-                    <group string="AFIP" name="afip">
+                    <group string="ARCA" name="afip">
                         <group name="afip_col_1">
                             <field name="start_date"/>
                             <!--<field name="last_update_padron"/>-->

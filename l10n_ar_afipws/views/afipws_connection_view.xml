@@ -4,10 +4,10 @@
         <field name="name">afipws.auth.form</field>
         <field name="model">afipws.connection</field>
         <field name="arch" type="xml">
-            <form string="AFIP Connector">
-                <sheet string="AFIP Servers">
+            <form string="Conector ARCA">
+                <sheet string="Servidores ARCA">
                     <group>
-                        <field name="afip_ws" string="AFIP WS"/>
+                        <field name="afip_ws" string="ARCA WS"/>
                         <field name="type" string="Tipo"/>
                         <field name="uniqueid" string="Unique ID"/>
                         <field name="generationtime" string="Fecha de Generación"/>
@@ -27,8 +27,8 @@
         <field name="name">afipws.auth.tree</field>
         <field name="model">afipws.connection</field>
         <field name="arch" type="xml">
-            <tree string="AFIP Conector" create="false" edit="false">
-                <field name="afip_ws" string="AFIP WS"/>
+            <tree string="Conector ARCA" create="false" edit="false">
+                <field name="afip_ws" string="ARCA WS"/>
                 <field name="type" string="Tipo"/>
                 <field name="uniqueid" string="Unique ID"/>
                 <field name="generationtime" string="Fecha de Generación"/>
@@ -39,7 +39,7 @@
     </record>
 
     <record model="ir.actions.act_window" id="act_afipws_auth">
-        <field name="name">AFIP Connections</field>
+        <field name="name">Conexiones ARCA</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">afipws.connection</field>
         <field name="view_mode">tree,form</field>

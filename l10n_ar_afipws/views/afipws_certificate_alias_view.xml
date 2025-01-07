@@ -5,7 +5,7 @@
         <field name="name">afipws.certificate_alias.form</field>
         <field name="model">afipws.certificate_alias</field>
         <field name="arch" type="xml">
-            <form string="AFIP Certificados">
+            <form string="Certificados ARCA">
                 <header>
                     <button name="action_confirm"
                         type="object"
@@ -32,7 +32,7 @@
                     />
                     <field name="state" widget="statusbar" />
                 </header>
-                <sheet string="AFIP Certificados">
+                <sheet string="Certificados ARCA">
                     <group>
                         <group>
                             <field name="company_id" groups="base.group_multi_company" string="Compañía" readonly="state in ['confirmed', 'cancel']" />

@@ -11,10 +11,9 @@ except ImportError:
 import logging
 _logger = logging.getLogger(__name__)
 
-
 class AfipwsCertificateAlias(models.Model):
     _name = "afipws.certificate_alias"
-    _description = "AFIP Certificado / Alias"
+    _description = "ARCA Certificado / Alias"
 
     """
     Para poder acceder a un servicio, la aplicación a programar debe utilizar
@@ -22,16 +21,16 @@ class AfipwsCertificateAlias(models.Model):
     cosas, el certificado contiene un Distinguished Name (DN) que incluye una
     CUIT. Cada DN será identificado por un "alias" o "nombre simbólico",
     que actúa como una abreviación.
-    EJ alias: AFIP WS Prod - ADHOC SA
-    EJ DN: C=ar, ST=santa fe, L=rosario, O=adhoc s.a., OU=it,
-           SERIALNUMBER=CUIT 30714295698, CN=afip web services - adhoc s.a.
+    EJ alias: AFIP WS Prod - Exemax
+    EJ DN: C=ar, ST=buenos aires, L=pilar, O=exemax s.a.s., OU=it,
+           SERIALNUMBER=CUIT 30716718529, CN=afip web services - exemax s.a.s.
     """
 
     common_name = fields.Char(
         'Nombre Común',
         size=64,
-        default='AFIP WS',
-        help='Nombre dde referencia del WS de AFIP, lo puede dejar de esta manera.',
+        default='ARCA WS',
+        help='Nombre de referencia del WS de ARCA, lo puede dejar de esta manera.',
         required=True,
     )
     key = fields.Text(
@@ -108,7 +107,7 @@ class AfipwsCertificateAlias(models.Model):
     @api.onchange('company_id')
     def change_company_name(self):
         if self.company_id:
-            common_name = 'AFIP WS %s - %s' % (
+            common_name = 'ARCA WS %s - %s' % (
                 self.type, self.company_id.name)
             self.common_name = common_name[:50]
 

@@ -22,13 +22,13 @@ class ResCompany(models.Model):
     alias_ids = fields.One2many(
         'afipws.certificate_alias',
         'company_id',
-        'Aliases',
+        'Alias',
         auto_join=True,
     )
     connection_ids = fields.One2many(
         'afipws.connection',
         'company_id',
-        'Connections',
+        'Conexiones',
         auto_join=True,
     )
 

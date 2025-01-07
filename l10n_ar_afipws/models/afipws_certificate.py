@@ -18,7 +18,7 @@ _logger = logging.getLogger(__name__)
 
 class AfipwsCertificate(models.Model):
     _name = "afipws.certificate"
-    _description = "Certificado AFIP"
+    _description = "ARCA Certificado"
     _rec_name = "alias_id"
 
     alias_id = fields.Many2one(

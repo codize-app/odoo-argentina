@@ -4,7 +4,7 @@
         <field name="name">afipws.certificate.form</field>
         <field name="model">afipws.certificate</field>
         <field name="arch" type="xml">
-            <form string="AFIP Certificates">
+            <form string="Certificados ARCA">
                 <header>
                     <button name="%(action_upload_certificate)d"
                         type="action"
@@ -29,7 +29,7 @@
                     />
                     <field name="state" widget="statusbar"/>
                 </header>
-                    <sheet string="AFIP Certificates">
+                    <sheet string="Certificados ARCA">
                     <group>
                         <field name="csr" groups="base.group_no_one"/>
                         <field name="request_filename" invisible="1"/>
@@ -45,7 +45,7 @@
         <field name="name">afipws.certificate.tree</field>
         <field name="model">afipws.certificate</field>
         <field name="arch" type="xml">
-            <tree string="AFIP Certificates">
+            <tree string="Certificados ARCA">
                 <field name="create_date" string="Fecha de Creación" />
                 <field name="state" string="Estado" />
             </tree>

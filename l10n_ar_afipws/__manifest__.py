@@ -1,5 +1,5 @@
 {
-    'name': 'Modulo Base para los Web Services de AFIP',
+    'name': 'Web Services de ARCA (ex AFIP)',
     'icon': '/account/static/description/l10n.png',
     'countries': ['ar'],
     'version': '17.0.1.0.0',
@@ -7,7 +7,7 @@
     'sequence': 14,
     'author': 'ADHOC SA, Moldeo Interactive, Exemax, Codize, Odoo Community Association (OCA)',
     'license': 'AGPL-3',
-    'summary': '',
+    'summary': 'Modulo Base para los Web Services de ARCA (ex AFIP)',
     'depends': [
         'account',
         'l10n_ar'
@@ -25,7 +25,6 @@
         'security/security.xml',
     ],
     'demo': [
-        'demo/certificate_demo.xml',
         'demo/parameter_demo.xml',
     ],
     'images': [

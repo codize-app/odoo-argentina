@@ -6,7 +6,7 @@
     'category': 'Accounting/Localizations',
     'author': 'ADHOC SA, Moldeo Interactive, Exemax, Codize, Odoo Community Association (OCA)',
     'license': 'AGPL-3',
-    'summary': '',
+    'summary': 'Módulo de Soporte para la Factura Electrónica Argentina en ARCA (ex AFIP)',
     'depends': [
         'base',
         'uom',

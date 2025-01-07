@@ -35,7 +35,7 @@ class AfipwsConnection(models.Model):
         'ws_sr_padron_a100': 'set default',
     },
     default='wsfe',
-    string='AFIP WS',
+    string='ARCA WS',
     required=True,
     )
 
@@ -91,7 +91,7 @@ class AfipwsConnection(models.Model):
                 afip_ws_url = (
                     'https://wswhomo.afip.gov.ar/wsbfev1/service.asmx?WSDL')
         elif afip_ws == 'wsmtxca':
-            raise UserError(_('AFIP WS %s Not implemented yet') % afip_ws)
+            raise UserError(_('ARCA WS %s aún no implementado') % afip_ws)
             # if environment_type == 'production':
             #     afip_ws_url = (
             #         'https://serviciosjava.afip.gob.ar/wsmtxca/services/'
