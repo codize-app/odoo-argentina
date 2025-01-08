@@ -22,14 +22,6 @@
                 <field name="withholding_sequence_id" invisible="True" modifiers="{'invisible': [('type_tax_use', 'not in', ['supplier', 'customer'])]}"/>
             </field>
 
-            <group name="advanced_booleans" position="attributes">
-                <attribute name="invisible">[('type_tax_use', 'in', ['supplier', 'customer'])]</attribute>
-            </group>
-
-            <xpath expr="//page/group/group" position="attributes">
-                <attribute name="invisible">[('type_tax_use', 'in', ['supplier', 'customer'])]</attribute>
-            </xpath>
-
             <xpath expr="//page" position="inside">
                 <group invisible="type_tax_use != 'supplier'">
                     <group name="withholdings">
