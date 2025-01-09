@@ -28,6 +28,7 @@
         'views/ir_sequence.xml',
         'views/report_invoice_fe.xml',
         'security/ir.model.access.csv',
+        'views/account_debit_note_views.xml',
     ],
     'installable': True,
     'auto_install': False,
