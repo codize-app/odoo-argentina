@@ -11,7 +11,7 @@
                         <field name="journal_id" domain="[('type','=','sale')]"/>
                 </field>
                 <xpath expr="//sheet" position="before">
-                        <button name="comp_consultar" type="object" string="Consultar comprobante" />
+                        <button name="comp_consultar" type="object" string="Consultar Comprobante" />
                 </xpath>
         </field>
     </record>

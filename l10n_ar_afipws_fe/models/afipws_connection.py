@@ -39,7 +39,6 @@ class AfipwsConnection(models.Model):
     required=True,
     )
 
-
     @api.model
     def _get_ws(self, afip_ws):
         """
@@ -91,7 +90,7 @@ class AfipwsConnection(models.Model):
                 afip_ws_url = (
                     'https://wswhomo.afip.gov.ar/wsbfev1/service.asmx?WSDL')
         elif afip_ws == 'wsmtxca':
-            raise UserError(_('ARCA WS %s aún no implementado') % afip_ws)
+            raise UserError('ARCA WS %s aún no implementado') % afip_ws
             # if environment_type == 'production':
             #     afip_ws_url = (
             #         'https://serviciosjava.afip.gob.ar/wsmtxca/services/'

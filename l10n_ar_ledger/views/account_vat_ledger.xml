@@ -3,10 +3,10 @@
     <data>
         <!-- Tree view definition -->
         <record model='ir.ui.view' id='account_vat_ledger_tree'>
-            <field name='name'>Account VAT Ledger</field>
+            <field name='name'>Libro IVA</field>
             <field name="model">account.vat.ledger</field>
             <field name='arch' type='xml'>
-                <tree string="VAT Ledger">
+                <tree string="Libro IVA">
                     <field name="name" />
                     <field name="company_id" groups="base.group_multi_company" />
                     <field name="date_from" />
@@ -50,14 +50,14 @@
                             </group>
                         </group>
                         <notebook>
-                            <page string="Journals" name="journal_ids">
+                            <page string="Diarios" name="journal_ids">
                                 <field
                                     name="journal_ids"
                                     domain="[('type','in',['purchase', 'sale', 'purchase_refund', 'sale_refund']),('company_id', 'child_of', company_id)]"
                                     groups="base.group_multi_company"
                                 />
                             </page>
-                            <page string="Invoices" name="invoices">
+                            <page string="Facturas" name="invoices">
                                 <field name="invoice_ids" readonly="1">
                                     <tree default_order="invoice_date">
                                         <field name="name" />
@@ -71,10 +71,10 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="Notes" name="notes">
+                            <page string="Notas" name="notes">
                                 <field name="note" />
                             </page>
-                            <page string="Digital VAT" name="digital_vat">
+                            <page string="IVA Digital" name="digital_vat">
                                 <button
                                     name="compute_digital_data"
                                     type="object"
@@ -135,13 +135,13 @@
 
         <!-- Action definitions -->
         <record id="action_account_purchase_vat_ledger" model="ir.actions.act_window">
-            <field name="name">VAT Purchase</field>
+            <field name="name">IVA Compras</field>
             <field name="res_model">account.vat.ledger</field>
             <field name="context">{'default_type':'purchase'}</field>
             <field name="domain">[('type','=','purchase')]</field>
         </record>
         <record id="action_account_sale_vat_ledger" model="ir.actions.act_window">
-            <field name="name">VAT Sales</field>
+            <field name="name">IVA Ventas</field>
             <field name="res_model">account.vat.ledger</field>
             <field name="context">{'default_type':'sale'}</field>
             <field name="domain">[('type','=','sale')]</field>
@@ -173,7 +173,7 @@
                 <group>
                     <field
                         string="Exportar a Digital"
-                        help="Configure esto para exportar este tipo de documento en el Libro IVA Digital."
+                        help="Active este botón para exportar este tipo de documento en el Libro IVA Digital."
                         name="export_to_digital"
                         widget="boolean_toggle"
                     />

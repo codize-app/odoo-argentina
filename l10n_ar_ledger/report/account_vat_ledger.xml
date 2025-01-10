@@ -2,28 +2,28 @@
     <data>
 
         <template id="ledger_report">
-            <t t-call="web.html_container">
-                <t t-foreach="docs" t-as="o">
+          <t t-call="web.html_container">
+           <t t-foreach="docs" t-as="o">
 		   <t t-call="web.external_layout">
 		    <div class="page">
-	                    <h2>
-	                        Libro IVA
-	                        <span class="pl-1" t-if="o.type == 'sale'">
-					Ventas
-				</span>
-				<span class="pl-1" t-if="o.type == 'purchase'">
-	                                Compras
-	                        </span>
-	                    </h2>
+	            <h2>
+	                Libro IVA
+	                <span class="pl-1" t-if="o.type == 'sale'">
+						Ventas
+					</span>
+					<span class="pl-1" t-if="o.type == 'purchase'">
+	                    Compras
+	                </span>
+	            </h2>
 
 			    <table class="table table-sm" style="font-size:11px;">
 				<thead class="thead-dark">
 					<tr>
 						<th style="width:auto;">Fecha</th>
-	      					<th>Razón Social</th>
-	      					<th>CUIT</th>
-						<th>Responsabilidad AFIP</th>
-	      					<th>Tipo Comprobante</th>
+	      				<th>Razón Social</th>
+	      				<th>CUIT</th>
+						<th>Responsabilidad ARCA</th>
+	      				<th>Tipo Comprobante</th>
 						<th>Nro Comprobante</th>
 						<th>Neto gravado</th>
 						<th>Neto no gravado</th>

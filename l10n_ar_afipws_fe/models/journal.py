@@ -12,9 +12,7 @@ class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
     sequences = fields.One2many(comodel_name='ir.sequence',inverse_name='journal_id',string='Secuencias')
-    _afip_ws_selection = (
-        lambda self, *args, **kwargs: self._get_afip_ws_selection(
-            *args, **kwargs))
+    _afip_ws_selection = (lambda self, *args, **kwargs: self._get_afip_ws_selection(*args, **kwargs))
 
     @api.model
     def _get_afip_ws_selection(self):
@@ -25,7 +23,7 @@ class AccountJournal(models.Model):
             ('wsbfe', 'Bono Fiscal -con detalle- RG2557 (WSBFE)'),
         ]
 
-    afip_ws = fields.Selection(selection=_get_afip_ws_selection, string='AFIP WS')
+    afip_ws = fields.Selection(selection=_get_afip_ws_selection, string='ARCA WS')
 
     def get_name_and_code_suffix(self):
         name = super(AccountJournal, self).get_name_and_code_suffix()
@@ -40,21 +38,18 @@ class AccountJournal(models.Model):
             try:
                 journal.sync_document_local_remote_number()
             except Exception:
-                _logger.info(
-                    'Could not sincronize local and remote numbers')
+                _logger.info('No se puede sincronizar números locales y remotos')
         return journal
 
     @api.constrains('point_of_sale_type', 'afip_ws')
     def check_afip_ws_and_type(self):
         for rec in self:
             if rec.l10n_ar_afip_pos_system != 'RLI_RLM' and rec.afip_ws:
-                raise UserError(_(
-                    'You can only use an AFIP WS if type is "Electronic"'))
+                raise UserError('Solo se puede utilizar un ARCA WS si el tipo es "Electrónico"')
 
     def get_journal_letter(self, counterpart_partner=False):
         """Function to be inherited by afip ws fe"""
-        letters = super(AccountJournal, self).get_journal_letter(
-            counterpart_partner=counterpart_partner)
+        letters = super(AccountJournal, self).get_journal_letter(counterpart_partner=counterpart_partner)
         # filter only for sales journals
 
         if self.type != 'sale':
@@ -71,9 +66,7 @@ class AccountJournal(models.Model):
         if self.type != 'sale':
             return True
         for journal_document_type in self.journal_document_type_ids:
-            next_by_ws = int(
-                journal_document_type.get_pyafipws_last_invoice(
-                )['result']) + 1
+            next_by_ws = int(journal_document_type.get_pyafipws_last_invoice()['result']) + 1
             journal_document_type.sequence_id.number_next_actual = next_by_ws
 
     def check_document_local_remote_number(self):
@@ -88,19 +81,19 @@ class AccountJournal(models.Model):
             next_by_seq = sequence.number_next_actual
             if next_by_ws != next_by_seq:
                 msg += _(
-                    '* Document Type %s, Local %i, Remote %i\n' % (
+                    '* El Tipo de Documento %s, Local %i, Remoto %i\n' % (
                         journal_document_type.name,
                         next_by_seq,
                         next_by_ws))
         if msg:
-            msg = _('There are some doument desynchronized:\n') + msg
+            msg = 'Hay algunos documentos desincronizados:\n' + msg
             raise UserError(msg)
         else:
-            raise UserError(_('All documents are synchronized'))
+            raise UserError('Todos los documentos están sincronizados')
 
     def test_pyafipws_dummy(self):
         """
-        AFIP Description: Método Dummy para verificación de funcionamiento de
+        ARCA Description: Método Dummy para verificación de funcionamiento de
         infraestructura (FEDummy)
         """
         self.ensure_one()
@@ -109,10 +102,10 @@ class AccountJournal(models.Model):
         else:
             afip_ws = 'wsfex'
         if not afip_ws:
-            raise UserError(_('No AFIP WS selected'))
+            raise UserError(_('No se seleccionó ARCA WS'))
         ws = self.company_id.get_connection(afip_ws).connect()
         ws.Dummy()
-        title = _("AFIP service %s\n") % afip_ws
+        title = _("Servicio ARCA %s\n") % afip_ws
         msg = (
             "AppServerStatus: %s DbServerStatus: %s AuthServerStatus: %s" % (
                 ws.AppServerStatus,
@@ -124,12 +117,12 @@ class AccountJournal(models.Model):
         self.ensure_one()
         afip_ws = self.afip_ws
         if not afip_ws:
-            raise UserError(_('No AFIP WS selected'))
+            raise UserError(_('No se seleccionó ARCA WS'))
         ws = self.company_id.get_connection(afip_ws).connect()
         ret = ws.ParamGetTiposTributos(sep="")
         msg = (_(" %s %s") % (
             '. '.join(ret), " - ".join([ws.Excepcion, ws.ErrMsg, ws.Obs])))
-        title = _('Tributos en AFIP\n')
+        title = _('Tributos en ARCA\n')
         raise UserError(title + msg)
 
 
@@ -137,7 +130,7 @@ class AccountJournal(models.Model):
         self.ensure_one()
         afip_ws = self.afip_ws
         if not afip_ws:
-            raise UserError(_('No AFIP WS selected'))
+            raise UserError(_('No se seleccionó ARCA WS'))
         ws = self.company_id.get_connection(afip_ws).connect()
         if afip_ws == 'wsfex':
             ret = ws.GetParamPtosVenta()
@@ -156,7 +149,7 @@ class AccountJournal(models.Model):
         self.ensure_one()
         afip_ws = self.afip_ws
         if not afip_ws:
-            raise UserError(_('No AFIP WS selected'))
+            raise UserError(_('No se seleccionó ARCA WS'))
         ws = self.company_id.get_connection(afip_ws).connect()
         if afip_ws == 'wsfex':
             ret = ws.GetParamTipoCbte(sep=",")
@@ -183,7 +176,7 @@ class AccountJournal(models.Model):
             ret = ws.GetParamZonas()
         else:
             raise UserError(_(
-                'Get zonas for ws %s is not implemented yet') % (
+                'Zonas para el WS %s no se ha implementado') % (
                 afip_ws))
         msg = (_(
             "Zonas on AFIP\n%s\n. \nObservations: %s") % (
@@ -200,10 +193,10 @@ class AccountJournal(models.Model):
             ret = ws.GetParamNCM()
         else:
             raise UserError(_(
-                'Get NCM for ws %s is not implemented yet') % (
+                'NCM para WS %s no se ha implementado') % (
                 afip_ws))
         msg = (_(
-            "Zonas on AFIP\n%s\n. \nObservations: %s") % (
+            "Zonas en ARCA\n%s\n. \nObservaciones: %s") % (
             '\n '.join(ret), ".\n".join([ws.Excepcion, ws.ErrMsg, ws.Obs])))
         raise UserError(msg)
 
@@ -216,7 +209,7 @@ class AccountJournal(models.Model):
         self.ensure_one()
         afip_ws = self.afip_ws
         if not afip_ws:
-            raise UserError(_('No AFIP WS selected'))
+            raise UserError(_('No se ha seleccionado ARCA WS'))
         self.company_id.get_connection(afip_ws).connect()
 
     def get_pyafipws_currency_rate(self, currency):

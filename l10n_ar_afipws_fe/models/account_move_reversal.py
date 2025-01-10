@@ -3,7 +3,6 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
 
-
 class AccountMoveReversal(models.TransientModel):
     _inherit = 'account.move.reversal'
 
@@ -22,7 +21,7 @@ class AccountMoveReversal(models.TransientModel):
                 doc_type = move.l10n_latam_document_type_id.id
                 move_type = move.move_type
             default_values_list.append({
-                'ref': _('Reversal of: %s, %s') % (move.name, self.reason) if self.reason else _('Reversal of: %s') % (move.name),
+                'ref': _('Nota Crédito de: %s, %s') % (move.name, self.reason) if self.reason else _('Nota Crédito de: %s') % (move.name),
                 'date': self.date or move.date,
                 'invoice_date': move.is_invoice(include_receipts=True) and (self.date or move.date) or False,
                 'journal_id': self.journal_id and self.journal_id.id or move.journal_id.id,
@@ -55,7 +54,7 @@ class AccountMoveReversal(models.TransientModel):
 
         # Create action.
         action = {
-            'name': _('Reverse Moves'),
+            'name': _('Notas Crédito'),
             'type': 'ir.actions.act_window',
             'res_model': 'account.move',
         }
@@ -72,9 +71,9 @@ class AccountMoveReversal(models.TransientModel):
         return action
 
     refund_method = fields.Selection(selection=[
-            ('refund', 'Partial Refund'),
-            ('cancel', 'Full Refund'),
-            ('modify', 'Full refund and new draft invoice')
-        ], string='Credit Method', required=True, default = 'refund',
-        help='Choose how you want to credit this invoice. You cannot "modify" nor "cancel" if the invoice is already reconciled.')
+            ('refund', 'Reembolso Parcial'),
+            ('cancel', 'Reembolso Total'),
+            ('modify', 'Reemboloso Total y Nueva Factura Borrador')
+        ], string='Método de Crédito', required=True, default='refund',
+        help='Seleccione cómo desea hacer la Nota Crédito de esta factura. No puede hacer un "Reembolso Total" si la factura ya está conciliada.')
 

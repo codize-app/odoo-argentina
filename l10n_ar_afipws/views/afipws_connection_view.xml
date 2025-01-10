@@ -14,8 +14,8 @@
                         <field name="expirationtime" string="Fecha de Expiración"/>
                         <field name="sign" string="Firma"/>
                         <field name="token" string="Token"/>
-                        <field name="afip_login_url" string="AFIP Login URL"/>
-                        <field name="afip_ws_url" string="AFIP WS URL"/>
+                        <field name="afip_login_url" string="URL Login de ARCA"/>
+                        <field name="afip_ws_url" string="ARCA WS URL"/>
                         <field name="company_id" string="Compañía"/>
                     </group>
                 </sheet>
