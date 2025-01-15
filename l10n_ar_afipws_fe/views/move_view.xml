@@ -34,9 +34,9 @@
                         <field name="validation_type" invisible="1"/>
                         <label for="afip_auth_code" string="Autorización ARCA"/>
                         <div class="oe_inline">
-                            <field name="afip_auth_mode" class="oe_inline" readonly="state = 'draft'" />
-                            <field name="afip_auth_code" class="oe_inline" required="afip_auth_mode != False" placeholder="Código" readonly="state = 'draft'" /> - 
-                            <field name="afip_auth_verify_result" class="oe_inline" readonly="state = 'draft'" />
+                            <field name="afip_auth_mode" class="oe_inline" readonly="state == 'draft'" />
+                            <field name="afip_auth_code" class="oe_inline" required="afip_auth_mode != False" placeholder="Código" readonly="state == 'draft'" /> - 
+                            <field name="afip_auth_verify_result" class="oe_inline" readonly="state == 'draft'" />
                             <button name="verify_on_afip" type="object" invisible = "not afip_auth_mode or afip_auth_verify_type == 'not_available'" string="Constantar" help="Constatar en ARCA" class="oe_inline oe_link" groups="base.group_user"/>
                         </div>
                         <field name="afip_auth_verify_observation" invisible="not afip_auth_verify_observation"/>

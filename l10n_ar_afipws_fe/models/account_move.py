@@ -21,10 +21,7 @@ except ImportError:
 from odoo.tools import float_repr
 import json
 import base64
-try:
-    from base64 import encodebytes
-except ImportError:  # 3+
-    from base64 import encodestring as encodebytes
+base64.encodestring = base64.encodebytes
 
 class AccountJournal(models.Model):
     _inherit = 'account.journal'

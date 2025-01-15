@@ -123,7 +123,7 @@ class AccountJournal(models.Model):
         msg = (_(" %s %s") % (
             '. '.join(ret), " - ".join([ws.Excepcion, ws.ErrMsg, ws.Obs])))
         title = _('Tributos en ARCA\n')
-        raise UserError(title + msg)
+        raise UserError(title + msg.replace('NULL.', '\n'))
 
 
     def test_pyafipws_point_of_sales(self):
@@ -138,11 +138,11 @@ class AccountJournal(models.Model):
             ret = ws.ParamGetPtosVenta(sep=" ")
         else:
             raise UserError(_(
-                'Get point of sale for ws %s is not implemented yet') % (
+                'Obtener el punto de venta desde WS %s no está implementado') % (
                 afip_ws))
         msg = (_(" %s %s") % (
             '. '.join(ret), " - ".join([ws.Excepcion, ws.ErrMsg, ws.Obs])))
-        title = _('Enabled Point Of Sales on AFIP\n')
+        title = _('Puntos de Venta Habilitados en ARCA\n')
         raise UserError(title + msg)
 
     def get_pyafipws_cuit_document_classes(self):
@@ -162,7 +162,7 @@ class AccountJournal(models.Model):
                 'Get document types for ws %s is not implemented yet') % (
                 afip_ws))
         msg = (_(
-            "Authorized Document Clases on AFIP\n%s\n. \nObservations: %s") % (
+            "Documentos Autorizados en ARCA\n%s\n. \nObservaciones: %s") % (
             '\n '.join(ret), ".\n".join([ws.Excepcion, ws.ErrMsg, ws.Obs])))
         raise UserError(msg)
 
