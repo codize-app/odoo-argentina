@@ -181,9 +181,6 @@
                         <td style="padding: 5px;" class="text-right">
                             <span t-field="l.price_subtotal" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
                         </td>
-                        <td style="padding: 5px;" class="text-right">
-                            <span t-field="l.price_subtotal_vat" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
-                        </td>
                       </t>
                       <t t-if="l.display_type == 'line_section'">
                             <td colspan="99" class="bg-200 font-weight-bold o_line_section" style="padding: 5px;">
@@ -221,16 +218,15 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <span t-esc="dict(o.tax_totals['groups_by_subtotal'])" />
-                                            <!--tr t-foreach="dict(o.tax_totals['groups_by_subtotal'])['Importe neto']" t-as="t">
-                                                <td><span t-esc="t['tax_group_name']" /></td>
+                                            <tr t-foreach="dict(o.tax_totals['groups_by_subtotal'])['Subtotal']" t-as="t">
+                                                <td><span t-esc="t['tax_group_name']"/></td>
                                                 <td class="text-right">
                                                     <span t-esc="t['tax_group_base_amount']" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
                                                 </td>
                                                 <td class="text-right">
                                                     <span t-esc="t['tax_group_amount']" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
                                                 </td>
-                                            </tr-->
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </td>
