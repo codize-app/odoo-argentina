@@ -6,8 +6,10 @@ from odoo.tools.translate import _
 class AccountMoveReversal(models.TransientModel):
     _inherit = 'account.move.reversal'
 
-    def reverse_moves(self):
-        moves = self.env['account.move'].browse(self.env.context['active_ids']) if self.env.context.get('active_model') == 'account.move' else self.move_id
+    def reverse_moves(self, is_modify=False):
+        self.ensure_one()
+        moves = self.move_ids
+
         # Create default values.
         default_values_list = []
         for move in moves:
