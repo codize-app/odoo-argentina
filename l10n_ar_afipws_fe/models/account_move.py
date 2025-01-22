@@ -435,11 +435,9 @@ print "Observaciones:", wscdc.Obs
         "Request to AFIP the invoices' Authorization Electronic Code (CAE)"
         for inv in self:
             # Ignorar si ya tiene CAE
-            if inv.afip_auth_code:
+            if inv.afip_auth_code or not inv.validation_type or inv.journal_id.l10n_ar_afip_pos_system not in ['RLI_RLM','FEERCEL']:
                 continue
-    
-            if inv.journal_id.l10n_ar_afip_pos_system not in ['RLI_RLM','FEERCEL']:
-                continue
+
             if inv.journal_id.l10n_ar_afip_pos_system != 'FEERCEL':
                 afip_ws = inv.journal_id.afip_ws
             else:
@@ -447,9 +445,6 @@ print "Observaciones:", wscdc.Obs
             # Ignorar factura si no hay WS en el punto de venta
             if not afip_ws:
                 raise UserError('Si está usando un diario electrónico (factura id %s) necesita configurar el WS de ARCA en el diario') % (inv.id)
-    
-            if not inv.validation_type:
-                continue
     
             commercial_partner = inv.commercial_partner_id
             country = commercial_partner.country_id
@@ -483,26 +478,26 @@ print "Observaciones:", wscdc.Obs
                 partner_id_code and commercial_partner.vat or "0"
             cbt_desde = cbt_hasta = cbte_nro = ws_next_invoice_number
             concepto = tipo_expo = int(inv.l10n_ar_afip_concept)
-            fecha_cbte = inv.invoice_date
-            if afip_ws != 'wsmtxca':
-                fecha_cbte = inv.invoice_date.strftime('%Y%m%d')
+            fecha_cbte = inv.invoice_date.strftime('%Y%m%d')
+            if afip_ws == 'wsmtxca':
+                fecha_cbte = inv.invoice_date
     
             mipyme_fce = int(doc_afip_code) in [201, 206, 211]
             # due date only for concept "services" and mipyme_fce
             if int(concepto) != 1 and int(doc_afip_code) not in [202, 203, 207, 208, 212, 213] or mipyme_fce:
-                fecha_venc_pago = inv.invoice_date_due or inv.invoice_date
-                if afip_ws != 'wsmtxca':
-                    fecha_venc_pago = fecha_venc_pago.strftime('%Y%m%d')
+                fecha_venc_pago = fecha_venc_pago.strftime('%Y%m%d')
+                if afip_ws == 'wsmtxca':
+                    fecha_venc_pago = inv.invoice_date_due or inv.invoice_date
             else:
                 fecha_venc_pago = None
     
             # Fecha del servicio solo para concepto que no sea 1
             if int(concepto) != 1:
-                fecha_serv_desde = inv.l10n_ar_afip_service_start
-                fecha_serv_hasta = inv.l10n_ar_afip_service_end
-                if afip_ws != 'wsmtxca':
-                    fecha_serv_desde = fecha_serv_desde.strftime('%Y%m%d')
-                    fecha_serv_hasta = fecha_serv_hasta.strftime('%Y%m%d')
+                fecha_serv_desde = fecha_serv_desde.strftime('%Y%m%d')
+                fecha_serv_hasta = fecha_serv_hasta.strftime('%Y%m%d')
+                if afip_ws == 'wsmtxca':
+                    fecha_serv_desde = inv.l10n_ar_afip_service_start
+                    fecha_serv_hasta = inv.l10n_ar_afip_service_end
             else:
                 fecha_serv_desde = fecha_serv_hasta = None
     
