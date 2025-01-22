@@ -506,9 +506,8 @@ class AccountCheck(models.Model):
                     'The Check must be in draft state for unlink !'))
         return super(AccountCheck, self).unlink()
 
-# checks operations from checks
-
-
+    # checks operations from checks
+    
     def bank_deposit(self,date=None,journal_id=None):
         self.ensure_one()
         if self.state in ['holding']:
@@ -521,16 +520,14 @@ class AccountCheck(models.Model):
             else:
                 vals['date'] = str(date)
             move = self.env['account.move'].create(vals)
-            move.post()
+            move.action_post()
             self._add_operation('deposited', move, date=vals['date'])
             self.write({'state': 'deposited'})
-
 
     def deliver(self):
         self.ensure_one()
         if self.state in ['holding']:
             self.write({'state': 'delivered'})
-
 
     def bank_debit(self):
         self.ensure_one()
@@ -555,7 +552,7 @@ class AccountCheck(models.Model):
             else:
                 vals['date'] = str(action_date)
             move = self.env['account.move'].create(vals)
-            move.post()
+            move.action_post()
             #self._add_operation('deposited', move, date=vals['date'])
             #self.handed_reconcile(payment.move_line_ids.mapped('move_id'))
             self._add_operation('debited', move, date=move.date)
