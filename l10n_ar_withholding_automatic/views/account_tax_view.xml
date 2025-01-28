@@ -23,7 +23,7 @@
             </field>
 
             <xpath expr="//page" position="inside">
-                <group invisible="type_tax_use != 'supplier'">
+                <group invisible="type_tax_use == 'supplier'">
                     <group name="withholdings">
                         <label for="condicion_sicore"/>
                         <div>
