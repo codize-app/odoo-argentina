@@ -38,19 +38,20 @@
                 </form>
 
                 <field name="communication" position="after">
-                    <label for="retencion_ganancias" invisible="company_regimenes_ganancias_ids == []"/>
+                    <label for="retencion_ganancias" invisible="company_regimenes_ganancias_ids == [] or partner_type != 'supplier'"/>
                     <div invisible="company_regimenes_ganancias_ids == []">
                         <field name="retencion_ganancias" class="oe_inline"
-                            required="company_regimenes_ganancias_ids != [] and state in ['draft', 'confirmed']"/>
+                            invisible="partner_type != 'supplier'"
+                            required="company_regimenes_ganancias_ids != [] and state in ['draft', 'confirmed'] or partner_type != 'supplier'"/>
                         <field name="regimen_ganancias_id" class="oe_inline"
-                            invisible="retencion_ganancias != 'nro_regimen'"
-                            required="retencion_ganancias == 'nro_regimen' and company_regimenes_ganancias_ids != [] and state in ['draft', 'confirmed']"
+                            invisible="retencion_ganancias != 'nro_regimen' or partner_type != 'supplier'"
+                            required="retencion_ganancias == 'nro_regimen' and company_regimenes_ganancias_ids != [] and state in ['draft', 'confirmed'] or partner_type != 'supplier'"
                             domain="[('id', 'in', company_regimenes_ganancias_ids)]" options="{'no_open': True, 'no_create': True}"/>
                     </div>
 
-                    <label for="withholdable_advanced_amount_calculation_type" invisible="company_regimenes_ganancias_ids == []"/>
-                    <div invisible="company_regimenes_ganancias_ids == []">
-                        <field name="withholdable_advanced_amount_calculation_type" class="oe_inline" invisible="retencion_ganancias != 'nro_regimen'"/>
+                    <label for="withholdable_advanced_amount_calculation_type" invisible="company_regimenes_ganancias_ids == [] or partner_type != 'supplier'"/>
+                    <div invisible="company_regimenes_ganancias_ids == [] or partner_type != 'supplier'">
+                        <field name="withholdable_advanced_amount_calculation_type" class="oe_inline" invisible="retencion_ganancias != 'nro_regimen' or partner_type != 'supplier'"/>
                     </div>
                 </field>
             </field>
