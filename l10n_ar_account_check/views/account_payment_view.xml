@@ -18,7 +18,7 @@
                         <field name="check_id" invisible="check_id == False" />
                         <field name="check_ids"
                             invisible="check_ids == [] or check_id != False or payment_method_code not in ['received_third_check', 'issue_check']">
-                            <tree edit="false" create="false">
+                            <tree>
                                 <field name="name" />
                                 <field name="payment_date" />
                                 <field name="amount" sum="Total" />
@@ -30,7 +30,6 @@
                             invisible="payment_method_code != 'delivered_third_check' or payment_type not in ['transfer', 'outbound']" />
                         <field name="check_ids"
                             nolabel="1" colspan="2"
-                            options="{'no_create': True}"
                             domain="[('journal_id', '=', journal_id), ('state', '=', 'holding'), ('type', '=', 'third_check')]"
                             invisible="payment_method_code != 'delivered_third_check' or payment_type not in ['transfer', 'outbound']"
                             required="payment_method_code == 'delivered_third_check' and payment_type in ['transfer', 'outbound'] and state != 'cancelled'">
