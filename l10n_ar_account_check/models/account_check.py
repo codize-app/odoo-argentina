@@ -703,8 +703,6 @@ class AccountCheck(models.Model):
             'journal_id': journal.id,
             'date': action_date,
             'payment_type': 'outbound',
-            'payment_method_id':
-            journal._default_outbound_payment_methods().id,
             # 'check_ids': [(4, self.id, False)],
         }
 
@@ -745,7 +743,7 @@ class AccountCheck(models.Model):
                 #    'rejected').id,
             ).create(payment_vals)
             # self.post_payment_check(payment)
-            self._add_operation('rejected', payment, date=payment.payment_date)
+            self._add_operation('rejected', payment, date=payment.date)
             self.state = 'rejected'
         elif self.state == 'delivered':
             raise ValidationError('accion no implementada')
