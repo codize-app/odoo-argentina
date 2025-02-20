@@ -427,7 +427,7 @@ class AccountTax(models.Model):
                 payment_withholding.unlink()
             
             payment_method = self.env.ref(
-                'l10n_ar_withholding.'
+                'l10n_ar_withholding_automatic.'
                 'account_payment_method_out_withholding')
             journal = self.env['account.journal'].search([
                 ('company_id', '=', tax.company_id.id),
