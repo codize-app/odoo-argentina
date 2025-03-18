@@ -705,55 +705,74 @@ class AccountPaymentGroup(models.Model):
         # and with other users, error with block date of accounting
         # TODO we should look for a better way to solve this
 
-        create_from_website = self._context.get(
-            'create_from_website', False)
-        create_from_statement = self._context.get(
-            'create_from_statement', False)
+        """ Valida el recibo, re-secuencia pagos y gestiona cheques de terceros."""
+        create_from_website = self._context.get('create_from_website', False)
+        create_from_statement = self._context.get('create_from_statement', False)
         create_from_expense = self._context.get('create_from_expense', False)
         self = self.with_context({})
+
         for rec in self:
+            original_currency_id = rec.currency_id.id
+            _logger.info(f"currency_id: {rec.currency_id.id}")
+            
+            # Generación de número de documento si no existe
             if not rec.document_number:
                 if rec.receiptbook_id.sequence_id:
-                    rec.document_number = (
-                        rec.receiptbook_id.with_context(
-                            ir_sequence_date=rec.payment_date
-                            ).sequence_id.next_by_id())
-
+                    rec.document_number = rec.receiptbook_id.with_context(
+                        ir_sequence_date=rec.payment_date).sequence_id.next_by_id()
+            
             if not rec.payment_ids:
-                raise ValidationError(_(
-                    'You can not confirm a payment group without payment '
-                    'lines!'))
-
-            if (rec.payment_subtype == 'double_validation' and
-                    rec.payment_difference and (not create_from_statement and
-                                                not create_from_expense)):
-                raise ValidationError(_(
-                    'To Pay Amount and Payment Amount must be equal!'))
-
-            writeoff_acc_id = False
-            writeoff_journal_id = False
+                raise ValidationError(_('You cannot confirm a payment group without payment lines!'))
+            
+            if (rec.payment_subtype == 'double_validation' and rec.payment_difference and 
+                    not create_from_statement and not create_from_expense):
+                raise ValidationError(_('To Pay Amount and Payment Amount must be equal!'))
 
             if not create_from_website and not create_from_expense:
                 rec.payment_ids.filtered(lambda x: x.state == 'draft').action_post()
-
-            #counterpart_aml = rec.payment_ids.mapped('move_line_ids').filtered(
+            if rec.currency_id.id != original_currency_id:
+                rec.write({'currency_id': original_currency_id})
+            
+            for payment in rec.payment_ids:
+                #if payment.journal_id.name == 'Cheques de terceros':
+                
+                if payment.journal_id.name.lower().strip() in ['cheques de terceros', 'cheque de terceros', 'cheques terceros', 'third party checks']:
+                    _logger.info(f"Procesando cheque(s) para el pago {payment.id} - Diario: {payment.journal_id.name}")
+                    
+                    cheques = list(payment.check_ids)
+                    if payment.check_id:
+                        cheques.append(payment.check_id)
+                    
+                    if not cheques:
+                        _logger.warning(f"El pago {payment.id} tiene 'Cheques de Tercero' pero no tiene cheques asociados.")
+                        continue
+                    
+                    for cheque in cheques:
+                        existing_operations = cheque.operation_ids.filtered(lambda op: op.operation == 'holding')
+                        if not existing_operations:
+                            _logger.info(f"Agregando operacion 'holding' al cheque {cheque.name}")
+                            cheque.write({
+                                'operation_ids': [(0, 0, {
+                                    'date': fields.Date.today(),
+                                    'operation': 'holding',
+                                    'origin': f'account.payment,{payment.id}',
+                                    'partner_id': payment.partner_id.id
+                                })]
+                            })
+            
             counterpart_aml = rec.payment_ids.mapped('invoice_line_ids').filtered(
-                lambda r: not r.reconciled and r.account_id.account_type in (
-                    'liability_payable', 'asset_receivable'))
-
-            # porque la cuenta podria ser no recivible y ni conciliable
-            # (por ejemplo en sipreco)
+                lambda r: not r.reconciled and r.account_id.account_type in ('liability_payable', 'asset_receivable'))
+            
             if counterpart_aml and rec.to_pay_move_line_ids:
-                #(counterpart_aml + (rec.to_pay_move_line_ids)).reconcile(
-                #    writeoff_acc_id, writeoff_journal_id)
-                (counterpart_aml + (rec.to_pay_move_line_ids)).reconcile()
+                (counterpart_aml + rec.to_pay_move_line_ids).reconcile()
 
             rec.state = 'posted'
+            
+            # Envío de plantilla de correo si existe
             if rec.receiptbook_id.mail_template_id:
-                rec.message_post_with_template(
-                    rec.receiptbook_id.mail_template_id.id,
-                )
+                rec.message_post_with_template(rec.receiptbook_id.mail_template_id.id)
 
+        return True
 
     @api.returns('mail.message', lambda value: value.id)
     def message_post(self, **kwargs):

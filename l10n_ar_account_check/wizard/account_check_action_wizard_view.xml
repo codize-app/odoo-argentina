@@ -9,7 +9,9 @@
                 <field name="action_type" invisible="True"/>
                 <group >
                     <field name="date"/>
-		    <field name="journal_id" invisible = "action_type !=' bank_deposit'" domain="[('type','=','bank')]"/>
+		            <field name="journal_id" invisible = "action_type != 'bank_deposit'" domain="[('type','=','bank')]"/>
+                    <field name="reference"/>
+                    <field name="grouped_entry" widget="boolean_toggle" string="Asiento Agrupado"/>
                 </group>
                 <footer>
                     <button string="Confirm" name="action_confirm" type="object" class="oe_highlight"/>

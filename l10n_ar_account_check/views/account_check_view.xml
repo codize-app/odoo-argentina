@@ -7,6 +7,14 @@
         <field name="priority">100</field>
         <field name="arch" type="xml">
             <tree string="Checks">
+                <header>
+                    <button string="Depositar"
+                            name="%(action_account_check_action_wizard)d"
+                            type="action"
+                            class="btn btn-primary"
+                            context="{'default_action_type': 'bank_deposit'}"
+                            icon="fa-upload"/>
+                </header>
                 <field name="checkbook_id"
                     invisible="type != 'issue_check'"
                     required="type == 'issue_check'"
