@@ -220,93 +220,73 @@ class AccountCheck(models.Model):
         string='Moneda de la empresa',
     )
 
-    def get_bank_vals(self, action, journal):
-        self.ensure_one()
-        # TODO improove how we get vals, get them in other functions
-        if action == 'bank_debit':
-            # self.journal_id.default_debit_account_id.id, al debitar
-            # tenemos que usar esa misma
-            credit_account = journal.default_account_id
-            if self.type == 'third_check':
-                if journal.account_third:
-                    debit_account = journal.account_third
-            else:
-                if journal.account_holding:
-                    debit_account = journal.account_holding
-            # la contrapartida es la cuenta que reemplazamos en el pago
-            debit_account = self.company_id._get_check_account('deferred')
-            name = _('Check "%s" debit') % (self.name)
-        elif action == 'bank_reject':
-            # al transferir a un banco se usa esta. al volver tiene que volver
-            # por la opuesta
-            # self.destination_journal_id.default_credit_account_id
-            credit_account = journal.default_account_id
-            debit_account = self.company_id._get_check_account('rejected')
-            name = _('Check "%s" rejection') % (self.name)
-        elif action == 'bank_deposit' or action == 'bank_sell':
-            # al transferir a un banco se usa esta. al volver tiene que volver
-            # por la opuesta
-            # self.destination_journal_id.default_credit_account_id
-            name = _('Check "%s" deposit') % (self.name)
-            if action == 'bank_deposit':
-                  debit_account = journal.default_account_id
-                  credit_account = self.company_id._get_check_account('holding')
-                  if self.type == 'third_check':
-                      if journal.account_third:
-                          debit_account = journal.account_third
-                  else:
-                      if journal.account_holding:
-                          debit_account = journal.account_holding
-            if action == 'bank_sell' and not self.company_id.negotiated_check_account_id:
-                  raise ValidationError('No esta definida la cuenta de cheques negociados a nivel empresa')
-            if action == 'bank_sell':
-                  debit_account = self.company_id.negotiated_check_account_id
-                  credit_account = self.company_id._get_check_account('holding')
-                  if not credit_account:
+    def get_bank_vals(self, action, journal, checks=None):
+        if checks is None:
+            checks = [self]
+
+        total_amount = sum(check.amount for check in checks)
+        debit_account = None
+        credit_account = None
+
+        check_names = ', '.join(['Cheque %s' % check.name for check in checks])
+
+        for check in checks:
+            if action == 'bank_debit':
+                credit_account = journal.default_account_id
+                if check.type == 'third_check':
+                    if journal.account_third:
+                        debit_account = journal.account_third
+                else:
+                    if journal.account_holding:
+                        debit_account = journal.account_holding
+                debit_account = check.company_id._get_check_account('deferred')
+            elif action == 'bank_reject':
+                credit_account = journal.default_account_id
+                debit_account = check.company_id._get_check_account('rejected')
+            elif action == 'bank_deposit' or action == 'bank_sell':
+                if action == 'bank_deposit':
+                    debit_account = journal.default_account_id
+                    credit_account = check.company_id._get_check_account('holding')
+                    if check.type == 'third_check':
+                        if journal.account_third:
+                            debit_account = journal.account_third
+                    else:
+                        if journal.account_holding:
+                            debit_account = journal.account_holding
+                if action == 'bank_sell' and not check.company_id.negotiated_check_account_id:
+                    raise ValidationError('No esta definida la cuenta de cheques negociados a nivel empresa')
+                if action == 'bank_sell':
+                    debit_account = check.company_id.negotiated_check_account_id
+                    credit_account = check.company_id._get_check_account('holding')
+                    if not credit_account:
                         raise ValidationError('Falta la cuenta holding_check_account_id')
-                  if not debit_account:
+                    if not debit_account:
                         raise ValidationError('Falta la cuenta negotiated_check_account_id')
-                  if action == 'bank_deposit':
-                        name = _('Check "%s" deposit') % (self.name)
-                  else:
-                        name = _('Check "%s" sell') % (self.name)
-        else:
-            raise ValidationError(_(
-                                'Action %s not implemented for checks!') % action)
-        if self.currency_id.id != self.company_id.currency_id.id:
-            currency_id = self.company_id.currency_id
-            amount_currency = 0
-            amount = self.amount * self.currency_rate
-        else:
-            currency_id = self.currency_id
-            amount = self.amount
-            amount_currency = 0
-        debit_line_vals = {
-            'name': name,
-            'account_id': debit_account.id,
-            # 'partner_id': partner,
-            'debit': amount,
-            'amount_currency': amount_currency,
-            #'currency_id': currency_id.id,
-            # 'ref': ref,
-            }
-        credit_line_vals = {
-            'name': name,
-            'account_id': credit_account.id,
-            # 'partner_id': partner,
-            'credit': amount,
-            'amount_currency': amount_currency,
-            #'currency_id': currency_id.id,
-            # 'ref': ref,
-            }
+            else:
+                raise ValidationError(_('Action %s not implemented for checks!') % action)
+
+        move_lines = [
+            (0, False, {
+                'name': check_names,
+                'account_id': debit_account.id,
+                'debit': total_amount,
+                'amount_currency': 0,
+            }),
+            (0, False, {
+                'name': check_names,
+                'account_id': credit_account.id,
+                'credit': total_amount,
+                'amount_currency': 0,
+            })
+        ]
+
         return {
-               'ref': name,
-               'journal_id': journal.id,
-               'date': fields.Date.today(),
-               'line_ids': [
-                                (0, False, debit_line_vals),
-                                (0, False, credit_line_vals)],
-               }
+            'ref': check_names,
+            'journal_id': journal.id,
+            'date': fields.Date.today(),
+            'line_ids': move_lines,
+        }
+
 
 
     @api.depends('operation_ids.partner_id')
@@ -508,21 +488,51 @@ class AccountCheck(models.Model):
 
     # checks operations from checks
     
-    def bank_deposit(self,date=None,journal_id=None):
-        self.ensure_one()
-        if self.state in ['holding']:
-            if not journal_id:
-                raise ValidationError('Debe seleccionar el diario')
-            vals = self.get_bank_vals('bank_deposit', journal_id)
-            action_date = self._context.get('action_date')
-            if not date:
-                vals['date'] = action_date or fields.Date.today()
-            else:
-                vals['date'] = str(date)
-            move = self.env['account.move'].create(vals)
-            move.action_post()
-            self._add_operation('deposited', move, date=vals['date'])
-            self.write({'state': 'deposited'})
+    def bank_deposit(self, date=None, journal_id=None, total_amount=None, ref=None, checks=None):
+        if not all(check.state == 'holding' for check in checks):
+            raise ValidationError('Todos los cheques deben estar en estado "holding"')
+
+        if not journal_id:
+            raise ValidationError('Debe seleccionar el diario')
+
+        vals = self.get_bank_vals('bank_deposit', journal_id, checks)
+        action_date = self._context.get('action_date')
+
+        if not date:
+            vals['date'] = action_date or fields.Date.today()
+        else:
+            vals['date'] = str(date)
+
+        if ref:
+            vals['ref'] = ref
+
+        move = self.env['account.move'].create(vals)
+        _logger.info(move)
+
+        total_amount = sum(check.amount for check in checks)
+        debit_line = None
+        credit_line = None
+
+        for line in move.line_ids:
+            if line.debit == 0.0 and not debit_line:
+                debit_line = line
+            elif line.credit == 0.0 and not credit_line:
+                credit_line = line
+
+        if debit_line and credit_line:
+            _logger.info('Asignando montos a los cheques')
+            _logger.info('Monto total de los cheques: %s' % total_amount)
+            debit_line.with_context(check_move_validity=False).write({'debit': total_amount})
+            credit_line.with_context(check_move_validity=False).write({'credit': total_amount})
+
+        for check in checks:
+            check._add_operation('deposited', move, date=vals['date'])
+            check.write({'state': 'deposited'})
+
+        move.action_post()
+
+        return move
+
 
     def deliver(self):
         self.ensure_one()
@@ -531,32 +541,72 @@ class AccountCheck(models.Model):
 
     def bank_debit(self):
         self.ensure_one()
-        if self.state in ['handed']:
-            #payment_values = self.get_payment_values(self.journal_id)
-            #payment = self.env['account.payment'].with_context(
-            #    default_name=_('Check "%s" debit') % (self.name),
-            #    force_account_id=self.company_id._get_check_account(
-            #        'deferred').id,
-            #).create(payment_values)
-            #self.post_payment_check(payment)
-            #payment.post()
-            if not self.operation_ids[0].origin:
-                raise ValidationError('La Operación debe tener un Origen')
-            journal_id = self.operation_ids[0].origin.journal_id
-            if not journal_id:
-                raise ValidationError('No puedo determinar el diario de deposito')
-            vals = self.get_bank_vals('bank_debit', journal_id)
-            action_date = self._context.get('action_date')
-            if not action_date:
-                vals['date'] = action_date or fields.Date.today()
-            else:
-                vals['date'] = str(action_date)
-            move = self.env['account.move'].create(vals)
-            move.action_post()
-            #self._add_operation('deposited', move, date=vals['date'])
-            #self.handed_reconcile(payment.move_line_ids.mapped('move_id'))
-            self._add_operation('debited', move, date=move.date)
-            self.state = 'debited'
+        _logger.info('Cheque procesado: %s | Estado: %s', self.name, self.state)
+
+        if self.state not in ['handed']:
+            _logger.warning('El estado del cheque no permite la operación de débito.')
+            return
+
+        if not self.operation_ids:
+            _logger.error('ERROR: No hay operaciones asociadas al cheque.')
+            raise ValidationError('No hay operaciones asociadas al cheque.')
+
+        _logger.info('Operaciones encontradas: %s', self.operation_ids)
+
+        if not self.operation_ids[0].origin:
+            _logger.error('ERROR: La Operación debe tener un Origen')
+            raise ValidationError('La Operación debe tener un Origen')
+
+        journal_id = self.operation_ids[0].origin.journal_id
+        if not journal_id:
+            _logger.error('ERROR: No puedo determinar el diario de depósito.')
+            raise ValidationError('No puedo determinar el diario de depósito')
+
+        vals = self.get_bank_vals('bank_debit', journal_id)
+        _logger.info('Valores generados para el asiento contable antes de reescribir montos: %s', vals)
+
+        # Verificar y asignar montos en vals si fuese necesario
+        for line in vals.get('line_ids', []):
+            line_data = line[2]
+            if line_data.get('debit', 0) == 0 and line_data.get('credit', 0) == 0:
+                amount = self.amount  # Fallback: monto del cheque
+                if 'debit' in line_data:
+                    line_data['debit'] = amount
+                if 'credit' in line_data:
+                    line_data['credit'] = amount
+
+        _logger.info('Valores después de reescribir montos: %s', vals)
+
+        action_date = self._context.get('action_date')
+        if not action_date:
+            vals['date'] = fields.Date.today()
+        else:
+            vals['date'] = str(action_date)
+
+        move = self.env['account.move'].create(vals)
+        _logger.info('Asiento contable creado con ID: %s', move.id)
+
+        # --- Reescribir montos en las líneas del asiento ---
+        debit_line = None
+        credit_line = None
+        for line in move.line_ids:
+            # Se asume que el nombre de la línea incluye el nombre del cheque
+            if line.name and self.name in line.name:
+                if line.debit == 0.0 and not debit_line:
+                    debit_line = line
+                elif line.credit == 0.0 and not credit_line:
+                    credit_line = line
+
+        if debit_line and credit_line:
+            debit_line.with_context(check_move_validity=False).write({'debit': self.amount})
+            credit_line.with_context(check_move_validity=False).write({'credit': self.amount})
+        else:
+            _logger.warning('No se encontraron líneas de débito y crédito para asignar montos al cheque %s', self.name)
+
+        move.action_post()
+        self._add_operation('debited', move, date=move.date)
+        self.state = 'debited'
+
 
     @api.model
     def post_payment_check(self, payment):
@@ -703,6 +753,9 @@ class AccountCheck(models.Model):
             'journal_id': journal.id,
             'date': action_date,
             'payment_type': 'outbound',
+            'partner_id': self.partner_id.id,
+            'ref': '%s - %s' % (self.name, 'Rechazado'),
+            #'payment_method_id': journal._default_outbound_payment_methods().id,
             # 'check_ids': [(4, self.id, False)],
         }
 

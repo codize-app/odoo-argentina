@@ -14,7 +14,8 @@
             <field name="model_id" ref="account_payment_group.model_account_payment_group"/>
             <field name="auto_delete" eval="True"/>
             <field name="report_name">Receipt_{{ (object.display_name or '').replace('/','_') }}</field>
-            <field name="report_template" ref="account_payment_group.account_payment_group_report"/>
+            <!--field name="report_template" ref="account_payment_group.account_payment_group_report"/-->
+            <field name="report_template_ids" ref="account_payment_group.account_fe_invoices"/>
             <field name="lang">{{ object.partner_id.lang }}</field>
             <field name="body_html"><![CDATA[
 <div style="font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: #222222; background-color: #FFF;">
