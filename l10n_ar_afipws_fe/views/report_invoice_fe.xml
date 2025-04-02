@@ -39,7 +39,7 @@
                 <!--TIPO,NRO Y FECHA FACTURA-->
                 <div class="col-5 text-left" name="company_address" style="padding-left: 80px !important;">
                   <h6>
-			  <span t-field="o.l10n_latam_document_type_id.report_name"></span>
+			                   <span t-field="o.l10n_latam_document_type_id.report_name"></span>
                   </h6>
                   <span t-if="o.state == 'posted' or o.state == 'draft'">
                           Fecha: <span t-field="o.invoice_date"/><br/>
@@ -85,7 +85,7 @@
                     <small>
                       <span t-field="o.company_id.name" style="font-size: 12px; font-weight: bold;"/>
                       <br/>
-		      <t t-if="o.company_id.partner_id.street"><span t-field="o.company_id.partner_id.street" />, </t>
+		                  <t t-if="o.company_id.partner_id.street"><span t-field="o.company_id.partner_id.street" />, </t>
                       <t t-if="o.company_id.partner_id.city"><span t-field="o.company_id.partner_id.city" />, </t>
                       <t t-if="o.company_id.partner_id.state_id"><span t-field="o.company_id.partner_id.state_id.name" />, </t>
                       <t t-if="o.company_id.partner_id.country_id"><span t-field="o.company_id.partner_id.country_id.name" /></t>
@@ -115,7 +115,7 @@
                 </div>
                 <div name="invoice_address" class="col-4">
                   <strong>CUIT: </strong><span t-field="o.partner_id.vat"/>
-                  <p><strong>Condicion de IVA </strong><span t-field="o.partner_id.l10n_ar_afip_responsibility_type_id.name"/></p>
+                  <p><strong>Condición de IVA </strong><span t-field="o.partner_id.l10n_ar_afip_responsibility_type_id.name"/></p>
                 </div>
               </div>
               <!-- END CLIENTE  -->
@@ -270,6 +270,26 @@
             </div>
           --> <!-- END IMPUESTOS CLASSIC -->
 
+          <!-- RG 5614/2024: Mostrar Impuestos de ARCA y otros impuestos nacionales discriminados -->
+          <div class="col-sm-7 col-md-6">
+              <table class="table table-sm table-borderless" style="page-break-inside: avoid;" t-if="tax_totals.get('detail_ar_tax')">
+                  <th class="border-black" style="border-bottom: 1px solid" colspan="2">
+                      Régimen de Transparencia Fiscal para el Consumidor Final (Ley 27.743)
+                  </th>
+                  <t t-foreach="tax_totals['detail_ar_tax']" t-as="detail">
+                      <tr>
+                          <td class="text-end"><strong t-esc="detail['name']"/></td>
+                          <td class="text-end">
+                              <span
+                                  t-att-class="oe_subtotal_footer_separator"
+                                  t-esc="detail['formatted_amount_tax']"
+                              />
+                          </td>
+                      </tr>
+                  </t>
+              </table>
+          </div>
+
           <p t-if="not is_html_empty(o.narration)" class="mt-2" name="comment">
               <strong>Comentarios:</strong>
               <span t-field="o.narration"/>
@@ -284,7 +304,7 @@
           </t>
           <!-- RG 5003: Add legend for 'A' documents that have a Monotribuista receptor -->
           <p class="m-0" style="font-size:13px;" t-if="o.partner_id.l10n_ar_afip_responsibility_type_id.code == '6' and o.l10n_latam_document_type_id.l10n_ar_letter == 'A'">
-				    El credito fiscal discriminado en el presente comprobante solo podrá ser computado a efectos del Régimen de Sostenimiento e Inclusión Fiscal para Pequeños Contribuyentes de la Ley Nro. 27.168
+				    El crédito fiscal discriminado en el presente comprobante solo podrá ser computado a efectos del Régimen de Sostenimiento e Inclusión Fiscal para Pequeños Contribuyentes de la Ley Nro. 27.168
 		    	</p> 
           <br/>
 
@@ -314,17 +334,17 @@
     </t>
 </template>
 
-      <record id="account_fe_invoices" model="ir.actions.report">
-            <field name="name">Facturas Electrónicas</field>
-            <field name="model">account.move</field>
-            <field name="binding_model_id" ref="model_account_move"/>
-            <field name="report_type">qweb-pdf</field>
-            <field name="report_name">l10n_ar_afipws_fe.report_invoice_fe</field>
-            <field name="report_file">l10n_ar_afipws_fe.report_invoice_fe</field>
-	    <field name="print_report_name">(object._get_report_base_filename())</field>
-            <field name="attachment">(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')</field>
-            <field name="attachment_use">True</field>
-        </record>
+<record id="account_fe_invoices" model="ir.actions.report">
+      <field name="name">Facturas Electrónicas</field>
+      <field name="model">account.move</field>
+      <field name="binding_model_id" ref="model_account_move"/>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">l10n_ar_afipws_fe.report_invoice_fe</field>
+      <field name="report_file">l10n_ar_afipws_fe.report_invoice_fe</field>
+      <field name="print_report_name">(object._get_report_base_filename())</field>
+      <field name="attachment">(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')</field>
+      <field name="attachment_use">True</field>
+</record>
 
 </data>
 </odoo>
