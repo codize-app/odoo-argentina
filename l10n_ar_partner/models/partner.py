@@ -335,6 +335,7 @@ class ArcaTablagananciasEscala(models.Model):
     importe_excedente = fields.Float(
         'S/ Exced. de $'
     )
+    cod_regimen = fields.Char('Código Régimen')
 
 
 class ArcaTablagananciasAlicuotasymontos(models.Model):

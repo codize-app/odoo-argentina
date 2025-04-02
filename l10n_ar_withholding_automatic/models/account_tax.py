@@ -42,17 +42,15 @@ class AccountTax(models.Model):
         help="Importes inferiores a este no tendrán retención"
     )
     condicion_sicore = fields.Selection([
-        ('withholding', 'Retencion'),
-        ('perception', 'Percepcion'),
-        # ('percentage_of_total', 'Percentage Of Total'),
+        ('withholding', 'Retención'),
+        ('perception', 'Percepción'),
     ],
-        'Condicion de SICORE',
+        'Condición de SICORE',
         help='Tipo utilizado para txt de sicore',
     )
     withholding_amount_type = fields.Selection([
         ('untaxed_amount', 'Importe neto'),
         ('total_amount', 'Importe total'),
-        # ('percentage_of_total', 'Percentage Of Total'),
     ],
         'Importe base',
         help='Importe base utilizado para obtener el importe de la retención',
@@ -76,14 +74,11 @@ class AccountTax(models.Model):
     )
     withholding_type = fields.Selection([
         ('none', 'None'),
-        # ('percentage', 'Percentage'),
         ('based_on_rule', 'Based On Rule'),
-        # ('fixed', 'Fixed Amount'),
         ('code', 'Python Code'),
         ('tabla_ganancias', 'Tabla Ganancias'),
         ('partner_tax', 'Alícuota en el Partner'),
         ('partner_iibb_padron', 'Padron en Partner'),
-        # ('balance', 'Balance')
     ],
         'Tipo',
         required=True,
@@ -130,7 +125,6 @@ class AccountTax(models.Model):
                 payment_group.payment_date or fields.Date.context_today(self),
             )
             alicuota = alicuot_line
-        #modulo anterior account_withholding_automatic
         self.ensure_one()
         withholding_amount_type = force_withholding_amount_type or \
             self.withholding_amount_type
@@ -255,12 +249,18 @@ class AccountTax(models.Model):
                         base_amount -= non_taxable_amount
 
                 vals['withholdable_base_amount'] = base_amount
-                escala = self.env['afip.tabla_ganancias.escala'].search([
+                escala = []
+                if payment_group.regimen_ganancias_id.codigo_de_regimen == '119':
+                    escala = self.env['afip.tabla_ganancias.escala'].search([
                         ('importe_desde', '<=', base_amount),
                         ('importe_hasta', '>', base_amount),
-                ], limit=1)
+                        ('cod_regimen', '=', '119')], limit=1)
+                else:
+                    escala = self.env['afip.tabla_ganancias.escala'].search([
+                        ('importe_desde', '<=', base_amount),
+                        ('importe_hasta', '>', base_amount),
+                    ], limit=1)
                 importe_excedente = escala.importe_excedente
-                #today = date.today()
                 today = payment_group.payment_date
                 prev_date = date(today.year,today.month,1)
                 prev_payments = self.env['account.payment'].search([('payment_type','=','outbound'),('state','=','posted'),('payment_group_id.payment_date','>=',str(prev_date)),\
@@ -276,26 +276,9 @@ class AccountTax(models.Model):
                     base_amount = vals['withholdable_base_amount']
 
                 withholdable_base_amount = vals['withholdable_base_amount']
-                #if not payment_group.debt_move_line_ids:
-                #    withholdable_base_amount += payment_group.to_pay_amount
-                #else:
-                #    for matched_move in payment_group.debt_move_line_ids:
-                #        matched_amount = matched_move.move_id._get_tax_factor() * (-1) * matched_move.with_context({'payment_group_id': payment_group.id}).amount_residual
-                #        withholdable_base_amount += matched_amount
-                
                 period_withholding_amount = 0
-                #non_taxable_amount = 0
-                #non_taxable_amount = payment_group.partner_id.default_regimen_ganancias_id.montos_no_sujetos_a_retencion
-                ## Agregar soporte a montos netos de facturas
-                #prev_payments_no_withholding = self.env['account.payment'].search([('payment_type','=','outbound'),('state','=','posted'),('payment_group_id.payment_date','>=',str(prev_date)),\
-                #                        ('payment_group_id.payment_date','<=',today),('partner_id','=',payment_group.partner_id.id),('tax_withholding_id','!=',self.id)])
                 prev_payments_with_withholding = self.env['account.payment'].search([('payment_type','=','outbound'),('state','=','posted'),('payment_group_id.payment_date','>=',str(prev_date)),\
                                         ('payment_group_id.payment_date','<=',today),('partner_id','=',payment_group.partner_id.id),('tax_withholding_id','=',self.id)])
-                #if not prev_payments_with_withholding :
-                #    if prev_payments_no_withholding:
-                #       for prev_payments in prev_payments_no_withholding:
-                #           withholdable_base_amount += prev_payments.amount
-                #    withholdable_base_amount = withholdable_base_amount - non_taxable_amount
                 if withholdable_base_amount > 0:
                     period_withholding_amount = withholdable_base_amount * payment_group.partner_id.default_regimen_ganancias_id.porcentaje_inscripto / 100
                 if period_withholding_amount < self.withholding_non_taxable_minimum and not prev_payments_with_withholding:
@@ -305,10 +288,17 @@ class AccountTax(models.Model):
                 vals['date'] = payment_group.payment_date
 
                 if regimen.porcentaje_inscripto == -1:
-                    escala = self.env['afip.tabla_ganancias.escala'].search([
+                    escala = []
+                    if payment_group.regimen_ganancias_id.codigo_de_regimen == '119':
+                        escala = self.env['afip.tabla_ganancias.escala'].search([
                         ('importe_desde', '<=', base_amount),
                         ('importe_hasta', '>', base_amount),
-                    ], limit=1)
+                        ('cod_regimen', '=', '119')], limit=1)
+                    else:
+                        escala = self.env['afip.tabla_ganancias.escala'].search([
+                        ('importe_desde', '<=', base_amount),
+                        ('importe_hasta', '>', base_amount),
+                        ], limit=1)
                     if not escala:
                         raise UserError(
                             'No se encontro ninguna escala para el monto'
@@ -345,7 +335,6 @@ class AccountTax(models.Model):
                 sudo().create({
                     'name': tax.name,
                     'implementation': 'no_gap',
-                    # 'prefix': False,
                     'padding': 8,
                     'number_increment': 1,
                     'code': 'account.tax.withholding',
@@ -423,7 +412,6 @@ class AccountTax(models.Model):
 
             vals.pop('comment')
             if payment_withholding:
-                #payment_withholding.write(vals)
                 payment_withholding.unlink()
             
             payment_method = self.env.ref(
@@ -443,10 +431,6 @@ class AccountTax(models.Model):
             vals['payment_type'] = 'outbound'
             vals['partner_type'] = payment_group.partner_type
             vals['partner_id'] = payment_group.partner_id.id
-            #if not 'name' in vals:
-            #    sequence_obj = self.env['ir.sequence']
-            #    correlativo = sequence_obj.next_by_code('account.tax.withholding')
-            #    vals['name'] = correlativo
             payment_withholding = payment_withholding.create(vals)
         return True
 
