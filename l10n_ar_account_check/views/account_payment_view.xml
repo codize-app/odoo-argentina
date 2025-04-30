@@ -86,6 +86,9 @@
                 <field name="check_deposit_type" widget="radio"
                     invisible="payment_type != 'transfer' or payment_method_code != 'delivered_third_check'" />
             </field>
+            <xpath expr="//label[@for='amount']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
         </field>
     </record>
 
