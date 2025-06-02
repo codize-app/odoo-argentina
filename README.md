@@ -1,17 +1,17 @@
 **English** | [Spanish](https://github.com/codize-app/odoo-argentina/blob/15.0/README_es.md)
 
 # Odoo Argentina
-Argentine Location for Odoo 17 Community. Original based on Location by Moldeo Interactive [and original based on Location by AdHoc]
+Argentine Location for Odoo 18 Community. Original based on Location by Moldeo Interactive [and original based on Location by AdHoc]
 
 ## Installation
 ### Install l10n_ar base
 
 First, install Odoo Community module l10n_ar
 
-Clone this repository with branch 17.0
+Clone this repository with branch 18.0
 
 ```
-git clone https://github.com/codize-app/odoo-argentina -b 17.0
+git clone https://github.com/codize-app/odoo-argentina -b 18.0
 ```
 
 Verify dependencies:
