@@ -52,6 +52,11 @@ class ResPartner(models.Model):
     dept_id = fields.Many2one('res.departamento', string='Partido', ondelete='restrict', domain="[('provincia_id', '=', state_id)]")
     loc_id = fields.Many2one('res.localidad', string='Localidad', ondelete='restrict', domain="[('partido_id', '=', dept_id)]")
     
+        #arba_alicuot_ids = fields.One2many(
+    #    'res.partner.tax',
+    #    'partner_id',
+    #    'Alícuotas PERC-RET',
+    #)
     iibb_number = fields.Char('Ingresos Burtos')
     #percepciones_ids = fields.One2many(
     #    'res.partner.per',
@@ -88,6 +93,15 @@ class ResPartner(models.Model):
     start_date = fields.Date(
         'Start-up Date',
     )
+    afip_responsability_type_id = fields.Many2one(
+        'l10n_ar.afip.responsability.type',
+        'AFIP Responsability Type',
+        auto_join=True,
+        index=True,
+    )
+
+    # From
+    # http://www.sistemasagiles.com.ar/trac/wiki/PadronContribuyentesAFIP
     estado_padron = fields.Char(string='Estado AFIP')
     imp_ganancias_padron = fields.Selection([
         ('NI', 'No Inscripto'),
@@ -134,6 +148,155 @@ class ResPartner(models.Model):
        string='Impuestos',
     )
 
+    def get_data_from_padron_afip(self):
+        self.ensure_one()
+        cuit = self.cuit_required()
+
+        company = self.env.user.company_id
+        env_type = company._get_environment_type()
+        try:
+            certificate = company.get_key_and_certificate(
+                company._get_environment_type())
+        except Exception:
+            certificate = self.env['afipws.certificate'].search([
+                ('alias_id.type', '=', env_type),
+                ('state', '=', 'confirmed'),
+            ], limit=1)
+            if not certificate:
+                raise UserError(_(
+                    'Not confirmed certificate found on database'))
+            company = certificate.alias_id.company_id
+
+        padron = company.get_connection('ws_sr_padron_a5').connect()
+        error_msg = _(
+            'No pudimos actualizar desde padron afip al partner %s (%s).\n'
+            'Recomendamos verificar manualmente en la página de AFIP.\n'
+            'Obtuvimos este error: %s')
+        try:
+            padron.Consultar(cuit)
+        except SoapFault as e:
+            raise UserError(error_msg % (self.name, cuit, e.faultstring))
+        except Exception as e:
+            raise UserError(error_msg % (self.name, cuit, e))
+
+        if not padron.denominacion or padron.denominacion == ', ':
+            raise UserError(error_msg % (
+                self.name, cuit, 'AFIP no devolvió nombre'))
+
+        imp_iva = padron.imp_iva
+        if imp_iva == 'S':
+            imp_iva = 'AC'
+        elif imp_iva == 'N':
+            imp_iva = 'NI'
+
+        vals = {
+            'name': padron.denominacion,
+            # 'name': padron.tipo_persona,
+            # 'name': padron.tipo_doc,
+            # 'name': padron.dni,
+            'estado_padron': padron.estado,
+            'street': padron.direccion,
+            'city': padron.localidad,
+            'zip': padron.cod_postal,
+            'actividades_padron': self.actividades_padron.search(
+                [('code', 'in', padron.actividades)]).ids,
+            'impuestos_padron': self.impuestos_padron.search(
+                [('code', 'in', padron.impuestos)]).ids,
+            'imp_iva_padron': imp_iva,
+            # TODAVIA no esta funcionando
+            # 'imp_ganancias_padron': padron.imp_ganancias,
+            'monotributo_padron': padron.monotributo,
+            'actividad_monotributo_padron': padron.actividad_monotributo,
+            'empleador_padron': padron.empleador == 'S' and True,
+            'integrante_soc_padron': padron.integrante_soc,
+            #'last_update_padron': fields.Date.today(),
+        }
+        ganancias_inscripto = [10, 11]
+        ganancias_exento = [12]
+        if set(ganancias_inscripto) & set(padron.impuestos):
+            vals['imp_ganancias_padron'] = 'AC'
+        elif set(ganancias_exento) & set(padron.impuestos):
+            vals['imp_ganancias_padron'] = 'EX'
+        elif padron.monotributo == 'S':
+            vals['imp_ganancias_padron'] = 'NC'
+        else:
+            _logger.info(
+                "We couldn't get impuesto a las ganancias from padron, you"
+                "must set it manually")
+
+        if padron.provincia:
+            # depending on the database, caba can have one of this codes
+            caba_codes = ['C', 'CABA', 'ABA']
+            # if not localidad then it should be CABA.
+            if not padron.localidad:
+                state = self.env['res.country.state'].search([
+                    ('code', 'in', caba_codes),
+                    ('country_id.code', '=', 'AR')], limit=1)
+            # If localidad cant be caba
+            else:
+                state = self.env['res.country.state'].search([
+                    ('name', 'ilike', padron.provincia),
+                    ('code', 'not in', caba_codes),
+                    ('country_id.code', '=', 'AR')], limit=1)
+            if state:
+                vals['state_id'] = state.id
+
+        if imp_iva == 'NI' and padron.monotributo == 'S':
+            vals['afip_responsability_type_id'] = self.env.ref(
+                'l10n_ar.res_RM').id
+        elif imp_iva == 'AC':
+            vals['afip_responsability_type_id'] = self.env.ref(
+                'l10n_ar.res_IVARI').id
+        elif imp_iva == 'EX':
+            vals['afip_responsability_type_id'] = self.env.ref(
+                'l10n_ar.res_IVAE').id
+        else:
+            _logger.info(
+                "We couldn't infer the AFIP responsability from padron, you"
+                "must set it manually.")
+
+        return vals
+
+    @api.constrains('gross_income_jurisdiction_ids', 'state_id')
+    def check_gross_income_jurisdictions(self):
+        for rec in self:
+            if rec.state_id and \
+                    rec.state_id in rec.gross_income_jurisdiction_ids:
+                raise UserError(_(
+                    'Jurisdiction %s is considered the main jurisdiction '
+                    'because it is the state of the company, please remove it'
+                    'from the jurisdiction list') % rec.state_id.name)
+
+    def write(self, values):
+        res = super(ResPartner, self).write(values)
+
+        if self.l10n_latam_identification_type_id.name == 'CUIT' or self.l10n_latam_identification_type_id.name == 'CUIL' or self.l10n_latam_identification_type_id.name == 'DNI':
+            for rec in self:
+                if rec.vat:
+                    if '-' in rec.vat:
+                        vat = rec.vat.replace('-', '')
+                        rec.vat = vat
+                    if '.' in rec.vat:
+                        vat = rec.vat.replace('.', '')
+                        rec.vat = vat
+
+        return res
+
+    def name_get(self):
+        result = []
+        for record in self:
+            if record.internal_reference:
+                if record.parent_id:
+                    result.append((record.id, str(record.parent_id.name) + ', ' + str(record.internal_reference) + ' - [' + str(record.name) + ']'))
+                else:
+                    result.append((record.id, str(record.internal_reference) + ' - [' + str(record.name) + ']'))
+            else:
+                if record.parent_id:
+                    result.append((record.id, str(record.parent_id.name) + ', ' + str(record.name)))
+                else:
+                    result.append((record.id, str(record.name)))
+        return result
+    
     def update_from_padron(self):
         if self.l10n_latam_identification_type_id.name == 'CUIT':
             x = requests.get('https://www.tangofactura.com/Rest/GetContribuyente?cuit=' + self.vat)
@@ -170,70 +333,16 @@ class ResPartner(models.Model):
             if ws_sr_padron['Contribuyente']['domicilioFiscal']['codPostal']:
                 self.zip = ws_sr_padron['Contribuyente']['domicilioFiscal']['codPostal']
 
-            if ws_sr_padron['Contribuyente']['domicilioFiscal']['idProvincia']:
+            if ws_sr_padron['Contribuyente']['domicilioFiscal']:
                 country_id = self.env['res.country'].search([('name', '=', 'Argentina')], limit=1)
                 if country_id:
                     self.country_id = country_id.id
 
                 provincia = STATES.get(ws_sr_padron['Contribuyente']['domicilioFiscal']['idProvincia'])
 
-                state_id = self.env['res.country.state'].search([('name', 'ilike', provincia), ('country_id', '=', country_id.id)], limit=1)
+                state_id = self.env['res.country.state'].search([('name', '=', provincia), ('country_id', '=', country_id.id)], limit=1)
                 if state_id:
                     self.state_id = state_id.id
-
-            if ws_sr_padron['Contribuyente']['ListaActividades']:
-                self.write({'actividades_padron': [(5, 0, 0)]})
-                for act in ws_sr_padron['Contribuyente']['ListaActividades']:
-                    a = self.env['afip.activity'].search([('code', '=', str(act['idActividad']))], limit=1)
-                    if a:
-                        self.actividades_padron = [(4, a.id)]
-
-            if ws_sr_padron['Contribuyente']['impuestos']:
-                self.write({'impuestos_padron': [(5, 0, 0)]})
-                for imp in ws_sr_padron['Contribuyente']['impuestos']:
-                    i = self.env['afip.tax'].search([('code', '=', str(imp))], limit=1)
-                    if i:
-                        self.impuestos_padron = [(4, i.id)]
-
-    @api.constrains('gross_income_jurisdiction_ids', 'state_id')
-    def check_gross_income_jurisdictions(self):
-        for rec in self:
-            if rec.state_id and \
-                    rec.state_id in rec.gross_income_jurisdiction_ids:
-                raise UserError(_(
-                    'La Juridicción %s es considerada la juridicción principal '
-                    'porque es la provincia de la compañía, debe ser removida '
-                    'de la lista de juridicciones.') % rec.state_id.name)
-
-    def write(self, values):
-        res = super(ResPartner, self).write(values)
-
-        if self.l10n_latam_identification_type_id.name == 'CUIT' or self.l10n_latam_identification_type_id.name == 'CUIL' or self.l10n_latam_identification_type_id.name == 'DNI':
-            for rec in self:
-                if rec.vat:
-                    if '-' in rec.vat:
-                        vat = rec.vat.replace('-', '')
-                        rec.vat = vat
-                    if '.' in rec.vat:
-                        vat = rec.vat.replace('.', '')
-                        rec.vat = vat
-
-        return res
-
-    def name_get(self):
-        result = []
-        for record in self:
-            if record.internal_reference:
-                if record.parent_id:
-                    result.append((record.id, str(record.parent_id.name) + ', ' + str(record.internal_reference) + ' - [' + str(record.name) + ']'))
-                else:
-                    result.append((record.id, str(record.internal_reference) + ' - [' + str(record.name) + ']'))
-            else:
-                if record.parent_id:
-                    result.append((record.id, str(record.parent_id.name) + ', ' + str(record.name)))
-                else:
-                    result.append((record.id, str(record.name)))
-        return result
 
 class ResDepartament(models.Model):
     _name = "res.departamento"
@@ -248,52 +357,33 @@ class ResLocation(models.Model):
 
     name = fields.Char(string='Nombre Localidad', required=True)
     partido_id = fields.Many2one('res.departamento', string="Partido", required=True)
-
-#class ResPartnerPer(models.Model):
-#    _name = "res.partner.per"
-#    _order = "company_id"
-#
-#    partner_id = fields.Many2one(
-#        'res.partner',
-#        required=True,
-#        ondelete='cascade',
-#    )
-#    tax_id = fields.Many2one(
-#        'account.tax',
-#        'Impuesto',
-#        domain=[('type_tax_use', '=', 'sale'),('tax_group_id.l10n_ar_tribute_afip_code','=','09')],
-#    )
-#    company_id = fields.Many2one(
-#        'res.company',
-#        required=True,
-#        ondelete='cascade',
-#        default=lambda self: self.env.user.company_id,
-#    )
+    
 
 class AccountConcept(models.Model):
    _name = "afip.concept"
 
    code = fields.Char(
-       'Código',
+       'Code',
        required=True
    )
    name = fields.Char(
-       'Nombre',
+       'Name',
        required=True
    )
    active = fields.Boolean(
        default=True,
    )
 
+
 class AccountActivity(models.Model):
    _name = "afip.activity"
 
    code = fields.Char(
-       'Código',
+       'Code',
        required=True
    )
    name = fields.Char(
-       'Nombre',
+       'Name',
        required=True
    )
    active = fields.Boolean(
@@ -305,11 +395,11 @@ class AccountTax(models.Model):
    _name = "afip.tax"
 
    code = fields.Char(
-       'Código',
+       'Code',
        required=True
    )
    name = fields.Char(
-       'Nombre',
+       'Name',
        required=True
    )
    active = fields.Boolean(
@@ -335,7 +425,6 @@ class ArcaTablagananciasEscala(models.Model):
     importe_excedente = fields.Float(
         'S/ Exced. de $'
     )
-    cod_regimen = fields.Char('Código Régimen')
 
 
 class ArcaTablagananciasAlicuotasymontos(models.Model):
@@ -343,17 +432,15 @@ class ArcaTablagananciasAlicuotasymontos(models.Model):
     _rec_name = 'codigo_de_regimen'
 
     codigo_de_regimen = fields.Char(
-        'Código de régimen',
+        'Codigo de regimen',
         size=6,
         required=True,
-        help='Código de régimen de inscripción en impuesto a las ganancias.'
+        help='Codigo de regimen de inscripcion en impuesto a las ganancias.'
     )
     anexo_referencia = fields.Char(
-        'Anexo de referencia',
         required=True,
     )
     concepto_referencia = fields.Text(
-        'Concepto de referencia',
         required=True,
     )
     porcentaje_inscripto = fields.Float(
@@ -364,5 +451,4 @@ class ArcaTablagananciasAlicuotasymontos(models.Model):
         '% No Inscripto'
     )
     montos_no_sujetos_a_retencion = fields.Float(
-        'Montos no sujetos a retención'
     )

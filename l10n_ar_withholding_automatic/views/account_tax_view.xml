@@ -35,12 +35,12 @@
                         </div>
                         <field name="withholding_python_compute" invisible="True" modifiers="{'invisible': [('withholding_type', '!=', 'code')]}" nolabel="1" colspan="2"/>
                         <field name="withholding_rule_ids" invisible="True" modifiers="{'invisible': [('withholding_type', '!=', 'based_on_rule')]}" nolabel="1" colspan="2">
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="sequence" widget="handle"/>
                                 <field name="domain"/>
                                 <field name="percentage"/>
                                 <field name="fix_amount"/>
-                            </tree>
+                            </list>
                         </field>
                     </group>
                     <group invisible="withholding_type == 'none'">

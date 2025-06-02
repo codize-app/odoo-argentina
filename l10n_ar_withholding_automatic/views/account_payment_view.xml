@@ -7,7 +7,7 @@
         <field name="model">account.payment</field>
         <field name="inherit_id" ref="account.view_account_payment_form" />
         <field name="arch" type="xml">
-            <field name='ref' position="after">
+            <field name="amount" position="after">
                 <div colspan="2">
                     <group string="Datos de retención" name="withholding_data" invisible="payment_method_code != 'withholding'">
                         <field name="tax_withholding_id" options="{'no_create': True, 'no_open': True}" string="Impuesto de retención"
@@ -58,9 +58,9 @@
         <field name="model">account.payment</field>
         <field name="inherit_id" ref="account.view_account_payment_tree"/>
         <field name="arch" type="xml"> 
-            <tree>
+            <list>
                 <field name="payment_method_code" invisible="1"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -70,9 +70,9 @@
         <field name="model">account.payment</field>
         <field name="inherit_id" ref="account_payment_group.view_account_payment_from_group_tree"/>
         <field name="arch" type="xml"> 
-            <tree>
+            <list>
                 <field name="payment_method_code" invisible="1"/>
-            </tree>
+            </list>
         </field>
     </record>  
 

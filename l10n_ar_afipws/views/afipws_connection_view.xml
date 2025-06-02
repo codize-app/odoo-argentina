@@ -14,8 +14,8 @@
                         <field name="expirationtime" string="Fecha de Expiración"/>
                         <field name="sign" string="Firma"/>
                         <field name="token" string="Token"/>
-                        <field name="afip_login_url" string="URL Login de ARCA"/>
-                        <field name="afip_ws_url" string="ARCA WS URL"/>
+                        <field name="afip_login_url" string="AFIP Login URL"/>
+                        <field name="afip_ws_url" string="AFIP WS URL"/>
                         <field name="company_id" string="Compañía"/>
                     </group>
                 </sheet>
@@ -27,14 +27,14 @@
         <field name="name">afipws.auth.tree</field>
         <field name="model">afipws.connection</field>
         <field name="arch" type="xml">
-            <tree string="Conector ARCA" create="false" edit="false">
+            <list string="Conector ARCA" create="false" edit="false">
                 <field name="afip_ws" string="ARCA WS"/>
                 <field name="type" string="Tipo"/>
                 <field name="uniqueid" string="Unique ID"/>
                 <field name="generationtime" string="Fecha de Generación"/>
                 <field name="expirationtime" string="Fecha de Expiración"/>
                 <field name="company_id" string="Compañía"/>
-            </tree>
+            </list>
         </field>
     </record>
 

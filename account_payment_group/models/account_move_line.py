@@ -58,7 +58,7 @@ class AccountMoveLine(models.Model):
         payments = self.env['account.payment.group'].browse(
             payment_group_id).payment_ids
         # payment_move_lines = payments.mapped('move_line_ids')
-        payment_move_lines = payments.mapped('invoice_line_ids')
+        payment_move_lines = payments.mapped('invoice_ids')
 
         for rec in self:
             matched_amount = 0.0

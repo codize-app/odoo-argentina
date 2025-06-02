@@ -65,7 +65,7 @@
         <field name="name">afipws.certificate_alias.filter</field>
         <field name="model">afipws.certificate_alias</field>
         <field name="arch" type="xml">
-            <search string="ARCA Certificados">
+            <search string="AFIP Certificados">
                 <field name="type" string="Tipo" />
                 <field name="common_name" string="Nombre Común" />
                 <field name="company_id" string="Compañía" />
@@ -78,17 +78,17 @@
         <field name="name">afipws.certificate_alias.tree</field>
         <field name="model">afipws.certificate_alias</field>
         <field name="arch" type="xml">
-            <tree string="ARCA Certificados">
+            <list string="AFIP Certificados">
                 <field name="type" string="Tipo" />
                 <field name="common_name" string="Nombre Común" />
                 <field name="company_id" string="Compañía" />
                 <field name="state" string="Estado" />
-            </tree>
+            </list>
         </field>
     </record>
 
     <record model="ir.actions.act_window" id="act_afipws_certificate_alias">
-        <field name="name">ARCA Certificado</field>
+        <field name="name">AFIP Certificado</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">afipws.certificate_alias</field>
         <field name="view_mode">tree,form</field>

@@ -344,7 +344,7 @@ class PaymentSufferedLine(models.Model):
         related='payment.currency_id'
     )
     total_withholdings_suffered = fields.Monetary('Retencion Sufrida', related='payment.amount', store = True)
-    payment_ref = fields.Char('Nº Retención',related='payment.ref')
+    payment_ref = fields.Char("N° Retención", related="payment.name")
     payment_date = fields.Date('Fecha',related='payment.date')
     withholdings_suffered_id = fields.Many2one('report.withholdings.suffered', 'Report Id', ondelete='cascade')
 

@@ -5,7 +5,7 @@
         <field name="name">afip.activity.form</field>
         <field name="model">afip.activity</field>
         <field name="arch" type="xml">
-            <form string="Actividades ARCA">
+            <form string="AFIP activity">
                 <group>
                     <field name="name"/>
                     <field name='code'/>
@@ -19,15 +19,15 @@
         <field name="name">afip.activity.tree</field>
         <field name="model">afip.activity</field>
         <field name="arch" type="xml">
-            <tree string="Actividades ARCA">
+            <list string="AFIP activity">
                 <field name="name"/>
                 <field name="code"/>
-            </tree>
+            </list>
         </field>
     </record>
 
     <record model="ir.actions.act_window" id="act_afip_activity">
-        <field name="name">Actividades ARCA</field>
+        <field name="name">AFIP activity</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">afip.activity</field>
         <field name="view_mode">tree,form</field>

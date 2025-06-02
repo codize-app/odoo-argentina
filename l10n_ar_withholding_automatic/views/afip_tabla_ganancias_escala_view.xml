@@ -6,14 +6,14 @@
             <field name="name">afip.tabla_ganancias.escala.tree</field>
             <field name="model">afip.tabla_ganancias.escala</field>
             <field name="arch" type="xml">
-                <tree string="AFIP - Escalas Ganancias" editable="top">
+                <list string="AFIP - Escalas Ganancias" editable="top">
                     <field name="importe_desde"/>
                     <field name="importe_hasta"/>
                     <field name="importe_fijo"/>
                     <field name="porcentaje"/>
                     <field name="importe_excedente"/>
-                    <field name="cod_regimen"/>
-                </tree>
+                    <!-- <field name="cod_regimen"/> --> 
+                </list>
             </field>
         </record>
 

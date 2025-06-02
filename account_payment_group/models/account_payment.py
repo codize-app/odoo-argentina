@@ -165,7 +165,13 @@ class AccountPayment(models.Model):
         for rec in recs.filtered(lambda x: not x.payment_group_id and not x.is_internal_transfer).with_context(
                 created_automatically=True):
             if not rec.partner_id:
-                continue
+                # avoid creating payment group when creating entry of expenses paid by company.
+                # In this cases odoo creates a payment but is't not line a normal one, it's a payment without partner
+                # and custom journal items so we better avoid the payment group on top of it
+                if rec._fields.get('expense_sheet_id') and rec.expense_sheet_id:
+                    continue
+                raise ValidationError(_(
+                    'Manual payments should not be created manually but created from Customer Receipts / Supplier Payments menus'))
             rec.payment_group_id = rec.env['account.payment.group'].create({
                 'company_id': rec.company_id.id,
                 'partner_type': rec.partner_type,
@@ -269,32 +275,3 @@ class AccountPayment(models.Model):
                 rec.label_journal_id = "Diario de destino"
                 rec.label_destination_journal_id = "Diario de origen"       
     
-    
-    def action_post(self):
-        #rehago la numeración acá porque get_last_secuence trae el último grabado y siempre trae el mismo si hay mas de un
-        #movimiento para un journal
-        for rec in self:
-            if rec.journal_id:
-                if not rec.reconciled_bill_ids:
-                    rec.move_id.journal_id = rec.journal_id.id
-                    last_sequence = rec.move_id._get_last_sequence()
-                    _logger.info('last sequence')
-                    _logger.info(last_sequence)
-                    new = not last_sequence
-                    if new:
-                        last_sequence = rec.move_id._get_last_sequence(
-                            relaxed=True) or rec.move_id._get_starting_sequence()
-                    # Modificación de BIRTUM ya que cuando en los pagos
-                    # vienen retenciones el name es '/' por lo que al tratar
-                    # de hacer el typecast a int salta un error.
-                    last_num = rec.move_id.name[-4:]
-                    try:
-                        nro_move = int(last_num)
-                    except:
-                        nro_move = False
-                    last_secuence_number = int(last_sequence[-4:])
-                    if isinstance(nro_move, int) and last_secuence_number >= nro_move:
-                        rec.move_id._set_next_sequence()
-                    rec.name = rec.move_id.name
-            super(AccountPayment, rec).action_post()
-

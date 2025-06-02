@@ -30,11 +30,11 @@
          <field name="name">account.export.sicore.tree</field>
          <field name="model">account.export.sicore</field>
          <field name="arch" type="xml">
-            <tree>
+            <list>
 		<field name="name" />
 		<field name="date_from" />
 		<field name="date_to" />
-            </tree>
+            </list>
          </field>
     </record>
 

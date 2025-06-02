@@ -30,26 +30,26 @@
                     <notebook>
                         <page name="invoices" string="Facturas Proveedores">
                             <field name="invoice_ids" readonly="1">
-                                <tree default_order="invoice_date">
+                                <list default_order="invoice_date">
                                     <field name="invoice"/>
                                     <field name="supplier"/>
                                     <field name="invoice_date"/>
                                     <field name="total_withholdings_suffered" sum="Total Percepcion"/>
                                     <field name="amount_total_signed" sum="Total"/>
                                     <field name="currency_id" invisible="1"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page name="payments" string="Pagos Clientes">
                             <field name="payment_ids" readonly="1">
-                                <tree default_order="payment">
+                                <list default_order="payment">
                                     <field name="payment"/>
                                     <field name="client"/>
                                     <field name="payment_ref"/>
                                     <field name="payment_date"/>
                                     <field name="total_withholdings_suffered" sum="Total Retencion"/>
                                     <field name="currency_id" invisible="1"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page name="sifere" string="SIFERE">

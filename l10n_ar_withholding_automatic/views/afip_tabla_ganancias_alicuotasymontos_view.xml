@@ -6,14 +6,14 @@
             <field name="name">afip.tabla_ganancias.alicuotasymontos.tree</field>
             <field name="model">afip.tabla_ganancias.alicuotasymontos</field>
             <field name="arch" type="xml">
-                <tree string="AFIP - Tabla de Alícuotas y Montos" >
+                <list string="AFIP - Tabla de Alícuotas y Montos" >
                     <field name="codigo_de_regimen"/>
                     <field name="anexo_referencia"/>
                     <field name="concepto_referencia"/>
                     <field name="porcentaje_inscripto"/>
                     <field name="porcentaje_no_inscripto"/>
                     <field name="montos_no_sujetos_a_retencion"/>
-                </tree>
+                </list>
             </field>
         </record>
 

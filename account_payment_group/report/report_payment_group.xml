@@ -178,7 +178,7 @@
 					<td style="padding:0.50rem">
 						<t t-set="payments" t-value="[]"/>
 						<t t-foreach="o.payment_ids" t-as="p">
-							<t t-foreach="p.invoice_line_ids.ids" t-as="i">
+							<t t-foreach="p.invoice_ids.ids" t-as="i">
 								<t t-set="payments" t-value="payments + [i]"/>
 							</t>
 						</t>

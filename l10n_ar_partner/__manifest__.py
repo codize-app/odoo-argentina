@@ -2,7 +2,7 @@
     'name': 'Datos Extras para Contacto de Argentina',
     'icon': '/account/static/description/l10n.png',
     'countries': ['ar'],
-    'version': '17.0.0.1.0',
+    'version': '18.0.0.1.0',
     'category': 'Partner',
     'license': 'AGPL-3',
     'summary': "Datos Extras para Contacto de Argentina",

@@ -187,7 +187,7 @@ class AccountPaymentGroupInvoiceWizard(models.TransientModel):
         line_values['price_unit'] = self.amount_untaxed
         if self.account_analytic_id:
             line_values['account_analytic_id'] = self.account_analytic_id.id
-        invoice.write({'invoice_line_ids': [(0, 0, line_values)]})
+        invoice.write({'invoice_ids': [(0, 0, line_values)]})
         invoice.compute_taxes()
         invoice.action_invoice_open()
 

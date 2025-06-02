@@ -6,7 +6,7 @@
     <field name="name">account.payment.group.tree</field>
     <field name="model">account.payment.group</field>
     <field name="arch" type="xml">
-        <tree decoration-info="state=='draft'" decoration-muted="state in ['reconciled', 'cancel']">
+        <list decoration-info="state=='draft'" decoration-muted="state in ['reconciled', 'cancel']">
             <field name="payment_date"/>
             <field name="name"/>
             <field name="partner_id"/>
@@ -16,7 +16,7 @@
             <field name="company_id" groups="base.group_multi_company"/>
             <field name="currency_id" invisible="1"/>
             <field name="partner_type" invisible="1"/>
-        </tree>
+        </list>
     </field>
 </record>
 
@@ -92,7 +92,7 @@
                         <field name="receiptbook_id" 
                                invisible="localization == False"
                                required="localization != False and state == 'draft'"
-                               domain="[('partner_type', '=', partner_type), ('company_id', '=', company_id)]"
+                               domain="[('partner_type', '=', partner_type)]"
                                readonly="state in ['posted', 'confirmed', 'cancel']"
                                groups="base.group_multi_company" />
                         <field name="document_number" 
@@ -152,7 +152,7 @@
                                     type="object"/>
                             
                             <field name="to_pay_move_line_ids" 
-                                   domain="[('partner_id.commercial_partner_id', '=', commercial_partner_id),('account_id.account_type', '=', account_internal_type),('account_id.reconcile', '=', True),('reconciled', '=', False),('full_reconcile_id', '=', False),('company_id', '=', company_id)]" 
+                                   domain="[('partner_id.commercial_partner_id', '=', commercial_partner_id),('account_id.account_type', '=', account_internal_type),('account_id.reconcile', '=', True),('reconciled', '=', False),('full_reconcile_id', '=', False)]" 
                                    groups="base.group_multi_company" />
                         </page>
                         <page string="Lineas de pagos">
@@ -182,9 +182,9 @@
                                     type="object"/>
                                     
                             <field name="debt_move_line_ids" 
-                                   domain="[('partner_id.commercial_partner_id', '=', commercial_partner_id),('account_id.account_type', '=', account_internal_type),('account_id.reconcile', '=', True),('reconciled', '=', False), ('full_reconcile_id', '=', False),('company_id', '=', company_id)]" 
+                                   domain="[('partner_id.commercial_partner_id', '=', commercial_partner_id),('account_id.account_type', '=', account_internal_type),('account_id.reconcile', '=', True),('reconciled', '=', False), ('full_reconcile_id', '=', False)]" 
                                    groups="base.group_multi_company">
-                                <tree string="Journal Items" edit="0">
+                                <list string="Journal Items" edit="0">
                                     <field name="date"/>
                                     <field name="date_maturity"/>
                                     <field name="move_id" required="0"/>
@@ -192,7 +192,7 @@
                                     <field name="name"/>
                                     <field name="ref"/>
                                     <field name="statement_id" invisible="1"/>
-                                    <field name="account_id" options="{&quot;no_open&quot;:True}" domain="[('company_id', '=', company_id)]"/>
+                                    <field name="account_id" options="{&quot;no_open&quot;:True}"/>
                                     <field name="balance" string="Amount"/>
                                     <field name="amount_residual" sum="Total"/>
                                     <field name="amount_currency" groups="base.group_multi_currency"/>
@@ -200,7 +200,7 @@
                                     <field name="currency_id" invisible="1"/>
                                     <field name="company_currency_id" invisible="1"/>
                                     <field name="company_id" invisible="1"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page string="Pagado" 
@@ -255,10 +255,7 @@
     <field name="res_model">account.payment.group</field>
     <field name="view_mode">tree,form,graph</field>
     <field name="context">{'default_partner_type': 'supplier', 'search_default_not_cancelled': 1}</field>
-    <!-- <field name="context">{'default_payment_type': 'outbound', 'default_partner_type': 'supplier'}</field> -->
-    <!-- <field name="context">{'default_payment_type': 'outbound'}</field> -->
     <field name="domain">[('partner_type', '=', 'supplier')]</field>
-    <!-- <field name="view_id" ref="view_account_supplier_payment_group_tree"/> -->
     <field name="help" type="html">
         <p class="oe_view_nocontent_create">
           Click para registrar un pago
