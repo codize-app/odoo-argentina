@@ -1,9 +1,7 @@
 from odoo import fields, models, _, api
 from odoo.exceptions import UserError, ValidationError
 import logging
-
 _logger = logging.getLogger(__name__)
-
 
 class AccountPayment(models.Model):
 
@@ -255,7 +253,7 @@ class AccountPayment(models.Model):
         else:
             self.check_number = False
 
-# post methods
+    # post methods
     def cancel(self):
         for rec in self:
             # solo cancelar operaciones si estaba postead, por ej para comp.
@@ -264,20 +262,6 @@ class AccountPayment(models.Model):
             if rec.state in ['confirmed', 'posted']:
                 rec.do_checks_operations(cancel=True)
         res = super(AccountPayment, self).cancel()
-        return res
-
-    @api.model
-    def X_create(self,vals):
-        if 'payment_method_id' in vals:
-            payment_method = self.env['account.payment.method'].browse(vals['payment_method_id'])
-        else:
-            payment_method = None
-        res = super(AccountPayment, self).create(vals)
-        if payment_method and payment_method.code == 'received_third_check':
-            check_type = 'third_check'
-            for rec in res:
-                bank = self.env['res.bank'].browse(vals['check_bank_id'])
-                res.create_check(check_type,None,bank)
         return res
 
     #Cuenta para cheques propios
