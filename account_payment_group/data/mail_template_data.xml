@@ -26,13 +26,18 @@
     <br/>
     <div style="width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-left-radius: 5px; border-top-right-radius: 5px;">
         <h3 style="box-sizing: border-box; line-height: 1.2; font-weight: 500; margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;">
-            <strong style="box-sizing: border-box; font-weight: 500; text-transform: uppercase;"><t t-out="object.company_id.name or ''" data-oe-t-inline="true" contenteditable="false">Exemax-Codize</t></stro>    </div>
+            <strong style="box-sizing: border-box; font-weight: 500; text-transform: uppercase;">
+               <t t-out="object.company_id.name or ''" data-oe-t-inline="true" contenteditable="false">Exemax-Codize</t>
+            </strong>
+        </h3>
+    </div>
     <div style="width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
         <span style="color: #222; margin-bottom: 5px; display: block;">
         <t t-out="object.company_id.street or ''" data-oe-t-inline="true" contenteditable="false"></t><br/>
         <t t-out="object.company_id.street2 or ''" data-oe-t-inline="true" contenteditable="false"></t><br/>
         <t t-out="object.company_id.zip or ''" data-oe-t-inline="true" contenteditable="false"></t> <t t-out="object.company_id.city or ''" data-oe-t-inline="true" contenteditable="false"></t><br/>
-        <t t-out="object.company_id.state_id.name or ''" data-oe-t-inline="true" contenteditable="false"></t> - <t t-out="object.company_id.country_id.name or ''" data-oe-t-inline="true" contenteditable="fals>        </span>
+        <t t-out="object.company_id.state_id.name or ''" data-oe-t-inline="true" contenteditable="false"></t> - <t t-out="object.company_id.country_id.name or ''" data-oe-t-inline="true" contenteditable="false" />
+        .</span>
         <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding: 0px;">
             <t t-out="object.company_id.phone or ''" data-oe-t-inline="true" contenteditable="false"></t>
         </div>
