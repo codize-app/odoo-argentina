@@ -42,7 +42,7 @@
         <field name="name">Conexiones ARCA</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">afipws.connection</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem name="Conexiones" action="act_afipws_auth" id="menu_action_afipws_auth" parent="menu_afipws"/>

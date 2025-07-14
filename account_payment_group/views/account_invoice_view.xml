@@ -6,7 +6,7 @@
     <field name="model">account.invoice</field>
     <field eval="99" name="priority"/>
     <field name="arch" type="xml">
-        <tree decoration-info="state == 'draft'" decoration-muted="state == 'cancel'" string="Factura">
+        <list decoration-info="state == 'draft'" decoration-muted="state == 'cancel'" string="Factura">
             <field name="date_invoice"/>
             <field name="number"/>
             <field name="commercial_partner_id" invisible="1"/>
@@ -22,7 +22,7 @@
             <field name="company_currency_id" invisible="1"/>
             <field name="state"/>
             <field name="type" invisible="context.get('type',True)"/>
-        </tree>
+        </list>
     </field>
 </record>
 

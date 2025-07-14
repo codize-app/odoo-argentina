@@ -247,7 +247,7 @@
     <record model="ir.actions.act_window" id="action_third_check">
         <field name="name">Cheques de Terceros</field>
         <field name="res_model">account.check</field>
-        <field name="view_mode">tree,form,calendar</field>
+        <field name="view_mode">list,form,calendar</field>
         <field name="domain">[('type','=','third_check')]</field>
         <field name="context">{'search_default_state':'holding','default_type':'third_check'}</field>
     </record>
@@ -262,7 +262,7 @@
     <record model="ir.actions.act_window" id="action_issue_check">
         <field name="name">Cheques Propios</field>
         <field name="res_model">account.check</field>
-        <field name="view_mode">tree,form,calendar</field>
+        <field name="view_mode">list,form,calendar</field>
         <field name="domain">[('type','=','issue_check')]</field>
         <field name="context">{'search_default_state':'handed','default_type':'issue_check'}</field>
     </record>
