@@ -226,7 +226,7 @@ class AccountPaymentGroup(models.Model):
         compute='_compute_account_internal_type'
     )
     move_line_ids = fields.Many2many(
-        'account.move.line',
+        'account.move',
         compute='_compute_move_lines',
         readonly=True,
         copy=False,

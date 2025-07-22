@@ -159,7 +159,7 @@
                                    <field name="payment_ids"
 		                            context="{
 		                                'form_view_ref': 'account_payment_group.view_account_payment_from_group_form', 
-		                                'tree_view_ref': 'account_payment_group.view_account_payment_from_group_tree', 
+		                                'list_view_ref': 'account_payment_group.view_account_payment_from_group_tree', 
 		                                'kanban_view_ref': 'account_payment_group.view_account_payment_kanban_mobile',
 		                                'default_move_journal_types': ('bank', 'cash'), 
 		                                'default_company_id': company_id
@@ -214,10 +214,7 @@
                     </notebook>
                                         
             </sheet>
-        <div class="oe_chatter">
-            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
-            <field name="message_ids" widget="mail_thread"/>
-        </div>
+            <chatter/>
         </form>
     </field>
 </record>
