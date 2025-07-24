@@ -226,7 +226,7 @@ class AccountPaymentGroup(models.Model):
         compute='_compute_account_internal_type'
     )
     move_line_ids = fields.Many2many(
-        'account.move',
+        'account.move.line',
         compute='_compute_move_lines',
         readonly=True,
         copy=False,
@@ -489,7 +489,7 @@ class AccountPaymentGroup(models.Model):
             lines = rec.move_line_ids.browse()
             # not sure why but self.move_line_ids dont work the same way
             #payment_lines = rec.payment_ids.mapped('move_line_ids')
-            payment_lines = rec.payment_ids.mapped('invoice_ids')
+            payment_lines = rec.payment_ids.mapped('invoice_ids').line_ids
 
             reconciles = rec.env['account.partial.reconcile'].search([
                 ('credit_move_id', 'in', payment_lines.ids)])
@@ -505,7 +505,7 @@ class AccountPaymentGroup(models.Model):
     @api.depends('payment_ids.invoice_ids')
     def _compute_move_lines(self):
         for rec in self:
-            rec.move_line_ids = rec.payment_ids.mapped('invoice_ids')
+            rec.move_line_ids = rec.payment_ids.mapped('invoice_ids').line_ids
 
     @api.depends('partner_type')
     def _compute_account_internal_type(self):
