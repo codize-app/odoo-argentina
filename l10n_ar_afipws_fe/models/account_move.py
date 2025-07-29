@@ -531,7 +531,8 @@ print "Observaciones:", wscdc.Obs
                     concepto, tipo_doc, nro_doc, doc_afip_code, pos_number,
                     cbt_desde, cbt_hasta, imp_total, imp_tot_conc, imp_neto,
                     imp_iva, imp_trib, imp_op_ex, fecha_cbte, fecha_venc_pago,
-                    fecha_serv_desde, fecha_serv_hasta, moneda_id, round(moneda_ctz,2)
+                    fecha_serv_desde, fecha_serv_hasta, moneda_id, round(moneda_ctz,2),
+                    condicion_iva_receptor_id=inv.partner_id.l10n_ar_afip_responsibility_type_id.code
                 )
                 if amounts["other_taxes_amount"] > 0 or amounts['iibb_perc_amount'] > 0 or amounts["vat_perc_amount"] > 0 or amounts["profits_perc_amount"] > 0 or amounts["other_perc_amount"] > 0 or amounts['mun_perc_amount'] > 0:
                     for other_tax in self._build_afip_wsfe_other_taxes():
