@@ -17,7 +17,7 @@
                     <group name="checks">
                         <field name="check_id" invisible="check_id == False" />
                         <field name="check_ids"
-                            invisible="check_ids == [] or check_id != False or payment_method_code not in ['received_third_check', 'issue_check']">
+                            invisible="check_ids == [] or check_id != False or payment_method_code not in ['received_third_check']">
                             <tree>
                                 <field name="name" />
                                 <field name="payment_date" />

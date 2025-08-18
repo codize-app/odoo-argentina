@@ -6,7 +6,7 @@
         <field name="model">account.check</field>
         <field name="priority">100</field>
         <field name="arch" type="xml">
-            <tree string="Checks">
+            <tree string="Checks" multi_edit="1">
                 <header>
                     <button string="Depositar"
                             name="%(action_account_check_action_wizard)d"
@@ -15,6 +15,7 @@
                             context="{'default_action_type': 'bank_deposit'}"
                             icon="fa-upload"/>
                 </header>
+                <field name="state"/>
                 <field name="checkbook_id"
                     invisible="type != 'issue_check'"
                     required="type == 'issue_check'"
@@ -172,9 +173,6 @@
         <field name="model">account.check</field>
         <field name="inherit_id" ref="view_account_check_form" />
         <field name="arch" type="xml">
-            <form position="attributes">
-                <attribute name="create">true</attribute>
-            </form>
             <sheet position="before">
                 <p class="alert alert-info" role="alert" style="margin-bottom:0px;"
                     invisible = "id != 'False'">Recuerde que los cheques se crean con los pagos.<br /><b>
@@ -274,3 +272,4 @@
         parent="account.menu_finance_payables" />
 
 </odoo>
+

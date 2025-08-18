@@ -224,6 +224,122 @@ class AccountCheck(models.Model):
         if checks is None:
             checks = [self]
 
+        _logger.info('===== EJECUTANDO get_bank_vals =====')
+        _logger.info('Acción: %s', action)
+        _logger.info('Diario: %s', journal.name)
+
+        lines = []
+        for check in checks:
+            _logger.info('---- PROCESANDO CHEQUE ----')
+            _logger.info('Check: %s | Monto: %s', check.name, check.amount)
+
+            if action == 'bank_debit':
+                _logger.info('Acción: BANK_DEBIT')
+
+                credit_account = journal.account_holding
+                _logger.info('Cuenta de crédito (journal.default_account_id): %s', credit_account)
+
+                debit_account = None  # Inicializamos en None
+                if check.type == 'third_check' and journal.account_third:
+                    debit_account = journal.account_third
+                elif journal.account_holding:
+                    debit_account = journal.account_holding
+
+                _logger.info('Cuenta de débito asignada antes de override: %s', debit_account)
+
+                # Sobreescribiendo la cuenta con la de "deferred"
+                deferred_account = check.company_id._get_check_account('deferred')
+                if deferred_account:
+                    debit_account = deferred_account
+
+                _logger.info('Cuenta de débito final: %s', debit_account)
+
+                if not debit_account:
+                    _logger.error('ERROR: No se ha definido una cuenta de débito para bank_debit.')
+
+                name = _('Check "%s" debit') % (check.name)
+                lines.append({
+                    'name': name,
+                    'debit_account': debit_account,
+                    'credit_account': credit_account,
+                    'amount': check.amount,
+                })
+
+            elif action == 'bank_deposit' or action == 'bank_sell':
+                _logger.info('Acción: BANK_DEPOSIT o BANK_SELL')
+
+                name = _('Check "%s" deposit') % (check.name)
+                debit_account = journal.default_account_id
+                credit_account = check.company_id._get_check_account('holding')
+
+                if action == 'bank_deposit':
+                    if check.type == 'third_check' and journal.account_third:
+                        debit_account = journal.account_third
+                    elif journal.account_holding:
+                        debit_account = journal.account_holding
+
+                if action == 'bank_sell':
+                    if not check.company_id.negotiated_check_account_id:
+                        _logger.error('ERROR: No está definida la cuenta de cheques negociados en la empresa.')
+                        raise ValidationError('No está definida la cuenta de cheques negociados a nivel empresa')
+
+                    debit_account = check.company_id.negotiated_check_account_id
+                    credit_account = check.company_id._get_check_account('holding')
+
+                    if not credit_account or not debit_account:
+                        _logger.error('ERROR: Cuentas contables no definidas correctamente.')
+                        raise ValidationError('Faltan cuentas contables para la operación')
+
+                    name = _('Check "%s" sell') % (check.name)
+
+                lines.append({
+                    'name': name,
+                    'debit_account': debit_account,
+                    'credit_account': credit_account,
+                    'amount': check.amount,
+                })
+
+            else:
+                _logger.error('ERROR: Acción %s no implementada.', action)
+                raise ValidationError(_('Action %s not implemented for checks!') % action)
+
+        move_lines = []
+        for line in lines:
+            _logger.info('---- PROCESANDO LINEAS DE ASIENTO ----')
+            _logger.info('Nombre: %s', line['name'])
+            _logger.info('Cuenta de débito: %s | Cuenta de crédito: %s | Monto: %s',
+                         line['debit_account'], line['credit_account'], line['amount'])
+
+            debit_line_vals = {
+                'name': line['name'],
+                'account_id': line['debit_account'].id if line['debit_account'] else None,
+                'debit': line['amount'] if line['debit_account'] else 0.0,
+                'amount_currency': 0,
+            }
+
+            credit_line_vals = {
+                'name': line['name'],
+                'account_id': line['credit_account'].id if line['credit_account'] else None,
+                'credit': line['amount'] if line['credit_account'] else 0.0,
+                'amount_currency': 0,
+            }
+
+            if not debit_line_vals['account_id'] or not credit_line_vals['account_id']:
+                _logger.error('ERROR: Falta una cuenta contable en el asiento.')
+            else:
+                move_lines.append((0, 0, debit_line_vals))
+                move_lines.append((0, 0, credit_line_vals))
+
+        return {
+            'ref': _('Grouped Check Deposit') if len(checks) > 1 else name,
+            'journal_id': journal.id,
+            'date': fields.Date.today(),
+            'line_ids': move_lines,
+        }
+    '''def get_bank_vals(self, action, journal, checks=None):
+        if checks is None:
+            checks = [self]
+
         total_amount = sum(check.amount for check in checks)
         debit_account = None
         credit_account = None
@@ -285,7 +401,7 @@ class AccountCheck(models.Model):
             'journal_id': journal.id,
             'date': fields.Date.today(),
             'line_ids': move_lines,
-        }
+        }'''
 
 
 

@@ -1,7 +1,9 @@
 from odoo import fields, models, _, api
 from odoo.exceptions import UserError, ValidationError
 import logging
+
 _logger = logging.getLogger(__name__)
+
 
 class AccountPayment(models.Model):
 
@@ -253,7 +255,7 @@ class AccountPayment(models.Model):
         else:
             self.check_number = False
 
-    # post methods
+# post methods
     def cancel(self):
         for rec in self:
             # solo cancelar operaciones si estaba postead, por ej para comp.
@@ -264,10 +266,24 @@ class AccountPayment(models.Model):
         res = super(AccountPayment, self).cancel()
         return res
 
+    @api.model
+    def X_create(self,vals):
+        if 'payment_method_id' in vals:
+            payment_method = self.env['account.payment.method'].browse(vals['payment_method_id'])
+        else:
+            payment_method = None
+        res = super(AccountPayment, self).create(vals)
+        if payment_method and payment_method.code == 'received_third_check':
+            check_type = 'third_check'
+            for rec in res:
+                bank = self.env['res.bank'].browse(vals['check_bank_id'])
+                res.create_check(check_type,None,bank)
+        return res
+
     #Cuenta para cheques propios
     @api.model
     def create(self,vals):
-        res = super(AccountPayment, self).create(vals)
+        res = super(AccountPayment, self).create(vals).with_context(skip_account_move_synchronization=True)
         check_method = self.env.ref('l10n_ar_account_check.account_payment_method_issue_check')
         if (not check_method):
             return res
@@ -495,6 +511,8 @@ class AccountPayment(models.Model):
 
     def action_post(self):
         for rec in self:
+            _logger.info("==========================================")
+            _logger.info(rec.check_number)
             if rec.check_ids and not rec.currency_id.is_zero(
                     sum(rec.check_ids.mapped('amount')) - rec.amount):
                 raise UserError(_(
@@ -517,7 +535,10 @@ class AccountPayment(models.Model):
     def _get_liquidity_move_line_vals(self, amount):
         vals = super(AccountPayment, self)._get_liquidity_move_line_vals(
             amount)
+        _logger.info('LIQUIDITY LINES')
+        _logger.info(vals)
         vals = self.do_checks_operations(vals=vals)
+        _logger.info(vals)
         return vals
 
     def do_print_checks(self):
@@ -572,13 +593,13 @@ class AccountPayment(models.Model):
         else:
             return self.do_print_checks()
 
-    def _get_counterpart_move_line_vals(self, invoice=False):
-        vals = super(AccountPayment, self)._get_counterpart_move_line_vals(
-            invoice=invoice)
-        force_account_id = self._context.get('force_account_id')
-        if force_account_id:
-            vals['account_id'] = force_account_id
-        return vals
+    #def _get_counterpart_move_line_vals(self, invoice=False):
+    #    vals = super(AccountPayment, self)._get_counterpart_move_line_vals(
+    #        invoice=invoice)
+    #    force_account_id = self._context.get('force_account_id')
+    #    if force_account_id:
+    #        vals['account_id'] = force_account_id
+    #    return vals
 
     def _split_aml_line_per_check(self, move):
         """ Take an account mvoe, find the move lines related to check and
@@ -624,19 +645,25 @@ class AccountPayment(models.Model):
 
     def _create_payment_entry(self, amount):
         move = super(AccountPayment, self)._create_payment_entry(amount)
-        if self.filtered(
-            lambda x: x.payment_type == 'transfer' and
-                x.payment_method_code == 'delivered_third_check' and
-                x.check_deposit_type == 'detailed'):
-            self._split_aml_line_per_check(move)
+        #if self.filtered(
+        #    lambda x: x.payment_type == 'transfer' and
+        #        x.payment_method_code == 'delivered_third_check' and
+        #        x.check_deposit_type == 'detailed'):
+            #self._split_aml_line_per_check(move)
         return move
 
     def _create_transfer_entry(self, amount):
         transfer_debit_aml = super(
             AccountPayment, self)._create_transfer_entry(amount)
-        if self.filtered(
-            lambda x: x.payment_type == 'transfer' and
-                x.payment_method_code == 'delivered_third_check' and
-                x.check_deposit_type == 'detailed'):
-            self._split_aml_line_per_check(transfer_debit_aml.move_id)
+        #if self.filtered(
+        #    lambda x: x.payment_type == 'transfer' and
+        #        x.payment_method_code == 'delivered_third_check' and
+        #        x.check_deposit_type == 'detailed'):
+            #self._split_aml_line_per_check(transfer_debit_aml.move_id)
         return transfer_debit_aml
+
+    def _synchronize_to_moves(self, changed_fields):
+        # Cortamos la logica de la sincronización para cheques de terceros porque rompe y genera lineas duplicadas al apunte contable
+        if self.journal_id.account_third and self.journal_id.account_holding:
+            return
+        return super()._synchronize_to_moves(changed_fields)
