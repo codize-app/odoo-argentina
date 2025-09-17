@@ -58,10 +58,10 @@
 			<!--Agregado de numero de recibo-->
 			<span t-if="o.state == 'confirmed' or o.state == 'posted' or o.state == 'draft'">
 			<t t-if="o.receiptbook_id.partner_type == 'supplier'">
-				N°: <span t-esc="o.display_name.replace('REC', 'OP')"/><br/>
+				N째: <span t-esc="o.display_name.replace('REC', 'OP')"/><br/>
 				</t>
 				<t t-else="">
-				N°: <span t-esc="o.display_name.replace('REC', '')"/><br/>
+				N째: <span t-esc="o.display_name.replace('REC', '')"/><br/>
 				</t>							
 			</span>
 			<span t-if="o.state == 'confirmed' or o.state == 'posted' or o.state == 'draft'">
@@ -116,7 +116,7 @@
 					<th>Diario</th>								
 					<th>Memo</th>
 					<t t-if="o.receiptbook_id.name == 'Recibo de pagos'">
-						<th>N° Retención</th>
+						<th>N째 Retenci처n</th>
 					</t>
 					<th>Estado</th>
 					<th>Monto</th>
@@ -236,10 +236,82 @@
 		</table>
 	</div>
 	<!--END PAGE-->
-		
+	
+        <t t-foreach="o.payment_ids" t-as="o">
+	  <t t-if="o.print_withholding">
+	      <div style="page-break-before:always;"></div>
+	      <div class="page">
+                    <div class="row mt64">
+                        <div class="col-6" t-if="o.date">
+                            <strong>Fecha Recibo </strong> <span t-field="o.date"/>
+                        </div>
+                    </div>
+                    <h3><strong>Datos Sujeto Retenido:</strong></h3>
+                    <div class="row">
+                        <div class="col-6" t-if="o.partner_type">
+                            <t t-if="o.partner_type == 'customer'">
+                                <strong>Cliente: </strong>
+                            </t>
+                            <t t-if="o.partner_type == 'supplier'">
+                                <strong>Proveedor: </strong>
+                            </t><address t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
+                        <div t-if="o.partner_id.vat" class="mt16">
+                                <t t-if="o.partner_id.country_id.vat_label" t-esc="o.company_id.country_id.vat_label" id="inv_tax_id_label"/>
+                        <t t-else="">CUIT</t>: <span t-field="o.partner_id.vat"/>
+                    </div>
+                </div>
+                    </div>
+                    <h4>Datos Retenci처n</h4>
+                    <div class="row ">
+                        <div class="col-6" t-if="o.payment_method_id">
+                            <strong>Retenci처n Aplicada: </strong><span t-field="o.tax_withholding_id.display_name"/>
+                        </div>
+                        <div class="col-6" t-if="o.payment_method_id">
+                            <strong>N첬mero de Retenci처n: </strong><span t-field="o.withholding_number"/>
+                        </div>
+                    </div>
+                    <div class="row mb64">
+                        <div class="col-3" t-if="o.amount">
+                        <strong>Certificado de Retenci처n: <span t-field="o.withholding_number"/></strong>
+                        </div>
+                        <div class="col-3" t-if="o.amount">
+                            <strong>Monto Retenci처n </strong><span t-field="o.amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                        </div>
+                        <div class="col-3" t-if="o.amount">
+                            <strong>Monto Imponible </strong><span t-field="o.withholding_base_amount" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                        </div>
+                        <div class="col-3" t-if="o.communication">
+                            <strong>Memo: </strong><span t-field="o.communication"/>
+                        </div>
+            </div>
+            <h4>Facturas Aplicadas</h4>
+            <p/>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th><span>Fecha Factura</span></th>
+                                <th><span>Nro Factura</span></th>
+                                <th><span>Referencia</span></th>
+                                <th class="text-right"><span>Monto Original</span></th>
+                                <th class="text-right"><span>Monto Pagado</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="o.payment_group_id.matched_move_line_ids" t-as="inv">
+                                <td><span t-field="inv.move_id.invoice_date"/></td>
+                                <td><span t-field="inv.move_id.name"/></td>
+                                <td><span t-field="inv.move_id.ref"/></td>
+                                <td class="text-right"><span t-field="inv.move_id.amount_total"/></td>
+                                <td class="text-right"><span t-esc="inv.move_id.amount_total - inv.move_id.amount_residual" t-options="{'widget': 'monetary', 'display_currency': inv.move_id.currency_id}"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+	     <!--t t-call="l10n_ar_withholding_automatic.report_payment_withholding_document"/-->
+	  </t>
+	</t>	
 
 	</div>
-  <!--<t t-call="report.external_layout_footer"/>-->
 
 </template>
 
