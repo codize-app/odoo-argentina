@@ -5,7 +5,6 @@ from odoo.exceptions import ValidationError
 import logging
 _logger = logging.getLogger(__name__)
 
-
 class AccountPayment(models.Model):
     _inherit = "account.payment"
 
@@ -162,8 +161,7 @@ class AccountPayment(models.Model):
         recs = super().create(vals_list)
         if self._context.get('avoid_create_payment_group'):
             return recs
-        for rec in recs.filtered(lambda x: not x.payment_group_id and not x.is_internal_transfer).with_context(
-                created_automatically=True):
+        for rec in recs.filtered(lambda x: not x.payment_group_id).with_context(created_automatically=True):
             if not rec.partner_id:
                 # avoid creating payment group when creating entry of expenses paid by company.
                 # In this cases odoo creates a payment but is't not line a normal one, it's a payment without partner
