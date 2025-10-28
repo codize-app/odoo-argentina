@@ -79,7 +79,7 @@ class AccountCheckbook(models.Model):
         'ir.actions.report',
         'Reporte',
         domain="[('model', '=', 'account.payment')]",
-        context="{'default_model': 'account.payment'}",
+        context={'default_model': 'account.payment'},
         help='Report to use when printing checks. If not report selected, '
         'report with name "check_report" will be used',
     )
