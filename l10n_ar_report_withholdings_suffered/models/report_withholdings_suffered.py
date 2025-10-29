@@ -188,18 +188,33 @@ class ReportWithholdingsSuffered(models.Model):
     def get_invoice_withholdings(self):
         if not self.tax_withholdings_suffered:
             return
-        #Buscamos facturas de proveedor dentro del rango de fechas
-        invoices = self.env['account.move'].search([('company_id','=',self.company_id.id),('date','>=',self.date_from),('date','<=',self.date_to),('state','=','posted'),('move_type','in',['in_invoice','in_refund'])])
-        #Filtramos solo aquellas que contengan el impuesto seleccionado para el informe
-        invoices = invoices.filtered(lambda r: str(json.loads(r.tax_totals_json)).find(self.tax_withholdings_suffered.tax_group_id.name) != -1)
-        if len(invoices) < 1:
+
+    # Buscar facturas de proveedor dentro del rango de fechas
+        invoices = self.env['account.move'].search([
+            ('company_id', '=', self.company_id.id),
+            ('date', '>=', self.date_from),
+            ('date', '<=', self.date_to),
+            ('state', '=', 'posted'),
+            ('move_type', 'in', ['in_invoice', 'in_refund'])
+        ])
+
+        # Filtrar solo aquellas que contengan el impuesto seleccionado para el informe
+        invoices = invoices.filtered(lambda r: (
+            r.tax_totals and
+            self.tax_withholdings_suffered.tax_group_id.name in str(r.tax_totals)
+        ))
+
+        if not invoices:
             return
 
-        for i in self.invoice_ids:
-            i.unlink()
-        for invoice in invoices:
-            self.invoice_ids = [(0, 0, {'invoice' : invoice.id})]
+        # Limpiar facturas anteriores
+        self.invoice_ids.unlink()
 
+        # Agregar nuevas facturas
+        for invoice in invoices:
+            self.invoice_ids = [(0, 0, {'invoice': invoice.id})]
+
+        # Generar archivos TXT
         self.set_txt_sifere_per()
         self.set_txt_esicol_per()
     
@@ -352,17 +367,32 @@ class InvoiceSufferedLine(models.Model):
     _name = "invoice.suffered.line"
     _description = "Linea de facturas en percepciones sufridas"
 
-    @api.depends("invoice")
+    @api.depends("invoice", "invoice.line_ids", "invoice.line_ids.tax_ids")
     def _compute_total_withholdings_suffered(self):
         for rec in self:
-            taxes = json.loads(rec.invoice.tax_totals_json)['groups_by_subtotal']['Importe libre de impuestos']
-            per_tmp = 0
-            for tax in taxes:
-                if tax['tax_group_name'] == self.withholdings_suffered_id.tax_withholdings_suffered.tax_group_id.name:
-                    per_tmp = per_tmp + tax['tax_group_amount']
-            if rec.invoice.currency_id.name != 'ARS':
-                per_tmp = per_tmp * rec.invoice.currency_rate
-            rec.total_withholdings_suffered = per_tmp
+            per_tmp = 0.0
+            if not rec.invoice or not rec.withholdings_suffered_id.tax_withholdings_suffered:
+                rec.total_withholdings_suffered = 0.0
+                continue
+
+            # Buscar el tax_group_id del impuesto configurado
+            target_tax_group = rec.withholdings_suffered_id.tax_withholdings_suffered.tax_group_id
+            
+            # Calcular el total de impuestos que pertenecen al grupo objetivo
+            for line in rec.invoice.line_ids.filtered(lambda l: l.tax_line_id):
+                if line.tax_line_id.tax_group_id == target_tax_group:
+                    per_tmp += abs(line.balance)
+            
+            # Si la factura está en otra moneda, aplicar el tipo de cambio
+            if rec.invoice.currency_id != rec.invoice.company_id.currency_id:
+                per_tmp = rec.invoice.currency_id._convert(
+                    per_tmp,
+                    rec.invoice.company_id.currency_id,
+                    rec.invoice.company_id,
+                    rec.invoice.date or fields.Date.today()
+                )
+
+        rec.total_withholdings_suffered = per_tmp
 
     invoice = fields.Many2one('account.move','Factura')
     withholdings_suffered_id = fields.Many2one('report.withholdings.suffered', 'Report Id', ondelete='cascade')
