@@ -9,7 +9,6 @@ _logger = logging.getLogger(__name__)
 
 
 class AccountCheckbook(models.Model):
-
     _name = 'account.checkbook'
     _description = 'Account Checkbook'
 
@@ -50,7 +49,6 @@ class AccountCheckbook(models.Model):
         domain=[('type', '=', 'bank')],
         ondelete='cascade',
         context={'default_type': 'bank'},
-        states={'draft': [('readonly', False)]},
         auto_join=True,
     )
     range_to = fields.Integer(
