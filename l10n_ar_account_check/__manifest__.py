@@ -10,8 +10,9 @@
     'images': [
     ],
     'depends': [
-        'account_payment_group',
-        'base'
+        'base',
+        'account',
+        'account_payment_group'
     ],
     'data': [
         'data/account_payment_method_data.xml',
