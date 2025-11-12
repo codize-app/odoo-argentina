@@ -16,9 +16,6 @@ class AccountPayment(models.Model):
         copy=False,
         auto_join=True,
     )
-    # we add this field for better usability on issue checks and received
-    # checks. We keep m2m field for backward compatibility where we allow to
-    # use more than one check per payment
     check_id = fields.Many2one(
         'account.check',
         compute='_compute_check',
@@ -117,8 +114,7 @@ class AccountPayment(models.Model):
             AccountPayment,
             (self - check_payments))._compute_payment_method_description()
 
-# on change methods
-
+    # on change methods
     @api.constrains('check_ids')
     @api.onchange('check_ids', 'payment_method_code')
     def onchange_checks(self):
@@ -265,7 +261,7 @@ class AccountPayment(models.Model):
         return res
 
     #Cuenta para cheques propios
-    @api.model
+    @api.model_create_multi
     def create(self,vals):
         res = super(AccountPayment, self).create(vals)
         check_method = self.env.ref('l10n_ar_account_check.account_payment_method_issue_check')
