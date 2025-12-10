@@ -119,12 +119,6 @@ class AccountTax(models.Model):
         commercial_partner = payment_group.commercial_partner_id
 
         force_withholding_amount_type = None
-        if self.withholding_type == 'partner_tax':
-            alicuot_line = self.get_partner_alicuot(
-                commercial_partner,
-                payment_group.payment_date or fields.Date.context_today(self),
-            )
-            alicuota = alicuot_line
         self.ensure_one()
         withholding_amount_type = force_withholding_amount_type or \
             self.withholding_amount_type
@@ -190,12 +184,7 @@ class AccountTax(models.Model):
 
         base_amount = vals['withholdable_base_amount']
 
-        if self.withholding_type == 'partner_tax':
-            amount = base_amount * (alicuota)
-            vals['comment'] = "%s x %s" % (
-                base_amount, alicuota)
-            vals['period_withholding_amount'] = amount
-        elif self.withholding_type == 'tabla_ganancias':
+        if self.withholding_type == 'tabla_ganancias':
             regimen = payment_group.regimen_ganancias_id
             imp_ganancias_padron = commercial_partner.imp_ganancias_padron
             if (
