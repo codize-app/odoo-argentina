@@ -1,0 +1,13 @@
+##############################################################################
+# For copyright and license notices, see __manifest__.py file in module root
+# directory
+##############################################################################
+from odoo import fields, models
+
+class L10nLatamDocumentType(models.Model):
+    _inherit = "l10n_latam.document.type"
+
+    export_to_digital = fields.Boolean(
+        "Exportar a Digital",
+        help="Configure esto para exportar este tipo de documento en el Libro IVA Digital",
+    )
