@@ -103,6 +103,24 @@ class AccountVatLedger(models.Model):
     simple_vat_deb_filename = fields.Char(
         "Nombre de Archivo Digital de IVA Simple Débito", readonly=True
     )
+    simple_vat_res_deb_file = fields.Binary(
+        "Archivo IVA Simple Restitución Débito", readonly=True
+    )
+    simple_vat_res_deb_filename = fields.Char(
+        "Nombre de Archivo Digital de IVA Simple Restitución Débito", readonly=True
+    )
+    simple_vat_cre_file = fields.Binary(
+        "Archivo IVA Simple Crédito", readonly=True
+    )
+    simple_vat_cre_filename = fields.Char(
+        "Nombre de Archivo Digital de IVA Simple Crédito", readonly=True
+    )
+    simple_vat_res_cre_file = fields.Binary(
+        "Archivo IVA Simple Restitución Crédito", readonly=True
+    )
+    simple_vat_res_cre_filename = fields.Char(
+        "Nombre de Archivo Digital de IVA Simple Restitución Crédito", readonly=True
+    )
     # VAT Simple End
 
     company_id = fields.Many2one(
@@ -831,4 +849,28 @@ class AccountVatLedger(models.Model):
             )
             self.simple_vat_deb_file = encodebytes(
                 self.IVASIMPLE_DEB_FISCAL.encode("ISO-8859-1")
+            )
+        if self.IVASIMPLE_RES_DEB_FISCAL:
+            self.simple_vat_res_deb_filename = _("IVA-Simple-Restitucion-Debito-Fiscal_%s_%s.csv") % (
+                self.type,
+                self.date_to,
+            )
+            self.simple_vat_res_deb_file = encodebytes(
+                self.IVASIMPLE_RES_DEB_FISCAL.encode("ISO-8859-1")
+            )
+        if self.IVASIMPLE_CRE_FISCAL:
+            self.simple_vat_cre_filename = _("IVA-Simple-Credito-Fiscal_%s_%s.csv") % (
+                self.type,
+                self.date_to,
+            )
+            self.simple_vat_deb_file = encodebytes(
+                self.IVASIMPLE_DEB_FISCAL.encode("ISO-8859-1")
+            )
+        if self.IVASIMPLE_RES_CRE_FISCAL:
+            self.simple_vat_res_cre_filename = _("IVA-Simple-Restitucion-Credito-Fiscal_%s_%s.csv") % (
+                self.type,
+                self.date_to,
+            )
+            self.simple_vat_res_cre_file = encodebytes(
+                self.IVASIMPLE_RES_DEB_FISCAL.encode("ISO-8859-1")
             )
