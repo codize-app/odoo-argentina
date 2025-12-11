@@ -97,6 +97,12 @@ class AccountVatLedger(models.Model):
         help="Operaciones que generar restitución de Crédito Fiscal",
         readonly=True,
     )
+    simple_vat_deb_file = fields.Binary(
+        "Archivo IVA Simple Débito", readonly=True
+    )
+    simple_vat_deb_filename = fields.Char(
+        "Nombre de Archivo Digital de IVA Simple Débito", readonly=True
+    )
     # VAT Simple End
 
     company_id = fields.Many2one(
@@ -817,3 +823,12 @@ class AccountVatLedger(models.Model):
         self.IVASIMPLE_RES_DEB_FISCAL = csv_res_deb_fiscal_data
         self.IVASIMPLE_CRE_FISCAL = csv_cre_fiscal_data
         self.IVASIMPLE_RES_CRE_FISCAL = csv_res_cre_fiscal_data
+
+        if self.IVASIMPLE_DEB_FISCAL:
+            self.simple_vat_deb_filename = _("IVA-Simple-Debito-Fiscal_%s_%s.csv") % (
+                self.type,
+                self.date_to,
+            )
+            self.simple_vat_deb_file = encodebytes(
+                self.IVASIMPLE_DEB_FISCAL.encode("ISO-8859-1")
+            )

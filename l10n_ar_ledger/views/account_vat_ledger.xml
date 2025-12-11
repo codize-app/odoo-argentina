@@ -130,6 +130,18 @@
                                     string="Generar Información de IVA Simple"
                                     help="Crea los archivos CSV para presentar IVA Simple"
                                 />
+
+                                <group>
+                                    <field
+                                        name="simple_vat_deb_filename"
+                                        invisible="1"
+                                    />
+                                </group>
+
+                                <group invisible="type != 'sale'">
+                                    <field name="simple_vat_deb_file" filename="simple_vat_deb_filename"/>
+                                </group>
+
                                 <group invisible="type != 'sale'">
                                    <field name="IVASIMPLE_DEB_FISCAL" widget="ace" />
                                    <field name="IVASIMPLE_RES_DEB_FISCAL" widget="ace" />
