@@ -105,7 +105,7 @@ For reports install `l10n_ar_report_fe`
 
 ## l10n_ar extras
 
-* `l10n_ar_ledger`: VAT Ledger for Sales and Purchases
+* `l10n_ar_ledger`: VAT Ledger for Sales and Purchases, Simple VAT
 * `l10n_ar_withholding_automatic`: Automatic Withholding on Invoices and Payments. Premium package (`odoo-argentina-withholding`) support on exports for ARBA, AGIP and SIRCAR
 * `l10n_ar_bank`: Install Argentina Bank's List
 * `l10n_ar_partner`: Improve partners for Argentina PyMEs
