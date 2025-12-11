@@ -123,6 +123,22 @@
                                     />
                                 </group>
                             </page>
+                            <page string="IVA Simple" name="simple_vat">
+                                <button
+                                    name="compute_simple_vat"
+                                    type="object"
+                                    string="Generar Información de IVA Simple"
+                                    help="Crea los archivos CSV para presentar IVA Simple"
+                                />
+                                <group invisible="type != 'sale'">
+                                   <field name="IVASIMPLE_DEB_FISCAL" widget="ace" />
+                                   <field name="IVASIMPLE_RES_DEB_FISCAL" widget="ace" />
+                                </group>
+                                <group invisible="type != 'purchase'">
+                                   <field name="IVASIMPLE_CRE_FISCAL" widget="ace" />
+                                   <field name="IVASIMPLE_RES_CRE_FISCAL" widget="ace" />
+                                </group>
+                            </page>
                         </notebook>
                     </sheet>
                     <div class="oe_chatter">

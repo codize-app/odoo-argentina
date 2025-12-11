@@ -8,7 +8,7 @@
     "version": "17.0.0.0.2",
     "category": "Accounting",
     "license": "AGPL-3",
-    "summary": "Libros de IVA (PDF y XLSX) y Libro IVA Digital (TXT) para Argentina",
+    "summary": "Libros de IVA (PDF y XLSX), Libro IVA Digital e IVA Simple (TXT, CSV) para Argentina",
     "author": "Odoo Community Association (OCA), Codize, Exemax, ADHOC SA, Moldeo Interactive",
     "website": "https://github.com/OCA/l10n-argentina",
     "depends": ["base", "l10n_ar", "report_xlsx"],
@@ -16,6 +16,7 @@
     "data": [
         "security/ir.model.access.csv",
         "security/security.xml",
+        "views/res_company.xml",
         "views/account_vat_ledger.xml",
         "report/account_vat_ledger.xml",
         "report/account_vat_ledger_xlsx.xml",

@@ -76,6 +76,29 @@ class AccountVatLedger(models.Model):
     )
     prorate_tax_credit = fields.Boolean("Prorrateo de Crédito de Impuesto")
 
+    # VAT SIMPLE Start
+    IVASIMPLE_DEB_FISCAL = fields.Text(
+        "IVASIMPLE_DEB_FISCAL",
+        help="Operaciones que generan Débito Fiscal",
+        readonly=True,
+    )
+    IVASIMPLE_RES_DEB_FISCAL = fields.Text(
+        "IVASIMPLE_RES_DEB_FISCAL",
+        help="Operaciones que generar restitución de Débito Fiscal",
+        readonly=True,
+    )
+    IVASIMPLE_CRE_FISCAL = fields.Text(
+        "IVASIMPLE_CRE_FISCAL",
+        help="Operaciones que generan Crédito Fiscal",
+        readonly=True,
+    )
+    IVASIMPLE_RES_CRE_FISCAL = fields.Text(
+        "IVASIMPLE_RES_CRE_FISCAL",
+        help="Operaciones que generar restitución de Crédito Fiscal",
+        readonly=True,
+    )
+    # VAT Simple End
+
     company_id = fields.Many2one(
         "res.company",
         string="Compañía",
@@ -628,3 +651,169 @@ class AccountVatLedger(models.Model):
             if v['Id'] == code:
                 import_vat = import_vat + v['Importe']
         return import_vat
+
+    # SIMPLE VAT
+    def compute_simple_vat(self):
+        invoices = self.invoice_ids # For Testing
+        #invoices = self.get_digital_invoices().filtered(lambda r: r.state != "cancel")
+        csv_deb_fiscal_data = ''
+        csv_res_deb_fiscal_data = ''
+        csv_cre_fiscal_data = ''
+        csv_res_cre_fiscal_data = ''
+
+        for inv in invoices:
+            vat_taxes = inv._get_vat()
+            for v in vat_taxes:
+                if self.type == 'sale':
+                    ex = False
+
+                    # DEB FISCAL
+                    if inv.move_type == 'out_invoice':
+                        # Actividad
+                        csv_deb_fiscal_data += self.company_id.arca_activity + ';'
+                        # Tipo de operación
+                        if v['Id'] in ['0', '1', '2']:
+                            csv_deb_fiscal_data += '3;'
+                            ex = True
+                        else:
+                            csv_deb_fiscal_data += '1;'
+                        # Tipo de sujeto comprador
+                        if ex:
+                            csv_deb_fiscal_data += ';'
+                        else:
+                            if inv.partner_id.l10n_ar_afip_responsibility_type_id.code in ['1']:
+                                csv_deb_fiscal_data += '1;'
+                            elif inv.partner_id.l10n_ar_afip_responsibility_type_id.code in ['6', '13']:
+                                csv_deb_fiscal_data += '2;'
+                            elif inv.partner_id.l10n_ar_afip_responsibility_type_id.code in ['4', '5', '7', '8', '9', '10', '16']:
+                                csv_deb_fiscal_data += '3;'
+                            else:
+                                csv_deb_fiscal_data += ';'
+                        # Codigo Alicuota
+                        if ex:
+                            csv_deb_fiscal_data += ';'
+                        else:
+                            csv_deb_fiscal_data += v['Id'] + ';'
+                        # Monto Neto Gravado
+                        if ex:
+                            csv_deb_fiscal_data += ';'
+                        else:
+                            csv_deb_fiscal_data += str(v['BaseImp']).replace('.', ',') + ';'
+                        # Debito Fiscal
+                        if ex:
+                            csv_deb_fiscal_data += ';'
+                        else:
+                            csv_deb_fiscal_data += str(v['Importe']).replace('.', ',') + ';'
+                        # Debito Fiscal Op Dac en Pago
+                        if ex:
+                            csv_deb_fiscal_data += ';'
+                        else:
+                            csv_deb_fiscal_data += str(v['Importe']).replace('.', ',') + ';'
+                        # Monto no gravado
+                        if not ex:
+                            csv_deb_fiscal_data += ';'
+                        else:
+                            csv_deb_fiscal_data += str(v['Importe']).replace('.', ',') + ';'
+
+                        csv_deb_fiscal_data += '\n'
+
+                    # DEB RES
+                    elif inv.move_type == 'out_refund':
+                        # Actividad
+                        csv_res_deb_fiscal_data += self.company_id.arca_activity + ';'
+                        # Tipo de operación
+                        if v['Id'] in ['0', '1', '2']:
+                            csv_res_deb_fiscal_data += '2;'
+                            ex = True
+                        else:
+                            csv_res_deb_fiscal_data += '1;'
+                        # Tipo de sujeto comprador
+                        if ex:
+                            csv_res_deb_fiscal_data += ';'
+                        else:
+                            if inv.partner_id.l10n_ar_afip_responsibility_type_id.code in ['1']:
+                                csv_res_deb_fiscal_data += '1;'
+                            elif inv.partner_id.l10n_ar_afip_responsibility_type_id.code in ['6', '13']:
+                                csv_res_deb_fiscal_data += '2;'
+                            elif inv.partner_id.l10n_ar_afip_responsibility_type_id.code in ['4', '5', '7', '8', '9', '10', '16']:
+                                csv_res_deb_fiscal_data += '3;'
+                            else:
+                                csv_res_deb_fiscal_data += ';'
+                        # Codigo Alicuota
+                        if ex:
+                            csv_res_deb_fiscal_data += ';'
+                        else:
+                            csv_res_deb_fiscal_data += v['Id'] + ';'
+                        # Monto Neto Gravado
+                        if ex:
+                            csv_res_deb_fiscal_data += ';'
+                        else:
+                            csv_res_deb_fiscal_data += str(v['BaseImp']).replace('.', ',') + ';'
+                        # Debito Fiscal
+                        if ex:
+                            csv_res_deb_fiscal_data += ';'
+                        else:
+                            csv_res_deb_fiscal_data += str(v['Importe']).replace('.', ',') + ';'
+                        # Monto no gravado
+                        if not ex:
+                            csv_res_deb_fiscal_data += ';'
+                        else:
+                            csv_res_deb_fiscal_data += str(v['Importe']).replace('.', ',') + ';'
+
+                        csv_res_deb_fiscal_data += '\n'
+
+                else:
+                    # CRE FISCAL
+                    if inv.move_type == 'in_invoice':
+                        concept = '1'
+                        for line in inv.invoice_line_ids:
+                            if line.product_id:
+                                if line.product_id.type == 'service':
+                                    concept = '3'
+                                    break
+                                else:
+                                    concept = '1'
+                                    break
+                            else:
+                                continue
+                        # Concepto
+                        csv_cre_fiscal_data += concept + ';'
+                        # Codigo de Alicuota
+                        csv_cre_fiscal_data += v['Id'] + ';'
+                        # Monto neto Gravado
+                        csv_cre_fiscal_data += str(v['BaseImp']).replace('.', ',') + ';'
+                        # Credito Fiscal Facturado
+                        csv_cre_fiscal_data += str(v['Importe']).replace('.', ',') + ';'
+                        # Credito Fiscal Computable
+                        csv_cre_fiscal_data += str(v['Importe']).replace('.', ',') + ';'
+
+                        csv_cre_fiscal_data += '\n'
+
+                    # CRE FISCAL
+                    elif inv.move_type == 'in_refund':
+                        concept = '1'
+                        for line in inv.invoice_line_ids:
+                            if line.product_id:
+                                if line.product_id.type == 'service':
+                                    concept = '3'
+                                    break
+                                else:
+                                    concept = '1'
+                                    break
+                            else:
+                                continue
+                        # Concepto
+                        csv_res_cre_fiscal_data += concept + ';'
+                        # Codigo de Alicuota
+                        csv_res_cre_fiscal_data += v['Id'] + ';'
+                        # Monto neto Gravado
+                        csv_res_cre_fiscal_data += str(v['BaseImp']).replace('.', ',') + ';'
+                        # Credito Fiscal Facturado
+                        csv_res_cre_fiscal_data += str(v['Importe']).replace('.', ',') + ';'
+
+                        csv_res_cre_fiscal_data += '\n'
+
+        self.IVASIMPLE_DEB_FISCAL = csv_deb_fiscal_data
+        self.IVASIMPLE_RES_DEB_FISCAL = csv_res_deb_fiscal_data
+        self.IVASIMPLE_CRE_FISCAL = csv_cre_fiscal_data
+        self.IVASIMPLE_RES_CRE_FISCAL = csv_res_cre_fiscal_data

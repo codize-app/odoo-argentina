@@ -6,3 +6,4 @@
 from . import account_vat_ledger
 from . import account_vat_ledger_xlsx
 from . import l10n_latam_document_type
+from . import res_company
