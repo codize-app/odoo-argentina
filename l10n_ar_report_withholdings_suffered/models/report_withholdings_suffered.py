@@ -338,6 +338,12 @@ class ReportWithholdingsSuffered(models.Model):
             return '923'
         elif self.country_state.code == 'T':#'Perc IIBB Tucuman'
             return '924'
+        elif self.country_state.code == 'G':#'Perc IIBB Santiago del Estero'
+            return '922'
+        elif self.country_state.code == 'H':#'Perc IIBB Chaco'
+            return '906'
+        elif self.country_state.code == 'F':#'Perc IIBB La Rioja'
+            return '912'
         else:
             raise ValidationError('No se encontro un Nº de jurisdiccion para {0}'.format(self.country_state.name))
 
