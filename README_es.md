@@ -1,17 +1,17 @@
-[English](https://github.com/codize-app/odoo-argentina/blob/15.0/README.md) | **Spanish**
+[English](https://github.com/codize-app/odoo-argentina/blob/18.0/README.md) | **Spanish**
 
 # Odoo Argentina
-Localización Argentina para Odoo 17 Community. Basada en la Localización de Moldeo Interactive [y a su vez basada en la Localización de AdHoc]
+Localización Argentina para Odoo 18 Community. Basada en la Localización de Moldeo Interactive [y a su vez basada en la Localización de AdHoc]
 
 ## Instalación
 ### Instalar módulo base l10n_ar
 
 Primero, instalr el módulo de Odoo Community l10n_ar
 
-Clonar este repositorio con la branch 17.0:
+Clonar este repositorio con la branch 18.0:
 
 ```
-git clone https://github.com/codize-app/odoo-argentina -b 17.0
+git clone https://github.com/codize-app/odoo-argentina -b 18.0
 ```
 
 Dentro del directorio, instalar las dependencias:
@@ -99,7 +99,7 @@ Para acceso a los reportes en PDF instalar `l10n_ar_report_fe`
 
 ## l10n_ar extras
 
-* `l10n_ar_ledger`: Libros de IVA, Libros de IVA Digital y Reportes de IVA para Ventas y Compras
+* `l10n_ar_ledger`: Libros de IVA, Libros de IVA Digital, IVA Simple y Reportes de IVA para Ventas y Compras
 * `l10n_ar_withholding_automatic`: Percepciones/Retenciones Automáticas en Pagos y Facturas. El paquete premium (`odoo-argentina-withholding`) soporta la exportación para ARBA, AGIP y SIRCAR
 * `l10n_ar_bank`: Instala la Lista de Bancos Argentinos
 * `l10n_ar_partner`: Mejoras para datos de PyMEs Argentinas
