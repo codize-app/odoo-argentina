@@ -25,24 +25,24 @@ class WithholdingsReports(models.TransientModel):
             #Percepciones en Facturas
             for invoice in invoices_ids:
                 tax_totals_binary = invoice.tax_totals
-                taxes = dict(tax_totals_binary['groups_by_subtotal'])['Importe neto']
+                taxes = tax_totals_binary['subtotals'][0]['tax_groups']
                 for tax in taxes:
-                    if 'Per' in tax['tax_group_name']  or 'PER' in tax['tax_group_name'] or 'per' in tax['tax_group_name']:
-                        _valsI = []     
-                        _valsI.append(tax['tax_group_name'])#Tipo
-                        _valsI.append(invoice.name)#Factura
-                        _valsI.append(invoice.invoice_date)#Fecha
-                        _valsI.append(invoice.partner_id.name)#Cliente/Proveedor
-                        _valsI.append(invoice.partner_id.vat)#CUIT
-                        _valsI.append(invoice.partner_id.state_id.name)#Provincia
+                    if 'Per' in tax['group_name']  or 'PER' in tax['group_name'] or 'per' in tax['group_name']:
+                        _valsI = []
+                        _valsI.append(tax['group_name']) #Tipo
+                        _valsI.append(invoice.name) #Factura
+                        _valsI.append(invoice.invoice_date) #Fecha
+                        _valsI.append(invoice.partner_id.name) #Cliente/Proveedor
+                        _valsI.append(invoice.partner_id.vat) #CUIT
+                        _valsI.append(invoice.partner_id.state_id.name) #Provincia
                         if invoice.currency_id.name != 'ARS': #Multimoneda
-                            _valsI.append(tax['tax_group_amount'] * invoice.l10n_ar_currency_rate)#Total
-                            _valsI.append(tax['tax_group_base_amount'] * invoice.l10n_ar_currency_rate)#Monto imponible
+                            _valsI.append(tax['tax_amount'] * invoice.l10n_ar_currency_rate)#Total
+                            _valsI.append(tax['base_amount'] * invoice.l10n_ar_currency_rate)#Monto imponible
                         else:
-                            _valsI.append(tax['tax_group_amount'])#Total
-                            _valsI.append(tax['tax_group_base_amount'])#Monto imponible
-                        _valsI.append(invoice.partner_id.iibb_number)#Ingresos Brutos       
-#
+                            _valsI.append(tax['tax_amount']) #Total
+                            _valsI.append(tax['base_amount']) #Monto imponible
+                        _valsI.append(invoice.partner_id.iibb_number) #Ingresos Brutos
+
                         invoices_whit_perceptions.append(_valsI)
             
             #Retenciones en pagos
