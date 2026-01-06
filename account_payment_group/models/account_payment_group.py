@@ -238,6 +238,8 @@ class AccountPaymentGroup(models.Model):
         string="Enviado",
         help="Indica que el recibo fue enviado."
     )
+    num_op = fields.Char('Nº OP Cliente')
+    branch_op = fields.Char('Sucursal OP Cliente')
 
     _sql_constraints = [
         ('document_number_uniq', 'unique(document_number, receiptbook_id)',
