@@ -176,7 +176,7 @@ class AccountVatLedger(models.Model):
                 ("date", "<=", self.date_to),
             ]
             invoices = self.env["account.move"].search(
-                invoices_domain, order="invoice_date asc, document_number asc, id asc"
+                invoices_domain, order="invoice_date asc, name asc, id asc"
             )
         else:
             invoices_domain = [
