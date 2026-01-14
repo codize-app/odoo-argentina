@@ -1,28 +1,23 @@
 from odoo import models, fields, api
-import logging
-_logger = logging.getLogger(__name__)
-
 
 class AccountPaymentReceiptbook(models.Model):
-
     _name = 'account.payment.receiptbook'
     _description = 'Account payment Receiptbook'
-    # analogo a account.journal.document.type pero para pagos
     _order = 'sequence asc'
 
     sequence = fields.Integer(
-        'Sequence',
-        help="Used to order the receiptbooks",
+        'Secuencia',
+        help="Utilizado para ordenar los talonarios",
         default=10,
     )
     name = fields.Char(
-        'Name',
+        'Nombre',
         size=64,
         required=True,
         index=True,
     )
     partner_type = fields.Selection(
-        [('customer', 'Customer'), ('supplier', 'Vendor')],
+        [('customer', 'Cliente'), ('supplier', 'Proveedor')],
         required=True,
         index=True,
     )
@@ -40,47 +35,42 @@ class AccountPaymentReceiptbook(models.Model):
     # lo dejamos solo como ayuda para generar o no la secuencia pero lo que
     # termina definiendo si es manual o por secuencia es si tiene secuencia
     sequence_type = fields.Selection(
-        [('automatic', 'Automatic'), ('manual', 'Manual')],
-        string='Sequence Type',
+        [('automatic', 'Automático'), ('manual', 'Manual')],
+        string='Tipo de Secuencia',
         readonly=False,
         default='automatic',
     )
     sequence_id = fields.Many2one(
         'ir.sequence',
         'Entry Sequence',
-        help="This field contains the information related to the numbering "
-        "of the receipt entries of this receiptbook.",
+        help="Este campo contiene información relacionada al número de los apuntes en el recibo del talonario",
         copy=False,
     )
     company_id = fields.Many2one(
         'res.company',
-        'Company',
+        'Compañía',
         required=True,
         default=lambda self: self.env[
             'res.company']._company_default_get('account.payment.receiptbook')
     )
     prefix = fields.Char(
-        'Prefix',
-        # required=True,
-        # TODO rename field to prefix
+        'Prefijo'
     )
     padding = fields.Integer(
-        'Number Padding',
-        help="automatically adds some '0' on the left of the 'Number' to get "
-        "the required padding size."
+        'Número de Padding',
+        help="Agregar '0' a la izquierda del número para obtener el numéro de secuencia necesario"
     )
     active = fields.Boolean(
-        'Active',
+        'Activo',
         default=True,
     )
     mail_template_id = fields.Many2one(
         'mail.template',
-        'Email Template',
+        'Plantilla del Mail',
         domain=[('model', '=', 'account.payment.group')],
         help="If set an email will be sent to the customer when the related"
         " account.payment.group has been posted.",
     )
-
 
     def write(self, vals):
         """
