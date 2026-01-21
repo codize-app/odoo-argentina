@@ -843,34 +843,30 @@ class AccountVatLedger(models.Model):
         self.IVASIMPLE_RES_CRE_FISCAL = csv_res_cre_fiscal_data
 
         if self.IVASIMPLE_DEB_FISCAL:
-            self.simple_vat_deb_filename = _("IVA-Simple-Debito-Fiscal_%s_%s.csv") % (
-                self.type,
+            self.simple_vat_deb_filename = _("IVA-Simple-Debito-Fiscal_%s.csv") % (
                 self.date_to,
             )
             self.simple_vat_deb_file = encodebytes(
                 self.IVASIMPLE_DEB_FISCAL.encode("ISO-8859-1")
             )
         if self.IVASIMPLE_RES_DEB_FISCAL:
-            self.simple_vat_res_deb_filename = _("IVA-Simple-Restitucion-Debito-Fiscal_%s_%s.csv") % (
-                self.type,
+            self.simple_vat_res_deb_filename = _("IVA-Simple-Restitucion-Debito-Fiscal_%s.csv") % (
                 self.date_to,
             )
             self.simple_vat_res_deb_file = encodebytes(
                 self.IVASIMPLE_RES_DEB_FISCAL.encode("ISO-8859-1")
             )
         if self.IVASIMPLE_CRE_FISCAL:
-            self.simple_vat_cre_filename = _("IVA-Simple-Credito-Fiscal_%s_%s.csv") % (
-                self.type,
+            self.simple_vat_cre_filename = _("IVA-Simple-Credito-Fiscal_%s.csv") % (
                 self.date_to,
             )
-            self.simple_vat_deb_file = encodebytes(
-                self.IVASIMPLE_DEB_FISCAL.encode("ISO-8859-1")
+            self.simple_vat_cre_file = encodebytes(
+                self.IVASIMPLE_CRE_FISCAL.encode("ISO-8859-1")
             )
         if self.IVASIMPLE_RES_CRE_FISCAL:
-            self.simple_vat_res_cre_filename = _("IVA-Simple-Restitucion-Credito-Fiscal_%s_%s.csv") % (
-                self.type,
+            self.simple_vat_res_cre_filename = _("IVA-Simple-Restitucion-Credito-Fiscal_%s.csv") % (
                 self.date_to,
             )
             self.simple_vat_res_cre_file = encodebytes(
-                self.IVASIMPLE_RES_DEB_FISCAL.encode("ISO-8859-1")
+                self.IVASIMPLE_RES_CRE_FISCAL.encode("ISO-8859-1")
             )
