@@ -205,21 +205,6 @@ class ResPartner(models.Model):
                     'porque es la provincia de la compañía, debe ser removida '
                     'de la lista de juridicciones.') % rec.state_id.name)
 
-    def write(self, values):
-        res = super(ResPartner, self).write(values)
-
-        if self.l10n_latam_identification_type_id.name == 'CUIT' or self.l10n_latam_identification_type_id.name == 'CUIL' or self.l10n_latam_identification_type_id.name == 'DNI':
-            for rec in self:
-                if rec.vat:
-                    if '-' in rec.vat:
-                        vat = rec.vat.replace('-', '')
-                        rec.vat = vat
-                    if '.' in rec.vat:
-                        vat = rec.vat.replace('.', '')
-                        rec.vat = vat
-
-        return res
-
     def name_get(self):
         result = []
         for record in self:
