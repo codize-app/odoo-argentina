@@ -2,9 +2,8 @@ from odoo import api, fields, models, _, Command, SUPERUSER_ID
 from contextlib import ExitStack, contextmanager
 from odoo.exceptions import UserError, ValidationError, AccessError, RedirectWarning
 from odoo.tools import (
+    create_index,
     date_utils,
-    email_re,
-    email_split,
     float_compare,
     float_is_zero,
     float_repr,
@@ -14,9 +13,10 @@ from odoo.tools import (
     frozendict,
     get_lang,
     groupby,
-    is_html_empty,
-    sql
-)
+    index_exists,
+    OrderedSet,
+    SQL,
+
 import logging
 _logger = logging.getLogger(__name__)
 
