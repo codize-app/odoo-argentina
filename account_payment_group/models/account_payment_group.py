@@ -222,9 +222,7 @@ class AccountPaymentGroup(models.Model):
         readonly=False,
         auto_join=True,
     )
-    account_internal_type = fields.Char(
-        compute='_compute_account_internal_type'
-    )
+    account_internal_type = fields.Char(string='Tipo Interno', compute='_compute_account_internal_type')
     move_line_ids = fields.Many2many(
         'account.move.line',
         compute='_compute_move_lines',
@@ -513,8 +511,9 @@ class AccountPaymentGroup(models.Model):
     def _compute_account_internal_type(self):
         for rec in self:
             if rec.partner_type:
-                rec.account_internal_type = MAP_PARTNER_TYPE_ACCOUNT_TYPE[
-                    rec.partner_type]
+                rec.account_internal_type = MAP_PARTNER_TYPE_ACCOUNT_TYPE[rec.partner_type]
+            else:
+                rec.account_internal_type = False
 
     def _compute_payment_difference(self):
         for rec in self:
