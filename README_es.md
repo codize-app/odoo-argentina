@@ -1,17 +1,17 @@
 [English](https://github.com/codize-app/odoo-argentina/blob/18.0/README.md) | **Spanish**
 
 # Odoo Argentina
-Localización Argentina para Odoo 18 Community. Basada en la Localización de Moldeo Interactive [y a su vez basada en la Localización de AdHoc]
+Localización Argentina para Odoo 19 Community o Enterprise. Basada en la Localización de Moldeo Interactive [y a su vez basada en la Localización de AdHoc]
 
 ## Instalación
 ### Instalar módulo base l10n_ar
 
 Primero, instalr el módulo de Odoo Community l10n_ar
 
-Clonar este repositorio con la branch 18.0:
+Clonar este repositorio con la branch 19.0:
 
 ```
-git clone https://github.com/codize-app/odoo-argentina -b 18.0
+git clone https://github.com/codize-app/odoo-argentina -b 19.0
 ```
 
 Dentro del directorio, instalar las dependencias:

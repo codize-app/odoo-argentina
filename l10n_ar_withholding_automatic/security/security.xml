@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-
-    <record id="partner_tax_withholding_amount_type" model="res.groups">
-        <field name="name">Le permite elegir la base del monto para las retenciones en contactos</field>
-        <field name="category_id" ref="base.module_category_hidden"/>
-    </record>
-
-</odoo>
