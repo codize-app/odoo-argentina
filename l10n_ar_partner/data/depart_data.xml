@@ -1,0 +1,2588 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Departamanetos provincia de Buenos Aires -->
+     
+    <record id='06854' model='res.departamento'>
+        <field name='name'>25 de Mayo</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>   
+     
+    <record id='06588' model='res.departamento'>
+        <field name='name'>9 de Julio</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06007' model='res.departamento'>
+        <field name='name'>Adolfo Alsina</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06014' model='res.departamento'>
+        <field name='name'>Adolfo Gonzales Chaves</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+       <record id='06021' model='res.departamento'>
+        <field name='name'>Alberti</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06028' model='res.departamento'>
+        <field name='name'>Almirante Brown</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06077' model='res.departamento'>
+        <field name='name'>Arrecifes</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06035' model='res.departamento'>
+        <field name='name'>Avellaneda</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06042' model='res.departamento'>
+        <field name='name'>Ayacucho</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06049' model='res.departamento'>
+        <field name='name'>Azul</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06056' model='res.departamento'>
+        <field name='name'>Bahía Blanca</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06063' model='res.departamento'>
+        <field name='name'>Balcarce</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06070' model='res.departamento'>
+        <field name='name'>Baradero</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06084' model='res.departamento'>
+        <field name='name'>Benito Juárez</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06091' model='res.departamento'>
+        <field name='name'>Berazategui</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06098' model='res.departamento'>
+        <field name='name'>Berisso</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06105' model='res.departamento'>
+        <field name='name'>Bolívar</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06112' model='res.departamento'>
+        <field name='name'>Bragado</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06119' model='res.departamento'>
+        <field name='name'>Brandsen</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06126' model='res.departamento'>
+        <field name='name'>Campana</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06134' model='res.departamento'>
+        <field name='name'>Cañuelas</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06140' model='res.departamento'>
+        <field name='name'>Capitán Sarmiento</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06147' model='res.departamento'>
+        <field name='name'>Carlos Casares</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06154' model='res.departamento'>
+        <field name='name'>Carlos Tejedor</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06161' model='res.departamento'>
+        <field name='name'>Carmen de Areco</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06168' model='res.departamento'>
+        <field name='name'>Castelli</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06210' model='res.departamento'>
+        <field name='name'>Chacabuco</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06217' model='res.departamento'>
+        <field name='name'>Chascomús</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06224' model='res.departamento'>
+        <field name='name'>Chivilcoy</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06175' model='res.departamento'>
+        <field name='name'>Colón</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06182' model='res.departamento'>
+        <field name='name'>Coronel de Marina L. Rosales</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06189' model='res.departamento'>
+        <field name='name'>Coronel Dorrego</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06196' model='res.departamento'>
+        <field name='name'>Coronel Pringles</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06203' model='res.departamento'>
+        <field name='name'>Coronel Suárez</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06231' model='res.departamento'>
+        <field name='name'>Daireaux</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06238' model='res.departamento'>
+        <field name='name'>Dolores</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+      <record id='06245' model='res.departamento'>
+        <field name='name'>Ensenada</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+      <record id='06252' model='res.departamento'>
+        <field name='name'>Escobar</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06260' model='res.departamento'>
+        <field name='name'>Esteban Echeverría</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06266' model='res.departamento'>
+        <field name='name'>Exaltación de la Cruz</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06270' model='res.departamento'>
+        <field name='name'>Ezeiza</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06274' model='res.departamento'>
+        <field name='name'>Florencio Varela</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06277' model='res.departamento'>
+        <field name='name'>Florentino Ameghino</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06280' model='res.departamento'>
+        <field name='name'>General Alvarado</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06287' model='res.departamento'>
+        <field name='name'>General Alvear</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06294' model='res.departamento'>
+        <field name='name'>General Arenales</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06301' model='res.departamento'>
+        <field name='name'>General Belgrano</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06308' model='res.departamento'>
+        <field name='name'>General Guido</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+      <record id='06315' model='res.departamento'>
+        <field name='name'>General Juan Madariaga</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06322' model='res.departamento'>
+        <field name='name'>General La Madrid</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06329' model='res.departamento'>
+        <field name='name'>General Las Heras</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+   <record id='06336' model='res.departamento'>
+        <field name='name'>General Lavalle</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06343' model='res.departamento'>
+        <field name='name'>General Paz</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+        <record id='06351' model='res.departamento'>
+        <field name='name'>General Pinto</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+        <record id='06357' model='res.departamento'>
+        <field name='name'>General Pueyrredón</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>   
+       <record id='06364' model='res.departamento'>
+        <field name='name'>General Rodríguez</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06371' model='res.departamento'>
+        <field name='name'>General San Martín</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06385' model='res.departamento'>
+        <field name='name'>General Viamonte</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+       <record id='06392' model='res.departamento'>
+        <field name='name'>General Villegas</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+         <record id='06399' model='res.departamento'>
+        <field name='name'>Guaminí</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+         <record id='06406' model='res.departamento'>
+        <field name='name'>Hipólito Yrigoyen</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+        <record id='06408' model='res.departamento'>
+        <field name='name'>Hurlingham</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+       <record id='06410' model='res.departamento'>
+        <field name='name'>Ituzaingó</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+       <record id='06412' model='res.departamento'>
+        <field name='name'>José C. Paz</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+       <record id='06413' model='res.departamento'>
+        <field name='name'>Junín</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+       <record id='06420' model='res.departamento'>
+        <field name='name'>La Costa</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06427' model='res.departamento'>
+        <field name='name'>La Matanza</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06441' model='res.departamento'>
+        <field name='name'>La Plata</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+      <record id='06434' model='res.departamento'>
+        <field name='name'>Lanús</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06448' model='res.departamento'>
+        <field name='name'>Laprida</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06455' model='res.departamento'>
+        <field name='name'>Las Flores</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06462' model='res.departamento'>
+        <field name='name'>Leandro N. Alem</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+      <record id='06469' model='res.departamento'>
+        <field name='name'>Lincoln</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+      <record id='06476' model='res.departamento'>
+        <field name='name'>Lobería</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06483' model='res.departamento'>
+        <field name='name'>Lobos</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06490' model='res.departamento'>
+        <field name='name'>Lomas de Zamora</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06497' model='res.departamento'>
+        <field name='name'>Luján</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06505' model='res.departamento'>
+        <field name='name'>Magdalena</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06511' model='res.departamento'>
+        <field name='name'>Maipú</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06515' model='res.departamento'>
+        <field name='name'>Malvinas Argentinas</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+  <record id='06518' model='res.departamento'>
+        <field name='name'>Mar Chiquita</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06525' model='res.departamento'>
+        <field name='name'>Marcos Paz</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06532' model='res.departamento'>
+        <field name='name'>Mercedes</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+      <record id='06539' model='res.departamento'>
+        <field name='name'>Merlo</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+      <record id='06547' model='res.departamento'>
+        <field name='name'>Monte</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+      <record id='06553' model='res.departamento'>
+        <field name='name'>Monte Hermoso</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06560' model='res.departamento'>
+        <field name='name'>Moreno</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+       <record id='06568' model='res.departamento'>
+        <field name='name'>Morón</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06574' model='res.departamento'>
+        <field name='name'>Navarro</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+       <record id='06581' model='res.departamento'>
+        <field name='name'>Necochea</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06595' model='res.departamento'>
+        <field name='name'>Olavarría</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06602' model='res.departamento'>
+        <field name='name'>Patagones</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06609' model='res.departamento'>
+        <field name='name'>Pehuajó</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+      <record id='06616' model='res.departamento'>
+        <field name='name'>Pellegrini</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06623' model='res.departamento'>
+        <field name='name'>Pergamino</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06630' model='res.departamento'>
+        <field name='name'>Pila</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+      <record id='06638' model='res.departamento'>
+        <field name='name'>Pilar</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06644' model='res.departamento'>
+        <field name='name'>Pinamar</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06648' model='res.departamento'>
+        <field name='name'>Presidente Perón</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06651' model='res.departamento'>
+        <field name='name'>Puán</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06655' model='res.departamento'>
+        <field name='name'>Punta Indio</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06058' model='res.departamento'>
+        <field name='name'>Quilmes</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06665' model='res.departamento'>
+        <field name='name'>Ramallo</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06672' model='res.departamento'>
+        <field name='name'>Rauch</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06679' model='res.departamento'>
+        <field name='name'>Rivadavia</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06686' model='res.departamento'>
+        <field name='name'>Rojas</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06693' model='res.departamento'>
+        <field name='name'>Roque Pérez</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06700' model='res.departamento'>
+        <field name='name'>Saavedra</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06707' model='res.departamento'>
+        <field name='name'>Saladillo</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06721' model='res.departamento'>
+        <field name='name'>Salliqueló</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06714' model='res.departamento'>
+        <field name='name'>Salto</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06728' model='res.departamento'>
+        <field name='name'>San Andrés de Giles</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id='06735' model='res.departamento'>
+        <field name='name'>San Antonio de Areco</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+     <record id='06742' model='res.departamento'>
+        <field name='name'>San Cayetano</field >
+        <field name="provincia_id" ref="base.state_ar_b"/> 
+    </record>
+    <record id = '06749' model = 'res.departamento'> 
+        <field name = 'name'>San Fernando</field> 
+        <field name="provincia_id" ref="base.state_ar_b"/>
+    </record>
+    <record id="06756" model="res.departamento">
+<field name="name">San Isidro</field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+
+<record id="06760" model="res.departamento">
+<field name="name">San Miguel</field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+
+<record id="06763" model="res.departamento">
+<field name="name">San Nicolás</field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+
+<record id="06770" model="res.departamento">
+<field name="name">San Pedro</field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+
+<record id="06778" model="res.departamento">
+<field name="name">San Vicente</field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+
+<record id="06784" model="res.departamento">
+<field name="name">Suipacha</field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>06749
+
+<record id="06791" model="res.departamento">
+<field name="name">Tandil</field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+
+<record id="06798" model="res.departamento">
+<field name="name">Tapalqué</field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+
+<record id="06805" model="res.departamento">
+<field name="name">Tigre</field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+
+<record id="06812" model="res.departamento">
+<field name="name">Tordillo</field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+<record id="06812" model="res.departamento">
+<field name="name">Tordillo</field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+<record id="06819" model="res.departamento">
+<field name="name">Tornquist</field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+
+<record id="06826" model="res.departamento">
+<field name="name">Trenque Lauquen</field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+
+<record id="06833" model="res.departamento">
+<field name="name">Tres Arroyos</field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+
+<record id="06840" model="res.departamento">
+<field name="name">Tres de Febrero</field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+
+<record id="06847" model="res.departamento">
+<field name="name">Tres Lomas </field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+
+<record id="06861" model="res.departamento">
+<field name="name">Vicente López</field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+
+<record id="06868" model="res.departamento">
+<field name="name">Villa Gesell </field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+
+<record id="06875" model="res.departamento">
+<field name="name">Villarino</field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+
+<record id="06882" model="res.departamento">
+<field name="name">Zárate </field>
+<field name="provincia_id" ref="base.state_ar_b"/>
+</record>
+
+<record id="02001" model="res.departamento">
+<field name="name">Comuna 1</field>
+<field name="provincia_id" ref="base.state_ar_c"/>
+</record>
+
+<record id="02010" model="res.departamento">
+<field name="name">Comuna 10</field>
+<field name="provincia_id" ref="base.state_ar_c"/>
+</record>
+
+<record id="02011" model="res.departamento">
+<field name="name">Comuna 11</field>
+<field name="provincia_id" ref="base.state_ar_c"/>
+</record>
+
+<record id="02012" model="res.departamento">
+<field name="name">Comuna 12</field>
+<field name="provincia_id" ref="base.state_ar_c"/>
+</record>
+
+<record id="02013" model="res.departamento">
+<field name="name">Comuna 13</field>
+<field name="provincia_id" ref="base.state_ar_c"/>
+</record>
+
+<record id="02014" model="res.departamento">
+<field name="name">Comuna 14</field>
+<field name="provincia_id" ref="base.state_ar_c"/>
+</record>
+<record id="02015" model="res.departamento">
+<field name="name">Comuna 15</field>
+<field name="provincia_id" ref="base.state_ar_c"/>
+</record>
+
+<record id="02002" model="res.departamento">
+<field name="name">Comuna 2</field>
+<field name="provincia_id" ref="base.state_ar_c"/>
+</record>
+<record id="02003" model="res.departamento">
+<field name="name">Comuna 3</field>
+<field name="provincia_id" ref="base.state_ar_c"/>
+</record>
+
+<record id="02004" model="res.departamento">
+<field name="name">Comuna 4</field>
+<field name="provincia_id" ref="base.state_ar_c"/>
+</record>
+
+<record id="02005" model="res.departamento">
+<field name="name">Comuna 5</field>
+<field name="provincia_id" ref="base.state_ar_c"/>
+</record>
+
+<record id="02006" model="res.departamento">
+<field name="name">Comuna 6</field>
+<field name="provincia_id" ref="base.state_ar_c"/>
+</record>
+<record id="02007" model="res.departamento">
+<field name="name">Comuna 7</field>
+<field name="provincia_id" ref="base.state_ar_c"/>
+</record>
+
+<record id="02008" model="res.departamento">
+<field name="name">Comuna 8</field>
+<field name="provincia_id" ref="base.state_ar_c"/>
+</record>
+
+<record id="02009" model="res.departamento">
+<field name="name">Comuna 9</field>
+<field name="provincia_id" ref="base.state_ar_c"/>
+</record>
+
+<record id="10007" model="res.departamento">
+<field name="name">Ambato</field>
+<field name="provincia_id" ref="base.state_ar_k"/>
+</record>
+
+<record id="10014" model="res.departamento">
+<field name="name">Ancasti</field>
+<field name="provincia_id" ref="base.state_ar_k"/>
+</record>
+
+<record id="10021" model="res.departamento">
+<field name="name">Andalgalá</field>
+<field name="provincia_id" ref="base.state_ar_k"/>
+</record>
+
+<record id="10028" model="res.departamento">
+<field name="name">Antofagasta de la Sierra</field>
+<field name="provincia_id" ref="base.state_ar_k"/>
+</record>
+
+<record id="10035" model="res.departamento">
+<field name="name">Belén</field>
+<field name="provincia_id" ref="base.state_ar_k"/>
+</record>
+
+<record id="10042" model="res.departamento">
+<field name="name">Capayán</field>
+<field name="provincia_id" ref="base.state_ar_k"/>
+</record>
+
+<record id="10042" model="res.departamento">
+<field name="name">Capayán</field>
+<field name="provincia_id" ref="base.state_ar_k"/>
+</record>
+<record id="10049" model="res.departamento">
+<field name="name">Capital</field>
+<field name="provincia_id" ref="base.state_ar_k"/>
+</record>
+
+<record id="10056" model="res.departamento">
+<field name="name">El Alto</field>
+<field name="provincia_id" ref="base.state_ar_k"/>
+</record>
+
+<record id="10063" model="res.departamento">
+<field name="name">Fray Mamerto Esquiú</field>
+<field name="provincia_id" ref="base.state_ar_k"/>
+</record>
+
+<record id="10070" model="res.departamento">
+<field name="name">La Paz</field>
+<field name="provincia_id" ref="base.state_ar_k"/>
+</record>
+
+<record id="10077" model="res.departamento">
+<field name="name">Paclín</field>
+<field name="provincia_id" ref="base.state_ar_k"/>
+</record>
+
+<record id="10084" model="res.departamento">
+<field name="name">Pomán</field>
+<field name="provincia_id" ref="base.state_ar_k"/>
+</record>
+
+<record id="10091" model="res.departamento">
+<field name="name">Santa María</field>
+<field name="provincia_id" ref="base.state_ar_k"/>
+</record>
+
+<record id="10098" model="res.departamento">
+<field name="name">Santa Rosa</field>
+<field name="provincia_id" ref="base.state_ar_k"/>
+</record>
+
+<record id="10105" model="res.departamento">
+<field name="name">Tinogasta</field>
+<field name="provincia_id" ref="base.state_ar_k"/>
+</record>
+
+<record id="10112" model="res.departamento">
+<field name="name">Valle Viejo</field>
+<field name="provincia_id" ref="base.state_ar_k"/>
+</record>
+
+
+<record id="22036" model="res.departamento">
+<field name="name">12 de Octubre</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+<record id="22126" model="res.departamento">
+<field name="name">1º de Mayo</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+<record id="22039" model="res.departamento">
+<field name="name">2 de Abril</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+<record id="22168" model="res.departamento">
+<field name="name">25 de Mayo</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+<record id="22105" model="res.departamento">
+<field name="name">9 de Julio</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+<record id="22007" model="res.departamento">
+<field name="name">Almirante Brown</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+<record id="22014" model="res.departamento">
+<field name="name">Bermejo</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+<record id="22028" model="res.departamento">
+<field name="name">Chacabuco</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+<record id="22021" model="res.departamento">
+<field name="name">Comandante Fernández</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+<record id="22043" model="res.departamento">
+<field name="name">Fray Justo Santa María de Oro</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+<record id="22049" model="res.departamento">
+<field name="name">General Belgrano</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+<record id="22056" model="res.departamento">
+<field name="name">General Donovan</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+<record id="22063" model="res.departamento">
+<field name="name">General Güemes</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+<record id="22070" model="res.departamento">
+<field name="name">Independencia</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+<record id="22077" model="res.departamento">
+<field name="name">Libertad</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+<record id="22084" model="res.departamento">
+<field name="name">Libertador General San Martín</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+<record id="22091" model="res.departamento">
+<field name="name">Maipú</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+<record id="22098" model="res.departamento">
+<field name="name">Mayor Luis J. Fontana</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+<record id="22112" model="res.departamento">
+<field name="name">O' Higgins</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+<record id="22119" model="res.departamento">
+<field name="name">Presidencia de la Plaza</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+<record id="22133" model="res.departamento">
+<field name="name">Quitilipi</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+<record id="22140" model="res.departamento">
+<field name="name">San Fernando</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+<record id="22147" model="res.departamento">
+<field name="name">San Lorenzo</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+<record id="22154" model="res.departamento">
+<field name="name">Sargento Cabral</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+
+<record id="22161" model="res.departamento">
+<field name="name">Tapenagá</field>
+<field name="provincia_id" ref="base.state_ar_h"/>
+</record>
+
+
+<record id="26007" model="res.departamento">
+<field name="name">Biedma</field>
+<field name="provincia_id" ref="base.state_ar_u"/>
+</record>
+
+<record id="26014" model="res.departamento">
+<field name="name">Cushamen</field>
+<field name="provincia_id" ref="base.state_ar_u"/>
+</record>
+
+<record id="26021" model="res.departamento">
+<field name="name">Escalante</field>
+<field name="provincia_id" ref="base.state_ar_u"/>
+</record>
+
+<record id="26028" model="res.departamento">
+<field name="name">Florentino Ameghino</field>
+<field name="provincia_id" ref="base.state_ar_u"/>
+</record>
+
+<record id="26035" model="res.departamento">
+<field name="name">Futaleufú</field>
+<field name="provincia_id" ref="base.state_ar_u"/>
+</record>
+
+<record id="26042" model="res.departamento">
+<field name="name">Gaiman</field>
+<field name="provincia_id" ref="base.state_ar_u"/>
+</record>
+
+<record id="26049" model="res.departamento">
+<field name="name">Gastre</field>
+<field name="provincia_id" ref="base.state_ar_u"/>
+</record>
+
+<record id="26056" model="res.departamento">
+<field name="name">Languiñeo</field>
+<field name="provincia_id" ref="base.state_ar_u"/>
+</record>
+
+<record id="26063" model="res.departamento">
+<field name="name">Mártires</field>
+<field name="provincia_id" ref="base.state_ar_u"/>
+</record>
+
+<record id="26070" model="res.departamento">
+<field name="name">Paso de Indios</field>
+<field name="provincia_id" ref="base.state_ar_u"/>
+</record>
+
+<record id="26077" model="res.departamento">
+<field name="name">Rawson</field>
+<field name="provincia_id" ref="base.state_ar_u"/>
+</record>
+
+<record id="26084" model="res.departamento">
+<field name="name">Río Senguer</field>
+<field name="provincia_id" ref="base.state_ar_u"/>
+</record>
+
+<record id="26091" model="res.departamento">
+<field name="name">Sarmiento </field>
+<field name="provincia_id" ref="base.state_ar_u"/>
+</record>
+
+<record id="26098" model="res.departamento">
+<field name="name">Tehuelches</field>
+<field name="provincia_id" ref="base.state_ar_u"/>
+</record>
+
+<record id="26105" model="res.departamento">
+<field name="name">Telsen</field>
+<field name="provincia_id" ref="base.state_ar_u"/>
+</record>
+
+<record id="14007" model="res.departamento">
+<field name="name">Calamuchita</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14014" model="res.departamento">
+<field name="name">Capital</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14021" model="res.departamento">
+<field name="name">Colón</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14028" model="res.departamento">
+<field name="name">Cruz del Eje</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14035" model="res.departamento">
+<field name="name">General Roca</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14042" model="res.departamento">
+<field name="name">General San Martín</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14049" model="res.departamento">
+<field name="name">Ischilín</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14056" model="res.departamento">
+<field name="name">Juárez Celman</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14063" model="res.departamento">
+<field name="name">Marcos Juárez</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14070" model="res.departamento">
+<field name="name">Minas</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14077" model="res.departamento">
+<field name="name">Pocho</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14084" model="res.departamento">
+<field name="name">Presidente Roque Sáenz Peña</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14091" model="res.departamento">
+<field name="name">Punilla</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14098" model="res.departamento">
+<field name="name">Río Cuarto</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14105" model="res.departamento">
+<field name="name">Río Primero</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14112" model="res.departamento">
+<field name="name">Río Seco</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14119" model="res.departamento">
+<field name="name">Río Segundo</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14126" model="res.departamento">
+<field name="name">San Alberto</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14133" model="res.departamento">
+<field name="name">San Javier</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14140" model="res.departamento">
+<field name="name">San Justo</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14147" model="res.departamento">
+<field name="name">Santa María</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14154" model="res.departamento">
+<field name="name">Sobremonte</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14161" model="res.departamento">
+<field name="name">Tercero Arriba</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14168" model="res.departamento">
+<field name="name">Totoral</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14175" model="res.departamento">
+<field name="name">Tulumba</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="14182" model="res.departamento">
+<field name="name">Unión</field>
+<field name="provincia_id" ref="base.state_ar_x"/>
+</record>
+
+<record id="18007" model="res.departamento">
+<field name="name">Bella Vista</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+<record id="18014" model="res.departamento">
+<field name="name">Berón de Astrada</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18021" model="res.departamento">
+<field name="name">Capital</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18028" model="res.departamento">
+<field name="name">Concepción</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18035" model="res.departamento">
+<field name="name">Curuzú Cuatiá</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18042" model="res.departamento">
+<field name="name">Empedrado</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18049" model="res.departamento">
+<field name="name">Esquina</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+<record id="18056" model="res.departamento">
+<field name="name">General Alvear</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18063" model="res.departamento">
+<field name="name">General Paz</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18070" model="res.departamento">
+<field name="name">Goya</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18077" model="res.departamento">
+<field name="name">Itatí</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18084" model="res.departamento">
+<field name="name">Ituzaingó</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18091" model="res.departamento">
+<field name="name">Lavalle</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18098" model="res.departamento">
+<field name="name">Mburucuyá</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+<record id="18105" model="res.departamento">
+<field name="name">Mercedes</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18112" model="res.departamento">
+<field name="name">Monte Caseros</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18119" model="res.departamento">
+<field name="name">Paso de los Libres</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18126" model="res.departamento">
+<field name="name">Saladas</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+
+
+<record id="18133" model="res.departamento">
+<field name="name">San Cosme</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18140" model="res.departamento">
+<field name="name">San Luis del Palmar</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+<record id="18147" model="res.departamento">
+<field name="name">San Martín</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18154" model="res.departamento">
+<field name="name">San Miguel</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18161" model="res.departamento">
+<field name="name">San Roque</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18168" model="res.departamento">
+<field name="name">Santo Tomé</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+
+<record id="18175" model="res.departamento">
+<field name="name">Sauce</field>
+<field name="provincia_id" ref="base.state_ar_w"/>
+</record>
+<record id="30008" model="res.departamento">
+<field name="name">Colón</field>
+<field name="provincia_id" ref="base.state_ar_e"/>
+</record>
+
+<record id="30015" model="res.departamento">
+<field name="name">Concordia</field>
+<field name="provincia_id" ref="base.state_ar_e"/>
+</record>
+
+<record id="30021" model="res.departamento">
+<field name="name">Diamante</field>
+<field name="provincia_id" ref="base.state_ar_e"/>
+</record>
+
+<record id="30028" model="res.departamento">
+<field name="name">Federación</field>
+<field name="provincia_id" ref="base.state_ar_e"/>
+</record>
+
+<record id="30035" model="res.departamento">
+<field name="name">Federal</field>
+<field name="provincia_id" ref="base.state_ar_e"/>
+</record>
+
+<record id="30042" model="res.departamento">
+<field name="name">Feliciano</field>
+<field name="provincia_id" ref="base.state_ar_e"/>
+</record>
+
+<record id="30049" model="res.departamento">
+<field name="name">Gualeguay</field>
+<field name="provincia_id" ref="base.state_ar_e"/>
+</record>
+
+<record id="30056" model="res.departamento">
+<field name="name">Gualeguaychú</field>
+<field name="provincia_id" ref="base.state_ar_e"/>
+</record>
+
+<record id="30063" model="res.departamento">
+<field name="name">Islas del Ibicuy</field>
+<field name="provincia_id" ref="base.state_ar_e"/>
+</record>
+
+<record id="30070" model="res.departamento">
+<field name="name">La Paz</field>
+<field name="provincia_id" ref="base.state_ar_e"/>
+</record>
+
+<record id="30077" model="res.departamento">
+<field name="name">Nogoyá</field>
+<field name="provincia_id" ref="base.state_ar_e"/>
+</record>
+
+<record id="30084" model="res.departamento">
+<field name="name">Paraná</field>
+<field name="provincia_id" ref="base.state_ar_e"/>
+</record>
+
+<record id="30088" model="res.departamento">
+<field name="name">San Salvador</field>
+<field name="provincia_id" ref="base.state_ar_e"/>
+</record>
+
+<record id="30091" model="res.departamento">
+<field name="name">Tala</field>
+<field name="provincia_id" ref="base.state_ar_e"/>
+</record>
+
+<record id="30098" model="res.departamento">
+<field name="name">Uruguay</field>
+<field name="provincia_id" ref="base.state_ar_e"/>
+</record>
+
+<record id="30105" model="res.departamento">
+<field name="name">Victoria</field>
+<field name="provincia_id" ref="base.state_ar_e"/>
+</record>
+
+<record id="30113" model="res.departamento">
+<field name="name">Villaguay</field>
+<field name="provincia_id" ref="base.state_ar_e"/>
+</record>
+
+<record id="34007" model="res.departamento">
+<field name="name">Bermejo</field>
+<field name="provincia_id" ref="base.state_ar_p"/>
+</record>
+
+<record id="34014" model="res.departamento">
+<field name="name">Formosa</field>
+<field name="provincia_id" ref="base.state_ar_p"/>
+</record>
+
+<record id="35015" model="res.departamento">
+<field name="name">Formosa</field>
+<field name="provincia_id" ref="base.state_ar_p"/>
+</record>
+
+<record id="34021" model="res.departamento">
+<field name="name">Laishi </field>
+<field name="provincia_id" ref="base.state_ar_p"/>
+</record>
+
+<record id="34028" model="res.departamento">
+<field name="name">Matacos</field>
+<field name="provincia_id" ref="base.state_ar_p"/>
+</record>
+<record id="34035" model="res.departamento">
+<field name="name">Patiño</field>
+<field name="provincia_id" ref="base.state_ar_p"/>
+</record>
+
+<record id="34042" model="res.departamento">
+<field name="name">Pilagás</field>
+<field name="provincia_id" ref="base.state_ar_p"/>
+</record>
+
+<record id="34049" model="res.departamento">
+<field name="name">Pilcomayo</field>
+<field name="provincia_id" ref="base.state_ar_p"/>
+</record>
+
+<record id="34056" model="res.departamento">
+<field name="name">Pirané</field>
+<field name="provincia_id" ref="base.state_ar_p"/>
+</record>
+
+<record id="34063" model="res.departamento">
+<field name="name">Ramón Lista</field>
+<field name="provincia_id" ref="base.state_ar_p"/>
+</record>
+
+<record id="38007" model="res.departamento">
+<field name="name">Cochinoca</field>
+<field name="provincia_id" ref="base.state_ar_y"/>
+</record>
+
+<record id="38021" model="res.departamento">
+<field name="name">Dr. Manuel Belgrano</field>
+<field name="provincia_id" ref="base.state_ar_y"/>
+</record>
+
+<record id="38014" model="res.departamento">
+<field name="name">El Carmen</field>
+<field name="provincia_id" ref="base.state_ar_y"/>
+</record>
+
+<record id="38028" model="res.departamento">
+<field name="name">Humahuaca</field>
+<field name="provincia_id" ref="base.state_ar_y"/>
+</record>
+
+<record id="38035" model="res.departamento">
+<field name="name">Ledesma</field>
+<field name="provincia_id" ref="base.state_ar_y"/>
+</record>
+
+<record id="38042" model="res.departamento">
+<field name="name">Palpalá </field>
+<field name="provincia_id" ref="base.state_ar_y"/>
+</record>
+
+<record id="38049" model="res.departamento">
+<field name="name">Rinconada</field>
+<field name="provincia_id" ref="base.state_ar_y"/>
+</record>
+
+<record id="38056" model="res.departamento">
+<field name="name">San Antonio</field>
+<field name="provincia_id" ref="base.state_ar_y"/>
+</record>
+
+<record id="38063" model="res.departamento">
+<field name="name">San Pedro</field>
+<field name="provincia_id" ref="base.state_ar_y"/>
+</record>
+
+<record id="38070" model="res.departamento">
+<field name="name">Santa Bárbara</field>
+<field name="provincia_id" ref="base.state_ar_y"/>
+</record>
+
+<record id="38077" model="res.departamento">
+<field name="name">Santa Catalina</field>
+<field name="provincia_id" ref="base.state_ar_y"/>
+</record>
+
+<record id="38084" model="res.departamento">
+<field name="name">Susques</field>
+<field name="provincia_id" ref="base.state_ar_y"/>
+</record>
+
+<record id="38094" model="res.departamento">
+<field name="name">Tilcara</field>
+<field name="provincia_id" ref="base.state_ar_y"/>
+</record>
+
+<record id="38098" model="res.departamento">
+<field name="name">Tumbaya</field>
+<field name="provincia_id" ref="base.state_ar_y"/>
+</record>
+
+<record id="38105" model="res.departamento">
+<field name="name">Valle Grande</field>
+<field name="provincia_id" ref="base.state_ar_y"/>
+</record>
+
+<record id="38112" model="res.departamento">
+<field name="name">Yavi</field>
+<field name="provincia_id" ref="base.state_ar_y"/>
+</record>
+
+<record id="42007" model="res.departamento">
+<field name="name">Atreucó</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="42014" model="res.departamento">
+<field name="name">Caleu Caleu</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="42021" model="res.departamento">
+<field name="name">Capital</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="42028" model="res.departamento">
+<field name="name">Catriló</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="42049" model="res.departamento">
+<field name="name">Chalileo</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+<record id="42056" model="res.departamento">
+<field name="name">Chapaleufú</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="42063" model="res.departamento">
+<field name="name">Chical Co</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="42035" model="res.departamento">
+<field name="name">Conhelo</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="42042" model="res.departamento">
+<field name="name">Curacó</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="42070" model="res.departamento">
+<field name="name">Guatraché</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="42077" model="res.departamento">
+<field name="name">Hucal</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+
+<record id="42084" model="res.departamento">
+<field name="name">Lihuel Calel</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+<record id="42091" model="res.departamento">
+<field name="name">Limay Mahuida</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="42098" model="res.departamento">
+<field name="name">Loventué</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+
+<record id="42105" model="res.departamento">
+<field name="name">Maracó</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="42112" model="res.departamento">
+<field name="name">Puelén</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="42119" model="res.departamento">
+<field name="name">Quemú Quemú</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="42126" model="res.departamento">
+<field name="name">Rancul</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="42133" model="res.departamento">
+<field name="name">Realicó</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="42140" model="res.departamento">
+<field name="name">Toay</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="42147" model="res.departamento">
+<field name="name">Trenel</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="42154" model="res.departamento">
+<field name="name">Utracán</field>
+<field name="provincia_id" ref="base.state_ar_l"/>
+</record>
+
+<record id="46007" model="res.departamento">
+<field name="name">Arauco</field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+
+<record id="46014" model="res.departamento">
+<field name="name">Capital</field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+<record id="46021" model="res.departamento">
+<field name="name">Castro Barros</field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+
+
+<record id="46035" model="res.departamento">
+<field name="name">Chamical </field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+
+<record id="46042" model="res.departamento">
+<field name="name">Chilecito </field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+
+<record id="46028" model="res.departamento">
+<field name="name">Coronel Felipe Varela</field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+
+<record id="46049" model="res.departamento">
+<field name="name">Famatina </field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+
+<record id="46056" model="res.departamento">
+<field name="name">General Angel V. Peñaloza</field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+
+<record id="46063" model="res.departamento">
+<field name="name">General Belgrano</field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+
+
+<record id="46070" model="res.departamento">
+<field name="name">General Juan F. Quiroga</field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+
+<record id="46077" model="res.departamento">
+<field name="name">General Lamadrid</field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+<record id="46084" model="res.departamento">
+<field name="name">General Ocampo</field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+
+<record id="46091" model="res.departamento">
+<field name="name">General San Martín</field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+<record id="46105" model="res.departamento">
+<field name="name">Independencia</field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+
+<record id="46112" model="res.departamento">
+<field name="name">Rosario Vera Peñaloza</field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+
+<record id="46119" model="res.departamento">
+<field name="name">San Blas de los Sauces</field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+
+<record id="46126" model="res.departamento">
+<field name="name">Sanagasta</field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+<record id="46098" model="res.departamento">
+<field name="name">Vinchina</field>
+<field name="provincia_id" ref="base.state_ar_f"/>
+</record>
+
+<record id="50007" model="res.departamento">
+<field name="name">Capital</field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+<record id="50014" model="res.departamento">
+<field name="name">General Alvear </field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+<record id="50021" model="res.departamento">
+<field name="name">Godoy Cruz</field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+<record id="50028" model="res.departamento">
+<field name="name">Guaymallén</field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+<record id="50035" model="res.departamento">
+<field name="name">Junín</field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+<record id="50042" model="res.departamento">
+<field name="name">La Paz </field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+<record id="50049" model="res.departamento">
+<field name="name">Las Heras</field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+<record id="50056" model="res.departamento">
+<field name="name">Lavalle</field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+<record id="50063" model="res.departamento">
+<field name="name">Luján de Cuyo</field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+<record id="50070" model="res.departamento">
+<field name="name">Maipú</field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+<record id="50077" model="res.departamento">
+<field name="name">Malargüe </field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+<record id="50084" model="res.departamento">
+<field name="name">Rivadavia</field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+<record id="50091" model="res.departamento">
+<field name="name">San Carlos </field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+<record id="50098" model="res.departamento">
+<field name="name">San Martín</field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+
+<record id="50105" model="res.departamento">
+<field name="name">San Rafael </field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+<record id="50112" model="res.departamento">
+<field name="name">Santa Rosa </field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+<record id="50119" model="res.departamento">
+<field name="name">Tunuyán </field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+<record id="50126" model="res.departamento">
+<field name="name">Tupungato</field>
+<field name="provincia_id" ref="base.state_ar_m"/>
+</record>
+
+<record id="54119" model="res.departamento">
+<field name="name">25 de Mayo</field>
+<field name="provincia_id" ref="base.state_ar_n"/>
+</record>
+
+<record id="54007" model="res.departamento">
+<field name="name">Apóstoles</field>
+<field name="provincia_id" ref="base.state_ar_n"/>
+</record>
+
+<record id="54014" model="res.departamento">
+<field name="name">Cainguás</field>
+<field name="provincia_id" ref="base.state_ar_n"/>
+</record>
+
+<record id="54021" model="res.departamento">
+<field name="name">Candelaria</field>
+<field name="provincia_id" ref="base.state_ar_n"/>
+</record>
+
+<record id="54028" model="res.departamento">
+<field name="name">Capital</field>
+<field name="provincia_id" ref="base.state_ar_n"/>
+</record>
+
+
+<record id="54035" model="res.departamento">
+<field name="name">Concepción </field>
+<field name="provincia_id" ref="base.state_ar_n"/>
+</record>
+
+<record id="54042" model="res.departamento">
+<field name="name">Eldorado</field>
+<field name="provincia_id" ref="base.state_ar_n"/>
+</record>
+
+<record id="54049" model="res.departamento">
+<field name="name">General Manuel Belgrano</field>
+<field name="provincia_id" ref="base.state_ar_n"/>
+</record>
+
+<record id="54056" model="res.departamento">
+<field name="name">Guaraní</field>
+<field name="provincia_id" ref="base.state_ar_n"/>
+</record>
+
+<record id="54063" model="res.departamento">
+<field name="name">Iguazú</field>
+<field name="provincia_id" ref="base.state_ar_n"/>
+</record>
+
+<record id="54070" model="res.departamento">
+<field name="name">Leandro N. Alem</field>
+<field name="provincia_id" ref="base.state_ar_n"/>
+</record>
+
+<record id="54077" model="res.departamento">
+<field name="name">Libertador Grl. San Martín</field>
+<field name="provincia_id" ref="base.state_ar_n"/>
+</record>
+
+<record id="54084" model="res.departamento">
+<field name="name">Montecarlo</field>
+<field name="provincia_id" ref="base.state_ar_n"/>
+</record>
+
+<record id="54091" model="res.departamento">
+<field name="name">Oberá</field>
+<field name="provincia_id" ref="base.state_ar_n"/>
+</record>
+
+<record id="54098" model="res.departamento">
+<field name="name">San Ignacio</field>
+<field name="provincia_id" ref="base.state_ar_n"/>
+</record>
+
+<record id="54105" model="res.departamento">
+<field name="name">San Javier</field>
+<field name="provincia_id" ref="base.state_ar_n"/>
+</record>
+
+
+<record id="54112" model="res.departamento">
+<field name="name">San Pedro</field>
+<field name="provincia_id" ref="base.state_ar_n"/>
+</record>
+
+
+<record id="58007" model="res.departamento">
+<field name="name">Aluminé</field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+
+<record id="58014" model="res.departamento">
+<field name="name">Añelo</field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+
+<record id="58021" model="res.departamento">
+<field name="name">Catán Lil</field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+<record id="58042" model="res.departamento">
+<field name="name">Chos Malal</field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+
+<record id="58028" model="res.departamento">
+<field name="name">Collón Curá</field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+
+<record id="58035" model="res.departamento">
+<field name="name">Confluencia</field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+
+<record id="58049" model="res.departamento">
+<field name="name">Huiliches</field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+<record id="58056" model="res.departamento">
+<field name="name">Lácar</field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+<record id="58063" model="res.departamento">
+<field name="name">Loncopué</field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+
+<record id="58070" model="res.departamento">
+<field name="name">Los Lagos</field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+
+<record id="58077" model="res.departamento">
+<field name="name">Minas</field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+
+<record id="58084" model="res.departamento">
+<field name="name">Ñorquín</field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+
+<record id="58091" model="res.departamento">
+<field name="name">Pehuenches</field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+
+
+<record id="58098" model="res.departamento">
+<field name="name">Picún Leufú</field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+
+<record id="58105" model="res.departamento">
+<field name="name">Picunches</field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+
+<record id="59106" model="res.departamento">
+<field name="name">Picunches</field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+
+<record id="58112" model="res.departamento">
+<field name="name">Zapala </field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+
+<record id="59113" model="res.departamento">
+<field name="name">Zapala </field>
+<field name="provincia_id" ref="base.state_ar_q"/>
+</record>
+
+
+<record id="62091" model="res.departamento">
+<field name="name">25 de Mayo</field>
+<field name="provincia_id" ref="base.state_ar_r"/>
+</record>
+
+<record id="62049" model="res.departamento">
+<field name="name">9 de Julio</field>
+<field name="provincia_id" ref="base.state_ar_r"/>
+</record>
+
+<record id="62007" model="res.departamento">
+<field name="name">Adolfo Alsina</field>
+<field name="provincia_id" ref="base.state_ar_r"/>
+</record>
+
+<record id="62014" model="res.departamento">
+<field name="name">Avellaneda</field>
+<field name="provincia_id" ref="base.state_ar_r"/>
+</record>
+
+<record id="62021" model="res.departamento">
+<field name="name">Bariloche</field>
+<field name="provincia_id" ref="base.state_ar_r"/>
+</record>
+
+<record id="62028" model="res.departamento">
+<field name="name">Conesa</field>
+<field name="provincia_id" ref="base.state_ar_r"/>
+</record>
+
+<record id="62035" model="res.departamento">
+<field name="name">El Cuy</field>
+<field name="provincia_id" ref="base.state_ar_r"/>
+</record>
+
+<record id="62042" model="res.departamento">
+<field name="name">General Roca</field>
+<field name="provincia_id" ref="base.state_ar_r"/>
+</record>
+
+<record id="62056" model="res.departamento">
+<field name="name">Ñorquincó</field>
+<field name="provincia_id" ref="base.state_ar_r"/>
+</record>
+
+<record id="62063" model="res.departamento">
+<field name="name">Pichi Mahuida</field>
+<field name="provincia_id" ref="base.state_ar_r"/>
+</record>
+
+<record id="62070" model="res.departamento">
+<field name="name">Pilcaniyeu</field>
+<field name="provincia_id" ref="base.state_ar_r"/>
+</record>
+
+<record id="62077" model="res.departamento">
+<field name="name">San Antonio</field>
+<field name="provincia_id" ref="base.state_ar_r"/>
+</record>
+
+<record id="62084" model="res.departamento">
+<field name="name">Valcheta</field>
+<field name="provincia_id" ref="base.state_ar_r"/>
+</record>
+
+
+<record id="66007" model="res.departamento">
+<field name="name">Anta</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66014" model="res.departamento">
+<field name="name">Cachi</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66021" model="res.departamento">
+<field name="name">Cafayate</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66028" model="res.departamento">
+<field name="name">Capital</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66035" model="res.departamento">
+<field name="name">Cerrillos </field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66042" model="res.departamento">
+<field name="name">Chicoana</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66049" model="res.departamento">
+<field name="name">General Güemes</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66056" model="res.departamento">
+<field name="name">Grl. José de San Martín</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66063" model="res.departamento">
+<field name="name">Guachipas</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+<record id="66070" model="res.departamento">
+<field name="name">Iruya</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66077" model="res.departamento">
+<field name="name">La Caldera</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66084" model="res.departamento">
+<field name="name">La Candelaria</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66091" model="res.departamento">
+<field name="name">La Poma</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66098" model="res.departamento">
+<field name="name">La Viña</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66105" model="res.departamento">
+<field name="name">Los Andes</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66112" model="res.departamento">
+<field name="name">Metán</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+
+<record id="66119" model="res.departamento">
+<field name="name">Molinos</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66126" model="res.departamento">
+<field name="name">Orán</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66133" model="res.departamento">
+<field name="name">Rivadavia</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66140" model="res.departamento">
+<field name="name">Rosario de la Frontera</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66147" model="res.departamento">
+<field name="name">Rosario de Lerma</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66154" model="res.departamento">
+<field name="name">San Carlos</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="66161" model="res.departamento">
+<field name="name">Santa Victoria</field>
+<field name="provincia_id" ref="base.state_ar_a"/>
+</record>
+
+<record id="70126" model="res.departamento">
+<field name="name">25 de Mayo</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+
+<record id="70063" model="res.departamento">
+<field name="name">9 de Julio</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+
+<record id="70007" model="res.departamento">
+<field name="name">Albardón</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+
+<record id="70014" model="res.departamento">
+<field name="name">Angaco</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+
+<record id="70021" model="res.departamento">
+<field name="name">Calingasta</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+
+<record id="70028" model="res.departamento">
+<field name="name">Capital</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+<record id="70035" model="res.departamento">
+<field name="name">Caucete</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+
+<record id="70042" model="res.departamento">
+<field name="name">Chimbas</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+
+<record id="70049" model="res.departamento">
+<field name="name">Iglesia</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+
+<record id="70056" model="res.departamento">
+<field name="name">Jáchal</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+
+
+<record id="70070" model="res.departamento">
+<field name="name">Pocito</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+
+<record id="70077" model="res.departamento">
+<field name="name">Rawson</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+
+<record id="70084" model="res.departamento">
+<field name="name">Rivadavia</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+<record id="70091" model="res.departamento">
+<field name="name">San Martín</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+
+<record id="70098" model="res.departamento">
+<field name="name">Santa Lucía</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+
+<record id="70105" model="res.departamento">
+<field name="name">Sarmiento</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+
+<record id="70112" model="res.departamento">
+<field name="name">Ullúm</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+<record id="70119" model="res.departamento">
+<field name="name">Valle Fértil</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+
+<record id="70133" model="res.departamento">
+<field name="name">Zonda</field>
+<field name="provincia_id" ref="base.state_ar_j"/>
+</record>
+
+<record id="74007" model="res.departamento">
+<field name="name">Ayacucho</field>
+<field name="provincia_id" ref="base.state_ar_d"/>
+</record>
+
+<record id="74014" model="res.departamento">
+<field name="name">Belgrano</field>
+<field name="provincia_id" ref="base.state_ar_d"/>
+</record>
+
+
+<record id="74028" model="res.departamento">
+<field name="name">Chacabuco</field>
+<field name="provincia_id" ref="base.state_ar_d"/>
+</record>
+
+<record id="74021" model="res.departamento">
+<field name="name">Coronel Pringles</field>
+<field name="provincia_id" ref="base.state_ar_d"/>
+</record>
+
+<record id="74035" model="res.departamento">
+<field name="name">General Pedernera</field>
+<field name="provincia_id" ref="base.state_ar_d"/>
+</record>
+
+<record id="74042" model="res.departamento">
+<field name="name">Gobernador Dupuy</field>
+<field name="provincia_id" ref="base.state_ar_d"/>
+</record>
+
+<record id="74049" model="res.departamento">
+<field name="name">Junín</field>
+<field name="provincia_id" ref="base.state_ar_d"/>
+</record>
+
+<record id="74056" model="res.departamento">
+<field name="name">La Capital</field>
+<field name="provincia_id" ref="base.state_ar_d"/>
+</record>
+
+<record id="74063" model="res.departamento">
+<field name="name">Libertador General San Martín</field>
+<field name="provincia_id" ref="base.state_ar_d"/>
+</record>
+
+<record id="78007" model="res.departamento">
+<field name="name">Corpen Aike</field>
+<field name="provincia_id" ref="base.state_ar_z"/>
+</record>
+
+<record id="78014" model="res.departamento">
+<field name="name">Deseado</field>
+<field name="provincia_id" ref="base.state_ar_z"/>
+</record>
+
+<record id="78021" model="res.departamento">
+<field name="name">Güer Aike</field>
+<field name="provincia_id" ref="base.state_ar_z"/>
+</record>
+
+
+<record id="78028" model="res.departamento">
+<field name="name">Lago Argentino</field>
+<field name="provincia_id" ref="base.state_ar_z"/>
+</record>
+
+<record id="78035" model="res.departamento">
+<field name="name">Lago Buenos Aires</field>
+<field name="provincia_id" ref="base.state_ar_z"/>
+</record>
+
+<record id="78042" model="res.departamento">
+<field name="name">Magallanes</field>
+<field name="provincia_id" ref="base.state_ar_z"/>
+</record>
+<record id="78049" model="res.departamento">
+<field name="name">Río Chico</field>
+<field name="provincia_id" ref="base.state_ar_z"/>
+</record>
+
+
+<record id="82077" model="res.departamento">
+<field name="name">9 de Julio</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+<record id="82007" model="res.departamento">
+<field name="name">Belgrano</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+<record id="82014" model="res.departamento">
+<field name="name">Caseros</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+<record id="82021" model="res.departamento">
+<field name="name">Castellanos</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+<record id="82028" model="res.departamento">
+<field name="name">Constitución</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+<record id="82035" model="res.departamento">
+<field name="name">Garay</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+<record id="82042" model="res.departamento">
+<field name="name">General López</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+<record id="82049" model="res.departamento">
+<field name="name">General Obligado</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+<record id="82056" model="res.departamento">
+<field name="name">Iriondo</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+<record id="82063" model="res.departamento">
+<field name="name">La Capital</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+
+<record id="82070" model="res.departamento">
+<field name="name">Las Colonias</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+<record id="83084" model="res.departamento">
+<field name="name">Rosario</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+<record id="82084" model="res.departamento">
+<field name="name">Rosario</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+<record id="82091" model="res.departamento">
+<field name="name">San Cristóbal</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+<record id="82098" model="res.departamento">
+<field name="name">San Javier</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+<record id="82105" model="res.departamento">
+<field name="name">San Jerónimo</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+<record id="82112" model="res.departamento">
+<field name="name">San Justo</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+<record id="82119" model="res.departamento">
+<field name="name">San Lorenzo</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+<record id="82126" model="res.departamento">
+<field name="name">San Martín</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+<record id="82133" model="res.departamento">
+<field name="name">Vera</field>
+<field name="provincia_id" ref="base.state_ar_s"/>
+</record>
+
+
+<record id="86007" model="res.departamento">
+<field name="name">Aguirre</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86014" model="res.departamento">
+<field name="name">Alberdi</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86021" model="res.departamento">
+<field name="name">Atamisqui</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86028" model="res.departamento">
+<field name="name">Avellaneda</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86035" model="res.departamento">
+<field name="name">Banda</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86042" model="res.departamento">
+<field name="name">Belgrano</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86049" model="res.departamento">
+<field name="name">Capital</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86063" model="res.departamento">
+<field name="name">Choya</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86056" model="res.departamento">
+<field name="name">Copo</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86070" model="res.departamento">
+<field name="name">Figueroa</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86077" model="res.departamento">
+<field name="name">General Taboada</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86084" model="res.departamento">
+<field name="name">Guasayán</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86091" model="res.departamento">
+<field name="name">Jiménez</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86098" model="res.departamento">
+<field name="name">Juan F. Ibarra</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86105" model="res.departamento">
+<field name="name">Loreto</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+<record id="86112" model="res.departamento">
+<field name="name">Mitre</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+<record id="86119" model="res.departamento">
+<field name="name">Moreno</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86126" model="res.departamento">
+<field name="name">Ojo de Agua</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+
+<record id="86133" model="res.departamento">
+<field name="name">Pellegrini</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86140" model="res.departamento">
+<field name="name">Quebrachos</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86147" model="res.departamento">
+<field name="name">Río Hondo</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+
+<record id="86154" model="res.departamento">
+<field name="name">Rivadavia</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86161" model="res.departamento">
+<field name="name">Robles</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86168" model="res.departamento">
+<field name="name">Salavina</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86175" model="res.departamento">
+<field name="name">San Martín</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="86182" model="res.departamento">
+<field name="name">Sarmiento</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+<record id="86189" model="res.departamento">
+<field name="name">Silípica</field>
+<field name="provincia_id" ref="base.state_ar_g"/>
+</record>
+
+<record id="94028" model="res.departamento">
+<field name="name">Antártida Argentina</field>
+<field name="provincia_id" ref="base.state_ar_v"/>
+</record>
+<record id="94021" model="res.departamento">
+<field name="name">Islas del Atlántico Sur</field>
+<field name="provincia_id" ref="base.state_ar_v"/>
+</record>
+<record id="94007" model="res.departamento">
+<field name="name">Río Grande</field>
+<field name="provincia_id" ref="base.state_ar_v"/>
+</record>
+
+<record id="94014" model="res.departamento">
+<field name="name">Ushuaia</field>
+<field name="provincia_id" ref="base.state_ar_v"/>
+</record>
+
+
+<record id="90007" model="res.departamento">
+<field name="name">Burruyacú</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+
+<record id="90084" model="res.departamento">
+<field name="name">Capital</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+<record id="90021" model="res.departamento">
+<field name="name">Chicligasta</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+
+<record id="90014" model="res.departamento">
+<field name="name">Cruz Alta</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+
+<record id="90014" model="res.departamento">
+<field name="name">Cruz Alta</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+
+<record id="90035" model="res.departamento">
+<field name="name">Graneros</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+
+<record id="90028" model="res.departamento">
+<field name="name">Famaillá</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+
+<record id="90042" model="res.departamento">
+<field name="name">Juan Bautista Alberdi</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+
+<record id="90049" model="res.departamento">
+<field name="name">La Cocha</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+
+<record id="90056" model="res.departamento">
+<field name="name">Leales</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+
+<record id="90063" model="res.departamento">
+<field name="name">Lules</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+
+<record id="90070" model="res.departamento">
+<field name="name">Monteros</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+
+<record id="90077" model="res.departamento">
+<field name="name">Río Chico</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+
+<record id="90091" model="res.departamento">
+<field name="name">Simoca</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+
+<record id="90105" model="res.departamento">
+<field name="name">Tafí Viejo</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+
+<record id="90098" model="res.departamento">
+<field name="name">Tafí del Valle</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+
+<record id="90112" model="res.departamento">
+<field name="name">Trancas</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+
+<record id="90119" model="res.departamento">
+<field name="name">Yerba Buena</field>
+<field name="provincia_id" ref="base.state_ar_t"/>
+</record>
+   
+
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+    
+     <!-- Listado de provincias 
+     ciudad de buenos aires : base.state_ar_c
+     catamarca: base.state_ar_k
+     chaco: base.state_ar_h
+     chubut: base.state_ar_u
+     cordoba:base.state_ar_x
+     corrientes: base.state_ar_c
+     formosa: base.state_ar_p
+     jujuy:base.state_ar_y
+     la pampa: base.state_ar_l
+     la rioja: base.state_ar_f
+     mendoza: base.state_ar_m
+     misiones: base.state_ar_n
+     neuquen: base.state_ar_q
+     rio negro: base.state_ar_r
+     salta:base.state_ar_a
+     san juan : base.state_ar_j
+     san luis : base.state_ar_d
+     santa cruz: base.state_ar_z
+     santa fe: base.state_ar_s
+     sgo del estero: base.state_ar_g
+     t del fuego: base.state_ar_v
+     tucuman: base.state_ar_t
+
+     
+      -->
+</odoo> 

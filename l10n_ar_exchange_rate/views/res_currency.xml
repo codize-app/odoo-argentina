@@ -1,0 +1,26 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="res_currency_form_custom_tc">
+      <field name="name">res.currency.form.customtc</field>
+      <field name="model">res.currency</field>
+      <field name="inherit_id" ref="base.view_currency_form"/>
+      <field name="arch" type="xml">
+
+        <field name="symbol" position="after">
+
+          <button name="l10n_ar_action_get_afip_ws_currency_rate_get"
+                  type="object"
+                  class="oe_link"
+                  string="Obtener Tasa"/>
+
+          <field name="use_dolar_api"/>
+
+          <field name="dolar_api_house" invisible="not use_dolar_api"/>
+          <field name="dolar_api_precio" invisible="not use_dolar_api"/>
+
+        </field>
+
+      </field>
+    </record>
+  </data>
+</odoo>
