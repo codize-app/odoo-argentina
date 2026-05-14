@@ -102,26 +102,38 @@ class AccountPayment(models.Model):
 
         return super(AccountPayment, self).action_post()
 
-    def _get_liquidity_move_line_vals(self, amount):
-        vals = super(AccountPayment, self)._get_liquidity_move_line_vals(
-            amount)
+    def _prepare_move_line_default_vals(self, write_off_line_vals=None, force_balance=None):
+        vals_list = super()._prepare_move_line_default_vals(
+            write_off_line_vals=write_off_line_vals,
+            force_balance=force_balance,
+        )
+
         if self.payment_method_code == 'withholding':
             if self.payment_type == 'transfer':
-                raise UserError(_(
-                    'You can not use withholdings on transfers!'))
+                raise UserError(_('You can not use withholdings on transfers!'))
+
+            tax = self.tax_withholding_id
+
             if (
-                    (self.partner_type == 'customer' and
-                        self.payment_type == 'inbound') or
-                    (self.partner_type == 'supplier' and
-                        self.payment_type == 'outbound')):
-                account = self.tax_withholding_id.account_id
+                (self.partner_type == 'customer' and self.payment_type == 'inbound') or
+                (self.partner_type == 'supplier' and self.payment_type == 'outbound')
+            ):
+                rep_lines = tax.invoice_repartition_line_ids.filtered(
+                    lambda l: l.repartition_type == 'tax'
+                )
             else:
-                account = self.tax_withholding_id.refund_account_id
+                rep_lines = tax.refund_repartition_line_ids.filtered(
+                    lambda l: l.repartition_type == 'tax'
+                )
+
+            account = rep_lines[:1].account_id
+
             if account:
-                vals['account_id'] = account.id
-            vals['name'] = self.withholding_number or '/'
-            vals['tax_line_id'] = self.tax_withholding_id.id
-        return vals
+                vals_list[0]['account_id'] = account.id
+            vals_list[0]['name'] = self.withholding_number or '/'
+            vals_list[0]['tax_line_id'] = tax.id
+
+        return vals_list
 
     def _compute_payment_method_description(self):
         payments = self.filtered(
