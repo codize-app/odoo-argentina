@@ -135,7 +135,7 @@ class ResPartner(models.Model):
     )
 
     def update_from_padron(self):
-        if self.env['ir.module.module'].search([('name', '=', 'web_enterprise'), ('state', '=', 'inline')]):
+        if bool(self.env['ir.module.module'].search([('name', '=', 'web_enterprise'), ('state', '=', 'inline')])):
             company = self.env['l10n_ar.afipws.connection'].search([], limit=1).company_id
             client, auth, transport = company._l10n_ar_get_connection('ws_sr_constancia_inscripcion')._get_client(return_transport=True)
             response = client.service['getPersona_v2'](auth, '')
