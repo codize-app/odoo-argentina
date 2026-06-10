@@ -135,7 +135,14 @@ class ResPartner(models.Model):
     )
 
     def update_from_padron(self):
-        if self.l10n_latam_identification_type_id.name == 'CUIT':
+        if self.env['ir.module.module'].search([('name', '=', 'web_enterprise'), ('state', '=', 'inline')]):
+            company = self.env['l10n_ar.afipws.connection'].search([], limit=1).company_id
+            client, auth, transport = company._l10n_ar_get_connection('ws_sr_constancia_inscripcion')._get_client(return_transport=True)
+            response = client.service['getPersona_v2'](auth, '')
+        else:
+            company = self.env['afipws.certificate_alias'].search([('state', '=', 'confirmed')], limit=1).company_id
+            ws = company.get_connection('ws_sr_constancia_inscripcion').connect()
+        """if self.l10n_latam_identification_type_id.name == 'CUIT':
             x = requests.get('https://www.tangofactura.com/Rest/GetContribuyente?cuit=' + self.vat)
 
             ws_sr_padron = json.loads(x.text)
@@ -193,7 +200,7 @@ class ResPartner(models.Model):
                 for imp in ws_sr_padron['Contribuyente']['impuestos']:
                     i = self.env['afip.tax'].search([('code', '=', str(imp))], limit=1)
                     if i:
-                        self.impuestos_padron = [(4, i.id)]
+                        self.impuestos_padron = [(4, i.id)]"""
 
     @api.constrains('gross_income_jurisdiction_ids', 'state_id')
     def check_gross_income_jurisdictions(self):
