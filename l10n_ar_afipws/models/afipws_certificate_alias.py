@@ -1,0 +1,186 @@
+from odoo import fields, models, api, _
+from odoo.exceptions import ValidationError
+try:
+    from OpenSSL import crypto
+except ImportError:
+    crypto = None
+import logging
+_logger = logging.getLogger(__name__)
+
+class AfipwsCertificateAlias(models.Model):
+    _name = "afipws.certificate_alias"
+    _description = "ARCA Certificado / Alias"
+
+    """
+    Para poder acceder a un servicio, la aplicación a programar debe utilizar
+    un certificado de seguridad, que se obtiene en la web de afip. Entre otras
+    cosas, el certificado contiene un Distinguished Name (DN) que incluye una
+    CUIT. Cada DN será identificado por un "alias" o "nombre simbólico",
+    que actúa como una abreviación.
+    EJ alias: AFIP WS Prod - Exemax
+    EJ DN: C=ar, ST=buenos aires, L=pilar, O=exemax s.a.s., OU=it,
+           SERIALNUMBER=CUIT 30716718529, CN=afip web services - exemax s.a.s.
+    """
+
+    common_name = fields.Char(
+        'Nombre Común',
+        size=64,
+        default='ARCA WS',
+        help='Nombre de referencia del WS de ARCA, lo puede dejar de esta manera.',
+        required=True,
+    )
+    key = fields.Text(
+        'Key Privada',
+    )
+    company_id = fields.Many2one(
+        'res.company',
+        'Compañía',
+        required=True,
+        default=lambda self: self.env.user.company_id,
+        auto_join=True,
+        index=True,
+    )
+    country_id = fields.Many2one(
+        'res.country', 'País',
+        required=True,
+    )
+    state_id = fields.Many2one(
+        'res.country.state', 'Provincia'
+    )
+    city = fields.Char(
+        'Ciudad',
+        required=True,
+    )
+    department = fields.Char(
+        'Departamento',
+        default='IT',
+        required=True,
+    )
+    cuit = fields.Char(
+        'CUIT',
+        compute='_compute_cuit',
+        required=True,
+    )
+    company_cuit = fields.Char(
+        'CUIT de la Compañía',
+        size=16,
+    )
+    service_provider_cuit = fields.Char(
+        'CUIT del Proveedor de Servicios',
+        size=16
+    )
+    certificate_ids = fields.One2many(
+        'afipws.certificate',
+        'alias_id',
+        'Certificados',
+        auto_join=True,
+    )
+    service_type = fields.Selection(
+        [('in_house', 'En Casa'), ('outsourced', 'Subcontratado')],
+        'Tipo de Servicio',
+        default='in_house',
+        required=True,
+    )
+    state = fields.Selection([
+        ('draft', 'Borrador'),
+        ('confirmed', 'Confirmado'),
+        ('cancel', 'Cancelado'),
+    ], 'Estad', index=True, readonly=True, default='draft',
+        help="* The 'Draft' state is used when a user is creating a new pair "
+        "key. Warning: everybody can see the key."
+        "\n* The 'Confirmed' state is used when the key is completed with "
+        "public or private key."
+        "\n* The 'Canceled' state is used when the key is not more used. "
+        "You cant use this key again."
+    )
+    type = fields.Selection(
+        [('production', 'Producción'), ('homologation', 'Homologación')],
+        'Tipo',
+        required=True,
+        default='production',
+    )
+
+    @api.onchange('company_id')
+    def change_company_name(self):
+        if self.company_id:
+            common_name = 'ARCA WS %s - %s' % (
+                self.type, self.company_id.name)
+            self.common_name = common_name[:50]
+
+    @api.depends('company_cuit', 'service_provider_cuit', 'service_type')
+    def _compute_cuit(self):
+        for rec in self:
+            if rec.service_type == 'outsourced':
+                rec.cuit = rec.service_provider_cuit
+            else:
+                rec.cuit = rec.company_cuit
+
+    @api.onchange('company_id')
+    def change_company_id(self):
+        if self.company_id:
+            self.country_id = self.company_id.country_id.id
+            self.state_id = self.company_id.state_id.id
+            self.city = self.company_id.city
+            self.company_cuit = self.company_id.vat
+
+    def action_confirm(self):
+        if not self.key:
+            self.generate_key()
+        self.write({'state': 'confirmed'})
+        return True
+
+    def generate_key(self, key_length=2048):
+        """
+        """
+        # TODO reemplazar todo esto por las funciones nativas de pyafipws
+        for rec in self:
+            k = crypto.PKey()
+            k.generate_key(crypto.TYPE_RSA, key_length)
+            rec.key = crypto.dump_privatekey(crypto.FILETYPE_PEM, k)
+
+    def action_to_draft(self):
+        self.write({'state': 'draft'})
+        return True
+
+    def action_cancel(self):
+        self.write({'state': 'cancel'})
+        self.certificate_ids.write({'state': 'cancel'})
+        return True
+
+    def action_create_certificate_request(self):
+        """
+        TODO agregar descripcion y ver si usamos pyafipsw para generar esto
+        """
+        for record in self:
+            req = crypto.X509Req()
+            req.get_subject().C = self.country_id.code.encode(
+                'ascii', 'ignore')
+            if self.state_id:
+                req.get_subject().ST = self.state_id.name.encode(
+                    'ascii', 'ignore')
+            req.get_subject().L = self.city.encode(
+                'ascii', 'ignore')
+            req.get_subject().O = self.company_id.name.encode(
+                'ascii', 'ignore')
+            req.get_subject().OU = self.department.encode(
+                'ascii', 'ignore')
+            req.get_subject().CN = self.common_name.encode(
+                'ascii', 'ignore')
+            req.get_subject().serialNumber = 'CUIT %s' % self.cuit.encode(
+                'ascii', 'ignore')
+            k = crypto.load_privatekey(crypto.FILETYPE_PEM, self.key)
+            self.key = crypto.dump_privatekey(crypto.FILETYPE_PEM, k)
+            req.set_pubkey(k)
+            req.sign(k, 'sha256')
+            csr = crypto.dump_certificate_request(crypto.FILETYPE_PEM, req)
+            vals = {
+                'csr': csr,
+                'alias_id': record.id,
+            }
+            self.certificate_ids.create(vals)
+        return True
+
+    @api.constrains('common_name')
+    def check_common_name_len(self):
+        if self.filtered(lambda x: x.common_name and len(x.common_name) > 50):
+            raise ValidationError('El Nombre Común debe tener menos de 50 Carácteres')
