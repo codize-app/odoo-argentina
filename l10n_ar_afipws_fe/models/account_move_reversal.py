@@ -67,7 +67,7 @@ class AccountMoveReversal(models.TransientModel):
             })
         else:
             action.update({
-                'view_mode': 'tree,form',
+                'view_mode': 'list,form',
                 'domain': [('id', 'in', new_moves.ids)],
             })
         return action

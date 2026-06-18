@@ -121,22 +121,6 @@ class AccountMove(models.Model):
         '- SI: sí el comprobante asociado (original) se encuentra rechazado por el comprador\n'
         '- NO: sí el comprobante asociado (original) NO se encuentra rechazado por el comprador'
     )
-    show_credit_button = fields.Boolean('show_credit_button',compute=_compute_show_credit_button)
-
-    def _compute_show_credit_button(self):
-        for rec in self:
-            res = True
-            if rec.move_type in ['in_invoice','out_invoice']:
-                if rec.state == 'posted':
-                    if rec.payment_state not in ['paid','reversed']:
-                        res = True
-                    else:
-                        res = False
-                else:
-                    res = False
-            else:
-                res = False
-            rec.show_credit_button = res
 
     @api.depends('journal_id', 'afip_auth_code')
     def _compute_validation_type(self):

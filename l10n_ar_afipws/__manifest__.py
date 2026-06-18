@@ -6,6 +6,7 @@
     'category': 'Accounting',
     'sequence': 14,
     'author': 'ADHOC SA, Moldeo Interactive, Exemax, Codize, Odoo Community Association (OCA)',
+    'website': 'http://www.codize.ar',
     'license': 'AGPL-3',
     'summary': 'Modulo Base para los Web Services de ARCA (ex AFIP)',
     'depends': [

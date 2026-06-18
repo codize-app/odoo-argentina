@@ -11,9 +11,9 @@ _logger = logging.getLogger(__name__)
 class AccountJournal(models.Model):
     _inherit = 'account.journal'
 
-    sequences = fields.One2many(comodel_name='ir.sequence',inverse_name='journal_id',string='Secuencias')
+    sequences = fields.One2many('ir.sequence', inverse_name='journal_id', string='Secuencias')
     _afip_ws_selection = (lambda self, *args, **kwargs: self._get_afip_ws_selection(*args, **kwargs))
-    
+
     def _get_journal_letter(self, counterpart_partner=False):
         """ Regarding the AFIP responsibility of the company and the type of journal (sale/purchase), get the allowed
         letters. Optionally, receive the counterpart partner (customer/supplier) and get the allowed letters to work
@@ -77,16 +77,6 @@ class AccountJournal(models.Model):
         if self.afip_ws == 'wsfex':
             name += ' Exportación'
         return name
-
-    @api.model
-    def create(self, vals):
-        journal = super(AccountJournal, self).create(vals)
-        if journal.l10n_ar_afip_pos_system == 'RLI_RLM' and journal.afip_ws:
-            try:
-                journal.sync_document_local_remote_number()
-            except Exception:
-                _logger.info('No se puede sincronizar números locales y remotos')
-        return journal
 
     @api.constrains('point_of_sale_type', 'afip_ws')
     def check_afip_ws_and_type(self):

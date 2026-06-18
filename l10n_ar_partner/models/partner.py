@@ -51,8 +51,6 @@ class ResPartner(models.Model):
     internal_reference = fields.Char('Nombre de Fantasía')
     dept_id = fields.Many2one('res.departamento', string='Partido', ondelete='restrict', domain="[('provincia_id', '=', state_id)]")
     loc_id = fields.Many2one('res.localidad', string='Localidad', ondelete='restrict', domain="[('partido_id', '=', dept_id)]")
-    
-    iibb_number = fields.Char('Ingresos Burtos')
     #percepciones_ids = fields.One2many(
     #    'res.partner.per',
     #    'partner_id',
@@ -82,11 +80,11 @@ class ResPartner(models.Model):
     )
     gross_income_jurisdiction_ids = fields.Many2many(
         'res.country.state',
-        string='Gross Income Jurisdictions',
-        help='The state of the company is cosidered the main jurisdiction',
+        string='Juridiciones de Ingresos Brutos',
+        help='La provincia que la compañía considera juridicción principal',
     )
     start_date = fields.Date(
-        'Start-up Date',
+        'Fecha de Inicio de Actividades',
     )
     estado_padron = fields.Char(string='Estado AFIP')
     imp_ganancias_padron = fields.Selection([
