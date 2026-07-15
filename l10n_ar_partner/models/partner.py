@@ -146,34 +146,52 @@ class ResPartner(models.Model):
         else:
             company = self.env['afipws.certificate_alias'].search([('state', '=', 'confirmed')], limit=1).company_id
             ws = company.get_connection('ws_sr_constancia_inscripcion').connect()
-        """if self.l10n_latam_identification_type_id.name == 'CUIT':
-            x = requests.get('https://www.tangofactura.com/Rest/GetContribuyente?cuit=' + self.vat)
+            
+        if self.l10n_latam_identification_type_id.name == 'CUIT':
+            ws_sr_padron = response
+            _logger.info(ws_sr_padron)
+            # Validar que la respuesta contenga datos del contribuyente
+            if 'datosGenerales' not in ws_sr_padron or not ws_sr_padron['datosGenerales']:
+                raise UserError(_(
+                    'No se pudo obtener información del contribuyente con CUIT %s. '
+                    'Verifique que el CUIT sea correcto o intente nuevamente más tarde.'
+                ) % self.vat)
 
-            ws_sr_padron = json.loads(x.text)
-
-            if ws_sr_padron['Contribuyente']['tipoPersona'] == "FISICA":
+            if ws_sr_padron['datosGenerales']['tipoPersona'] == "FISICA":
                 self.company_type = "person"
             else:
                 self.company_type = "company"
 
-            self.name = ws_sr_padron['Contribuyente']['nombre']
+            self.name = ws_sr_padron['datosGenerales']['razonSocial']
 
-            EsRI = ws_sr_padron['Contribuyente']['EsRI']
-            EsMonotributo = ws_sr_padron['Contribuyente']['EsMonotributo']
-            EsExento = ws_sr_padron['Contribuyente']['EsExento']
+            EsRI = False
+            EsMonotributo = False
+            EsExento = False
+
+            if ws_sr_padron['datosMonotributo'] != None:
+                EsMonotributo = True
+
+            for imp in ws_sr_padron['datosRegimenGeneral']['impuesto']:
+                if imp['descripcionImpuesto'] == 'IVA' and imp['estadoImpuesto'] == 'AC':
+                    EsRI = True
+                    break
+                if imp['descripcionImpuesto'] == 'IVA EXENTO' and imp['estadoImpuesto'] == 'AC':
+                    EsExento = True
+                    break
+
             l10n_ar_type = ""
 
             if EsRI == True:
-                l10n_ar_type = "IVA Responsable Inscripto"
+                l10n_ar_type = "1"
             elif EsMonotributo == True:
-                l10n_ar_type = "Responsable Monotributo"
+                l10n_ar_type = "6"
             elif EsExento == True:
-                l10n_ar_type = "IVA Sujeto Exento"
+                l10n_ar_type = "4"
 
             if l10n_ar_type != "":
-                iva_afip = self.env["l10n_ar.afip.responsibility.type"].search([("name", "=", l10n_ar_type)], limit=1)
+                iva_afip = self.env["l10n_ar.afip.responsibility.type"].search([("code", "=", l10n_ar_type)], limit=1)
                 self.l10n_ar_afip_responsibility_type_id = iva_afip.id
-
+"""
             if ws_sr_padron['Contribuyente']['domicilioFiscal']['direccion']:
                 self.street = ws_sr_padron['Contribuyente']['domicilioFiscal']['direccion'].capitalize()
             if ws_sr_padron['Contribuyente']['domicilioFiscal']['localidad']:
