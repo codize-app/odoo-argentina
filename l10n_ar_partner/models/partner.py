@@ -191,26 +191,26 @@ class ResPartner(models.Model):
             if l10n_ar_type != "":
                 iva_afip = self.env["l10n_ar.afip.responsibility.type"].search([("code", "=", l10n_ar_type)], limit=1)
                 self.l10n_ar_afip_responsibility_type_id = iva_afip.id
-"""
-            if ws_sr_padron['Contribuyente']['domicilioFiscal']['direccion']:
-                self.street = ws_sr_padron['Contribuyente']['domicilioFiscal']['direccion'].capitalize()
-            if ws_sr_padron['Contribuyente']['domicilioFiscal']['localidad']:
-                self.city = ws_sr_padron['Contribuyente']['domicilioFiscal']['localidad'].capitalize()
-            if ws_sr_padron['Contribuyente']['domicilioFiscal']['codPostal']:
-                self.zip = ws_sr_padron['Contribuyente']['domicilioFiscal']['codPostal']
 
-            if ws_sr_padron['Contribuyente']['domicilioFiscal']['idProvincia']:
+            if ws_sr_padron['datosGenerales']['domicilioFiscal']['direccion']:
+                self.street = ws_sr_padron['datosGenerales']['domicilioFiscal']['direccion'].capitalize()
+            if ws_sr_padron['datosGenerales']['domicilioFiscal']:
+                self.city = ws_sr_padron['datosGenerales']['domicilioFiscal']['localidad'].capitalize()
+            if ws_sr_padron['datosGenerales']['domicilioFiscal']['codPostal']:
+                self.zip = ws_sr_padron['datosGenerales']['domicilioFiscal']['codPostal']
+
+            if ws_sr_padron['datosGenerales']['domicilioFiscal']['idProvincia']:
                 country_id = self.env['res.country'].search([('name', '=', 'Argentina')], limit=1)
                 if country_id:
                     self.country_id = country_id.id
 
-                provincia = STATES.get(ws_sr_padron['Contribuyente']['domicilioFiscal']['idProvincia'])
+                provincia = STATES.get(ws_sr_padron['datosGenerales']['domicilioFiscal']['idProvincia'])
 
                 state_id = self.env['res.country.state'].search([('name', 'ilike', provincia), ('country_id', '=', country_id.id)], limit=1)
                 if state_id:
                     self.state_id = state_id.id
 
-            if ws_sr_padron['Contribuyente']['ListaActividades']:
+            """if ws_sr_padron['Contribuyente']['ListaActividades']:
                 self.write({'actividades_padron': [(5, 0, 0)]})
                 for act in ws_sr_padron['Contribuyente']['ListaActividades']:
                     a = self.env['afip.activity'].search([('code', '=', str(act['idActividad']))], limit=1)
