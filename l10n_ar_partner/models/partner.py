@@ -136,7 +136,13 @@ class ResPartner(models.Model):
         if bool(self.env['ir.module.module'].search([('name', '=', 'web_enterprise'), ('state', '=', 'inline')])):
             company = self.env['l10n_ar.afipws.connection'].search([], limit=1).company_id
             client, auth, transport = company._l10n_ar_get_connection('ws_sr_constancia_inscripcion')._get_client(return_transport=True)
-            response = client.service['getPersona_v2'](auth, '')
+            data = {
+                "token": auth['Token'],
+                "sign": auth['Sign'],
+                "cuitRepresentada": auth['Cuit'],
+                "idPersona": self.vat
+            }
+            response = client.service['getPersona_v2'](**data)
         else:
             company = self.env['afipws.certificate_alias'].search([('state', '=', 'confirmed')], limit=1).company_id
             ws = company.get_connection('ws_sr_constancia_inscripcion').connect()
