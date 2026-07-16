@@ -12,30 +12,30 @@ import logging
 _logger = logging.getLogger(__name__)
 
 STATES = {
-    0: "Ciudad Autónoma de Buenos Aires",
-    1: "Buenos Aires",
-    2: "Catamarca",
-    3: "Córdoba",
-    4: "Corrientes",
-    5: "Entre Ríos",
-    6: "Jujuy",
-    7: "Mendoza",
-    8: "La Rioja",
-    9: "Salta",
-    10: "San Juan",
-    11: "San Luis",
-    12: "Santa Fe",
-    13: "Santiago del Estero",
-    14: "Tucumán",
-    16: "Chaco",
-    17: "Chubut",
-    18: "Formosa",
-    19: "Misiones",
-    20: "Neuquén",
-    21: "La Pampa",
-    22: "Río Negro",
-    23: "Santa Cruz",
-    24: "Tierra del Fuego"
+    0: "C",   # Ciudad Autónoma de Buenos Aires
+    1: "B",   # Buenos Aires
+    2: "K",   # Catamarca
+    3: "X",   # Córdoba
+    4: "W",   # Corrientes
+    5: "E",   # Entre Ríos
+    6: "Y",   # Jujuy
+    7: "M",   # Mendoza
+    8: "F",   # La Rioja
+    9: "A",   # Salta
+    10: "J",  # San Juan
+    11: "D",  # San Luis
+    12: "S",  # Santa Fe
+    13: "G",  # Santiago del Estero
+    14: "T",  # Tucumán
+    16: "H",  # Chaco
+    17: "U",  # Chubut
+    18: "P",  # Formosa
+    19: "N",  # Misiones
+    20: "Q",  # Neuquén
+    21: "L",  # La Pampa
+    22: "R",  # Río Negro
+    23: "Z",  # Santa Cruz
+    24: "V",  # Tierra del Fuego
 }
 
 class ResPartner(models.Model):
@@ -194,19 +194,19 @@ class ResPartner(models.Model):
 
             if ws_sr_padron['datosGenerales']['domicilioFiscal']['direccion']:
                 self.street = ws_sr_padron['datosGenerales']['domicilioFiscal']['direccion'].capitalize()
-            if ws_sr_padron['datosGenerales']['domicilioFiscal']:
+            if ws_sr_padron['datosGenerales']['domicilioFiscal']['localidad']:
                 self.city = ws_sr_padron['datosGenerales']['domicilioFiscal']['localidad'].capitalize()
             if ws_sr_padron['datosGenerales']['domicilioFiscal']['codPostal']:
                 self.zip = ws_sr_padron['datosGenerales']['domicilioFiscal']['codPostal']
 
-            if ws_sr_padron['datosGenerales']['domicilioFiscal']['idProvincia']:
+            if ws_sr_padron['datosGenerales']['domicilioFiscal']['idProvincia'] != None:
                 country_id = self.env['res.country'].search([('name', '=', 'Argentina')], limit=1)
                 if country_id:
                     self.country_id = country_id.id
 
                 provincia = STATES.get(ws_sr_padron['datosGenerales']['domicilioFiscal']['idProvincia'])
 
-                state_id = self.env['res.country.state'].search([('name', 'ilike', provincia), ('country_id', '=', country_id.id)], limit=1)
+                state_id = self.env['res.country.state'].search([('code', '=', provincia), ('country_id', '=', country_id.id)], limit=1)
                 if state_id:
                     self.state_id = state_id.id
 
