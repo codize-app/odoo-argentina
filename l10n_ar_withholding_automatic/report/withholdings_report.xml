@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="withholdings_report_general" name="Report Withholdings">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <!-- Values total -->
+                    <t t-set="total_per" t-value="0"/>
+                    <t t-set="total_ret" t-value="0"/>
+                    <t t-set="total_ret_gan" t-value="0"/>
+                    
+                    <div class="text-center">
+                        <h3>Reporte Percepciones y Retenciones</h3>
+                        <h4 class="text-right"><span t-esc="from_data['date_from']"/> al <span t-esc="from_data['date_to']"/></h4>
+                    </div>
+                    <div class="text-left">
+                        <h5>Percepciones</h5>
+                    </div>
+                    <br/>
+                    <table class="table table-bordered mt32" style="font-size:10px">
+                        <thead>
+                            <tr>
+                                <th name="th_tipo" class="text-left">
+                                    <span>Tipo</span>
+                                </th>
+                                <th name="th_factura" class="text-left">
+                                    <span>Factura</span>
+                                </th>
+                                <th name="th_fecha" class="text-left">
+                                    <span>Fecha</span>
+                                </th>
+                                <th name="th_cliente_proveedor" class="text-left">
+                                    <span>Cliente/Proveedor</span>
+                                </th>
+                                <th name="th_cuit" class="text-left">
+                                    <span>CUIT</span>
+                                </th>
+                                <th name="th_provincia" class="text-left">
+                                    <span>Provincia</span>
+                                </th>
+                                <th name="th_total" class="text-left">
+                                    <span>Total</span>
+                                </th>
+                                <th name="th_monto_imponible" class="text-left">
+                                    <span>Monto imponible</span>
+                                </th>
+                                <th name="th_ingresos_rutos" class="text-left">
+                                    <span>Ingresos Brutos</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="percepciones_ids" t-as="i">
+                            <tr>
+                                <td>
+                                    <span t-esc="i[0]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[1]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[2]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[3]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[4]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[5]"/>
+                                </td>
+                                <td>
+                                    $<span t-esc="'{:,.2f}'.format(i[6])"/>
+                                </td>
+                                <t t-set="total_per" t-value="total_per + i[6]"/>
+                                <td>
+                                    $<span t-esc="'{:,.2f}'.format(i[7])"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[8]"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+                    <h5 class="text-right">Total Percepciones $<span t-esc="'{:,.2f}'.format(total_per)"/></h5>
+
+                    <p style="page-break-before:always;"> </p>
+
+                    <div class="text-left">
+                        <h5>Retenciones</h5>
+                    </div>
+                    <br/>
+                    <table class="table table-bordered mt32" style="font-size:10px">
+                        <thead>
+                            <tr>
+                                <th name="th_tipo" class="text-left">
+                                    <span>Tipo</span>
+                                </th>
+                                <th name="th_numero" class="text-left">
+                                    <span>Numero</span>
+                                </th>
+                                <th name="th_fecha" class="text-left">
+                                    <span>Fecha</span>
+                                </th>
+                                <th name="th_cliente_proveedor" class="text-left">
+                                    <span>Cliente/Proveedor</span>
+                                </th>
+                                <th name="th_cuit" class="text-left">
+                                    <span>CUIT</span>
+                                </th>
+                                <th name="th_provincia" class="text-left">
+                                    <span>Provincia</span>
+                                </th>
+                                <th name="th_total" class="text-left">
+                                    <span>Total</span>
+                                </th>
+                                <th name="th_n_de_pago" class="text-left">
+                                    <span>N° de pago</span>
+                                </th>
+                                <th name="th_monto_imponible" class="text-left">
+                                    <span>Monto imponible</span>
+                                </th>
+                                <th name="th_ingresos_rutos" class="text-left">
+                                    <span>Ingresos Brutos</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="retenciones_ids" t-as="i">
+                            <tr>
+                                <td>
+                                    <span t-esc="i[0]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[1]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[2]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[3]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[4]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[5]"/>
+                                </td>
+                                <td>
+                                    $<span t-esc="'{:,.2f}'.format(i[6])"/>
+                                </td>
+                                <t t-set="total_ret" t-value="total_ret + i[6]"/>
+                                <td>
+                                    <span t-esc="i[7]"/>
+                                </td>
+                                <td>
+                                    $<span t-esc="'{:,.2f}'.format(i[8])"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[9]"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+                    <h5 class="text-right">Total Retenciones $<span t-esc="'{:,.2f}'.format(total_ret)"/></h5>
+
+                    <p style="page-break-before:always;"> </p>
+
+                    <div class="text-left">
+                        <h5>Retenciones de Ganancias</h5>
+                    </div>
+                    <br/>
+                    <table class="table table-bordered mt32" style="font-size:10px">
+                        <thead>
+                            <tr>
+                                <th name="th_tipo" class="text-left">
+                                    <span>Tipo</span>
+                                </th>
+                                <th name="th_numero" class="text-left">
+                                    <span>Numero</span>
+                                </th>
+                                <th name="th_fecha" class="text-left">
+                                    <span>Fecha</span>
+                                </th>
+                                <th name="th_cliente_proveedor" class="text-left">
+                                    <span>Cliente/Proveedor</span>
+                                </th>
+                                <th name="th_cuit" class="text-left">
+                                    <span>CUIT</span>
+                                </th>
+                                <th name="th_provincia" class="text-left">
+                                    <span>Provincia</span>
+                                </th>
+                                <th name="th_total" class="text-left">
+                                    <span>Total</span>
+                                </th>
+                                <th name="th_n_de_pago" class="text-left">
+                                    <span>N° de pago</span>
+                                </th>
+                                <th name="th_monto_imponible" class="text-left">
+                                    <span>Monto imponible</span>
+                                </th>
+                                <th name="th_ingresos_rutos" class="text-left">
+                                    <span>Ingresos Brutos</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="retenciones_gan_ids" t-as="i">
+                            <tr>
+                                <td>
+                                    <span t-esc="i[0]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[1]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[2]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[3]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[4]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[5]"/>
+                                </td>
+                                <td>
+                                    $<span t-esc="'{:,.2f}'.format(i[6])"/>
+                                <t t-set="total_ret_gan" t-value="total_ret_gan + i[6]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[7]"/>
+                                </td>
+                                <td>
+                                    $<span t-esc="'{:,.2f}'.format(i[8])"/>
+                                </td>
+                                <td>
+                                    <span t-esc="i[9]"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+                    <h5 class="text-right">Total Retenciones de Ganancias $<span t-esc="'{:,.2f}'.format(total_ret_gan)"/></h5>
+                    
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

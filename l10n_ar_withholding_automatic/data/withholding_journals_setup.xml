@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <function model="account.payment.method" name="_setup_withholding_on_journals"/>
+
+</odoo>

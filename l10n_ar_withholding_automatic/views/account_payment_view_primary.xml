@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        La vista account_payment_group.view_account_payment_from_group_form
+        está declarada con mode="primary": arma su propio árbol de vista
+        independiente en vez de fusionarse en la cadena normal de
+        account.view_account_payment_form. Por eso los campos de retención
+        agregados en view_account_payment_form.xml (que hereda en modo
+        extensión de la vista base) no aparecen cuando el pago se abre desde
+        adentro de un grupo de pago / desde el botón "Pagar" de la factura.
+
+        Esta vista repite el mismo agregado, pero apuntando directamente a
+        esa vista primary, para que también se vea en ese flujo.
+    -->
+    <record id="view_account_payment_from_group_form_withholding" model="ir.ui.view">
+        <field name="name">account.payment.from.group.form.withholding</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account_payment_group.view_account_payment_from_group_form"/>
+        <field name="arch" type="xml">
+
+        <xpath expr="//sheet//field[@name='amount'][1]" position="after">
+            <field name="tax_withholding_id"
+                options="{'no_create': True, 'no_open': True}"
+                string="Impuesto de retención"
+                domain="[('type_tax_use', '=', partner_type), ('company_id', '=', company_id)]"
+                required="payment_method_code == 'withholding'"/>
+
+            <field name="withholding_number"
+                string="Nro de retención"/>
+
+            <field name="withholding_base_amount"
+                string="Monto base de retención"
+                required="payment_method_code == 'withholding'"/>
+        </xpath>
+
+            <xpath expr="//sheet" position="inside">
+                <field name="automatic" invisible="1"/>
+                <field name="withholding_accumulated_payments" invisible="1"/>
+
+                <group string="Detalle de retención" invisible="not automatic">
+                    <field name="withholdable_invoiced_amount" string="Importe imputado sujeto a retención"/>
+                    <field name="withholdable_advanced_amount" string="Importe a cuenta sujeto a retención"/>
+                    <field name="accumulated_amount" string="Monto acumulado"
+                           invisible="not withholding_accumulated_payments"/>
+                    <field name="total_amount" string="Monto total"/>
+                    <field name="withholding_non_taxable_minimum" string="Mínimo no imponible"/>
+                    <field name="withholding_non_taxable_amount" string="Monto no imponible"/>
+                    <field name="withholdable_base_amount" string="Monto base sujeto a retención"/>
+                    <field name="period_withholding_amount" string="Retención del período" readonly="1"
+                           invisible="not withholding_accumulated_payments"/>
+                    <field name="previous_withholding_amount" string="Retención período anterior"
+                           invisible="not withholding_accumulated_payments"/>
+                    <field name="computed_withholding_amount" string="Retención calculada" readonly="1"/>
+                </group>
+
+                <notebook>
+                    <page string="Notas">
+                        <field name="communication" />
+                    </page>
+                </notebook>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
