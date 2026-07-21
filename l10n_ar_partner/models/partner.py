@@ -194,11 +194,11 @@ class ResPartner(models.Model):
                 iva_afip = self.env["l10n_ar.afip.responsibility.type"].search([("code", "=", l10n_ar_type)], limit=1)
                 self.l10n_ar_afip_responsibility_type_id = iva_afip.id
 
-            if ws_sr_padron['datosGenerales']['domicilioFiscal']['direccion']:
+            if 'direccion' in ws_sr_padron['datosGenerales']['domicilioFiscal'] and ws_sr_padron['datosGenerales']['domicilioFiscal']['direccion']:
                 self.street = ws_sr_padron['datosGenerales']['domicilioFiscal']['direccion'].capitalize()
-            if ws_sr_padron['datosGenerales']['domicilioFiscal']['localidad']:
+            if 'localidad' in ws_sr_padron['datosGenerales']['domicilioFiscal'] and ws_sr_padron['datosGenerales']['domicilioFiscal']['localidad']:
                 self.city = ws_sr_padron['datosGenerales']['domicilioFiscal']['localidad'].capitalize()
-            if ws_sr_padron['datosGenerales']['domicilioFiscal']['codPostal']:
+            if 'codPostal' in ws_sr_padron['datosGenerales']['domicilioFiscal'] and ws_sr_padron['datosGenerales']['domicilioFiscal']['codPostal']:
                 self.zip = ws_sr_padron['datosGenerales']['domicilioFiscal']['codPostal']
 
             if ws_sr_padron['datosGenerales']['domicilioFiscal']['idProvincia'] != None:
