@@ -146,6 +146,8 @@ class ResPartner(models.Model):
         else:
             company = self.env['afipws.certificate_alias'].search([('state', '=', 'confirmed')], limit=1).company_id
             ws = company.get_connection('ws_sr_constancia_inscripcion').connect()
+            connect = ws.Consultar(self.vat)
+            response = json.loads(ws.Persona)
             
         if self.l10n_latam_identification_type_id.name == 'CUIT':
             ws_sr_padron = response
@@ -168,7 +170,7 @@ class ResPartner(models.Model):
             EsMonotributo = False
             EsExento = False
 
-            if ws_sr_padron['datosMonotributo'] != None:
+            if 'datosMonotributo' in ws_sr_padron and ws_sr_padron['datosMonotributo'] != None:
                 EsMonotributo = True
 
             for imp in ws_sr_padron['datosRegimenGeneral']['impuesto']:
