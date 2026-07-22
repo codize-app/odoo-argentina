@@ -55,8 +55,8 @@ class WithholdingsReports(models.TransientModel):
                         _valsI.append(invoice.partner_id.vat)  # CUIT
                         _valsI.append(invoice.partner_id.state_id.name)  # Provincia
                         if invoice.currency_id.name != 'ARS':  # Multimoneda
-                            _valsI.append(tax.get('tax_amount', 0) * invoice.l10n_ar_currency_rate)  # Total
-                            _valsI.append(tax.get('base_amount', 0) * invoice.l10n_ar_currency_rate)  # Monto imponible
+                            _valsI.append(tax.get('tax_amount', 0) * invoice.invoice_currency_rate)  # Total
+                            _valsI.append(tax.get('base_amount', 0) * invoice.invoice_currency_rate)  # Monto imponible
                         else:
                             _valsI.append(tax.get('tax_amount', 0))  # Total
                             _valsI.append(tax.get('base_amount', 0))  # Monto imponible
