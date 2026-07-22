@@ -160,10 +160,8 @@ class ResPartner(models.Model):
                 ) % self.vat)
 
             if ws_sr_padron['datosGenerales']['tipoPersona'] == "FISICA":
-                self.company_type = "person"
                 self.name = ws_sr_padron['datosGenerales']['nombre'] + ' ' + ws_sr_padron['datosGenerales']['apellido']
             else:
-                self.company_type = "company"
                 self.name = ws_sr_padron['datosGenerales']['razonSocial']
 
             EsRI = False
@@ -173,13 +171,14 @@ class ResPartner(models.Model):
             if 'datosMonotributo' in ws_sr_padron and ws_sr_padron['datosMonotributo'] != None:
                 EsMonotributo = True
 
-            for imp in ws_sr_padron['datosRegimenGeneral']['impuesto']:
-                if imp['descripcionImpuesto'] == 'IVA' and imp['estadoImpuesto'] == 'AC':
-                    EsRI = True
-                    break
-                if imp['descripcionImpuesto'] == 'IVA EXENTO' and imp['estadoImpuesto'] == 'AC':
-                    EsExento = True
-                    break
+            if 'datosRegimenGeneral' in ws_sr_padron and ws_sr_padron['datosRegimenGeneral'] != None:
+                for imp in ws_sr_padron['datosRegimenGeneral']['impuesto']:
+                    if imp['descripcionImpuesto'] == 'IVA' and imp['estadoImpuesto'] == 'AC':
+                        EsRI = True
+                        break
+                    if imp['descripcionImpuesto'] == 'IVA EXENTO' and imp['estadoImpuesto'] == 'AC':
+                        EsExento = True
+                        break
 
             l10n_ar_type = ""
 
