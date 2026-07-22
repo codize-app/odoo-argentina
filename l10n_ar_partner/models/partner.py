@@ -161,10 +161,10 @@ class ResPartner(models.Model):
 
             if ws_sr_padron['datosGenerales']['tipoPersona'] == "FISICA":
                 self.company_type = "person"
+                self.name = ws_sr_padron['datosGenerales']['nombre'] + ' ' + ws_sr_padron['datosGenerales']['apellido']
             else:
                 self.company_type = "company"
-
-            self.name = ws_sr_padron['datosGenerales']['razonSocial']
+                self.name = ws_sr_padron['datosGenerales']['razonSocial']
 
             EsRI = False
             EsMonotributo = False
