@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!-- account.invoice model no longer exists in Odoo 17+.
+     All invoice views are now in account_move_view.xml via account.move -->
+</odoo>

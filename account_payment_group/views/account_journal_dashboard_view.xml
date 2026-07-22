@@ -1,0 +1,17 @@
+<odoo>
+    <!-- Journal dashboard labels - open_spend_money / open_collect_money
+         still exist in Odoo 19 account module dashboard kanban view -->
+    <record id="account_journal_dashboard_kanban_view" model="ir.ui.view">
+        <field name="name">account.journal.dashboard.kanban.payment_group</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view"/>
+        <field name="arch" type="xml">
+            <a name="open_spend_money" position="replace">
+                <a type="object" name="open_spend_money">Dinero Enviado</a>
+            </a>
+            <a name="open_collect_money" position="replace">
+                <a type="object" name="open_collect_money">Dinero Recibido</a>
+            </a>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.form.inherit.account.payment.group</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+
+                <block id="bank_cash" position="inside">
+                    <setting title="Used if you want let user choose payment type (inbound or outbound) when registering a payment from a payment group"
+                             groups="base.group_no_one">
+                        <field name="group_choose_payment_type"/>
+                        <label for="group_choose_payment_type"/>
+                        <div class="text-muted">
+                            Allow to choose inbound/outbound on payment lines.
+                        </div>
+                    </setting>
+                </block>
+
+                <block id="bank_cash" position="after">
+                    <block title="Payment Groups" id="payment_group_settings">
+                        <setting>
+                            <field name="double_validation"/>
+                            <label for="double_validation"/>
+                            <div class="text-muted">
+                                Use two steps validation on payments to suppliers.
+                            </div>
+                        </setting>
+                        <setting title="Allow users to choose a payment journal on invoices so that invoice is automatically paid after invoice validation.">
+                            <field name="group_pay_now_vendor_invoices"/>
+                            <label for="group_pay_now_vendor_invoices"/>
+                            <div class="text-muted">
+                                Allow to pay vendor invoices automatically on invoice validation.
+                            </div>
+                        </setting>
+                        <setting title="Allow users to choose a payment journal on invoices so that invoice is automatically paid after invoice validation.">
+                            <field name="group_pay_now_customer_invoices"/>
+                            <label for="group_pay_now_customer_invoices"/>
+                            <div class="text-muted">
+                                Allow to pay customer invoices automatically on invoice validation.
+                            </div>
+                        </setting>
+                        <setting string="Diario de pagos directos">
+                            <div class="text-muted">
+                                Diario por defecto para pagos directos en facturas
+                            </div>
+                            <field name="journal_id_def"/>
+                        </setting>
+                    </block>
+                </block>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>
