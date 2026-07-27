@@ -133,7 +133,7 @@ class ResPartner(models.Model):
     )
 
     def update_from_padron(self):
-        if bool(self.env['ir.module.module'].search([('name', '=', 'web_enterprise'), ('state', '=', 'inline')])):
+        if bool(self.env['ir.module.module'].search([('name', '=', 'web_enterprise'), ('state', '=', 'installed')])):
             company = self.env['l10n_ar.afipws.connection'].search([], limit=1).company_id
             client, auth, transport = company._l10n_ar_get_connection('ws_sr_constancia_inscripcion')._get_client(return_transport=True)
             data = {
@@ -381,3 +381,22 @@ class ArcaTablagananciasAlicuotasymontos(models.Model):
     montos_no_sujetos_a_retencion = fields.Float(
         'Montos no sujetos a retención'
     )
+
+# Inherit for Odoo EE
+"""class L10nArAfipwsConnection(models.Model):
+    _inherit = "l10n_ar.afipws.connection"
+
+    @api.model
+    def _l10n_ar_get_afip_ws_url(self, afip_ws, environment_type):
+        """ Function to be inherited on each module that adds a new webservice """
+        ws_data = {'wsfe': {'production': "https://servicios1.afip.gov.ar/wsfev1/service.asmx?WSDL",
+                            'testing': "https://wswhomo.afip.gov.ar/wsfev1/service.asmx?WSDL"},
+                   'wsfex': {'production': "https://servicios1.afip.gov.ar/wsfexv1/service.asmx?WSDL",
+                             'testing': "https://wswhomo.afip.gov.ar/wsfexv1/service.asmx?WSDL"},
+                   'wsbfe': {'production': "https://servicios1.afip.gov.ar/wsbfev1/service.asmx?WSDL",
+                             'testing': "https://wswhomo.afip.gov.ar/wsbfev1/service.asmx?WSDL"},
+                   'wscdc': {'production': "https://servicios1.afip.gov.ar/WSCDC/service.asmx?WSDL",
+                             'testing': "https://wswhomo.afip.gov.ar/WSCDC/service.asmx?WSDL"},
+                   'ws_sr_constancia_inscripcion': {'production': "https://aws.afip.gov.ar/sr-padron/webservices/personaServiceA5?wsdl",
+                             'testing': ""}}
+        return ws_data.get(afip_ws, {}).get(environment_type)"""
