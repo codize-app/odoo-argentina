@@ -442,16 +442,17 @@ class InvoiceSufferedLine(models.Model):
     @api.depends("invoice", "tax_id")
     def _compute_total_withholdings_suffered(self):
         for rec in self:
+            if not rec.invoice or not rec.tax_id:
+                rec.total_withholdings_suffered = 0
+                continue
+            # Buscamos las líneas del asiento contable que sean de impuesto
+            # y cuyo grupo coincida con el impuesto que matcheó esta línea
+            tax_lines = rec.invoice.line_ids.filtered(lambda l: l.tax_line_id)
             per_tmp = 0
-            if rec.invoice and rec.tax_id:
-                totals = rec.invoice.tax_totals or {}
-                taxes = totals.get('groups_by_subtotal', {}).get('Importe libre de impuestos', [])
-                for tax in taxes:
-                    if tax['tax_group_name'] == rec.tax_id.tax_group_id.name:
-                        per_tmp = per_tmp + tax['tax_group_amount']
-                if rec.invoice.currency_id.name != 'ARS':
-                    per_tmp = per_tmp * rec.invoice.currency_rate
-            rec.total_withholdings_suffered = per_tmp
+            for tax_line in tax_lines:
+                if tax_line.tax_line_id.tax_group_id == rec.tax_id.tax_group_id:
+                    per_tmp += tax_line.balance
+            rec.total_withholdings_suffered = abs(per_tmp)
 
     invoice = fields.Many2one('account.move', 'Factura')
     # Impuesto de percepción puntual que hizo matchear esta factura (una
