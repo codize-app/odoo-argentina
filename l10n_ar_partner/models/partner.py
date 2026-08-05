@@ -133,6 +133,9 @@ class ResPartner(models.Model):
     )
 
     def update_from_padron(self):
+        if self.l10n_latam_identification_type_id.name != 'CUIT' or self.vat == False:
+            raise ValidationError('El Contacto debe tener tipo de identificación CUIT y estar completo por un CUIT válido')
+            
         if bool(self.env['ir.module.module'].search([('name', '=', 'web_enterprise'), ('state', '=', 'installed')])):
             company = self.env['l10n_ar.afipws.connection'].search([], limit=1).company_id
             client, auth, transport = company._l10n_ar_get_connection('ws_sr_constancia_inscripcion')._get_client(return_transport=True)
