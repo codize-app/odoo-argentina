@@ -3,7 +3,7 @@
 ## Includes
 
 * Fantasy Name
-* Import data from AFIP just with CUIT (Tango API or Constancia de Inscripción)
+* Import data from ARCA just with CUIT (Constancia de Inscripción)
 * Localidades and Departamentos data linked to State
 
 ## Contributors
