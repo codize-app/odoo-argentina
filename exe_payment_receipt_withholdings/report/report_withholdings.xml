@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- The installed receipt accesses request.env four times. Use the report
+         record's environment so that printing also works from jobs and shell. -->
+    <template id="report_payment_group_document_environment"
+              inherit_id="account_payment_group.report_payment_group_document">
+        <!-- Use the certificate number as memo for withholding payments. -->
+        <xpath expr="//tr[@t-as='p']//span[@t-field='p.memo']" position="replace">
+            <span t-if="p.tax_withholding_id" t-field="p.withholding_number"/>
+            <span t-elif="p.memo" t-field="p.memo"/>
+        </xpath>
+        <!-- Withholdings display their tax name, as in Greenworking. -->
+        <xpath expr="//tr[@t-as='p']//span[@t-field='p.payment_method_line_id']" position="replace">
+            <span t-if="p.tax_withholding_id" t-field="p.tax_withholding_id.name"/>
+            <span t-elif="p.payment_method_line_id" t-field="p.payment_method_line_id"/>
+        </xpath>
+        <xpath expr="//t[@t-set='credit_move']" position="attributes">
+            <attribute name="t-value">o.env['account.partial.reconcile'].sudo().search([('credit_move_id', 'in', payments), ('debit_move_id', '=', f.id)])</attribute>
+        </xpath>
+        <xpath expr="//t[@t-set='debit_move']" position="attributes">
+            <attribute name="t-value">o.env['account.partial.reconcile'].sudo().search([('debit_move_id', 'in', payments), ('credit_move_id', '=', f.id)])</attribute>
+        </xpath>
+        <xpath expr="//t[@t-set='credit' and contains(@t-value, 'request.env')]" position="attributes">
+            <attribute name="t-value">o.env['account.partial.reconcile'].sudo().search([('debit_move_id', '=', f.id)], limit=1)</attribute>
+        </xpath>
+        <xpath expr="//t[@t-set='debit' and contains(@t-value, 'request.env')]" position="attributes">
+            <attribute name="t-value">o.env['account.partial.reconcile'].sudo().search([('credit_move_id', '=', f.id)], limit=1)</attribute>
+        </xpath>
+    </template>
+
+    <!-- Preserve the installed certificate, including future localization
+         extensions, and provide the variables required by its native layout. -->
+    <template id="report_payment_withholding_document_title"
+              inherit_id="l10n_ar_withholding_automatic.report_payment_withholding_document">
+        <xpath expr="//t[@t-set='o']" position="before">
+            <t t-set="lang" t-value="o.partner_id.lang or o.env.lang"/>
+            <t t-set="company" t-value="o.company_id"/>
+            <t t-set="layout_document_title">CERTIFICADO DE RETENCIÓN</t>
+        </xpath>
+        <xpath expr="//div[hasclass('page')]/div[1]" position="before">
+            <div name="exe_withholding_certificate_identification" class="mb-3">
+                <strong>N°: </strong><span t-field="o.withholding_number"/>
+                <br/>
+                <strong>Fecha: </strong><span t-field="o.date"/>
+            </div>
+        </xpath>
+        <!-- A withholding payment may carry the localization's default partner
+             type. The order is the authoritative source for this label. -->
+        <xpath expr="//t[@t-if=&quot;o.partner_type == 'customer'&quot;]" position="attributes">
+            <attribute name="t-if">(o.payment_group_id.partner_type or o.partner_type) == 'customer'</attribute>
+        </xpath>
+        <xpath expr="//t[@t-if=&quot;o.partner_type == 'supplier'&quot;]" position="attributes">
+            <attribute name="t-if">(o.payment_group_id.partner_type or o.partner_type) == 'supplier'</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('row') and hasclass('mb64')]" position="replace">
+            <div name="exe_withholding_amount_details" class="row mb-4" style="page-break-inside: avoid;">
+                <div class="col-3">
+                    <strong class="d-block">Certificado de Retención</strong>
+                    <span class="d-block" t-field="o.withholding_number"/>
+                </div>
+                <div class="col-3">
+                    <strong class="d-block">Monto Retención</strong>
+                    <span class="d-block" t-field="o.amount"
+                          t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                </div>
+                <div class="col-3">
+                    <strong class="d-block">Monto Imponible</strong>
+                    <span class="d-block" t-field="o.withholding_base_amount"
+                          t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                </div>
+                <div class="col-3" t-if="o.communication">
+                    <strong class="d-block">Memo</strong>
+                    <span class="d-block" t-field="o.communication"/>
+                </div>
+            </div>
+        </xpath>
+        <!-- A bill can have several payable terms. Render each invoice once;
+             retain the installed report's total-minus-residual semantics. -->
+        <xpath expr="//table[hasclass('table-sm')]/tbody/tr[@t-foreach]" position="replace">
+            <tr t-foreach="o.payment_group_id.matched_move_line_ids.mapped('move_id')" t-as="invoice">
+                <td><span t-field="invoice.invoice_date"/></td>
+                <td><span t-field="invoice.name"/></td>
+                <td><span t-field="invoice.ref"/></td>
+                <td class="text-end">
+                    <span t-field="invoice.amount_total"
+                          t-options="{'widget': 'monetary', 'display_currency': invoice.currency_id}"/>
+                </td>
+                <td class="text-end">
+                    <span t-out="invoice.amount_total - invoice.amount_residual"
+                          t-options="{'widget': 'monetary', 'display_currency': invoice.currency_id}"/>
+                </td>
+            </tr>
+        </xpath>
+    </template>
+
+    <!-- Regenerate printed receipts instead of returning a previous attachment
+         that predates the appended certificates. No attachments are deleted. -->
+    <record id="account_payment_group.account_fe_invoices" model="ir.actions.report">
+        <field name="attachment" eval="False"/>
+        <field name="attachment_use" eval="False"/>
+    </record>
+</odoo>
