@@ -24,7 +24,7 @@
         'views/account_payment_receiptbook_view.xml',
         #'views/account_journal_dashboard_view.xml',
         'report/report_payment_group.xml',
-        #'data/mail_template_data.xml',
+        'data/mail_template_data.xml',
     ],
     #"post_init_hook": "post_init_hook",
     "demo": [],
